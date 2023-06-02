@@ -6,13 +6,13 @@ boards_pins = db.Table(
     db.Column(
         "pin_to_board",
         db.Integer,
-        add_prefix_for_prod(db.ForeignKey("pins.id")),
+        db.ForeignKey(add_prefix_for_prod("pins.id")),
         primary_key=True
     ),
     db.Column(
         "board_pinned",
         db.Integer,
-        add_prefix_for_prod(db.ForeignKey("boards.id")),
+        db.ForeignKey(add_prefix_for_prod("boards.id")),
         primary_key=True
     )
 )
@@ -22,13 +22,13 @@ board_categories = db.Table(
     db.Column(
         "board_id",
         db.Integer,
-        add_prefix_for_prod(db.ForeignKey('boards.id')),
+        db.ForeignKey(add_prefix_for_prod('boards.id')),
         primary_key=True
     ),
     db.Column(
         "category_id",
         db.Integer,
-        add_prefix_for_prod(db.ForeignKey('categories.id')),
+        db.ForeignKey(add_prefix_for_prod('categories.id')),
         primary_key=True
     )
 )
@@ -38,13 +38,13 @@ pin_categories = db.Table(
     db.Column(
         "pin_id",
         db.Integer,
-        add_prefix_for_prod(db.ForeignKey("pins.id")),
+        db.ForeignKey(add_prefix_for_prod("pins.id")),
         primary_key=True
     ),
     db.Column(
         "category_id",
         db.Integer,
-        add_prefix_for_prod(db.ForeignKey("categories.id"))
+        db.ForeignKey(add_prefix_for_prod("categories.id"))
     )
 )
 
@@ -56,7 +56,7 @@ class Board(db.Model):
     private = db.Column(db.Boolean, nullable=False)
     cover_image = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
-    owner_id = db.Column(db.Integer, add_prefix_for_prod(db.ForeignKey('users.id')), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
@@ -81,7 +81,7 @@ class Board(db.Model):
 class Pin(db.Model):
     __tablename__ = 'pins'
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, add_prefix_for_prod(db.ForeignKey('users.id')), nullable=False)
+    owner_id = db.Column(db.Integer, (db.ForeignKey(add_prefix_for_prod('users.id'))), nullable=False)
     image = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
