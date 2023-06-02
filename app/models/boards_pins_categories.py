@@ -1,4 +1,4 @@
-from .db import db, add_prefix_for_prod
+from .db import db, add_prefix_for_prod, environment, SCHEMA
 from datetime import datetime, timedelta
 
 boards_pins = db.Table(
@@ -17,6 +17,9 @@ boards_pins = db.Table(
     )
 )
 
+if environment == "production":
+    boards_pins.schema = SCHEMA
+
 board_categories = db.Table(
     "board_categories",
     db.Column(
@@ -33,6 +36,9 @@ board_categories = db.Table(
     )
 )
 
+if environment == "production":
+    board_categories.schema = SCHEMA
+
 pin_categories = db.Table(
     "pin_categories",
     db.Column(
@@ -47,6 +53,9 @@ pin_categories = db.Table(
         db.ForeignKey(add_prefix_for_prod("categories.id"))
     )
 )
+
+if environment == "production":
+    pin_categories.schema = SCHEMA
 
 
 class Board(db.Model):
@@ -63,7 +72,8 @@ class Board(db.Model):
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
 
-
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
 
     def to_dict(self):
         return {
@@ -94,6 +104,9 @@ class Pin(db.Model):
     categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
     board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards')
 
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -118,6 +131,9 @@ class Category(db.Model):
     boards = db.relationship('Board', secondary='board_categories', back_populates='categories')
     pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories')
 
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+        
     def to_dict(self):
         return {
             'id': self.id,
