@@ -62,9 +62,9 @@ class Board(db.Model):
     __tablename__ = 'boards'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    private = db.Column(db.Boolean, nullable=False)
-    cover_image = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    private = db.Column(db.Boolean)
+    cover_image = db.Column(db.String(255))
+    description = db.Column(db.String(255))
     owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -93,8 +93,8 @@ class Pin(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, (db.ForeignKey(add_prefix_for_prod('users.id'))), nullable=False)
     image = db.Column(db.String(255), nullable=False)
-    title = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(255))
+    description = db.Column(db.String(255))
     alt_text = db.Column(db.String(255))
     destination = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -133,7 +133,7 @@ class Category(db.Model):
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
-        
+
     def to_dict(self):
         return {
             'id': self.id,
