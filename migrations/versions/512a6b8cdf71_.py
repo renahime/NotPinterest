@@ -125,10 +125,10 @@ def upgrade():
     sa.Column('category_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
     sa.ForeignKeyConstraint(['pin_id'], ['pins.id'], ),
-    sa.PrimaryKeyConstraint('pin_id')
+    sa.PrimaryKeyConstraint('pin_id', 'category_id')
     )
 
-if environment == "production":
+    if environment == "production":
             op.execute(f"ALTER TABLE pin_categories SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
