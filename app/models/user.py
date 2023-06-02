@@ -1,7 +1,24 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
+from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+#Make Table
+follows = db.Table(
+    "follows",
+    db.Column(
+        "follower",
+        db.Integer,
+        db.ForeignKey("users.id"),
+        primary_key=True
+    ),
+    db.Column(
+        "followed",
+        db.Integer,
+        db.ForeignKey("users.id"),
+        primary_key=True
+    )
+)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -13,6 +30,26 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(255), nullable=False)
+    last_name = db.Column(db.String(255), nullable=False)
+    about = db.Column(db.String(255))
+    pronouns = db.Column(db.String(255))
+    website = db.Column(db.String(255))
+    profile_image = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+
+    # Relationships
+    boards = db.relationship('Board', back_populates='user', cascade="delete-orphan,all")  #added cascade delete
+    pins = db.relationship('Pin', back_populates='owner', cascade="delete-orphan,all")  #added cascade delete
+    followers = db.relationship(
+        "User",
+        secondary="follows",
+        primaryjoin=follows.c.followed == id,
+        secondaryjoin=follows.c.follower == id,
+        backref="followed"
+    )
 
     @property
     def password(self):
@@ -29,5 +66,13 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'about': self.about,
+            'pronouns': self.pronouns,
+            'website': self.website,
+            'profile_image': self.profile_image,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
