@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
 from ..models import Pin, db, User
+from .auth_routes import validation_errors_to_error_messages
 
 pin_routes = Blueprint('pins', __name__)
 
@@ -23,9 +24,41 @@ def get_pin_by_id(id):
     return pin.to_dict()
 
 @pin_routes.route("/", methods=["POST"])
-@login_required
+# @login_required
 def create_pin():
-    pass
+    form = PinForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        data = form.data
+        new_pin = Pin(
+            title = data["title"],
+            image = data["image"],
+            description = data["description"],
+            owner_id = current_user.id
+        )
+
+        db.session.add(new_pin)
+        db.session.commit()
+        return new_Pin.to_dict()
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
+
+
+@pin_routes.route("/<int:id>", methods=["PUT"])
+# @login_required
+def edit_pin(id):
+    form = EditPinForm()
+    pin = Pin.query.get(id)
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        data = form.data
+        pin.title = data["title"]
+        pin.image = data["image"]
+        pin.description = data["description"]
+        db.session.commit()
+        return pin.to_dict()
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 
 # @pin_routes.route("/<int:id>", methods=["DELETE"])
