@@ -1,4 +1,4 @@
 from flask import Blueprint
 
 
-pin_routes = BluePrint('pins', __name__)
+pin_routes = Blueprint('pins', __name__)
