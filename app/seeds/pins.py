@@ -6,8 +6,7 @@ from sqlalchemy.sql import text
 def seed_pins():
     pin1 = Pin(
         title="Summer Outfit 1",
-        image="https://example.com/pin1.jpg",
-        description="This is a stylish summer outfit for men",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/00156328256bcb053cf414d8b8d7add6.jpg",
         owner_id=1,
         created_at=datetime.now(),
         updated_at=datetime.now()
@@ -16,8 +15,7 @@ def seed_pins():
 
     pin2 = Pin(
         title="Tailored Suit",
-        image="https://example.com/pin2.jpg",
-        description="A classic and sophisticated tailored suit",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/103ea6196ee9d291926c9826e82106f7.jpg",
         owner_id=1,
         created_at=datetime.now(),
         updated_at=datetime.now()
@@ -26,8 +24,8 @@ def seed_pins():
 
     pin3 = Pin(
         title="Summer Outfit 2",
-        image="https://example.com/pin3.jpg",
-        description="A trendy summer outfit for women",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/11069f93e90725955d8f468f885e4367.jpg",
+        description="The classis shorts and a sweatshirt combo is the best for a night outside in the summer.",
         owner_id=2,
         created_at=datetime.now(),
         updated_at=datetime.now()
@@ -45,9 +43,9 @@ def seed_pins():
     db.session.add(pin4)
 
     pin5 = Pin(
-        title="Pin 5",
-        image="https://example.com/pin5.jpg",
-        description="This is the description for Pin 5",
+        title="Winter Streetwear Vibes",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/1577429f3830da4bcdae21121b7ec6f9.jpg",
+        description="I love this vest!!",
         owner_id=3,
         created_at=datetime.now(),
         updated_at=datetime.now()
@@ -55,9 +53,9 @@ def seed_pins():
     db.session.add(pin5)
 
     pin6 = Pin(
-        title="Casual Outfit",
-        image="https://example.com/pin6.jpg",
-        description="A comfortable and stylish casual outfit",
+        title="Stylish Sneaks",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/23e15e3f0c85c417812bd32a25a47c09.jpg",
+        description="Sneakers are a must for the streetwear vibes",
         owner_id=3,
         created_at=datetime.now(),
         updated_at=datetime.now()

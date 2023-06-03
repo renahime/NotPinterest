@@ -15,7 +15,9 @@ def get_all_pins():
     # standardizes the output that is returned to user
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
-    return all_pins
+    # return all_pins
+    return "<img src='https://threadterest.s3.us-east-2.amazonaws.com/00156328256bcb053cf414d8b8d7add6.jpg'>"
+
 
 
 # route to get a pin by id
@@ -99,14 +101,14 @@ def delete_pin(id):
     return {"message": "Pin successfully deleted"}
 
 # gets all of the pins of a user
-@pin_routes.route("/<username>")
-def get_users_pins_by_username(username):
-    pins = db.session.query(Pin).join(User).filter(User.username == username)
-    all_pins = {}
-    # standardizes the format of the pins returned to the user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    return all_pins
+# @pin_routes.route("/<username>")
+# def get_users_pins_by_username(username):
+#     pins = db.session.query(Pin).join(User).filter(User.username == username)
+#     all_pins = {}
+#     # standardizes the format of the pins returned to the user
+#     for pin in pins:
+#         all_pins[pin.id] = pin.to_dict()
+#     return all_pins
 
 
 # gets all of the pins of the current user
