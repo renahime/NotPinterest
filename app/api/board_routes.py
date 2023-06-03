@@ -10,8 +10,9 @@ board_routes = Blueprint('boards', __name__)
 
 
 
-#Route to get a board
+#Route to get all board
 @board_routes.route('/', methods = ["GET"])
+# @login_required
 def get_boards():
     boards = Board.query.all()
     if boards:
