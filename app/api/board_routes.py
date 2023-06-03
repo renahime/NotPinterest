@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect,request
 from app.models import db,Board
 from flask_login import current_user, login_user, logout_user, login_required
-# from app.forms import BoardForm #need to see BoardForm
+from app.forms import BoardForm #need to see BoardForm
 from .auth_routes import validation_errors_to_error_messages
 
 
@@ -37,32 +37,32 @@ def get_board(id):
 
 
 # Route to create a board
-# @board_routes.route('/new', methods=['POST'])
-# @login_required
-# def create_board():
+@board_routes.route('/new', methods=['POST'])
+@login_required
+def create_board():
 
-#     form = BoardForm() #confirm name of form
+    form = BoardForm() #confirm name of form
 
-#     form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-#     if form.validate_on_submit():
+    if form.validate_on_submit():
 
-#         # Create a new board
-#         new_board = Board(
-#             name=form.data["name"],
-#             private=form.data["private"],
-#             cover_image=form.data["cover_image"],
-#             description=form.data["description"]
-#         )
-#         db.session.add(new_board)
-#         db.session.commit()
+        # Create a new board
+        new_board = Board(
+            name=form.data["name"],
+            private=form.data["private"],
+            cover_image=form.data["cover_image"],
+            description=form.data["description"]
+        )
+        db.session.add(new_board)
+        db.session.commit()
 
-#         return new_board.to_dict()
+        return new_board.to_dict()
 
-#     elif form.errors:
-#         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    elif form.errors:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
-    # return {'message': 'Board created successfully'}
+    return {'message': 'Board created successfully'}
 
 
 
@@ -84,29 +84,29 @@ def delete_board(id):
 
 
 # Route to edit a board
-# @board_routes.route('/<int:id>/edit', methods=['PUT'])
-# @login_required
-# def edit_board(id):
-#     board_to_edit = Board.query.get(id)
+@board_routes.route('/<int:id>/edit', methods=['PUT'])
+@login_required
+def edit_board(id):
+    board_to_edit = Board.query.get(id)
 
-#     form = BoardForm() #confirm name of form
+    form = BoardForm() #confirm name of form
 
-#     form['csrf_token'].data = request.cookies['csrf_token']
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-#     if form.validate_on_submit():
-#         board_to_edit.name = form.data["name"]
-#         board_to_edit.private = form.data["private"]
-#         board_to_edit.cover_image = form.data["cover_image"]
-#         board_to_edit.description = form.data["description"]
+    if form.validate_on_submit():
+        board_to_edit.name = form.data["name"]
+        board_to_edit.private = form.data["private"]
+        board_to_edit.cover_image = form.data["cover_image"]
+        board_to_edit.description = form.data["description"]
 
-#         db.session.commit()
+        db.session.commit()
 
-#         return board_to_edit.to_dict()
+        return board_to_edit.to_dict()
 
-#     elif form.errors:
-#         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    elif form.errors:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
-    # return {'message': 'Board created successfully'}
+    return {'message': 'Board created successfully'}
 
 
 
@@ -126,8 +126,8 @@ def get_user_boards(user_id):
 
 
 
-#Route to get a current user's boards
-@board_routes.route("/user", methods= ["GET"])
+# #Route to get a current user's boards
+# @board_routes.route("/user", methods= ["GET"])
 
 
-board_routes = BluePrint('boards', __name__)
+# board_routes = BluePrint('boards', __name__)
