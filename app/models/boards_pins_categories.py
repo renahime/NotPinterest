@@ -110,7 +110,6 @@ class Pin(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'board_id': self.board_id,
             'owner_id': self.owner_id,
             'image': self.image,
             'title': self.title,
