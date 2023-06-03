@@ -13,7 +13,7 @@ def get_board_names(userId):
 
 
 
-class PinBoard(FlaskForm):
+class PinForm(FlaskForm):
   title = StringField('Pin Name', validators=[Length(max=255, message="Name must be less than 255 chars!")])
   image = FileField("Image File", validators=[FileAllowed(list(ALLOWED_EXTENSIONS)), FileRequired()])
   description = StringField('Description Text', validators=[Length(max=255, message="Name must be less than 255 chars!")])
