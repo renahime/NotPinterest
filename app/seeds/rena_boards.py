@@ -5,8 +5,6 @@ from sqlalchemy.sql import text
 
 def seed_rena_boards():
     user = User.query.get(4)
-    category1 = Category.query.filter_by(name='Dark').first()
-    category2 = Category.query.filter_by(name='Old Money').first()
 
     board1 = Board(
         name="Dark Aesthetic",
@@ -16,8 +14,8 @@ def seed_rena_boards():
         user=user,
         created_at=datetime.now(),
         updated_at=datetime.now(),
-        categories=category1
     )
+    board1.categories.append(Category.query.get(3))
     db.session.add(board1)
 
     board2 = Board(
@@ -28,16 +26,17 @@ def seed_rena_boards():
         user=user,
         created_at=datetime.now(),
         updated_at=datetime.now(),
-        categories=category2
     )
+    board1.categories.append(Category.query.get(5))
     db.session.add(board2)
 
     db.session.commit()
 
-def undo_boards():
+def undo_rena_boards():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.boards RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM boards"))
+        db.session.execute(text('DELETE FROM board_categories'))
 
     db.session.commit()

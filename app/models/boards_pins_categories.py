@@ -6,14 +6,12 @@ boards_pins = db.Table(
     db.Column(
         "pin_to_board",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id")),
-        primary_key=True
+        db.ForeignKey(add_prefix_for_prod("pins.id"))
     ),
     db.Column(
         "board_pinned",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("boards.id")),
-        primary_key=True
     )
 )
 
@@ -26,13 +24,11 @@ board_categories = db.Table(
         "board_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod('boards.id')),
-        primary_key=True
     ),
     db.Column(
         "category_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod('categories.id')),
-        primary_key=True
     )
 )
 
@@ -45,7 +41,6 @@ pin_categories = db.Table(
         "pin_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("pins.id")),
-        primary_key=True
     ),
     db.Column(
         "category_id",

@@ -45,7 +45,7 @@ class User(db.Model, UserMixin):
 
     # Relationships
     boards = db.relationship('Board', back_populates='user', cascade="delete-orphan,all")  #added cascade delete
-    pins = db.relationship('Pin', back_populates='owner', cascade="delete-orphan,all")  #added cascade delete
+    pins = db.relationship('Pin', back_populates='user', cascade="delete-orphan,all")  #added cascade delete
     followers = db.relationship(
         "User",
         secondary="follows",
@@ -79,5 +79,3 @@ class User(db.Model, UserMixin):
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
-    
-
