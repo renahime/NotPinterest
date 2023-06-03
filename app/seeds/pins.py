@@ -1,13 +1,18 @@
 from flask.cli import AppGroup
 from datetime import datetime
-from app.models import db, Pin, environment, SCHEMA
+from app.models import db, Pin, environment, SCHEMA, User
 from sqlalchemy.sql import text
 
+
 def seed_pins():
+    user1 = User.query.get(1)
+    user2 = User.query.get(2)
+    user3 = User.query.get(3)
+
     pin1 = Pin(
         title="Summer Outfit 1",
         image="https://threadterest.s3.us-east-2.amazonaws.com/00156328256bcb053cf414d8b8d7add6.jpg",
-        owner_id=1,
+        user=user1,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -16,7 +21,7 @@ def seed_pins():
     pin2 = Pin(
         title="Tailored Suit",
         image="https://threadterest.s3.us-east-2.amazonaws.com/103ea6196ee9d291926c9826e82106f7.jpg",
-        owner_id=1,
+        user=user1,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -26,7 +31,7 @@ def seed_pins():
         title="Summer Outfit 2",
         image="https://threadterest.s3.us-east-2.amazonaws.com/11069f93e90725955d8f468f885e4367.jpg",
         description="The classis shorts and a sweatshirt combo is the best for a night outside in the summer.",
-        owner_id=2,
+        user=user2,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -36,7 +41,7 @@ def seed_pins():
         title="Cozy Winter Outfit",
         image="https://example.com/pin4.jpg",
         description="Stay warm and stylish with this winter outfit",
-        owner_id=2,
+        user=user2,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -46,7 +51,7 @@ def seed_pins():
         title="Winter Streetwear Vibes",
         image="https://threadterest.s3.us-east-2.amazonaws.com/1577429f3830da4bcdae21121b7ec6f9.jpg",
         description="I love this vest!!",
-        owner_id=3,
+        user=user3,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -56,7 +61,7 @@ def seed_pins():
         title="Stylish Sneaks",
         image="https://threadterest.s3.us-east-2.amazonaws.com/23e15e3f0c85c417812bd32a25a47c09.jpg",
         description="Sneakers are a must for the streetwear vibes",
-        owner_id=3,
+        user=user3,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
