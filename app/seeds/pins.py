@@ -1,14 +1,18 @@
 from flask.cli import AppGroup
 from datetime import datetime
-from app.models import db, Pin, environment, SCHEMA
+from app.models import db, Pin, environment, SCHEMA, User
 from sqlalchemy.sql import text
 
 def seed_pins():
+    user1 = User.query.get(1)
+    user2 = User.query.get(2)
+    user3 = User.query.get(3)
+
     pin1 = Pin(
         title="Summer Outfit 1",
-        image="https://example.com/pin1.jpg",
+        image_url="https://example.com/pin1.jpg",
         description="This is a stylish summer outfit for men",
-        owner_id=1,
+        user=user1,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -16,9 +20,9 @@ def seed_pins():
 
     pin2 = Pin(
         title="Tailored Suit",
-        image="https://example.com/pin2.jpg",
+        image_url="https://example.com/pin2.jpg",
         description="A classic and sophisticated tailored suit",
-        owner_id=1,
+        user=user1,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -26,9 +30,9 @@ def seed_pins():
 
     pin3 = Pin(
         title="Summer Outfit 2",
-        image="https://example.com/pin3.jpg",
+        image_url="https://example.com/pin3.jpg",
         description="A trendy summer outfit for women",
-        owner_id=2,
+        user=user2,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -36,9 +40,9 @@ def seed_pins():
 
     pin4 = Pin(
         title="Cozy Winter Outfit",
-        image="https://example.com/pin4.jpg",
+        image_url="https://example.com/pin4.jpg",
         description="Stay warm and stylish with this winter outfit",
-        owner_id=2,
+        user=user2,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -46,9 +50,9 @@ def seed_pins():
 
     pin5 = Pin(
         title="Pin 5",
-        image="https://example.com/pin5.jpg",
+        image_url="https://example.com/pin5.jpg",
         description="This is the description for Pin 5",
-        owner_id=3,
+        user=user3,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -56,9 +60,10 @@ def seed_pins():
 
     pin6 = Pin(
         title="Casual Outfit",
-        image="https://example.com/pin6.jpg",
+        image_url="https://example.com/pin6.jpg",
         description="A comfortable and stylish casual outfit",
-        owner_id=3,
+        board=board6,
+        user=user3,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
