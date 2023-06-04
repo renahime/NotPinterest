@@ -131,3 +131,10 @@
   background-color: rgb(230, 0, 35);
   border: 0px solid;
 }
+
+
+
+
+#modal-content {
+  border-radius: 15px;
+}
