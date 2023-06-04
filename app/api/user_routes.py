@@ -37,7 +37,7 @@ def get_following_by_id(id):
     user = User.query.get(id)
     return user.get_following()
 
-@user_routes.route('/follow/<username>')
+@user_routes.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
     form = FollowForm()

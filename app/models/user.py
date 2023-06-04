@@ -49,9 +49,9 @@ class User(db.Model, UserMixin):
     followers = db.relationship(
         "User",
         secondary="follows",
-        primaryjoin=follows.c.follower == id,
-        secondaryjoin=follows.c.followed == id,
-        backref=db.backref('follows', lazy='dynamic'), lazy='dynamic'
+        primaryjoin=follows.c.followed == id,
+        secondaryjoin=follows.c.follower == id,
+        backref='followed'
     )
 
     @property
@@ -98,6 +98,10 @@ class User(db.Model, UserMixin):
             'pronouns': self.pronouns,
             'website': self.website,
             'profile_image': self.profile_image,
+            'followers': [follower.to_dict() for follower in self.followers],
+            'following': [follow.to_dict() for follow in self.followed],
+            'pins': [pin.to_dict() for pin in self.pins],
+            'boards': [board.to_dict() for board in self.boards],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
