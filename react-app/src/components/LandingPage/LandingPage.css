@@ -133,7 +133,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 100vh;
+  height: 95.5vh;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -144,6 +144,8 @@
   opacity: 1;
   background-image: url('https://t4.ftcdn.net/jpg/03/01/76/65/360_F_301766534_Nd0WoLqus2TVilLcRQL6OMACiJeEgnWu.jpg');
 }
+
+
 
 .landing-page-left-side {
   flex: 1;
@@ -187,18 +189,26 @@
 
 .main-page-up-arrow {
 
-
-  /* Adjust the size of the circle */
-
-  /* Creates the circular shape */
-
   height: 20px;
   fill: white;
   vertical-align: middle;
 
+}
 
 
-  /* Set the background color */
 
+
+
+.landing-page-footer {
+  color: black;
+  display: flex;
+  flex-direction: row;
+  font-size: 10px;
+
+}
+
+
+.landing-page-footer p {
+  padding: 7px 7px;
 
 }

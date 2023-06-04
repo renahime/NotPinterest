@@ -46,6 +46,8 @@ function LandingPage() {
       </div>
 
       <div className='full-screen-bottom'>
+
+        
         {/* <img src="https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" /> */}
         <div className='landing-page-left-side'>
           <h1 className='landing-page-left-side-text'>
@@ -61,10 +63,22 @@ function LandingPage() {
           <svg class="main-page-up-arrow" viewBox="0 0 24 24" aria-label="Scroll up" role="img"><path d="M21.75 19.5c-.58 0-1.15-.22-1.59-.65L12 10.79l-8.16 8.06c-.88.87-2.3.87-3.18 0a2.21 2.21 0 0 1 0-3.15L12 4.5l11.34 11.2c.88.87.88 2.28 0 3.15-.44.43-1.01.65-1.59.65"></path></svg>
         </div> */}
 
-
       </div>
 
+      <div className='landing-page-footer'>
+        <p>Terms of Service</p>
+        <p>Privacy Policy</p>
+        <p>Help</p>
+        <p>Iphone App</p>
+        <p>Android App</p>
+        <p>Users</p>
+        <p>Collections</p>
+        <p>Today</p>
+        <p>Explore</p>
+        <p>Watch</p>
+        <p>Shop</p>
 
+      </div>
 
 
     </div>
