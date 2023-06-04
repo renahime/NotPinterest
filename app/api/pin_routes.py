@@ -7,20 +7,15 @@ from .auth_routes import validation_errors_to_error_messages
 
 pin_routes = Blueprint('pins', __name__)
 
-
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
-    pins = Pin.query.all()
+# gets all of the pins of a user
+@pin_routes.route("/users/<username>")
+def get_users_pins_by_username(username):
+    pins = db.session.query(Pin).join(User).filter(User.username == username)
     all_pins = {}
-    # standardizes the output that is returned to user
+    # standardizes the format of the pins returned to the user
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
-    # return all_pins
-    return "<img src='https://threadterest.s3.us-east-2.amazonaws.com/00156328256bcb053cf414d8b8d7add6.jpg'>"
-
-
+    return all_pins
 
 # route to get a pin by id
 @pin_routes.route("/<int:id>")
@@ -115,23 +110,25 @@ def delete_pin(id):
     return {"errors": "Pin couldn't be deleted"}, 500
 
 
-# gets all of the pins of a user
-@pin_routes.route("/users/<username>")
-def get_users_pins_by_username(username):
-    pins = db.session.query(Pin).join(User).filter(User.username == username)
-    all_pins = {}
-    # standardizes the format of the pins returned to the user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    return all_pins
-
-
 # gets all of the pins of the current user
 @pin_routes.route("/current_user")
-def get_users_pins_by_username():
+def get_users_pins_by_current_user():
     pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id)
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
     return all_pins
+
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
+    return "<img src='https://threadterest.s3.us-east-2.amazonaws.com/00156328256bcb053cf414d8b8d7add6.jpg'>"
