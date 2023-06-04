@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
 from ..models import Pin, db, User
+from ..forms import PinForm
 from .auth_routes import validation_errors_to_error_messages
 
 pin_routes = Blueprint('pins', __name__)

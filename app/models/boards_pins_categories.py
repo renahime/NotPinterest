@@ -100,7 +100,7 @@ class Pin(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    owner = db.relationship('User', back_populates='pins')
+    user = db.relationship('User', back_populates='pins')
     categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
     board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards')
 
