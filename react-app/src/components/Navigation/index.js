@@ -39,6 +39,7 @@ function Navigation({ isLoaded }) {
 						<div className="nav-log-in">
 							<OpenModalButton
 								buttonText="Log In"
+								className="nav-log-in"
 								// onItemClick={closeMenu}
 								modalComponent={<LoginFormModal />}
 							/>
@@ -54,7 +55,7 @@ function Navigation({ isLoaded }) {
 							/>
 						</div>
 
-						
+
 
 					</div>
 				)

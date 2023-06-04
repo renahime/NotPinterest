@@ -1,12 +1,9 @@
-
-
-
-
-.container {
+.landing-page-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
 }
 
@@ -106,6 +103,7 @@
 .images-main-page img:nth-child(4) {
   margin-top: 150px;
   animation-delay: .75s;
+  margin-bottom: 100px;
 }
 
 .images-main-page img:nth-child(5) {
@@ -120,4 +118,87 @@
 
 .images-main-page img:nth-child(7) {
   animation-delay: 1.5s;
+}
+
+.full-screen-top {
+  height: 100vh;
+  width: 100%;
+  padding-bottom: 50px;
+
+
+}
+
+
+.full-screen-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Adjust the opacity by changing the alpha value */
+  background-blend-mode: multiply;
+  /* Helps darken the background image */
+  opacity: 1;
+  background-image: url('https://t4.ftcdn.net/jpg/03/01/76/65/360_F_301766534_Nd0WoLqus2TVilLcRQL6OMACiJeEgnWu.jpg');
+}
+
+.landing-page-left-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #f1f1f1; */
+
+  /* Replace with your desired background color */
+}
+
+.landing-page-left-side-text {
+  font-size: 4em;
+  color: rgb(239, 239, 239);
+  width: 70%;
+}
+
+.landing-page-right-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* background-color: #ebebeb; */
+
+  /* Replace with your desired background color */
+}
+
+.main-page-up-arrow-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(156, 3, 67);
+  border-radius: 50%;
+  width: 100px;
+  /* Adjust the size of the circle */
+  height: 100px;
+  width: 48px;
+  height: 48px;
+}
+
+.main-page-up-arrow {
+
+
+  /* Adjust the size of the circle */
+
+  /* Creates the circular shape */
+
+  height: 20px;
+  fill: white;
+  vertical-align: middle;
+
+
+
+  /* Set the background color */
+
+
 }

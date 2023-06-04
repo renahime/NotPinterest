@@ -88,3 +88,10 @@
 .nav-sign-up:hover {
   background-color: darkgray;
 }
+
+
+
+.open-modal-button {
+  background-color: transparent;
+  border: none;
+}
