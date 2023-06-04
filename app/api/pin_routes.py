@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
-from ..models import Pin, db, User
+from ..models import Pin, db, User, Board
 from ..forms import PinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
@@ -33,11 +33,17 @@ def get_pin_by_id(id):
 # @login_required
 def create_pin():
     form = PinForm()
+
+    # Sets the boards that a user has and can save thier pin to
+    user_boards = User.boards.all()
+    form.board.choices = [board.name for board in user_boards]
+
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
         data = form.data
+
 
         pin_image = data["image"]
         pin_image.filename = get_unique_filename(pin_image.filename)
@@ -53,6 +59,9 @@ def create_pin():
             owner_id = current_user.id
         )
 
+        board_to_save_pin_to = Board.query.filter(Baord.name == data["board"]).one()
+        new_pin.baords_tagged.append(board_to_save_pin_to)
+        
         db.session.add(new_pin)
         db.session.commit()
         return new_Pin.to_dict()

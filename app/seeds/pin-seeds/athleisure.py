@@ -1,141 +1,119 @@
-from flask.cli import AppGroup
+
 from datetime import datetime
 from app.models import db, Pin, environment, SCHEMA, User, Category
-from sqlalchemy.sql import text
+
+user1 = User.query.get(1)
+user2 = User.query.get(2)
+user3 = User.query.get(3)
+athleisure = Category.query.filter(Category.name == "Athleisure").one()
+
+pin1 = Pin(
+    title="ASRV Sportswear Gym Outfit",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/ASRV+Sportswear+Gym+Outfit.jpeg",
+    user=user1,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
 
-def seed_pins():
-    user1 = User.query.get(1)
-    user2 = User.query.get(2)
-    user3 = User.query.get(3)
-    athleisure = Category.query.filter(Category.name == "Athleisure").one()
+pin2 = Pin(
+    title="Bodybuilding & Fitness Men's Cotton Printed Tank Top",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Bodybuilding+_+Fitness+Men_s+Cotton+Printed+Tank+Top.jpeg",
+    destination="https://vivinch.com/bodybuilding-fitness-mens-cotton-printed-tank-top?attribute_pa_cb5feb1b7314637725a2e7=white-red-letter&attribute_pa_6f6cb72d544962fa333e2e=xl",
+    user=user1,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin1 = Pin(
-        title="ASRV Sportswear Gym Outfit",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/ASRV+Sportswear+Gym+Outfit.jpeg",
-        user=user1,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin1)
+pin3 = Pin(
+    image="https://threadterest.s3.us-east-2.amazonaws.com/bradley.jpeg",
+    user=user2,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin2 = Pin(
-        title="Bodybuilding & Fitness Men's Cotton Printed Tank Top",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Bodybuilding+_+Fitness+Men_s+Cotton+Printed+Tank+Top.jpeg",
-        destination="https://vivinch.com/bodybuilding-fitness-mens-cotton-printed-tank-top?attribute_pa_cb5feb1b7314637725a2e7=white-red-letter&attribute_pa_6f6cb72d544962fa333e2e=xl",
-        user=user1,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin2)
+pin4 = Pin(
+    title="Curved Hem Patchwork Stringer",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Curved+Hem+Patchwork+Stringer.jpeg",
+    user=user2,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin3 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/bradley.jpeg",
-        user=user2,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin3)
+pin5 = Pin(
+    title="Gym Workout Sleeveless Tank Top",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Gym+Workout+Sleeveless+Tank+Top.jpeg",
+    description="Sleeveless tank top. Made out of cotton.",
+    user=user3,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin4 = Pin(
-        title="Curved Hem Patchwork Stringer",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Curved+Hem+Patchwork+Stringer.jpeg",
-        user=user2,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin4)
+pin6 = Pin(
+    title="Men's Casual Light Green Sports Suit",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+Casual+Light+Green+Sports+Suit.jpeg",
+    description="Sport suit ready to be worn in the gym.",
+    user=user3,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin5 = Pin(
-        title="Gym Workout Sleeveless Tank Top",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Gym+Workout+Sleeveless+Tank+Top.jpeg",
-        description="Sleeveless tank top. Made out of cotton.",
-        user=user3,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin5)
+pin7 = Pin(
+    title="Men's Training Gear",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+Training+Gear.jpeg",
+    description="Great gear to train in. Check out the site!",
+    user=user3,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin6 = Pin(
-        title="Men's Casual Light Green Sports Suit",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+Casual+Light+Green+Sports+Suit.jpeg",
-        description="Sport suit ready to be worn in the gym.",
-        user=user3,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin6)
-
-    db.session.commit()
-
-    pin7 = Pin(
-        title="Men's Training Gear",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+Training+Gear.jpeg",
-        description="Great gear to train in. Check out the site!",
-        user=user3,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin7)
-
-    db.session.commit()
-
-    pin8 = Pin(
-        title="Men's White T-Shirt",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+White+T-Shirt.jpeg",
-        user=user3,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
+pin8 = Pin(
+    title="Men's White T-Shirt",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+White+T-Shirt.jpeg",
+    user=user3,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
     db.session.add(pin8)
 
     db.session.commit()
 
-    pin9 = Pin(
-        title="Muscular Men's Gym & Fitness Tank Top",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Muscular+Men_s+Gym+_+Fitness+Tank+Top.jpeg",
-        user=user3,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin9)
+pin9 = Pin(
+    title="Muscular Men's Gym & Fitness Tank Top",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/Muscular+Men_s+Gym+_+Fitness+Tank+Top.jpeg",
+     user=user3,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    db.session.commit()
+pin10 = Pin(
+    title="New Men's Casual Solid Color Short Sleeve",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/New+Men_s+Casual+Solid+Color+Short+Sleeve.jpeg",
+    user=user2,
+    categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
-    pin10 = Pin(
-        title="New Men's Casual Solid Color Short Sleeve",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/New+Men_s+Casual+Solid+Color+Short+Sleeve.jpeg",
-        user=user2,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin10)
-
-    db.session.commit()
-
-    pin11 = Pin(
-        title="No Pain No Gain Mens Hooded Tank Top",
-        image="https://threadterest.s3.us-east-2.amazonaws.com/No+Pain+No+Gain+Mens+Hooded+Tank+Top.jpeg",
-        description="Material: cotton, Fabric: Broadcloth, Collar: O-Neck",
-        destination="https://vivinch.com/no-pain-no-gain-mens-hooded-gym-fitness-tank-top",
-        user=user2,
-        categories=[athleisure],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-    db.session.add(pin11)
-
-    db.session.commit()
+pin11 = Pin(
+    title="No Pain No Gain Mens Hooded Tank Top",
+    image="https://threadterest.s3.us-east-2.amazonaws.com/No+Pain+No+Gain+Mens+Hooded+Tank+Top.jpeg",
+    description="Material: cotton, Fabric: Broadcloth, Collar: O-Neck",
+    destination="https://vivinch.com/no-pain-no-gain-mens-hooded-gym-fitness-tank-top",
+    user=user2,
+     categories=[athleisure],
+    created_at=datetime.now(),
+    updated_at=datetime.now()
+)
 
     pin12 = Pin(
         title="Oakland Fleece Sweatpants",
