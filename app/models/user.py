@@ -49,12 +49,10 @@ class User(db.Model, UserMixin):
     followers = db.relationship(
         "User",
         secondary="follows",
-        primaryjoin=follows.c.followed == id,
-        secondaryjoin=follows.c.follower == id,
-        backref="followed"
+        primaryjoin=follows.c.follower == id,
+        secondaryjoin=follows.c.followed == id,
+        backref=db.backref('follows', lazy='dynamic'), lazy='dynamic'
     )
-
-    following = db.relationship('User', secondary="follows", backref='follower')
 
     @property
     def password(self):
@@ -63,6 +61,28 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.hashed_password = generate_password_hash(password)
+
+    def is_following(self, user):
+        return self.followers.filter(follows.c.followed == user.id).count() > 0
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followers.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followers.remove(user)
+
+    def get_followers(self):
+        followers = User.query.join(
+            self.followers, (self.followers.c.followed == self.id))
+        return [follower.to_dict() for follower in followers]
+
+    def get_following(self):
+        following = User.query.join(
+            self.followers, (self.follower.c.follow == self.id)
+        )
+        return [follow.to_dict() for follow in following]
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -78,8 +98,6 @@ class User(db.Model, UserMixin):
             'pronouns': self.pronouns,
             'website': self.website,
             'profile_image': self.profile_image,
-            'followers': [follower.to_dict() for follower in self.followers],
-            'following': [follow.to_dict() for follow in self.following],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
