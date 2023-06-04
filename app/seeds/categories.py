@@ -10,7 +10,7 @@ def seed_categories():
     db.session.add(category2)
     category3 = Category(name="Dark")
     db.session.add(category3)
-    category4 = Category(name="Vintage")
+    category4 = Category(name="Boho")
     db.session.add(category4)
     category5 = Category(name="Old Money")
     db.session.add(category5)
