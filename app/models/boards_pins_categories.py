@@ -66,6 +66,7 @@ class Board(db.Model):
 
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
+    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned')
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -78,10 +79,12 @@ class Board(db.Model):
             'cover_image': self.cover_image,
             'description': self.description,
             'owner_id': self.owner_id,
+            'user': self.user.to_dict(),
+            'categories': [category.to_dict() for category in self.categories],
+            'pins': [pin.to_dict() for pin in self.pins_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
-
 
 class Pin(db.Model):
     __tablename__ = 'pins'
@@ -111,6 +114,9 @@ class Pin(db.Model):
             'description': self.description,
             'alt_text': self.alt_text,
             'destination': self.destination,
+            'user': self.user.to_dict(),
+            'categories': [category.to_dict() for category in self.categories],
+            'boards_pinned_in': [board.to_dict() for board in self.board_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
