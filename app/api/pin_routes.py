@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask_login import login_required, current_user
 from ..models import Pin, db, User
 from ..forms import PinForm
+from ..routes import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
 
 pin_routes = Blueprint('pins', __name__)
@@ -42,9 +43,17 @@ def create_pin():
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
         data = form.data
+
+        pin_image = data["image"]
+        pin_image.filename = get_unique_filename(pin_image.filename)
+        s3_upload = upload_file_to_s3(image)
+
+        if "url" not in upload:
+            return {"errors": validation_errors_to_error_messages(s3_upload)}
+
         new_pin = Pin(
             title = data["title"],
-            image = data["image"],
+            image = s3_upload["url"],
             description = data["description"],
             owner_id = current_user.id
         )
@@ -88,28 +97,33 @@ def edit_pin(id):
 @pin_routes.route("/<int:id>/delete")
 # @login_required
 def delete_pin(id):
-    print(current_user)
     # finds the pin that the user indicated that they wanted to delete
     pin = Pin.query.get(id)
 
     # sends back an error message if the pin id isn't valid
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
-
+    
+    pin_image_delete = remove_file_from_s3(pin.image)
+    
     # deletes the pin and sends back confirmation message
-    db.session.delete(pin)
-    db.session.commit()
-    return {"message": "Pin successfully deleted"}
+    if pin_image_delete:
+        db.session.delete(pin)
+        db.session.commit()
+        return {"message": "Pin successfully deleted"}
+        
+    return {"errors": "Pin couldn't be deleted"}, 500
+
 
 # gets all of the pins of a user
-# @pin_routes.route("/<username>")
-# def get_users_pins_by_username(username):
-#     pins = db.session.query(Pin).join(User).filter(User.username == username)
-#     all_pins = {}
-#     # standardizes the format of the pins returned to the user
-#     for pin in pins:
-#         all_pins[pin.id] = pin.to_dict()
-#     return all_pins
+@pin_routes.route("/users/<username>")
+def get_users_pins_by_username(username):
+    pins = db.session.query(Pin).join(User).filter(User.username == username)
+    all_pins = {}
+    # standardizes the format of the pins returned to the user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    return all_pins
 
 
 # gets all of the pins of the current user
