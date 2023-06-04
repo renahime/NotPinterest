@@ -54,6 +54,8 @@ class User(db.Model, UserMixin):
         backref="followed"
     )
 
+    following = db.relationship('User', secondary="follows", backref='follower')
+
     @property
     def password(self):
         return self.hashed_password
@@ -76,6 +78,8 @@ class User(db.Model, UserMixin):
             'pronouns': self.pronouns,
             'website': self.website,
             'profile_image': self.profile_image,
+            'followers': [follower.to_dict() for follower in self.followers],
+            'following': [follow.to_dict() for follow in self.following],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
