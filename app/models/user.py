@@ -63,10 +63,6 @@ class User(db.Model, UserMixin):
     def password(self, password):
         self.hashed_password = generate_password_hash(password)
 
-    def is_following(self, user):
-        print(self)
-        return self.followers.filter(follows.c.following == user.id).count() > 0
-
     def follow(self, user):
             self.following.append(user)
 

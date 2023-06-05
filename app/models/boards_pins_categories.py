@@ -6,7 +6,7 @@ boards_pins = db.Table(
     db.Column(
         "pin_to_board",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id"))
+        db.ForeignKey(add_prefix_for_prod("pins.id")),
     ),
     db.Column(
         "board_pinned",
@@ -66,10 +66,16 @@ class Board(db.Model):
 
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
-    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned')
+    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned',cascade="all, delete")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
+
+    def pin(self, pin):
+        self.pins_tagged.append(pin)
+
+    def unpin(self, pin):
+        self.pins_tagged.remove(pin)
 
     def to_dict(self):
         return {
@@ -99,7 +105,7 @@ class Pin(db.Model):
 
     user = db.relationship('User', back_populates='pins')
     categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
-    board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards')
+    board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards' ,cascade="all, delete")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}

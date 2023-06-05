@@ -4,7 +4,7 @@ from ..models import Pin, db, User, Board, Category
 from ..forms import PinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
-from datetime import datetime
+from datetime import datetime, date
 
 pin_routes = Blueprint('pins', __name__)
 
@@ -68,9 +68,9 @@ def create_pin():
 
         pin_image = data["image"]
         pin_image.filename = get_unique_filename(pin_image.filename)
-        s3_upload = upload_file_to_s3(image)
+        s3_upload = upload_file_to_s3(pin_image)
 
-        if "url" not in upload:
+        if "url" not in s3_upload:
             return {"errors": validation_errors_to_error_messages(s3_upload)}
 
         new_pin = Pin(
@@ -80,8 +80,8 @@ def create_pin():
             user=user
         )
 
-        board_to_save_pin_to = Board.query.filter(Baord.name == data["board"]).one()
-        new_pin.baords_tagged.append(board_to_save_pin_to)
+        board_to_save_pin_to = Board.query.filter(Board.name == data["board"]).one()
+        new_pin.board_tagged.append(board_to_save_pin_to)
 
         db.session.add(new_pin)
         db.session.commit()
@@ -119,7 +119,7 @@ def edit_pin(id):
 # deletes a pin by it's id
 # @pin_routes.route("/<int:id>", methods=["DELETE"])
 # changed to get request for the purpose of testing without making fetch, the above will be how this route should actually be hit
-@pin_routes.route("/<int:id>/delete")
+@pin_routes.route("/<int:id>/delete",methods = ["DELETE"])
 @login_required
 def delete_pin(id):
     # finds the pin that the user indicated that they wanted to delete
@@ -139,7 +139,6 @@ def delete_pin(id):
 
     return {"errors": "Pin couldn't be deleted"}, 500
 
-
 # gets all of the pins of the current user
 @pin_routes.route("/current_user")
 def get_users_pins_by_current_user():
@@ -150,6 +149,7 @@ def get_users_pins_by_current_user():
         all_pins[pin.id] = pin.to_dict()
     return all_pins
 
+#Route to get a pins by category
 @pin_routes.route('/<category_name>')
 def get_pin_by_category(category_name):
     pins = Pin.query.all()
@@ -162,12 +162,25 @@ def get_pin_by_category(category_name):
 
     return all_pins
 
+#Route to get a pins created for today
 @pin_routes.route('/today')
 def get_latest_pins():
     today = datetime.now()
     pins = Pin.query.all()
     all_pins = {}
+    input_str = '01/01/01'
+
+    latest_date = datetime.strptime(
+    input_str, '%d/%m/%y').date()
+
     for pin in pins:
+        if pin.created_at.date() > latest_date:
+            latest_date = pin.created_at.date()
         if pin.created_at.date() == today.date():
                 all_pins[pin.id] = pin.to_dict()
+    if all_pins == False:
+        for pin in pins:
+            if pin.created_at.date() == latest_date:
+                all_pins[pin.id] = pin.to_dict()
+
     return all_pins

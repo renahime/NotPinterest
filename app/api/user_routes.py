@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, redirect, request
 from flask_login import login_required, current_user
-from ..models import User, db
-from ..forms import ProfileForm
+from app.models import User, db
+from app.forms import ProfileForm
+from app.routes.AWS_helpers import get_unique_filename, upload_file_to_s3
 
 user_routes = Blueprint('users', __name__)
 

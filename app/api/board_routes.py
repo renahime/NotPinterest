@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect,request
-from app.models import db,Board, Category
+from app.models import db,Board, User, Pin
 from flask_login import current_user, login_user, logout_user, login_required
 from ..forms import BoardForm #need to see BoardForm
 from .auth_routes import validation_errors_to_error_messages
@@ -74,7 +74,7 @@ def create_board():
 
 
 #Route to delete a single board
-@board_routes.route('/<int:id>', methods = ["DELETE"])
+@board_routes.route('/<int:id>/delete', methods = ["DELETE"])
 @login_required
 def delete_board(id):
     board = Board.query.get(id)
@@ -89,8 +89,38 @@ def delete_board(id):
     return {"message": "Board successfully deleted "}
 
 
+@board_routes.route('/<int:boardId>/pin/<int:pinId>', methods = ["POST"])
+@login_required
+def pin(boardId,pinId):
+    board = Board.query.get(boardId)
+    _pin = Pin.query.get(pinId)
+    if not board:
+        return {"errors": "Board not found"},404
+    if not _pin:
+        return {"errors": "Pin not found"}, 404
+    for pin in board.pins_tagged:
+        if pin.id == pinId:
+            return {"errors": "You already have this pinned"}
+    board.pins_tagged.append(_pin)
+    db.session.commit()
+    return {"Success":"You have now pinned {}!".format(_pin.name)}
 
 
+@board_routes.route('/<int:id>/unpin/<int:id>', methods = ["DELETE"])
+@login_required
+def unpin(boardId,pinId):
+    board = Board.query.get(boardId)
+    _pin = Pin.query.get(pinId)
+    if not board:
+        return {"errors": "Board not found"},404
+    if not _pin:
+        return {"errors": "Pin not found"}, 404
+    for pin in board.pins_tagged:
+        if pin.id == pinId:
+            board.pins_tagged.remove(_pin)
+            db.session.commit()
+            return {"Success": "You are no longer pinning {}!".format(_pin.name)}
+    return {"Success": "You do not have {} pinned!".format(_pin.name)}
 
 
 # Route to edit a board
@@ -121,13 +151,15 @@ def edit_board(id):
 
 
 #Route to get a specific user's boards
-@board_routes.route("/<int:user_id>", methods= ["GET"])
-def get_user_boards(user_id):
-    user_boards = Board.query.filter_by(owner_id=user_id).all()
+@board_routes.route("/users/<username>", methods= ["GET"])
+def get_boards_pins_by_username(username):
+    boards = db.session.query(Board).join(User).filter(User.username == username)
+    all_boards = {}
 
-    if user_boards:
-        return {"User Boards" : [board.to_dict() for board in user_boards]}
-
+    if boards:
+        for board in boards:
+            all_boards[board.id] = board.to_dict()
+        return all_boards
     else:
         return {"errors": "No Boards found"}
 
@@ -152,11 +184,11 @@ def get_current_user_boards():
 @board_routes.route('/<category_name>')
 def get_board_by_category(category_name):
     boards = Board.query.all()
-    board_list = []
+    all_boards = {}
 
     for board in boards:
         for category in board.categories:
             if category.name == category_name:
-                board_list.append(board.to_dict())
+                all_boards[board.id] = board.to_dict()
 
-    return board_list
+    return all_boards
