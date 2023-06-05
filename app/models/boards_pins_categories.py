@@ -67,6 +67,7 @@ class Board(db.Model):
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
     pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned')
+    cover_image = db.relationship('BoardCoverImage', back_populates="boards")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -101,6 +102,7 @@ class Pin(db.Model):
     user = db.relationship('User', back_populates='pins')
     categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
     board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards')
+    cover_image = db.relationship('BoardCoverImage', back_populates="pin")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -138,3 +140,13 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
+
+
+class BoardCoverImage():
+    __tablename__ = 'board_cover_images'
+
+    board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('boards.id')), nullable=False, primaryKey=True)
+    pin_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('pins.id')), primaryKey=True)
+
+    boards = db.relationship('Board', back_populates="cover_image")
+    pin = db.relationship('Pin', back_populates="cover_image")
