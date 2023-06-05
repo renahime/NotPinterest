@@ -1,4 +1,4 @@
-.feed-test-container {
+/* .feed-test-container {
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -9,7 +9,7 @@
 .feed-test-photo {
   flex: 0 0 .33%;
   max-width: 90.33%;
-  /* box-sizing: border-box; */
+  box-sizing: border-box;
   padding: 10px;
 }
 
@@ -17,4 +17,4 @@
   width: 100%;
   height: auto;
   border-radius: 15px;
-}
+} */

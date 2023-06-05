@@ -26,7 +26,7 @@ def seed():
         undo_users()
         undo_boards()
         undo_pins()
-        undo_categories
+        undo_categories()
         undo_rena_users()
         undo_rena_pins()
         undo_rena_boards()
