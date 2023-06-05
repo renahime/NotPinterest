@@ -142,11 +142,11 @@ class Category(db.Model):
         }
 
 
-class BoardCoverImage():
+class BoardCoverImage(db.Model):
     __tablename__ = 'board_cover_images'
 
-    board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('boards.id')), nullable=False, primaryKey=True)
-    pin_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('pins.id')), primaryKey=True)
+    board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('boards.id')),  primary_key=True)
+    pin_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('pins.id')), primary_key=True)
 
     boards = db.relationship('Board', back_populates="cover_image")
     pin = db.relationship('Pin', back_populates="cover_image")
