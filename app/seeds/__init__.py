@@ -30,13 +30,13 @@ def seed():
         undo_boards()
         undo_all_pins()
         undo_categories()
-        # undo_cover_images()
+        undo_cover_images()
     seed_users()
     seed_followers()
     seed_categories()
     seed_boards()
     seed_all_pins()
-    # seed_cover_images()
+    seed_cover_images()
     # Add other seed functions here
 
 
@@ -48,6 +48,6 @@ def undo():
     undo_boards()
     undo_all_pins()
     undo_categories()
-    # undo_cover_images()
+    undo_cover_images()
 
     # Add other undo functions here
