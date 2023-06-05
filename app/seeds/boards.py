@@ -90,7 +90,7 @@ def seed_boards():
 
     db.session.add(board6)
 
-        board7 = Board(
+    board7 = Board(
         name="Dark Aesthetic",
         private=False,
         cover_image="https://www.lolitahistory.com/wp-content/uploads/2016/05/historybanner.jpg",

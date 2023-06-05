@@ -1,11 +1,11 @@
 from flask.cli import AppGroup
-from datetime import datetime
-from app.models import db, Pin, environment, SCHEMA, User, Category
+from .pin_seeds import all_pin_seeds
 from sqlalchemy.sql import text
 
 
 def seed_pins():
-
+    for pin in all_pin_seeds:
+        db.session.add(pin)
     db.session.commit()
 
 

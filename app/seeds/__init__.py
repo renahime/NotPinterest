@@ -37,5 +37,5 @@ def undo():
     undo_users()
     undo_boards()
     undo_pins()
-    undo_categories
+    undo_categories()
     # Add other undo functions here
