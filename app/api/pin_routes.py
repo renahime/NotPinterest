@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
-from ..models import Pin, db, User, Board
+from ..models import Pin, db, User, Board, Category
 from ..forms import PinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
@@ -36,7 +36,11 @@ def create_pin():
 
     # Sets the boards that a user has and can save thier pin to
     user_boards = User.boards.all()
-    form.board.choices = [board.name for board in user_boards]
+    if user_boards:
+        form.board.choices = [board.name for board in user_boards]
+
+    if not user_boards:
+        form.board.choices = []
 
     user = User.query.get(current_user.id)
     if not user:
@@ -132,18 +136,6 @@ def get_users_pins_by_current_user():
         all_pins[pin.id] = pin.to_dict()
     return all_pins
 
-
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
-    pins = Pin.query.all()
-    all_pins = {}
-    # standardizes the output that is returned to user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    return all_pins
-
 @pin_routes.route('/<category_name>')
 def get_pin_by_category(category_name):
     pins = Pin.query.all()
@@ -155,3 +147,15 @@ def get_pin_by_category(category_name):
                 pin_list.append(pin.to_dict())
 
     return pin_list
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
+    return all_pins

@@ -1,19 +1,23 @@
 from flask.cli import AppGroup
-from ..seeds.pin_seeds import all_pin_seeds
+from datetime import datetime
+from .pin_seeds import seed_athleisure_pins, undo_athleisure_pins, seed_boho_pins, undo_boho_pins, seed_dark_pins, undo_dark_pins, seed_formal_pins, undo_formal_pins, seed_old_money_pins, undo_old_money_pins, seed_streetwear_pins, undo_streetwear_pins
+from ..models import db, environment, SCHEMA, User, Category, Board, Pin
 from sqlalchemy.sql import text
-from ..models import db, User, Category, Pin, Board, environment, SCHEMA
 
-def seed_pins():
-    for pin in all_pin_seeds:
-        db.session.add(pin)
-    db.session.commit()
+def seed_all_pins():
+    seed_athleisure_pins()
+    seed_boho_pins()
+    seed_dark_pins()
+    seed_formal_pins()
+    seed_old_money_pins()
+    seed_streetwear_pins()
 
 
 
-def undo_pins():
-    if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.pins RESTART IDENTITY CASCADE;")
-    else:
-        db.session.execute(text("DELETE FROM pins"))
-
-    db.session.commit()
+def undo_all_pins():
+    undo_athleisure_pins()
+    undo_boho_pins()
+    undo_dark_pins()
+    undo_formal_pins()
+    undo_old_money_pins()
+    undo_streetwear_pins()
