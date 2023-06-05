@@ -1,23 +1,21 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
-from ..models import Pin, db, User, Category
+from ..models import Pin, db, User, Board, Category
 from ..forms import PinForm
+from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
 
 pin_routes = Blueprint('pins', __name__)
 
-
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
-    pins = Pin.query.all()
+# gets all of the pins of a user
+@pin_routes.route("/users/<username>")
+def get_users_pins_by_username(username):
+    pins = db.session.query(Pin).join(User).filter(User.username == username)
     all_pins = {}
-    # standardizes the output that is returned to user
+    # standardizes the format of the pins returned to the user
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
     return all_pins
-
 
 
 # route to get a pin by id
@@ -36,6 +34,15 @@ def get_pin_by_id(id):
 # @login_required
 def create_pin():
     form = PinForm()
+
+    # Sets the boards that a user has and can save thier pin to
+    user_boards = User.boards.all()
+    if user_boards:
+        form.board.choices = [board.name for board in user_boards]
+
+    if not user_boards:
+        form.board.choices = []
+
     user = User.query.get(current_user.id)
     if not user:
         return {"errors": "Couldn't find user"}
@@ -44,13 +51,25 @@ def create_pin():
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
         data = form.data
+
+
+        pin_image = data["image"]
+        pin_image.filename = get_unique_filename(pin_image.filename)
+        s3_upload = upload_file_to_s3(image)
+
+        if "url" not in upload:
+            return {"errors": validation_errors_to_error_messages(s3_upload)}
+
         new_pin = Pin(
             title = data["title"],
-            image = data["image"],
+            image = s3_upload["url"],
             description = data["description"],
             user=user
         )
 
+        board_to_save_pin_to = Board.query.filter(Baord.name == data["board"]).one()
+        new_pin.baords_tagged.append(board_to_save_pin_to)
+        
         db.session.add(new_pin)
         db.session.commit()
         return new_pin.to_dict()
@@ -90,33 +109,27 @@ def edit_pin(id):
 @pin_routes.route("/<int:id>/delete")
 # @login_required
 def delete_pin(id):
-    print(current_user)
     # finds the pin that the user indicated that they wanted to delete
     pin = Pin.query.get(id)
 
     # sends back an error message if the pin id isn't valid
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
-
+    
+    pin_image_delete = remove_file_from_s3(pin.image)
+    
     # deletes the pin and sends back confirmation message
-    db.session.delete(pin)
-    db.session.commit()
-    return {"message": "Pin successfully deleted"}
-
-# gets all of the pins of a user
-# @pin_routes.route("/<username>")
-# def get_users_pins_by_username(username):
-#     pins = db.session.query(Pin).join(User).filter(User.username == username)
-#     all_pins = {}
-#     # standardizes the format of the pins returned to the user
-#     for pin in pins:
-#         all_pins[pin.id] = pin.to_dict()
-#     return all_pins
+    if pin_image_delete:
+        db.session.delete(pin)
+        db.session.commit()
+        return {"message": "Pin successfully deleted"}
+        
+    return {"errors": "Pin couldn't be deleted"}, 500
 
 
 # gets all of the pins of the current user
 @pin_routes.route("/current_user")
-def get_users_pins_by_username():
+def get_users_pins_by_current_user():
     pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id)
     all_pins = {}
     # standardizes the format of the pins returned to the user
@@ -135,3 +148,15 @@ def get_pin_by_category(category_name):
                 pin_list.append(pin.to_dict())
 
     return pin_list
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
+    return all_pins

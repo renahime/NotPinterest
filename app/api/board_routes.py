@@ -149,6 +149,7 @@ def get_current_user_boards():
 
     for board in user_boards:
         all_boards[board.id] = board.to_dict()
+    return all_boards
 
 # board_routes = BluePrint('boards', __name__)
 

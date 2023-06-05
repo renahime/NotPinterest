@@ -14,6 +14,7 @@ def seed_users():
         created_at=datetime.now(),
         updated_at=datetime.now()
         )
+        
     jane = User(
         username='jane',
         email='jane@aa.io',
@@ -23,6 +24,7 @@ def seed_users():
         created_at=datetime.now(),
         updated_at=datetime.now()
         )
+
     mike = User(
         username='mike',
         email='mike@aa.io',
@@ -32,14 +34,30 @@ def seed_users():
         about="I'm user 3",
         pronouns="they/them",
         website="https://example.com/user3",
-        profile_image="https://example.com/user3.jpg",
+        profile_image="https://threadterest.s3.us-east-2.amazonaws.com/df0953acbb61863a94e1a003c07a24c5.jpg",
         created_at=datetime.now(),
         updated_at=datetime.now()
         )
 
+    rena = User(
+        username='rena',
+        email='rena@rena.me',
+        password='password',
+        first_name="rena",
+        last_name="rena",
+        about="rena loves the old money/dark vibes and aesthetic uwu",
+        pronouns="they/them",
+        website="https://example.com/user4",
+        profile_image="https://threadterest.s3.us-east-2.amazonaws.com/tumblr_006b763e76b5ffd599a53ebebbbd18ea_900fb5a0_1280.jpg",
+        created_at=datetime.now(),
+        updated_at=datetime.now()
+        )
+
+
     db.session.add(demo)
     db.session.add(jane)
     db.session.add(mike)
+    db.session.add(rena)
     db.session.commit()
 
 
