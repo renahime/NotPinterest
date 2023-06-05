@@ -2,7 +2,9 @@ import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo, clearProfile } from "../../store/profile"
+import UserBoards from "../UserBoards"
 import "./ProfilePage.css"
+
 
 export default function ProfilePage() {
     const { username } = useParams()
@@ -21,36 +23,37 @@ export default function ProfilePage() {
                     {currentProfile.profile_image ? <img className="profile-image" src={currentProfile.profile_image} /> :
                         <i className="fa-solid fa-circle-user profile-image-default"></i>
                     }
-                    <h2>{currentProfile.first_name} {currentProfile.last_name}</h2>
-                    <h4>
-                        @{currentProfile.username}
+                    <h2 className="profile-user-name">{currentProfile.first_name} {currentProfile.last_name}</h2>
+                    <h4 className="profile-name-pronouns">
+                        <div>@{currentProfile.username}</div>
                         {
                             currentProfile.pronouns ?
-                                <div>
-                                    <i className="fa-solid fa-circle"></i>
+                                <div className="profile-pronouns">
+                                    <i className="fa-solid fa-circle profile-pronouns-dot"></i>
                                     {currentProfile.pronouns}
                                 </div>
                                 : null
                         }
                     </h4>
-                    {currentProfile.about ? <h5>{currentProfile.about}</h5> : null}
-                    <h5>
+                    {currentProfile.about ? <h5 className="profile-about-section">{currentProfile.about}</h5> : null}
+                    <h5 className="profile-followers-and-following">
                         <div>
                             {currentProfile.follower_count} followers
 
                         </div>
-                        <i className="fa-solid fa-circle"></i>
+                        <i className="fa-solid fa-circle profile-followers-and-following-dot"></i>
                         <div>
                             {currentProfile.following_count} following
                         </div>
                     </h5>
-                    <button>Edit Profile</button>
+                    <button className="profile-button edit-profile">Edit Profile</button>
                     <div>
-                        <button>Created</button>
-                        <button>Saved</button>
+                        <button className="profile-button">Created</button>
+                        <button className="profile-button">Saved</button>
                     </div>
                 </div>
             }
+            <UserBoards />
         </div>
     )
 }

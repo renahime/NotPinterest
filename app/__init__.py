@@ -8,8 +8,7 @@ from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.pin_routes import pin_routes
-# from .api.board_routes import board_routes
-from .api.casandra_board_routes import board_routes
+from .api.board_routes import board_routes
 from .seeds import seed_commands
 from .config import Config
 

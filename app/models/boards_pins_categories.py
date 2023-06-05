@@ -58,7 +58,7 @@ class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     private = db.Column(db.Boolean)
-    cover_image = db.Column(db.String(255))
+    # board_cover_image = db.Column(db.String(255))
     description = db.Column(db.String(255))
     owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -72,12 +72,13 @@ class Board(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
+
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'private': self.private,
-            'cover_image': self.cover_image,
+            # 'cover_image': BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one_or_().pin.image if BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id) else None,
             'description': self.description,
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),

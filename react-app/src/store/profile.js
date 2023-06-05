@@ -7,7 +7,7 @@ const getUser = (user) => ({
 })
 
 export const clearProfile = () => ({
-    type: GET_PROFILE
+    type: CLEAR_PROFILE
 })
 
 export const getUserInfo = (username) => async (dispatch) => {
@@ -32,7 +32,7 @@ export default function profileReducer(state = initialState, action){
     switch (action.type) {
         case GET_PROFILE:
             return {currentProfile: action.user}
-        case GET_PROFILE:
+        case CLEAR_PROFILE:
             return {currentProfile: {}}
         default:
             return state
