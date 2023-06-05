@@ -14,6 +14,7 @@ def seed_users():
         created_at=datetime.now(),
         updated_at=datetime.now()
         )
+        
     jane = User(
         username='jane',
         email='jane@aa.io',
@@ -23,6 +24,7 @@ def seed_users():
         created_at=datetime.now(),
         updated_at=datetime.now()
         )
+
     mike = User(
         username='mike',
         email='mike@aa.io',

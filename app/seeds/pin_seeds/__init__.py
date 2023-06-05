@@ -1,26 +1,6 @@
-from .athleisure import athleisure_pins
-from .boho import athleisure_pins
-from .dark import dark_pins
-from .formalwear import formalwear_pins
-from .old_money import old_money_pins
-from .streetware import streetware_pins
-
-all_pin_seeds = []
-
-for pin in athleisure_pins:
-    all_pin_seeds.append(pin)
-
-for pin in boho_pins:
-    all_pin_seeds.append(pin)
-
-for pin in dark_pins:
-    all_pin_seeds.append(pin)
-
-for pin in formalwear_pins:
-    all_pin_seeds.append(pin)
-
-for pin in old_money_pins:
-    all_pin_seeds.append(pin)
-
-for pin in streetware_pins:
-    all_pin_seeds.append(pin)
+from .athleisure import seed_athleisure_pins, undo_athleisure_pins
+from .boho import seed_boho_pins, undo_boho_pins
+from .dark import seed_dark_pins, undo_dark_pins
+from .formalwear import seed_formal_pins, undo_formal_pins
+from .old_money import seed_old_money_pins, undo_old_money_pins
+from .streetware import seed_streetwear_pins, undo_streetwear_pins
