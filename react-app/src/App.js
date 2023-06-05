@@ -7,7 +7,6 @@ import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
-import FeedTestPage from "./components/FeedTestPage";
 import FeedPageTest from "./components/FeedPageTest";
 
 function App() {
