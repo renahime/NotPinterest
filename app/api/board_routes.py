@@ -149,8 +149,8 @@ def get_current_user_boards():
 
     for board in user_boards:
         all_boards[board.id] = board.to_dict()
+    return all_boards
 
-<<<<<<< HEAD
 # board_routes = BluePrint('boards', __name__)
 
 @board_routes.route('/<category_name>')
@@ -164,6 +164,3 @@ def get_board_by_category(category_name):
                 board_list.append(board.to_dict())
 
     return board_list
-=======
-    return all_boards
->>>>>>> 18e97678271690c20479414147c8269049c549d8

@@ -27,16 +27,16 @@ def seed():
         undo_boards()
         undo_pins()
         undo_categories()
-        undo_rena_users()
-        undo_rena_pins()
-        undo_rena_boards()
+        # undo_rena_users()
+        # undo_rena_pins()
+        # undo_rena_boards()
     seed_users()
     seed_categories()
     seed_boards()
     seed_pins()
-    seed_rena_users()
-    seed_rena_boards()
-    seed_rena_pins()
+    # seed_rena_users()
+    # seed_rena_boards()
+    # seed_rena_pins()
     # Add other seed functions here
 
 
@@ -48,8 +48,8 @@ def undo():
     undo_boards()
     undo_pins()
     undo_categories()
-    undo_rena_users()
-    undo_rena_pins()
-    undo_rena_boards()
+    # undo_rena_users()
+    # undo_rena_pins()
+    # undo_rena_boards()
 
     # Add other undo functions here

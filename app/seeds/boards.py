@@ -7,7 +7,7 @@ def seed_boards():
     user1 = User.query.get(1)
     user2 = User.query.get(2)
     user3 = User.query.get(3)
-    user3 = User.query.get(4)
+    user4 = User.query.get(4)
 
     category1 = Category.query.filter_by(name='Dark').first()
     category2 = Category.query.filter_by(name='Old Money').first()

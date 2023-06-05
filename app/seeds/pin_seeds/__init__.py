@@ -1,5 +1,5 @@
 from .athleisure import athleisure_pins
-from .boho import boho_pins
+from .boho import athleisure_pins
 from .dark import dark_pins
 from .formalwear import formalwear_pins
 from .old_money import old_money_pins

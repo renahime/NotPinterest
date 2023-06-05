@@ -13,7 +13,7 @@ pin1 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/5a8a5a22f7d11b935ce89a82eb23c319.jpg",
     user=user1,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -22,7 +22,7 @@ pin2 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/7efeddfd860a56c548369587046017cc.jpg",
     user=user1,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -39,7 +39,7 @@ pin4 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/46ca097eaa32c524c983495b7841af57.jpg",
     user=user2,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -56,7 +56,7 @@ pin6 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/945725b9fe7d403c115a2e28fb79b460.jpg",
     user=user3,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -65,7 +65,7 @@ pin7 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/11059bc1bc4f88a328213fe0aa189111.jpg",
     user=user3,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -98,7 +98,7 @@ pin11 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/bfba451391f982f7f4eaa2366acf51b7.jpg",
     user=user2,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -107,7 +107,7 @@ pin12 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/b3b8c04f80201462a46baa11cf7e826c.jpg",
     user=user2,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -132,7 +132,7 @@ pin15 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/d26304efe4a27ad9d4adab337a1e7cc1.jpg",
     user=user2,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -141,7 +141,7 @@ pin16 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/ceb2a4a60c55448d520a3f9928a18672.jpg",
     user=user2,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -150,7 +150,7 @@ pin17 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/e6f008a48c0daccef78084bf5c1a933e.jpg",
     user=user2,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -167,7 +167,7 @@ pin19 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/d32715a5b4172b4d288c817b83b5fc7b.jpg",
     user=user1,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -176,7 +176,7 @@ pin21 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/eff71a4211a56715822e0139913c08de.jpg",
     user=user1,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -185,7 +185,7 @@ pin22 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/ee1997467aaa3f961d3b2b57e092d32d.jpg",
     user=user1,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -194,7 +194,7 @@ pin23 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/e561c2101a25fa983b1762e492be1934.jpg",
     user=user3,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -203,7 +203,7 @@ pin24 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/fea49649215d20b219ac8bfbed197f3a.jpg",
     user=user3,
     categories=[boho],
-    boards_tagged=[board],
+    board_tagged=[board],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )

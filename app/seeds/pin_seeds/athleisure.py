@@ -1,6 +1,7 @@
 from datetime import datetime
 from app.models import Pin, User, Category, Board
 
+
 user1 = User.query.get(1)
 user2 = User.query.get(2)
 user3 = User.query.get(3)
@@ -14,7 +15,7 @@ pin1 = Pin(
     title="ASRV Sportswear Gym Outfit",
     image="https://threadterest.s3.us-east-2.amazonaws.com/ASRV+Sportswear+Gym+Outfit.jpeg",
     user=user1,
-    boards_tagged=[board1],
+    board_tagged=[board1],
     categories=[athleisure],
     created_at=datetime.now(),
     updated_at=datetime.now()
@@ -25,7 +26,7 @@ pin2 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Bodybuilding+_+Fitness+Men_s+Cotton+Printed+Tank+Top.jpeg",
     destination="https://vivinch.com/bodybuilding-fitness-mens-cotton-printed-tank-top?attribute_pa_cb5feb1b7314637725a2e7=white-red-letter&attribute_pa_6f6cb72d544962fa333e2e=xl",
     user=user1,
-    boards_tagged=[board3],
+    board_tagged=[board3],
     categories=[athleisure],
     created_at=datetime.now(),
     updated_at=datetime.now()
@@ -35,7 +36,7 @@ pin3 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/bradley.jpeg",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6],
+    board_tagged=[board6],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -44,7 +45,7 @@ pin4 = Pin(
     title="Curved Hem Patchwork Stringer",
     image="https://threadterest.s3.us-east-2.amazonaws.com/Curved+Hem+Patchwork+Stringer.jpeg",
     user=user2,
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     categories=[athleisure],
     created_at=datetime.now(),
     updated_at=datetime.now()
@@ -56,7 +57,7 @@ pin5 = Pin(
     description="Sleeveless tank top. Made out of cotton.",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -67,7 +68,7 @@ pin6 = Pin(
     description="Sport suit ready to be worn in the gym.",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -78,7 +79,7 @@ pin7 = Pin(
     description="Great gear to train in. Check out the site!",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -88,7 +89,7 @@ pin8 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Men_s+White+T-Shirt.jpeg",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -98,7 +99,7 @@ pin9 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Muscular+Men_s+Gym+_+Fitness+Tank+Top.jpeg",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -108,7 +109,7 @@ pin10 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/New+Men_s+Casual+Solid+Color+Short+Sleeve.jpeg",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board1, board3],
+    board_tagged=[board1, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -120,7 +121,7 @@ pin11 = Pin(
     destination="https://vivinch.com/no-pain-no-gain-mens-hooded-gym-fitness-tank-top",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board3],
+    board_tagged=[board6, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -132,7 +133,7 @@ pin12 = Pin(
     destination="https://www.vsmeestore.com/products/oakland-fleece-sweatpants?variant=bc26778f-f1b1-49cf-ad6a-eb3bff2f92ec&pp=0&epik=dj0yJnU9U005RkZQUkRELVpoMlhPWW1iTTJzTnJwdWVfN1d0cnkmcD0xJm49ak5xYUptNVdGbmtjTVVMM0owbkJtQSZ0PUFBQUFBR1I1WDdr",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board3],
+    board_tagged=[board6, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -143,7 +144,7 @@ pin13 = Pin(
     description="Awesome spandex shirt. Great for your evening workout.",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board3],
+    board_tagged=[board6, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -154,7 +155,7 @@ pin14 = Pin(
     description="Killer back workout!",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board3],
+    board_tagged=[board6, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -165,7 +166,7 @@ pin15 = Pin(
     description="Hope you all have a good day! Get motivated!",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board3],
+    board_tagged=[board6, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -176,7 +177,7 @@ pin16 = Pin(
     description="Look good to feel good inside",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board3],
+    board_tagged=[board6, board3],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -185,7 +186,7 @@ pin17 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Color+Block+Tee+and+Leggings.jpeg",
     user=user2,
     categories=[athleisure],
-    boards_tagged=[board6, board1],
+    board_tagged=[board6, board1],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -197,7 +198,7 @@ pin18 = Pin(
     destination="https://www.freepeople.com/shop/high-rise-7-8-good-karma-2-pocket-leggings/?color=041&epik=dj0yJnU9UkhlbmVjNUhsOHNWT1AxZW5iUUhKeWc4aWJOcEljZ1UmcD0wJm49SndYQ0RGWW5TUHIxdjAtZzdfQVJKdyZ0PUFBQUFBR1I1WVBv&size=XS%2FS&utm_campaign=2023-06-01&utm_content=High-Rise_7%2F8_Good_Karma_2-Pocket_Leggings&utm_medium=unpaid_social&utm_source=Pinterest&utm_term=pinterest_shopping&type=REGULAR&quantity=1",
     user=user1,
     categories=[athleisure],
-    boards_tagged=[board6, board1],
+    board_tagged=[board6, board1],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -208,7 +209,7 @@ pin19 = Pin(
     description="We don't skip leg day!",
     user=user1,
     categories=[athleisure],
-    boards_tagged=[board6, board1],
+    board_tagged=[board6, board1],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -218,7 +219,7 @@ pin21 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Pearled+Ivory+Leggings.jpg",
     user=user1,
     categories=[athleisure],
-    boards_tagged=[board6, board1],
+    board_tagged=[board6, board1],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -228,7 +229,7 @@ pin22 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Karma+Leggings.jpeg",
     user=user1,
     categories=[athleisure],
-    boards_tagged=[board6, board1],
+    board_tagged=[board6, board1],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -239,7 +240,7 @@ pin23 = Pin(
     description="Posing for the gym fam. Check out the gear.",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board6],
+    board_tagged=[board6],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -250,7 +251,7 @@ pin24 = Pin(
     description="We all know that Western society is facing a catastrophic health crisis. The solution is easier than you might think . . .",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board6],
+    board_tagged=[board6],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -261,7 +262,7 @@ pin25 = Pin(
     description="Great top and shorts. Very comfy",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board6],
+    board_tagged=[board6],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
@@ -271,7 +272,7 @@ pin26 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/Silver+Metallic+Sports+Bra.jpeg",
     user=user3,
     categories=[athleisure],
-    boards_tagged=[board1],
+    board_tagged=[board1],
     created_at=datetime.now(),
     updated_at=datetime.now()
 )
