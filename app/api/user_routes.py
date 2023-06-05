@@ -88,7 +88,7 @@ def follow(username):
               return {"errors": "You are already following this user"}
     current_user.follow(user)
     db.session.commit()
-    return {"Success":"You are now following {}!".format(username)}
+    return {"message":"You are now following {}!".format(username)}
 
 @user_routes.route('/unfollow/<username>', methods=['DELETE'])
 @login_required
@@ -103,5 +103,5 @@ def unfollow(username):
          if follow.username == user.username:
             current_user.unfollow(user)
             db.session.commit()
-            return {"Success": "You are no longer following {}!".format(username)}
-    return {"Success": "You are not following {}!".format(username)}
+            return {"message": "You are no longer following {}!".format(username)}
+    return {"message": "You are not following {}!".format(username)}

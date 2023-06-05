@@ -59,16 +59,17 @@ def get_current_user_boards():
 
 #Route to get a specific user's boards
 @board_routes.route("/users/<username>", methods= ["GET"])
-def get_boards_pins_by_username(username):
-    boards = db.session.query(Board).join(User).filter(User.username == username)
-    all_boards = {}
+def get_user_boards(username):
+    user_boards = Board.query.join(User).filter(User.username == username).all()
 
-    if boards:
-        for board in boards:
-            all_boards[board.id] = board.to_dict()
-        return all_boards
+    # print("user_boards[0].cover_image", user_boards[0].cover_image.pin[0])
+
+    if user_boards:
+        return {"User Boards" : [board.to_dict() for board in user_boards]}
+
     else:
         return {"errors": "No Boards found"}
+
 
 # Route to create a board
 @board_routes.route('/', methods=['POST'])
@@ -103,7 +104,7 @@ def edit_board(id):
     board_to_edit = Board.query.get(id)
 
     if current_user.id != board_to_edit.owner_id:
-        return {"error":"you do not own this board"}
+        return {"errors":"you do not own this board"}
 
     form = BoardForm() #confirm name of form
 
@@ -131,7 +132,7 @@ def delete_board(id):
         return {"errors": "Board not found"},404
 
     if current_user.id != board.owner_id:
-        return {"error":"you do not own this board"}
+        return {"errors":"you do not own this board"}
 
     db.session.delete(board)
     db.session.commit()
@@ -143,6 +144,8 @@ def delete_board(id):
 @login_required
 def pin(boardId,pinId):
     board = Board.query.get(boardId)
+    if current_user.id != board.owner_id:
+        return {"errors":"you do not own this board"}
     _pin = Pin.query.get(pinId)
     if not board:
         return {"errors": "Board not found"},404
@@ -153,7 +156,7 @@ def pin(boardId,pinId):
             return {"errors": "You already have {} pinned!".format(_pin.title)}
     board.pins_tagged.append(_pin)
     db.session.commit()
-    return {"Success":"You have now pinned {}!".format(_pin.title)}
+    return {"message":"You have now pinned {}!".format(_pin.title)}
 
 #Route to unpin a pin to a board
 @board_routes.route('/<int:boardId>/unpin/<int:pinId>', methods = ["DELETE"])
@@ -165,11 +168,14 @@ def unpin(boardId,pinId):
         return {"errors": "Board not found"},404
     if not _pin:
         return {"errors": "Pin not found"}, 404
+    if current_user.id != board.owner_id:
+        return {"errors":"you do not own this board"}
+
     for pin in board.pins_tagged:
         if pin.id == pinId:
             board.pins_tagged.remove(_pin)
             db.session.commit()
-            return {"Success": "You are no longer pinning {}!".format(_pin.title)}
+            return {"message": "You are no longer pinning {}!".format(_pin.title)}
     return {"error": "You do not have {} pinned!".format(_pin.title)}
 
 #Reoute to edit the pin the board is on
@@ -178,13 +184,17 @@ def unpin(boardId,pinId):
 def change_board_to_pin(current_board_id, pin_id, new_board_id):
     current_board = Board.query.get(current_board_id)
     if not current_board:
-        return {"error": "Couldn't find board"}
+        return {"errors": "Couldn't find board"}
+    if current_user.id != current_board.owner_id:
+        return {"errors":"you do not own this board"}
     new_board = Board.query.get(new_board_id)
     if not new_board:
-        return {"error":"Couldn't find new board"}
+        return {"errors":"Couldn't find new board"}
+    if current_user.id != new_board.owner_id:
+        return {"errors":"You do not own this board"}
     pin_new_board = Pin.query.get(pin_id)
     if not pin_new_board:
-        return {"error": "Couldn't find pin"}
+        return {"errors": "Couldn't find pin"}
     for board in pin_new_board.board_tagged:
         if board.id == current_board.id:
             for pin in new_board.pins_tagged:
@@ -194,5 +204,5 @@ def change_board_to_pin(current_board_id, pin_id, new_board_id):
             db.session.commit()
             pin_new_board.board_tagged.append(new_board)
             db.session.commit()
-            return {"Success":"New Board Attached"}
-    return {"error": "Could not find pin inside of {}!".format(current_board.name)}
+            return {"message":"Pin is now attached to".format(new_board.name)}
+    return {"errors": "Could not find pin inside of {}!".format(current_board.name)}

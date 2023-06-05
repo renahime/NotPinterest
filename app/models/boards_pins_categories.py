@@ -66,7 +66,7 @@ class Board(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user = db.relationship('User', back_populates='boards')
-    categories = db.relationship('Category', secondary= board_categories, back_populates='boards',passive_deletes=True)
+    categories = db.relationship('Category', secondary= board_categories, back_populates='boards',cascade="all, delete", passive_deletes=True)
     pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned',passive_deletes=True)
 
     if environment == "production":
@@ -83,11 +83,12 @@ class Board(db.Model):
             'id': self.id,
             'name': self.name,
             'private': self.private,
-            'cover_image': self.cover_image,
+            # 'cover_image': BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one_or_().pin.image if BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id) else None,
             'description': self.description,
             'owner_id': self.owner_id,
-            'categories': [category.id for category in self.categories],
-            'pins': [pin.id for pin in self.pins_tagged],
+            'user': self.user.to_dict(),
+            'categories': [category.to_dict() for category in self.categories],
+            'pins': [pin.to_dict() for pin in self.pins_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -105,7 +106,7 @@ class Pin(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user = db.relationship('User', back_populates='pins')
-    categories = db.relationship('Category', secondary=pin_categories, back_populates='pins', passive_deletes=True)
+    categories = db.relationship('Category', secondary=pin_categories, back_populates='pins', cascade="all, delete")
     board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards', passive_deletes=True)
 
     if environment == "production":
@@ -134,8 +135,8 @@ class Category(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
 
-    boards = db.relationship('Board', secondary='board_categories', back_populates='categories')
-    pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories')
+    boards = db.relationship('Board', secondary='board_categories', back_populates='categories', passive_deletes=True)
+    pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories', passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -145,3 +146,12 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
+
+class BoardCoverImage(db.Model):
+    __tablename__ = 'board_cover_images'
+
+    board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('boards.id')),  primary_key=True)
+    pin_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('pins.id')), primary_key=True)
+
+    board_for_image = db.relationship('Board', back_populates="cover_image")
+    pin = db.relationship('Pin', back_populates="cover_image")

@@ -120,13 +120,11 @@ def edit_pin(id):
     form = PinForm()
     # gets the pin that the user wants to edit from the database by searching for the pin with it's id
     pin = Pin.query.get(id)
-
-    if current_user.id != pin.owner_id:
-            return {"error":"you do not own this pin"}
-
     # sends back an error message if the pin id isn't valid
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
+    if current_user.id != pin.owner_id:
+        return {"errors":"you do not own this pin"}
 
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -155,7 +153,7 @@ def delete_pin(id):
         return {"errors": "Pin couldn't be found"}, 404
 
     if current_user.id != pin.owner_id:
-        return {"error":"you do not own this pin"}
+        return {"errors":"you do not own this pin"}
 
     pin_image_delete = remove_file_from_s3(pin.image)
 
