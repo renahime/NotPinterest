@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 89911a8c6368
+Revision ID: 7db825ca20e2
 Revises: 
-Create Date: 2023-06-05 12:20:34.671271
+Create Date: 2023-06-05 15:03:15.546435
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '89911a8c6368'
+revision = '7db825ca20e2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -75,20 +75,20 @@ def upgrade():
     op.create_table('board_categories',
     sa.Column('board_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['board_id'], ['boards.id'], ),
-    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], )
+    sa.ForeignKeyConstraint(['board_id'], ['boards.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ondelete='CASCADE')
     )
     op.create_table('boards_pins',
     sa.Column('pin_to_board', sa.Integer(), nullable=True),
     sa.Column('board_pinned', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['board_pinned'], ['boards.id'], ),
-    sa.ForeignKeyConstraint(['pin_to_board'], ['pins.id'], )
+    sa.ForeignKeyConstraint(['board_pinned'], ['boards.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['pin_to_board'], ['pins.id'], ondelete='CASCADE')
     )
     op.create_table('pin_categories',
     sa.Column('pin_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
-    sa.ForeignKeyConstraint(['pin_id'], ['pins.id'], )
+    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['pin_id'], ['pins.id'], ondelete='CASCADE')
     )
     # ### end Alembic commands ###
 

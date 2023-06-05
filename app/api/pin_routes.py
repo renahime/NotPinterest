@@ -30,6 +30,28 @@ def get_users_pins_by_username(username):
         all_pins[pin.id] = pin.to_dict()
     return all_pins
 
+#Route to get a pins by category
+@pin_routes.route('/<category_name>')
+def get_pin_by_category(category_name):
+    pins = Pin.query.all()
+    all_pins = {}
+
+    for pin in pins:
+        for category in pin.categories:
+            if category.name == category_name:
+                all_pins[pin.id] = pin.to_dict()
+
+    return all_pins
+
+# gets all of the pins of the current user
+@pin_routes.route("/current_user")
+def get_users_pins_by_current_user():
+    pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id)
+    all_pins = {}
+    # standardizes the format of the pins returned to the user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    return all_pins
 
 # route to get a pin by id
 @pin_routes.route("/<int:id>")
@@ -99,6 +121,9 @@ def edit_pin(id):
     # gets the pin that the user wants to edit from the database by searching for the pin with it's id
     pin = Pin.query.get(id)
 
+    if current_user.id != pin.owner_id:
+            return {"error":"you do not own this pin"}
+
     # sends back an error message if the pin id isn't valid
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
@@ -129,6 +154,9 @@ def delete_pin(id):
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
 
+    if current_user.id != pin.owner_id:
+        return {"error":"you do not own this pin"}
+
     pin_image_delete = remove_file_from_s3(pin.image)
 
     # deletes the pin and sends back confirmation message
@@ -138,29 +166,6 @@ def delete_pin(id):
         return {"message": "Pin successfully deleted"}
 
     return {"errors": "Pin couldn't be deleted"}, 500
-
-# gets all of the pins of the current user
-@pin_routes.route("/current_user")
-def get_users_pins_by_current_user():
-    pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id)
-    all_pins = {}
-    # standardizes the format of the pins returned to the user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    return all_pins
-
-#Route to get a pins by category
-@pin_routes.route('/<category_name>')
-def get_pin_by_category(category_name):
-    pins = Pin.query.all()
-    all_pins = {}
-
-    for pin in pins:
-        for category in pin.categories:
-            if category.name == category_name:
-                all_pins[pin.id] = pin.to_dict()
-
-    return all_pins
 
 #Route to get a pins created for today
 @pin_routes.route('/today')
@@ -182,5 +187,4 @@ def get_latest_pins():
         for pin in pins:
             if pin.created_at.date() == latest_date:
                 all_pins[pin.id] = pin.to_dict()
-
     return all_pins

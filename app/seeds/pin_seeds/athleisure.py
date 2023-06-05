@@ -293,5 +293,7 @@ def undo_athleisure_pins():
         db.session.execute(f"TRUNCATE table {SCHEMA}.pins RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM pins"))
+        db.session.execute(text("DELETE FROM pin_categories"))
+        db.session.execute(text("DELETE FROM boards_pins"))
 
     db.session.commit()

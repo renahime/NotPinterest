@@ -1,17 +1,18 @@
 from .db import db, add_prefix_for_prod, environment, SCHEMA
 from datetime import datetime, timedelta
+from sqlalchemy.orm import backref
 
 boards_pins = db.Table(
     "boards_pins",
     db.Column(
         "pin_to_board",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id")),
+        db.ForeignKey(add_prefix_for_prod("pins.id"), ondelete='CASCADE'),
     ),
     db.Column(
         "board_pinned",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("boards.id")),
+        db.ForeignKey(add_prefix_for_prod("boards.id"), ondelete='CASCADE'),
     )
 )
 
@@ -23,12 +24,12 @@ board_categories = db.Table(
     db.Column(
         "board_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod('boards.id')),
+        db.ForeignKey(add_prefix_for_prod('boards.id'), ondelete='CASCADE'),
     ),
     db.Column(
         "category_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod('categories.id')),
+        db.ForeignKey(add_prefix_for_prod('categories.id'), ondelete='CASCADE'),
     )
 )
 
@@ -40,12 +41,12 @@ pin_categories = db.Table(
     db.Column(
         "pin_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id")),
+        db.ForeignKey(add_prefix_for_prod("pins.id"), ondelete='CASCADE'),
     ),
     db.Column(
         "category_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("categories.id"))
+        db.ForeignKey(add_prefix_for_prod("categories.id"), ondelete='CASCADE')
     )
 )
 
@@ -65,8 +66,8 @@ class Board(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user = db.relationship('User', back_populates='boards')
-    categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
-    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned',cascade="all, delete")
+    categories = db.relationship('Category', secondary= board_categories, back_populates='boards',passive_deletes=True)
+    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned',passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -104,11 +105,12 @@ class Pin(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user = db.relationship('User', back_populates='pins')
-    categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
-    board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards' ,cascade="all, delete")
+    categories = db.relationship('Category', secondary=pin_categories, back_populates='pins', passive_deletes=True)
+    board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards', passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
+
 
     def to_dict(self):
         return {
