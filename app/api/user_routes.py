@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from models import User, db
-from forms import FollowForm
+from ..models import User, db
+from ..forms import FollowForm
 
 user_routes = Blueprint('users', __name__)
 
@@ -40,31 +40,23 @@ def get_following_by_id(id):
 @user_routes.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
-    form = FollowForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=username).first()
-        if user is None:
+    user = User.query.filter_by(username=username).first()
+    if user is None:
             return {'errors': 'User was not found'}
-        if user == current_user:
+    if user == current_user:
             return {'errors': 'You can not follow youself'}
-        current_user.follow(user)
-        db.session.commit()
-        return {"Success":"You are now following {}!".format(username)}
-    else:
-        return {"Error": "An error occured trying to follow someone"}
+    current_user.follow(user)
+    db.session.commit()
+    return {"Success":"You are now following {}!".format(username)}
 
 @user_routes.route('/unfollow/<username>', methods=['POST'])
 @login_required
 def unfollow(username):
-    form = FollowForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            return {'errors': 'User was not found'}
-        if user == current_user:
-            return {'errors': 'You can not unfollow youself'}
-        current_user.unfollow(user)
-        db.session.commit()
-        return {"Success": "You are no longer following {}!".format(username)}
-    else:
-        return {"Error": "An error occured trying to unfollow someone"}
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+         return {'errors': 'User was not found'}
+    if user == current_user:
+        return {'errors': 'You can not unfollow youself'}
+    current_user.unfollow(user)
+    db.session.commit()
+    return {"Success": "You are no longer following {}!".format(username)}

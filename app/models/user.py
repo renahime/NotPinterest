@@ -13,7 +13,7 @@ follows = db.Table(
         primary_key=True
     ),
     db.Column(
-        "followed",
+        "following",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("users.id")),
         primary_key=True
@@ -49,9 +49,10 @@ class User(db.Model, UserMixin):
     followers = db.relationship(
         "User",
         secondary="follows",
-        primaryjoin=follows.c.followed == id,
+        primaryjoin=follows.c.following == id,
         secondaryjoin=follows.c.follower == id,
-        backref='followed'
+        backref='following',
+        lazy='dynamic'
     )
 
     @property
@@ -63,24 +64,25 @@ class User(db.Model, UserMixin):
         self.hashed_password = generate_password_hash(password)
 
     def is_following(self, user):
-        return self.followers.filter(follows.c.followed == user.id).count() > 0
+        return self.followers.filter(follows.c.follower == user.id).count() > 0
 
     def follow(self, user):
         if not self.is_following(user):
-            self.followers.append(user)
+            self.following.append(user)
 
     def unfollow(self, user):
         if self.is_following(user):
-            self.followers.remove(user)
+            self.following.remove(user)
+
 
     def get_followers(self):
         followers = User.query.join(
-            self.followers, (self.followers.c.followed == self.id))
+            self.followers, (self.followers.following == self.id))
         return [follower.to_dict() for follower in followers]
 
     def get_following(self):
         following = User.query.join(
-            self.followers, (self.follower.c.follow == self.id)
+            self.following, (self.following.follower == self.id)
         )
         return [follow.to_dict() for follow in following]
 
@@ -98,10 +100,12 @@ class User(db.Model, UserMixin):
             'pronouns': self.pronouns,
             'website': self.website,
             'profile_image': self.profile_image,
-            'followers': [follower.to_dict() for follower in self.followers],
-            'following': [follow.to_dict() for follow in self.followed],
-            'pins': [pin.to_dict() for pin in self.pins],
-            'boards': [board.to_dict() for board in self.boards],
+            'follower_count': len([follower.username for follower in self.followers]),
+            'following_count': len([[follow.username for follow in self.following]]),
+            'followers': [follower.username for follower in self.followers],
+            'following': [follow.username for follow in self.following],
+            'pins': [pin.id for pin in self.pins],
+            'boards': [board.id for board in self.boards],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

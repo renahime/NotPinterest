@@ -114,9 +114,8 @@ class Pin(db.Model):
             'description': self.description,
             'alt_text': self.alt_text,
             'destination': self.destination,
-            'user': self.user.to_dict(),
             'categories': [category.to_dict() for category in self.categories],
-            'boards_pinned_in': [board.to_dict() for board in self.board_tagged],
+            'boards_pinned_in': [board.name for board in self.board_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

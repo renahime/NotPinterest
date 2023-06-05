@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect,request
-from app.models import db,Board
+from app.models import db,Board, Category
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import BoardForm #need to see BoardForm
 from .auth_routes import validation_errors_to_error_messages
@@ -132,3 +132,15 @@ def get_user_boards(user_id):
 
 
 # board_routes = BluePrint('boards', __name__)
+
+@board_routes.route('/<category_name>')
+def get_board_by_category(category_name):
+    boards = Board.query.all()
+    board_list = []
+
+    for board in boards:
+        for category in board.categories:
+            if category.name == category_name:
+                board_list.append(board.to_dict())
+
+    return board_list

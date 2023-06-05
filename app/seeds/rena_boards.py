@@ -27,7 +27,7 @@ def seed_rena_boards():
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
-    board1.categories.append(Category.query.get(5))
+    board2.categories.append(Category.query.get(5))
     db.session.add(board2)
 
     db.session.commit()

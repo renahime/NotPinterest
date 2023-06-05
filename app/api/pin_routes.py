@@ -1,6 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from flask_login import login_required, current_user
-from ..models import Pin, db, User
+from ..models import Pin, db, User, Category
 from ..forms import PinForm
 from .auth_routes import validation_errors_to_error_messages
 
@@ -16,8 +16,7 @@ def get_all_pins():
     # standardizes the output that is returned to user
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
-    # return all_pins
-    return "<img src='https://threadterest.s3.us-east-2.amazonaws.com/00156328256bcb053cf414d8b8d7add6.jpg'>"
+    return all_pins
 
 
 
@@ -37,6 +36,9 @@ def get_pin_by_id(id):
 # @login_required
 def create_pin():
     form = PinForm()
+    user = User.query.get(current_user.id)
+    if not user:
+        return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
@@ -46,12 +48,12 @@ def create_pin():
             title = data["title"],
             image = data["image"],
             description = data["description"],
-            owner_id = current_user.id
+            user=user
         )
 
         db.session.add(new_pin)
         db.session.commit()
-        return new_Pin.to_dict()
+        return new_pin.to_dict()
 
     # if the form has issues send the error messages back to the user
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
@@ -121,3 +123,15 @@ def get_users_pins_by_username():
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
     return all_pins
+
+@pin_routes.route('/<category_name>')
+def get_pin_by_category(category_name):
+    pins = Pin.query.all()
+    pin_list = []
+
+    for pin in pins:
+        for category in pin.categories:
+            if category.name == category_name:
+                pin_list.append(pin.to_dict())
+
+    return pin_list
