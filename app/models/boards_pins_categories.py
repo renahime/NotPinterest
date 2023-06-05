@@ -58,7 +58,7 @@ class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     private = db.Column(db.Boolean)
-    cover_image = db.Column(db.String(255))
+    # board_cover_image = db.Column(db.String(255))
     description = db.Column(db.String(255))
     owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -67,16 +67,18 @@ class Board(db.Model):
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
     pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned')
+    cover_image = db.relationship('BoardCoverImage', back_populates="board_for_image")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
+
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'private': self.private,
-            'cover_image': self.cover_image,
+            # 'cover_image': BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one_or_().pin.image if BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id) else None,
             'description': self.description,
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),
@@ -101,6 +103,7 @@ class Pin(db.Model):
     user = db.relationship('User', back_populates='pins')
     categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
     board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards')
+    cover_image = db.relationship('BoardCoverImage', back_populates="pin")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -138,3 +141,13 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
+
+
+class BoardCoverImage(db.Model):
+    __tablename__ = 'board_cover_images'
+
+    board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('boards.id')),  primary_key=True)
+    pin_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('pins.id')), primary_key=True)
+
+    board_for_image = db.relationship('Board', back_populates="cover_image")
+    pin = db.relationship('Pin', back_populates="cover_image")

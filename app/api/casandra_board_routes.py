@@ -9,8 +9,36 @@ from .auth_routes import validation_errors_to_error_messages
 board_routes = Blueprint('boards', __name__)
 
 
+
+#Route to get all board
+@board_routes.route('/', methods = ["GET"])
+# @login_required
+def get_boards():
+    #query database
+    boards = Board.query.all()
+    all_boards = {}
+
+    #normalize output
+    for board in boards:
+        all_boards[board.id] = board.to_dict()
+
+    #return all boards
+    return all_boards
+
+#Route to get a specific user's boards
+@board_routes.route("/users/<username>", methods= ["GET"])
+def get_user_boards(username):
+    user_boards = Board.query.join(User).filter(User.username == username).all()
+
+    if user_boards:
+        return {"User Boards" : [board.to_dict() for board in user_boards]}
+
+    else:
+        return {"errors": "No Boards found"}
+
+
 #Route to get a single board
-@board_routes.route('/<int:id>', methods = ["GET"])
+@board_routes.route('/<username>/<board_name>', methods = ["GET"])
 
 def get_board_by_id(id):
     board = Board.query.get(id)
@@ -101,32 +129,7 @@ def edit_board(id):
 
 
 
-# #Route to get a specific user's boards
-# @board_routes.route("/<int:user_id>", methods= ["GET"])
 
-
-# def get_user_boards(user_id):
-#     user_boards = Board.query.filter_by(owner_id=user_id).all()
-
-#     if user_boards:
-#         return {"User Boards" : [board.to_dict() for board in user_boards]}
-
-#     else:
-#         return {"errors": "No Boards found"}
-
-
-#Route to get a specific user's boards
-@board_routes.route("/users/<username>", methods= ["GET"])
-def get_user_boards(username):
-    user_boards = Board.query.join(User).filter(User.username == username).all()
-
-    # print("user_boards[0].cover_image", user_boards[0].cover_image.pin[0])
-
-    if user_boards:
-        return {"User Boards" : [board.to_dict() for board in user_boards]}
-    
-    else:
-        return {"errors": "No Boards found"}
 
 #Route to get a current user's boards
 @board_routes.route("/user", methods= ["GET"])
@@ -157,18 +160,3 @@ def get_board_by_category(category_name):
                 board_list.append(board.to_dict())
 
     return board_list
-
-#Route to get all board
-@board_routes.route('/', methods = ["GET"])
-# @login_required
-def get_boards():
-    #query database
-    boards = Board.query.all()
-    all_boards = {}
-
-    #normalize output
-    for board in boards:
-        all_boards[board.id] = board.to_dict()
-
-    #return all boards
-    return all_boards

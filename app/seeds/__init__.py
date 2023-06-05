@@ -4,6 +4,7 @@ from .boards import seed_boards, undo_boards
 from .pins import seed_all_pins, undo_all_pins
 from .categories import seed_categories, undo_categories
 from .followers import seed_followers, undo_followers
+from .cover_images import seed_cover_images, undo_cover_images
 from .rena_users import seed_rena_users, undo_rena_users
 from .rena_pins import seed_rena_pins, undo_rena_pins
 from .rena_boards import seed_rena_boards, undo_rena_boards
@@ -26,22 +27,16 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_followers()
-        # undo_rena_users()
         undo_boards()
         undo_all_pins()
-        # undo_pins()
         undo_categories()
-        # undo_rena_pins()
-        # undo_rena_boards()
+        undo_cover_images()
     seed_users()
     seed_followers()
-    # seed_rena_users()
     seed_categories()
     seed_boards()
-    # seed_pins()
     seed_all_pins()
-    # seed_rena_boards()
-    # seed_rena_pins()
+    seed_cover_images()
     # Add other seed functions here
 
 
@@ -50,13 +45,9 @@ def seed():
 def undo():
     undo_users()
     undo_followers()
-    # undo_rena_users()
-    undo_users()
     undo_boards()
-    # undo_pins()
     undo_all_pins()
     undo_categories()
-    # undo_rena_pins()
-    # undo_rena_boards()
+    undo_cover_images()
 
     # Add other undo functions here

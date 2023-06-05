@@ -10,7 +10,7 @@ pin_routes = Blueprint('pins', __name__)
 # gets all of the pins of a user
 @pin_routes.route("/users/<username>")
 def get_users_pins_by_username(username):
-    pins = db.session.query(Pin).join(User).filter(User.username == username)
+    pins = db.session.query(Pin).join(User).filter(User.username == username).all()
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:
@@ -30,11 +30,13 @@ def get_pin_by_id(id):
     return pin.to_dict()
 
 # route to create a new pin
-@pin_routes.route("/", methods=["POST"])
+@pin_routes.route("/new", methods=["GET", "POST"])
 # @login_required
 def create_pin():
     form = PinForm()
 
+    print("made it")
+    form['csrf_token'].data = request.cookies['csrf_token']
     # Sets the boards that a user has and can save thier pin to
     user_boards = User.boards.all()
     if user_boards:
@@ -47,7 +49,6 @@ def create_pin():
     if not user:
         return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
-    form['csrf_token'].data = request.cookies['csrf_token']
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
         data = form.data
@@ -130,7 +131,7 @@ def delete_pin(id):
 # gets all of the pins of the current user
 @pin_routes.route("/current_user")
 def get_users_pins_by_current_user():
-    pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id)
+    pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id).all()
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:
