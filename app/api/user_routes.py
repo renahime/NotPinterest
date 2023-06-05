@@ -18,7 +18,9 @@ def users():
 # gets user data by username
 @user_routes.route('/users/<username>')
 def user_profile(username):
-    user = User.query.filter(User.username == username).one()
+    user = User.query.filter(User.username == username).one_or_none()
+    if not user:
+         return {"errors": "User couldn't be found"}, 404
     return user.to_dict()
      
 
