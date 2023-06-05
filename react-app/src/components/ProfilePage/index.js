@@ -17,9 +17,9 @@ export default function ProfilePage() {
     return (
         <div>
             {currentProfile &&
-                <div>
+                <div className="profile-page-base">
                     {currentProfile.profile_image ? <img className="profile-image" src={currentProfile.profile_image} /> :
-                        <i className="fa-solid fa-circle-user profile-image"></i>
+                        <i className="fa-solid fa-circle-user profile-image-default"></i>
                     }
                     <h2>{currentProfile.first_name} {currentProfile.last_name}</h2>
                     <h4>
