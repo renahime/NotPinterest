@@ -1,7 +1,7 @@
 from flask.cli import AppGroup
-from .pin_seeds import all_pin_seeds
+from ..seeds.pin_seeds import all_pin_seeds
 from sqlalchemy.sql import text
-
+from ..models import db, User, Category, Pin, Board, environment, SCHEMA
 
 def seed_pins():
     for pin in all_pin_seeds:

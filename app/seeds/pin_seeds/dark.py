@@ -6,7 +6,7 @@ user1 = User.query.get(1)
 user2 = User.query.get(2)
 user3 = User.query.get(3)
 dark = Category.query.filter(Category.name == "Dark").one()
-board = Baord.query.get(7)
+board = Board.query.get(7)
 
 pin1 = Pin(
     image="https://threadterest.s3.us-east-2.amazonaws.com/1d376ba447fbc72ec935f8b0016a2246.jpg",
