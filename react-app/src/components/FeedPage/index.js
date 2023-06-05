@@ -1,14 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, Redirect, useHistory } from "react-router-dom";
+import { getAllBoardThunks } from "../../store/boards-mikey";
+
 import './FeedPage.css'
 
 
 
 function FeedPage() {
 
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  useEffect(() => {
+    dispatch(getAllBoardThunks())
+  }, [dispatch])
+
+  const boardsSelector = useSelector((state) => state.board.allBoards)
+  console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 
+  const boards = Object.values(boardsSelector)
+  console.log("GET ALL BOARDS DATA", boards)
 
   // test colors and pins for feed
 
@@ -21,8 +34,8 @@ function FeedPage() {
     { backgroundColor: "rgb(190, 205, 193)" },
     { backgroundColor: "rgb(229, 235, 209)" },
     { backgroundColor: "rgb(244, 230, 219)" },
-    { backgroundColor: "rgb(233, 212, 212)" },
-    { backgroundColor: "rgb(190, 205, 193)" },
+    // { backgroundColor: "rgb(233, 212, 212)" },
+    // { backgroundColor: "rgb(190, 205, 193)" },
 
   ]);
 
@@ -45,6 +58,10 @@ function FeedPage() {
 
   };
 
+  if (boards.length < 1) {
+    return <h1>loading</h1>
+  }
+
   return (
     <>
       <div className="feed-container">
@@ -59,13 +76,13 @@ function FeedPage() {
 
             // <div className="board-top">
             //   <img className="board-top-container-image" src="https://i.pinimg.com/564x/95/37/a9/9537a91068b3e44e5a9ee4b912b06882.jpg" />
-              <div
-                key={index}
-                className="board-top"
-                style={color}
-              >
-                Board {index + 1}
-              </div>
+            <div
+              key={index}
+              className="board-top"
+              style={color}
+            >
+              {boards[index].name}
+            </div>
 
 
             // </div>
