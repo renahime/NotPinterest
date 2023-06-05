@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
 
 	return (
 		<>
-			<div className="nav-bar">
+			<nav className="nav-bar">
 				<NavLink exact to="/" className="logo">
 					<svg>
 						<path
@@ -61,7 +61,7 @@ function Navigation({ isLoaded }) {
 				)
 				}
 
-			</div>
+			</nav>
 
 		</>
 	);
