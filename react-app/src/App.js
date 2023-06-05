@@ -7,6 +7,7 @@ import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
+import ProfilePage from "./components/ProfilePage"
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,9 @@ function App() {
           </Route>
           <Route exact path="/feed">
             <FeedPage />
+          </Route>
+          <Route path="/:username">
+            <ProfilePage />
           </Route>
         </Switch>
       )}

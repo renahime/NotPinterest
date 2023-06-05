@@ -15,6 +15,13 @@ def users():
     users = User.query.all()
     return {'users': [user.to_dict() for user in users]}
 
+# gets user data by username
+@user_routes.route('/users/<username>')
+def user_profile(username):
+    user = User.query.filter(User.username == username).one()
+    return user.to_dict()
+     
+
 
 @user_routes.route('/<int:id>')
 @login_required

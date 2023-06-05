@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect,request
-from app.models import db,Board, Category
+from app.models import db,Board, Category, User
 from flask_login import current_user, login_user, logout_user, login_required
 from ..forms import BoardForm #need to see BoardForm
 from .auth_routes import validation_errors_to_error_messages
@@ -25,11 +25,20 @@ def get_boards():
     #return all boards
     return all_boards
 
+#Route to get a specific user's boards
+@board_routes.route("/users/<username>", methods= ["GET"])
+def get_user_boards(username):
+    user_boards = Board.query.join(User).filter(User.username == username).all()
 
+    if user_boards:
+        return {"User Boards" : [board.to_dict() for board in user_boards]}
+
+    else:
+        return {"errors": "No Boards found"}
 
 
 #Route to get a single board
-@board_routes.route('/<int:id>', methods = ["GET"])
+@board_routes.route('/<username>/<board_name>', methods = ["GET"])
 
 def get_board_by_id(id):
     board = Board.query.get(id)
@@ -120,29 +129,7 @@ def edit_board(id):
 
 
 
-# #Route to get a specific user's boards
-# @board_routes.route("/<int:user_id>", methods= ["GET"])
 
-
-# def get_user_boards(user_id):
-#     user_boards = Board.query.filter_by(owner_id=user_id).all()
-
-#     if user_boards:
-#         return {"User Boards" : [board.to_dict() for board in user_boards]}
-
-#     else:
-#         return {"errors": "No Boards found"}
-
-#Route to get a specific user's boards
-@board_routes.route("/users/<username>", methods= ["GET"])
-def get_user_boards(username):
-    user_boards = Board.query.join(User).filter(User.username == username).all()
-
-    if user_boards:
-        return {"User Boards" : [board.to_dict() for board in user_boards]}
-
-    else:
-        return {"errors": "No Boards found"}
 
 #Route to get a current user's boards
 @board_routes.route("/user", methods= ["GET"])

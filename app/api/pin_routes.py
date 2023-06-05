@@ -10,7 +10,7 @@ pin_routes = Blueprint('pins', __name__)
 # gets all of the pins of a user
 @pin_routes.route("/users/<username>")
 def get_users_pins_by_username(username):
-    pins = db.session.query(Pin).join(User).filter(User.username == username)
+    pins = db.session.query(Pin).join(User).filter(User.username == username).all()
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:
@@ -130,7 +130,7 @@ def delete_pin(id):
 # gets all of the pins of the current user
 @pin_routes.route("/current_user")
 def get_users_pins_by_current_user():
-    pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id)
+    pins = db.session.query(Pin).filter(Pin.owner_id == current_user.id).all()
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:

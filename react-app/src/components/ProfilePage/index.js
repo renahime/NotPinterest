@@ -1,7 +1,12 @@
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 
-function ProfilePage(){
+export default function ProfilePage(){
     let {username} = useParams()
 
+    return (
+        <div>
+            
+        </div>
+    )
 }
