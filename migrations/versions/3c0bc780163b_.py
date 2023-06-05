@@ -1,19 +1,16 @@
 """empty message
 
-Revision ID: 512a6b8cdf71
+Revision ID: 3c0bc780163b
 Revises: 
-Create Date: 2023-06-02 13:38:44.079467
+Create Date: 2023-06-04 17:43:04.016926
 
 """
 from alembic import op
 import sqlalchemy as sa
 
-import os
-environment = os.getenv("FLASK_ENV")
-SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '512a6b8cdf71'
+revision = '3c0bc780163b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,17 +23,13 @@ def upgrade():
     sa.Column('name', sa.String(length=255), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE categories SET SCHEMA {SCHEMA};")
-
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('first_name', sa.String(length=255), nullable=False),
-    sa.Column('last_name', sa.String(length=255), nullable=False),
+    sa.Column('first_name', sa.String(length=255), nullable=True),
+    sa.Column('last_name', sa.String(length=255), nullable=True),
     sa.Column('about', sa.String(length=255), nullable=True),
     sa.Column('pronouns', sa.String(length=255), nullable=True),
     sa.Column('website', sa.String(length=255), nullable=True),
@@ -47,45 +40,31 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
-
-
     op.create_table('boards',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=False),
-    sa.Column('private', sa.Boolean(), nullable=False),
-    sa.Column('cover_image', sa.String(length=255), nullable=False),
-    sa.Column('description', sa.String(length=255), nullable=False),
+    sa.Column('private', sa.Boolean(), nullable=True),
+    sa.Column('cover_image', sa.String(length=255), nullable=True),
+    sa.Column('description', sa.String(length=255), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE boards SET SCHEMA {SCHEMA};")
-
-
     op.create_table('follows',
     sa.Column('follower', sa.Integer(), nullable=False),
-    sa.Column('followed', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['followed'], ['users.id'], ),
+    sa.Column('following', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['follower'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('follower', 'followed')
+    sa.ForeignKeyConstraint(['following'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('follower', 'following')
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE follows SET SCHEMA {SCHEMA};")
-
     op.create_table('pins',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('image', sa.String(length=255), nullable=False),
-    sa.Column('title', sa.String(length=255), nullable=False),
-    sa.Column('description', sa.String(length=255), nullable=False),
+    sa.Column('title', sa.String(length=255), nullable=True),
+    sa.Column('description', sa.String(length=255), nullable=True),
     sa.Column('alt_text', sa.String(length=255), nullable=True),
     sa.Column('destination', sa.String(length=255), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
@@ -93,43 +72,24 @@ def upgrade():
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE pins SET SCHEMA {SCHEMA};")
-
     op.create_table('board_categories',
-    sa.Column('board_id', sa.Integer(), nullable=False),
-    sa.Column('category_id', sa.Integer(), nullable=False),
+    sa.Column('board_id', sa.Integer(), nullable=True),
+    sa.Column('category_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['board_id'], ['boards.id'], ),
-    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
-    sa.PrimaryKeyConstraint('board_id', 'category_id')
+    sa.ForeignKeyConstraint(['category_id'], ['categories.id'], )
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE board_categories SET SCHEMA {SCHEMA};")
-
     op.create_table('boards_pins',
-    sa.Column('pin_to_board', sa.Integer(), nullable=False),
-    sa.Column('board_pinned', sa.Integer(), nullable=False),
+    sa.Column('pin_to_board', sa.Integer(), nullable=True),
+    sa.Column('board_pinned', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['board_pinned'], ['boards.id'], ),
-    sa.ForeignKeyConstraint(['pin_to_board'], ['pins.id'], ),
-    sa.PrimaryKeyConstraint('pin_to_board', 'board_pinned')
+    sa.ForeignKeyConstraint(['pin_to_board'], ['pins.id'], )
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE boards_pins SET SCHEMA {SCHEMA};")
-
-
     op.create_table('pin_categories',
-    sa.Column('pin_id', sa.Integer(), nullable=False),
+    sa.Column('pin_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['categories.id'], ),
-    sa.ForeignKeyConstraint(['pin_id'], ['pins.id'], ),
-    sa.PrimaryKeyConstraint('pin_id', 'category_id')
+    sa.ForeignKeyConstraint(['pin_id'], ['pins.id'], )
     )
-
-    if environment == "production":
-            op.execute(f"ALTER TABLE pin_categories SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 

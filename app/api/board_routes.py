@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect,request
-from app.models import db,Board
+from app.models import db,Board, Category
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import BoardForm #need to see BoardForm
+from ..forms import BoardForm #need to see BoardForm
 from .auth_routes import validation_errors_to_error_messages
 
 
@@ -10,34 +10,41 @@ board_routes = Blueprint('boards', __name__)
 
 
 
-#Route to get a board
+#Route to get all board
 @board_routes.route('/', methods = ["GET"])
+# @login_required
 def get_boards():
+    #query database
     boards = Board.query.all()
-    if boards:
-        return {'boards': [board.to_dict() for board in boards]}
-    else:
-        return {"errors": "No Boards found"}
+    all_boards = {}
+
+    #normalize output
+    for board in boards:
+        all_boards[board.id] = board.to_dict()
+
+    #return all boards
+    return all_boards
+
 
 
 
 #Route to get a single board
 @board_routes.route('/<int:id>', methods = ["GET"])
 
-def get_board(id):
+def get_board_by_id(id):
     board = Board.query.get(id)
 
     if board:
         return board.to_dict()
     else:
-        return {"errors": "Board not found"}
+        return {"errors": "Board not found"},404
 
 
 
 
 
 # Route to create a board
-@board_routes.route('/new', methods=['POST'])
+@board_routes.route('/', methods=['POST'])
 @login_required
 def create_board():
 
@@ -62,7 +69,7 @@ def create_board():
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
-    return {'message': 'Board created successfully'}
+
 
 
 
@@ -71,14 +78,17 @@ def create_board():
 @login_required
 def delete_board(id):
     board = Board.query.get(id)
-    if board:
-        db.session.delete(board)
-        db.session.commit()
 
-        return {"Message": "Board deleted successfully"}
+    if not board:
+        return {"errors": "Board not found"},404
 
-    else:
-        return {"errors": "Board not found"}
+
+    db.session.delete(board)
+    db.session.commit()
+
+    return {"message": "Board successfully deleted "}
+
+
 
 
 
@@ -100,13 +110,12 @@ def edit_board(id):
         board_to_edit.description = form.data["description"]
 
         db.session.commit()
-
         return board_to_edit.to_dict()
 
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
-    return {'message': 'Board created successfully'}
+
 
 
 
@@ -126,8 +135,35 @@ def get_user_boards(user_id):
 
 
 
-# #Route to get a current user's boards
-# @board_routes.route("/user", methods= ["GET"])
+#Route to get a current user's boards
+@board_routes.route("/user", methods= ["GET"])
 
 
+def get_current_user_boards():
+    user_boards = Board.query.filter_by(owner_id=current_user.id).all()
+
+    if not user_boards:
+        return {"errors": "No Boards were found"}
+
+    all_boards = {}
+
+    for board in user_boards:
+        all_boards[board.id] = board.to_dict()
+
+<<<<<<< HEAD
 # board_routes = BluePrint('boards', __name__)
+
+@board_routes.route('/<category_name>')
+def get_board_by_category(category_name):
+    boards = Board.query.all()
+    board_list = []
+
+    for board in boards:
+        for category in board.categories:
+            if category.name == category_name:
+                board_list.append(board.to_dict())
+
+    return board_list
+=======
+    return all_boards
+>>>>>>> 18e97678271690c20479414147c8269049c549d8

@@ -6,14 +6,12 @@ boards_pins = db.Table(
     db.Column(
         "pin_to_board",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id")),
-        primary_key=True
+        db.ForeignKey(add_prefix_for_prod("pins.id"))
     ),
     db.Column(
         "board_pinned",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("boards.id")),
-        primary_key=True
     )
 )
 
@@ -26,13 +24,11 @@ board_categories = db.Table(
         "board_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod('boards.id')),
-        primary_key=True
     ),
     db.Column(
         "category_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod('categories.id')),
-        primary_key=True
     )
 )
 
@@ -45,7 +41,6 @@ pin_categories = db.Table(
         "pin_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("pins.id")),
-        primary_key=True
     ),
     db.Column(
         "category_id",
@@ -71,6 +66,7 @@ class Board(db.Model):
 
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
+    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned')
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -83,10 +79,12 @@ class Board(db.Model):
             'cover_image': self.cover_image,
             'description': self.description,
             'owner_id': self.owner_id,
+            'user': self.user.to_dict(),
+            'categories': [category.to_dict() for category in self.categories],
+            'pins': [pin.to_dict() for pin in self.pins_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
-
 
 class Pin(db.Model):
     __tablename__ = 'pins'
@@ -116,6 +114,8 @@ class Pin(db.Model):
             'description': self.description,
             'alt_text': self.alt_text,
             'destination': self.destination,
+            'categories': [category.to_dict() for category in self.categories],
+            'boards_pinned_in': [board.name for board in self.board_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

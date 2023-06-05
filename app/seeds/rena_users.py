@@ -5,6 +5,9 @@ from sqlalchemy.sql import text
 
 # Adds a demo user, you can add other users here if you want
 def seed_rena_users():
+    user1 = User.query.get(1)
+    user2 = User.query.get(2)
+    user3 = User.query.get(3)
     rena = User(
         username='rena',
         email='rena@rena.me',
@@ -18,6 +21,9 @@ def seed_rena_users():
         created_at=datetime.now(),
         updated_at=datetime.now()
         )
+    rena.followers.append(user1)
+    rena.followers.append(user2)
+    rena.following.append(user3)
 
     db.session.add(rena)
     db.session.commit()
@@ -29,7 +35,7 @@ def seed_rena_users():
 # incrementing primary key, CASCADE deletes any dependent entities.  With
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
-def undo_users():
+def undo_rena_users():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:

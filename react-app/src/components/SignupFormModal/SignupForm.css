@@ -1,0 +1,140 @@
+/* .signup-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 33px;
+  width: 55%;
+  height: 70%;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+} */
+
+.signup-form-modal-container {
+  width: 450px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(243, 242, 242);
+  align-items: center;
+  background-color: white;
+  /* border-radius: 50px; */
+
+}
+
+
+.signup-form-modal-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  /* background-color: red; */
+  height: 100%;
+  width: 55%;
+
+
+}
+
+.signup-form-modal-container form label {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-bottom: 12px;
+  font-size: 12px;
+
+  vertical-align: middle;
+
+}
+
+.signup-form-modal-container form input {
+
+  border-radius: 16px;
+  border: 2px lightgrey solid;
+  height: 35px;
+
+
+}
+
+.signup-page-welcome {
+  color: rgb(51, 51, 51);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1.2px;
+  padding-left: 16px;
+  padding-right: 16px;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  display: block;
+  font-size: 2em;
+  /* margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px; */
+}
+
+
+.signup-page-ideas {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+
+.signup-form-logo {
+  margin-top: 50px;
+
+
+  fill: rgb(230, 0, 35);
+  display: block;
+  height: 25px;
+  width: 25px;
+  /* font-size: 12px; */
+  stroke-width: 0px;
+  cursor: auto;
+  /* background-color: red; */
+  /* vertical-align: middle; */
+
+}
+
+.signup-page-welcome {
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.signup-page-ideas {
+  margin-top: 0px;
+  font-size: 15px;
+  color: rgb(47, 47, 47)
+}
+
+
+.signup-form-member {
+  text-align: center;
+  font-size: 11px;
+
+}
+
+.login-form-login-text {
+  font-weight: bold;
+}
+
+
+.login-form-errors {
+  color: red;
+  font-size: 12px;
+}
+
+
+.login-form-signup-button {
+  color: white;
+  border-radius: 15px;
+  height: 35px;
+  fill: red;
+  background-color: rgb(230, 0, 35);
+  border: 0px solid;
+}
+
+
+
+
+#modal-content {
+  border-radius: 15px;
+}
