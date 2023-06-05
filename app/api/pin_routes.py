@@ -4,8 +4,21 @@ from ..models import Pin, db, User, Board, Category
 from ..forms import PinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
+from datetime import datetime
 
 pin_routes = Blueprint('pins', __name__)
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
+    return all_pins
 
 # gets all of the pins of a user
 @pin_routes.route("/users/<username>")
@@ -31,7 +44,7 @@ def get_pin_by_id(id):
 
 # route to create a new pin
 @pin_routes.route("/", methods=["POST"])
-# @login_required
+@login_required
 def create_pin():
     form = PinForm()
 
@@ -69,7 +82,7 @@ def create_pin():
 
         board_to_save_pin_to = Board.query.filter(Baord.name == data["board"]).one()
         new_pin.baords_tagged.append(board_to_save_pin_to)
-        
+
         db.session.add(new_pin)
         db.session.commit()
         return new_pin.to_dict()
@@ -80,9 +93,9 @@ def create_pin():
 
 # route to edit the details of a form
 @pin_routes.route("/<int:id>", methods=["PUT"])
-# @login_required
+@login_required
 def edit_pin(id):
-    form = EditPinForm()
+    form = PinForm()
     # gets the pin that the user wants to edit from the database by searching for the pin with it's id
     pin = Pin.query.get(id)
 
@@ -107,7 +120,7 @@ def edit_pin(id):
 # @pin_routes.route("/<int:id>", methods=["DELETE"])
 # changed to get request for the purpose of testing without making fetch, the above will be how this route should actually be hit
 @pin_routes.route("/<int:id>/delete")
-# @login_required
+@login_required
 def delete_pin(id):
     # finds the pin that the user indicated that they wanted to delete
     pin = Pin.query.get(id)
@@ -115,15 +128,15 @@ def delete_pin(id):
     # sends back an error message if the pin id isn't valid
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
-    
+
     pin_image_delete = remove_file_from_s3(pin.image)
-    
+
     # deletes the pin and sends back confirmation message
     if pin_image_delete:
         db.session.delete(pin)
         db.session.commit()
         return {"message": "Pin successfully deleted"}
-        
+
     return {"errors": "Pin couldn't be deleted"}, 500
 
 
@@ -140,23 +153,21 @@ def get_users_pins_by_current_user():
 @pin_routes.route('/<category_name>')
 def get_pin_by_category(category_name):
     pins = Pin.query.all()
-    pin_list = []
+    all_pins = {}
 
     for pin in pins:
         for category in pin.categories:
             if category.name == category_name:
-                pin_list.append(pin.to_dict())
+                all_pins[pin.id] = pin.to_dict()
 
-    return pin_list
+    return all_pins
 
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
+@pin_routes.route('/today')
+def get_latest_pins():
+    today = datetime.now()
     pins = Pin.query.all()
     all_pins = {}
-    # standardizes the output that is returned to user
     for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    # return all_pins
+        if pin.created_at.date() == today.date():
+                all_pins[pin.id] = pin.to_dict()
     return all_pins

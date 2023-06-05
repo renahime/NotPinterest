@@ -122,8 +122,6 @@ def edit_board(id):
 
 #Route to get a specific user's boards
 @board_routes.route("/<int:user_id>", methods= ["GET"])
-
-
 def get_user_boards(user_id):
     user_boards = Board.query.filter_by(owner_id=user_id).all()
 
@@ -136,9 +134,7 @@ def get_user_boards(user_id):
 
 
 #Route to get a current user's boards
-@board_routes.route("/user", methods= ["GET"])
-
-
+@board_routes.route("/current_user")
 def get_current_user_boards():
     user_boards = Board.query.filter_by(owner_id=current_user.id).all()
 
