@@ -120,7 +120,9 @@ def seed_boards():
 def undo_boards():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.boards RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.board_categories RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM boards"))
+        db.session.execute(text("DELETE FROM board_categories"))
 
     db.session.commit()

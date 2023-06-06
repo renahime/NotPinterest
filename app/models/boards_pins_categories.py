@@ -1,17 +1,18 @@
 from .db import db, add_prefix_for_prod, environment, SCHEMA
 from datetime import datetime, timedelta
+from sqlalchemy.orm import backref
 
 boards_pins = db.Table(
     "boards_pins",
     db.Column(
         "pin_to_board",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id"))
+        db.ForeignKey(add_prefix_for_prod("pins.id"), ondelete='CASCADE'),
     ),
     db.Column(
         "board_pinned",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("boards.id")),
+        db.ForeignKey(add_prefix_for_prod("boards.id"), ondelete='CASCADE'),
     )
 )
 
@@ -23,12 +24,12 @@ board_categories = db.Table(
     db.Column(
         "board_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod('boards.id')),
+        db.ForeignKey(add_prefix_for_prod('boards.id'), ondelete='CASCADE'),
     ),
     db.Column(
         "category_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod('categories.id')),
+        db.ForeignKey(add_prefix_for_prod('categories.id'), ondelete='CASCADE'),
     )
 )
 
@@ -40,12 +41,12 @@ pin_categories = db.Table(
     db.Column(
         "pin_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("pins.id")),
+        db.ForeignKey(add_prefix_for_prod("pins.id"), ondelete='CASCADE'),
     ),
     db.Column(
         "category_id",
         db.Integer,
-        db.ForeignKey(add_prefix_for_prod("categories.id"))
+        db.ForeignKey(add_prefix_for_prod("categories.id"), ondelete='CASCADE')
     )
 )
 
@@ -65,13 +66,12 @@ class Board(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user = db.relationship('User', back_populates='boards')
-    categories = db.relationship('Category', secondary= board_categories, back_populates='boards')
-    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned')
+    categories = db.relationship('Category', secondary= board_categories, back_populates='boards',cascade="all, delete", passive_deletes=True)
+    pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned',passive_deletes=True)
     cover_image = db.relationship('BoardCoverImage', back_populates="board_for_image")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
-
 
     def to_dict(self):
         return {
@@ -82,8 +82,8 @@ class Board(db.Model):
             'description': self.description,
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),
-            'categories': [category.to_dict() for category in self.categories],
-            'pins': [pin.to_dict() for pin in self.pins_tagged],
+            'categories': [category.id for category in self.categories],
+            'pins': [pin.id for pin in self.pins_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -101,12 +101,13 @@ class Pin(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     user = db.relationship('User', back_populates='pins')
-    categories = db.relationship('Category', secondary=pin_categories, back_populates='pins')
-    board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards')
+    categories = db.relationship('Category', secondary=pin_categories, back_populates='pins', passive_deletes=True)
+    board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards', passive_deletes=True)
     cover_image = db.relationship('BoardCoverImage', back_populates="pin")
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
+
 
     def to_dict(self):
         return {
@@ -117,8 +118,8 @@ class Pin(db.Model):
             'description': self.description,
             'alt_text': self.alt_text,
             'destination': self.destination,
-            'categories': [category.to_dict() for category in self.categories],
-            'boards_pinned_in': [board.name for board in self.board_tagged],
+            'categories': [category.id for category in self.categories],
+            'boards_pinned_in': [board.id for board in self.board_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -130,8 +131,8 @@ class Category(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
 
-    boards = db.relationship('Board', secondary='board_categories', back_populates='categories')
-    pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories')
+    boards = db.relationship('Board', secondary='board_categories', back_populates='categories', passive_deletes=True)
+    pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories', passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}

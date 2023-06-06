@@ -5,10 +5,6 @@ from .pins import seed_all_pins, undo_all_pins
 from .categories import seed_categories, undo_categories
 from .followers import seed_followers, undo_followers
 from .cover_images import seed_cover_images, undo_cover_images
-from .rena_users import seed_rena_users, undo_rena_users
-from .rena_pins import seed_rena_pins, undo_rena_pins
-from .rena_boards import seed_rena_boards, undo_rena_boards
-
 
 from app.models.db import db, environment, SCHEMA
 
