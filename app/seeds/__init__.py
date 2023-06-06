@@ -4,6 +4,7 @@ from .boards import seed_boards, undo_boards
 from .pins import seed_all_pins, undo_all_pins
 from .categories import seed_categories, undo_categories
 from .followers import seed_followers, undo_followers
+from .cover_images import seed_cover_images, undo_cover_images
 
 from app.models.db import db, environment, SCHEMA
 
@@ -25,11 +26,14 @@ def seed():
         undo_boards()
         undo_all_pins()
         undo_categories()
+        undo_cover_images()
     seed_users()
     seed_followers()
     seed_categories()
     seed_boards()
     seed_all_pins()
+    seed_cover_images()
+    # Add other seed functions here
 
 
 # Creates the `flask seed undo` command
@@ -40,5 +44,6 @@ def undo():
     undo_boards()
     undo_all_pins()
     undo_categories()
+    undo_cover_images()
 
     # Add other undo functions here

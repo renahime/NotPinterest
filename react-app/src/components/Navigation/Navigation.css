@@ -6,28 +6,23 @@
   display: none;
 }
 
-
 .nav-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* position: fixed; */
   top: 0;
-  /* height: 80px; */
   width: 100%;
-  /* justify-content: space-between;  */
-  align-items: center;
   box-sizing: border-box;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 16px;
-  padding-top: 16px;
+  padding: 16px;
 }
 
-.nav-right {
+.left-section {
   display: flex;
-  flex-direction: row;
-  /* text-align: right;  */
+  align-items: center;
+
+}
+
+.right-section {
   margin-left: auto;
 }
 
@@ -39,8 +34,6 @@
   font-size: 12px;
   stroke-width: 0px;
   cursor: auto;
-  /* background-color: red; */
-  /* vertical-align: middle; */
 }
 
 .pinterest-logo {
@@ -48,25 +41,65 @@
   display: block;
   font-size: 17px;
   font-weight: 600;
-  /* height: 23px; */
-  letter-spacing: -1px;
-  text-align: left;
   padding-left: 2.5px;
   text-decoration: none;
 }
 
-.nav-log-in {
+.tabs {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.tab {
+  color: black;
+  text-decoration: none;
+  margin-right: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 10px;
+
+}
+
+.tab.active {
   color: white;
-  background-color: #f00505;
-  /* vertical-align: middle; */
+  padding:10px 10px;
+  background-color: black;
+  border-radius: 15px;
+  font-weight: 600;
+}
+
+.search-bar {
+  flex: 1 1 auto;
+  min-width: 407px;
+  padding: 8px;
+  border-radius: 20px;
+  border: 1px solid gray;
+  margin-left: 16px;
+  /* width: auto; */
+  font-size: 14px;
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.nav-log-in,
+.nav-sign-up {
+  color: white;
   border-radius: 24px;
   padding: 12px 13px;
-  /* transition: transform 85ms ease-out; */
   transition: background-color 0.3s ease;
   font-size: 13.5px;
-  margin-right: 5px;
   cursor: pointer;
   outline: none;
+}
+
+.nav-log-in {
+  background-color: #f00505;
+  margin-right: 5px;
 }
 
 .nav-log-in:hover {
@@ -74,24 +107,20 @@
 }
 
 .nav-sign-up {
-  color: black;
   background-color: #f0f0f0;
-  border-radius: 24px;
-  padding: 12px 13px;
-  /* transition: transform 85ms ease-out; */
-  transition: background-color 0.3s ease;
-  font-size: 13.5px;
   font-weight: 400;
-  cursor: pointer;
 }
 
 .nav-sign-up:hover {
   background-color: darkgray;
 }
 
-
-
 .open-modal-button {
   background-color: transparent;
   border: none;
+}
+
+.pinterest-svg {
+  width: 30px;
+  height: 30px;
 }

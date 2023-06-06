@@ -6,8 +6,11 @@ from .auth_routes import validation_errors_to_error_messages
 
 board_routes = Blueprint('boards', __name__)
 
+
+
 #Route to get all board
-@board_routes.route('/')
+@board_routes.route('/', methods = ["GET"])
+# @login_required
 def get_boards():
     #query database
     boards = Board.query.all()
@@ -20,18 +23,8 @@ def get_boards():
     #return all boards
     return all_boards
 
-#Route to get boards by category
-@board_routes.route('/<category_name>')
-def get_board_by_category(category_name):
-    boards = Board.query.all()
-    all_boards = {}
 
-    for board in boards:
-        for category in board.categories:
-            if category.name == category_name:
-                all_boards[board.id] = board.to_dict()
 
-    return all_boards
 
 #Route to get a single board by id
 @board_routes.route('/<int:id>', methods = ["GET"])
@@ -81,7 +74,6 @@ def create_board():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-
         # Create a new board
         new_board = Board(
             name=form.data["name"],
@@ -137,7 +129,21 @@ def delete_board(id):
     db.session.delete(board)
     db.session.commit()
 
-    return {"message": "Board successfully deleted "}
+    return {"message": "Board deleted"}
+
+# board_routes = BluePrint('boards', __name__)
+
+@board_routes.route('/<category_name>')
+def get_board_by_category(category_name):
+    boards = Board.query.all()
+    board_list = []
+
+    for board in boards:
+        for category in board.categories:
+            if category.name == category_name:
+                board_list.append(board.to_dict())
+
+    return board_list
 
 #Route to pin a pin to a board
 @board_routes.route('/<int:boardId>/pin/<int:pinId>', methods = ["POST"])
