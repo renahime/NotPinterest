@@ -19,7 +19,11 @@ const initialState = {allBoards: {}, currentProfileBoards: {}}
 export default function boardsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_BOARDS_OF_USER:
-            return {...state, allBoards: {...state.allBoards}, currentProfileBoards: {...action.boards}}
+            let newState = {}
+            for (let board in action.boards) {
+                newState[board.id] = board
+            }
+            return {...state, allBoards: {...state.allBoards}, currentProfileBoards: {...newState}}
         default:
             return state
     }

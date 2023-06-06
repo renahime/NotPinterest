@@ -78,7 +78,7 @@ class Board(db.Model):
             'id': self.id,
             'name': self.name,
             'private': self.private,
-            # 'cover_image': BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one_or_().pin.image if BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id) else None,
+            'cover_image': BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one().pin.image if BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one_or_none() else None,
             'description': self.description,
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),

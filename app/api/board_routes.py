@@ -54,9 +54,7 @@ def get_current_user_boards():
 @board_routes.route("/users/<username>", methods= ["GET"])
 def get_user_boards(username):
     user_boards = Board.query.join(User).filter(User.username == username).all()
-
-    # print("user_boards[0].cover_image", user_boards[0].cover_image.pin[0])
-
+    
     if user_boards:
         return {"User Boards" : [board.to_dict() for board in user_boards]}
 
