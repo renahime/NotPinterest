@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect,request
 from app.models import db,Board, User, Pin
 from flask_login import current_user, login_user, logout_user, login_required
-from ..forms import BoardForm #need to see BoardForm
+from ..forms import BoardForm, EditBoardForm
 from .auth_routes import validation_errors_to_error_messages
 
 board_routes = Blueprint('boards', __name__)
@@ -65,7 +65,7 @@ def get_user_boards(username):
 
 
 # Route to create a board
-@board_routes.route('/', methods=['POST'])
+@board_routes.route('/', methods=['GET','POST'])
 @login_required
 def create_board():
 
@@ -89,7 +89,7 @@ def create_board():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 # Route to edit a board
-@board_routes.route('/<int:id>', methods=['PUT'])
+@board_routes.route('/<int:id>', methods=['GET','PUT'])
 @login_required
 def edit_board(id):
     board_to_edit = Board.query.get(id)
@@ -97,26 +97,35 @@ def edit_board(id):
     if current_user.id != board_to_edit.owner_id:
         return {"errors":"you do not own this board"}
 
-    form = BoardForm() #confirm name of form
+    form = EditBoardForm() #confirm name of form
+
+    choices = []
+
+    for pinId in board_to_edit.pins_tagged:
+        pin = Pin.query.get(pinId)
+        choices.append(pin.name)
+
+    form.cover_image.choices = choices
+
 
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        image_found = False
         if form.data["name"]:
             board_to_edit.name = form.data["name"]
         if form.data["private"]:
             board_to_edit.private = form.data["private"]
         if form.data["cover_image"]:
+            image_found = False
             for pin in board_to_edit.pins_tagged:
                 if pin.image == form.data["cover_image"]:
-                    if form.data["cover_image"] == pin.image:
+                    if form.data["cover_image"] == pin.name:
                         return {"error": "image is already a cover image"}
-                    board_to_edit.pins_tagged.pop()
-                    board_to_edit.pins_tagged.append(pin)
+                    board_to_edit.pin_cover_image.pop()
+                    board_to_edit.pin_cover_image.append(pin)
                     image_found = True
-        if not image_found:
-            return {"error":"pin was not found inside board"}
+            if not image_found:
+                return {"error":"pin was not found inside board"}
         if form.data["description"]:
             board_to_edit.description = form.data["description"]
         db.session.commit()
@@ -190,6 +199,8 @@ def unpin(boardId,pinId):
 
     for pin in board.pins_tagged:
         if pin.id == pinId:
+            if pin.id == board.pin_cover_image[0].id:
+                board.pin_cover_image.pop()
             board.pins_tagged.remove(_pin)
             db.session.commit()
             return {"message": "You are no longer pinning {}!".format(_pin.title)}

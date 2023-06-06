@@ -65,7 +65,7 @@ def get_pin_by_id(id):
     return pin.to_dict()
 
 # route to create a new pin
-@pin_routes.route("/", methods=["POST"])
+@pin_routes.route("/", methods=["GET", "POST"])
 @login_required
 def create_pin():
     form = PinForm()
@@ -114,7 +114,7 @@ def create_pin():
 
 
 # route to edit the details of a form
-@pin_routes.route("/<int:id>", methods=["PUT"])
+@pin_routes.route("/<int:id>", methods=["GET","PUT"])
 @login_required
 def edit_pin(id):
     form = PinForm()
@@ -126,14 +126,41 @@ def edit_pin(id):
     if current_user.id != pin.owner_id:
         return {"errors":"you do not own this pin"}
 
+    user_boards = User.boards.all()
+    if user_boards:
+        form.board.choices = [board.name for board in user_boards]
+
+    if not user_boards:
+        form.board.choices = []
+
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
     # if the form doesn't have any issues make change the pins details in the database to the details in the form
     if form.validate_on_submit():
         data = form.data
-        pin.title = data["title"]
-        pin.image = data["image"]
-        pin.description = data["description"]
+        if data["title"]:
+            pin.title = data["title"]
+        if data["image"]:
+            pin_image = data["image"]
+            pin_image.filename=get_unique_filename(pin_image.filename)
+            remove_file_from_s3(pin.image)
+            upload = upload_file_to_s3(pin_image)
+            if 'url' not in upload:
+                return upload['errors']
+            aws_url = upload['url']
+            pin.image = aws_url
+        if data["description"]:
+            pin.description = data["description"]
+        if data["alt_text"]:
+            pin.alt_text = data["alt_text"]
+        if data["destination"]:
+            pin.destination = data["destination"]
+        if data["board"]:
+            for board in user_boards:
+                if board.name == data["board"]:
+                    new_board = board
+                    pin.board_tagged.append(new_board)
+
         db.session.commit()
         return pin.to_dict()
     # if the form has issues send the error messages back to the user
