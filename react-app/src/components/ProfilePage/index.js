@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo, clearProfile } from "../../store/profile"
+import { getBoardsByUsername } from "../../store/boards"
 import UserBoards from "../UserBoards"
 import "./ProfilePage.css"
 
@@ -11,6 +12,8 @@ export default function ProfilePage() {
     const dispatch = useDispatch()
     const [openMenu, setOpenMenu] = useState(false)
     const currentProfile = useSelector(state => state.profile.currentProfile)
+    let userBoards = useSelector(state => state.boards.currentProfileBoards)
+    let userBoardsArr = Object.values(userBoards)
 
     let showMenu = () => {
         setOpenMenu(!openMenu)
@@ -18,7 +21,8 @@ export default function ProfilePage() {
 
     useEffect(() => {
         dispatch(getUserInfo(username))
-        // return (() => dispatch(clearProfile()))
+        dispatch(getBoardsByUsername(username))
+        return (() => dispatch(clearProfile()))
     }, [dispatch])
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
@@ -70,7 +74,7 @@ export default function ProfilePage() {
                     <div className="profile-dropdown-create">Board</div>
                 </div>}
             </div>
-            <UserBoards />
+            <UserBoards userBoardsArr={userBoardsArr}/>
         </div>
     )
 }

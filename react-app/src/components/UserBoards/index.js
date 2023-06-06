@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom"
 import { getBoardsByUsername } from "../../store/boards"
 import './UserBoards.css'
 
-export default function UserBoards() {
-    const dispatch = useDispatch()
-    const { username } = useParams()
-    let userBoards = useSelector(state => state.boards.currentProfileBoards)
-    let userBoardsArr = Object.values(userBoards)
+export default function UserBoards({userBoardsArr}) {
+    // const dispatch = useDispatch()
+    // const { username } = useParams()
+    // let userBoards = useSelector(state => state.boards.currentProfileBoards)
+    // let userBoardsArr = Object.values(userBoards)
     console.log("userboards", userBoardsArr)
 
     function pinDisplay(pins) { 
@@ -18,20 +18,45 @@ export default function UserBoards() {
             return "1 pin"
         }
     }
-
-    useEffect(() => {
-        dispatch(getBoardsByUsername(username))
-    }, [dispatch, username])
+    // useEffect(() => {
+    //     dispatch(getBoardsByUsername(username))
+    // }, [dispatch, username])
 
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
                 <div>
                     <div className="profile-board-images-wrapper">
-                        {boards.cover_image.length ? <img className="profile-board-images1" src={boards.cover_image[0]} />                         
-                        : <img className="profile-board-images1" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />}
-                        {boards.additional_images[0] ? <img className="profile-board-images2" src={boards.additional_images[0]} /> : <img className="profile-board-images2" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />}
-                        {boards.additional_images[1] ? <img className="profile-board-images3" src={boards.additional_images[1]} /> : <img className="profile-board-images3" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />}
+                        {
+                            boards.cover_image.length ? 
+                            <img className="profile-board-images1" src={boards.cover_image[0]} />
+                            : 
+                            boards.additional_images[0] ?
+                            <img className="profile-board-images1" src={boards.additional_images[0]} />
+                            :
+                            <img className="profile-board-images1" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                        }
+                        {
+                            boards.additional_images[0] ?
+                            <img className="profile-board-images1" src={boards.additional_images[0]} />
+                            :
+                            boards.additional_images[1] ? 
+                            <img className="profile-board-images2" src={boards.additional_images[1]} />
+                            :
+                            <img className="profile-board-images2" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                        }
+                        {
+                            boards.additional_images[0] ?
+                            <img className="profile-board-images1" src={boards.additional_images[0]} />
+                            :
+                            boards.additional_images[1] ? 
+                            <img className="profile-board-images2" src={boards.additional_images[1]} />
+                            :
+                            boards.additional_images[2] ? 
+                            <img className="profile-board-images3" src={boards.additional_images[2]} /> 
+                            :
+                            <img className="profile-board-images3" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                        }
                     </div>
                     <div className="profile-board-info"> 
                         <div>

@@ -96,17 +96,26 @@ class Board(db.Model):
 
     def findOtherImages(self):
         additonal_images = []
-        cover = self.pin_cover_image[0].image
+        cover = ""
+        # check to see if we even have a cover image
+        if len(self.pin_cover_image):
+            cover = self.pin_cover_image[0].image
         n = 0
-        while len(additonal_images) < 2:
+        # continue this loop while there are less than three items in the loop
+        while len(additonal_images) < 3:
+            current_image = ""
+            # if there are no pins, quiet the loop
+            if not len(self.pins_tagged):
+                break
+            # there are additional pins, so set the current image to the image on the next pin
             current_image = self.pins_tagged[n].image
+            # if there is a cover and and a current image make sure that the current image isn't same thing as the cover, if it isn't add it to our list
             if cover and current_image:
                 if current_image != cover:
                     additonal_images.append(current_image)
+            # add the current image to the additional images loop
             elif current_image:
                 additonal_images.append(current_image)
-            if not current_image:
-                break
             n += 1
         return additonal_images
 
