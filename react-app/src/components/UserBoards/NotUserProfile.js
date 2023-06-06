@@ -1,4 +1,8 @@
+import { useHistory } from "react-router-dom"
+
 export default function NotUSerProfile({userBoardsArr}) {
+    const history = useHistory()
+
     function pinDisplay(pins) { 
         if (pins === 0 || pins > 1) {
             return `${pins} pins`
@@ -7,10 +11,16 @@ export default function NotUSerProfile({userBoardsArr}) {
         }
     }
 
+    function viewIndividualBoard (username, name) {
+        let nameArr = name.toLowerCase().split(" ")
+        let formattedName = nameArr.join("_")
+        history.push(`/${username}/${formattedName}`)
+    }
+
     return (
         <div className="profile-boards-all">
         {userBoardsArr.map(boards => (
-            <div className="profile-boards-wrapper">
+            <div onClick={() => viewIndividualBoard(boards.user.username, boards.name)} className="profile-boards-wrapper">
                 <div className="profile-board-pics">
                     <div className="profile-board-images-wrapper">
                         {

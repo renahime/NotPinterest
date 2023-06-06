@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import { getBoardsByUsername } from "../../store/boards"
 import './UserBoards.css'
 
 export default function CurrentUserBoard({userBoardsArr}) {
     const [hover, setHover] = useState(false)
     const [hoverDiv, setHoverDiv] = useState("")
+    
+    const history = useHistory()
 
     function pinDisplay(pins) { 
         if (pins === 0 || pins > 1) {
@@ -26,12 +28,18 @@ export default function CurrentUserBoard({userBoardsArr}) {
         setHoverDiv("")
     }
 
+    function viewIndividualBoard (username, name) {
+        let nameArr = name.toLowerCase().split(" ")
+        let formattedName = nameArr.join("_")
+        history.push(`/${username}/${formattedName}`)
+    }
+
     let editBoardClassName = hover ? `profile-edit-board-icon` : "profile-edit-board-icon hidden"
 
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
-                <div className="profile-boards-wrapper" onMouseEnter={() => onHover(boards)} onMouseLeave={() => offHover()}>
+                <div onClick={() => viewIndividualBoard(boards.user.username, boards.name)} className="profile-boards-wrapper" onMouseEnter={() => onHover(boards)} onMouseLeave={() => offHover()}>
                     
                     <div className="profile-board-pics">
                         {boards.private ? <div className="profile-board-lock-icon-wrapper">

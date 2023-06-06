@@ -7,6 +7,18 @@ from .auth_routes import validation_errors_to_error_messages
 board_routes = Blueprint('boards', __name__)
 
 
+#Route to get a specific board of a user
+@board_routes.route("/users/<username>/<board_name>", methods= ["GET"])
+def get_one_user_board(username, board_name):
+    name = board_name.split("_")
+    print("name", name)
+    user_board = Board.query.join(User).filter(User.username == username, Board.name.ilike(board_name)).one_or_none()
+    
+    if user_board:
+        return {"User Boards" : user_board.to_dict()}
+
+    else:
+        return {"errors": "No Boards found"}, 404 
 
 #Route to get all board
 @board_routes.route('/', methods = ["GET"])
@@ -50,6 +62,8 @@ def get_current_user_boards():
         all_boards[board.id] = board.to_dict()
     return all_boards
 
+    
+
 #Route to get a specific user's boards
 @board_routes.route("/users/<username>", methods= ["GET"])
 def get_user_boards(username):
@@ -60,6 +74,7 @@ def get_user_boards(username):
 
     else:
         return {"errors": "No Boards found"}
+
 
 
 # Route to create a board

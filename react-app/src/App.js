@@ -9,6 +9,7 @@ import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage"
 import CreatePin from "./components/CreatePin"
+import IndividualBoardPage from "./components/IndividualBoardPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route path="/new_pin">
             <CreatePin />
+          </Route>
+          <Route path="/:username/:boardName">
+            <IndividualBoardPage />
           </Route>
           <Route path="/:username">
             <ProfilePage />
