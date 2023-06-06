@@ -40,6 +40,12 @@ function App() {
           <Route path="/:username">
             <ProfilePage />
           </Route>
+          <Route path="/today">
+            <ProfilePage />
+          </Route>
+          <Route path="/settings">
+            <ProfilePage />
+          </Route>
         </Switch>
       )}
     </>

@@ -68,6 +68,7 @@ def get_user_boards(username):
 @board_routes.route('/', methods=['GET','POST'])
 @login_required
 def create_board():
+    user = User.query.get(current_user.id)
 
     form = BoardForm() #confirm name of form
 
@@ -78,7 +79,8 @@ def create_board():
         new_board = Board(
             name=form.data["name"],
             private=form.data["private"],
-            description=form.data["description"]
+            description=form.data["description"],
+            user=user
         )
         db.session.add(new_board)
         db.session.commit()
