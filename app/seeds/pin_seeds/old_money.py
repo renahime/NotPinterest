@@ -293,6 +293,8 @@ def seed_old_money_pins():
 def undo_old_money_pins():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.pins RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.pin_categories RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.boards_pins RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM pins"))
         db.session.execute(text("DELETE FROM pin_categories"))

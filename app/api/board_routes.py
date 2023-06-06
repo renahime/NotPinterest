@@ -76,7 +76,6 @@ def create_board():
         new_board = Board(
             name=form.data["name"],
             private=form.data["private"],
-            cover_image=form.data["cover_image"],
             description=form.data["description"]
         )
         db.session.add(new_board)
@@ -101,11 +100,23 @@ def edit_board(id):
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
-        board_to_edit.name = form.data["name"]
-        board_to_edit.private = form.data["private"]
-        board_to_edit.cover_image = form.data["cover_image"]
-        board_to_edit.description = form.data["description"]
-
+        image_found = False
+        if form.data["name"]:
+            board_to_edit.name = form.data["name"]
+        if form.data["private"]:
+            board_to_edit.private = form.data["private"]
+        if form.data["cover_image"]:
+            for pin in board_to_edit.pins_tagged:
+                if pin.image == form.data["cover_image"]:
+                    if form.data["cover_image"] == pin.image:
+                        return {"error": "image is already a cover image"}
+                    board_to_edit.pins_tagged.pop()
+                    board_to_edit.pins_tagged.append(pin)
+                    image_found = True
+        if not image_found:
+            return {"error":"pin was not found inside board"}
+        if form.data["description"]:
+            board_to_edit.description = form.data["description"]
         db.session.commit()
         return board_to_edit.to_dict()
 
@@ -208,5 +219,5 @@ def change_board_to_pin(current_board_id, pin_id, new_board_id):
             db.session.commit()
             pin_new_board.board_tagged.append(new_board)
             db.session.commit()
-            return {"message":"Pin is now attached to".format(new_board.name)}
+            return {"message":"Pin is now attached to {}".format(new_board.name)}
     return {"errors": "Could not find pin inside of {}!".format(current_board.name)}
