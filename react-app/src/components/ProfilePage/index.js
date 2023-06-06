@@ -16,7 +16,7 @@ export default function ProfilePage() {
     const currentUser = useSelector(state => state.session.user)
     let userBoards = useSelector(state => state.boards.currentProfileBoards)
     let userBoardsArr = Object.values(userBoards)
-
+    console.log("currentProfile", currentProfile)
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
@@ -60,7 +60,6 @@ export default function ProfilePage() {
                     <h5 className="profile-followers-and-following">
                         <div>
                             {formatFollowers(currentProfile.follower_count)}
-
                         </div>
                         <i className="fa-solid fa-circle profile-followers-and-following-dot"></i>
                         <div>
@@ -68,8 +67,9 @@ export default function ProfilePage() {
                         </div>
                     </h5>
                     {checkUser() ? 
-                    <button className="profile-button edit-profile">Edit Profile</button> : 
-                    <button className="profile-button" id="follow-button">Follow</button>
+                    <button className="profile-button edit-profile">Edit Profile</button> : null}
+                    {
+                        <button className="profile-button" id="follow-button">Follow</button>
                     }
                     <div>
                         <button className="profile-button">Created</button>

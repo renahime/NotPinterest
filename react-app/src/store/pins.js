@@ -1,12 +1,17 @@
 const CREATE_PIN = "pins/createNewPin"
+const GET_PIN = "pins/getById"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
     pin
 })
 
+const getPin = (pin) => ({
+    type: GET_PIN,
+    pin
+})
+
 export const createNewPin = (pin_info) => async (dispatch) => {
-    console.log("pin_info", pin_info)
     const res = await fetch("/api/pins/new", {
         method: "POST",
         body: pin_info
@@ -17,15 +22,26 @@ export const createNewPin = (pin_info) => async (dispatch) => {
         return dispatch(createPin(new_pin))
     } else {
         const errors = await res.json()
-        console.log("errors")
         return errors
     }
 }
 
-const initialState = {pins: {}}
+export const getPinById = (pin_id) => async (dispatch) => {
+    const res = await fetch(`/api/pins/${pin_id}`)
+
+    if (res.ok) {
+        const pin = await res.json()
+        return dispatch(getPin(pin))
+    }
+
+}
+
+const initialState = {pins: {}, singlePin: {}}
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
+        case GET_PIN:
+            return {...state, pins: {...state.pins}, singlePin: {...action.pin}}
         case CREATE_PIN:
             return {...state, pins: {...state.pins, ...action.pin}}
         default:

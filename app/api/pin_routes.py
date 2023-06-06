@@ -8,17 +8,6 @@ from datetime import datetime, date
 
 pin_routes = Blueprint('pins', __name__)
 
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
-    pins = Pin.query.all()
-    all_pins = {}
-    # standardizes the output that is returned to user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    # return all_pins
-    return all_pins
 
 # gets all of the pins of a user
 @pin_routes.route("/users/<username>")
@@ -59,10 +48,20 @@ def get_pin_by_id(id):
     # querires Pin database for the pin with the id that the user requested
     pin = Pin.query.get(id)
     # sends back an error message if the pin id isn't valid
+
+    owner_info = {}
+    owner = pin.user.to_dict()
+    print("owner", owner)
+    owner_info["first_name"] = owner["first_name"]
+    owner_info["last_name"] = owner["last_name"]
+    owner_info["followers"] = owner["followers"]
+
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
-
-    return pin.to_dict()
+    
+    found_pin = pin.to_dict()
+    found_pin["owner_info"] = owner_info
+    return found_pin
 
 # route to create a new pin
 @pin_routes.route("/new", methods=["GET","POST"])
@@ -191,4 +190,16 @@ def get_latest_pins():
         for pin in pins:
             if pin.created_at.date() == latest_date:
                 all_pins[pin.id] = pin.to_dict()
+    return all_pins
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
     return all_pins

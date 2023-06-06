@@ -157,3 +157,7 @@
 .individual-board-pin-owner-info:hover {
     text-decoration: underline;
 }
+
+.individual-boards-link-to-pin {
+    cursor: zoom-in;
+}
