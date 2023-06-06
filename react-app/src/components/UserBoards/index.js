@@ -21,7 +21,7 @@ export default function UserBoards() {
 
     useEffect(() => {
         dispatch(getBoardsByUsername(username))
-    }, [dispatch])
+    }, [dispatch, username])
 
     return (
         <div className="profile-boards-all">

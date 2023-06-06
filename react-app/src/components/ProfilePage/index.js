@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo, clearProfile } from "../../store/profile"
@@ -9,12 +9,19 @@ import "./ProfilePage.css"
 export default function ProfilePage() {
     const { username } = useParams()
     const dispatch = useDispatch()
+    const [openMenu, setOpenMenu] = useState(false)
     const currentProfile = useSelector(state => state.profile.currentProfile)
+
+    let showMenu = () => {
+        setOpenMenu(!openMenu)
+    }
 
     useEffect(() => {
         dispatch(getUserInfo(username))
-        return (() => dispatch(clearProfile()))
-    }, [dispatch, username])
+        // return (() => dispatch(clearProfile()))
+    }, [dispatch])
+
+    let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
     return (
         <div>
@@ -53,6 +60,16 @@ export default function ProfilePage() {
                     </div>
                 </div>
             }
+            <div className="profile-plus-icon-wrapper">
+                <button onClick={showMenu} className="profile-plus-button">
+                    <i className="fa-solid fa-plus"></i>
+                </button>
+                {openMenu && <div className={menuClassName}>
+                    <div className="profile-dropdown-create-label">Create</div>
+                    <div className="profile-dropdown-create">Pin</div>
+                    <div className="profile-dropdown-create">Board</div>
+                </div>}
+            </div>
             <UserBoards />
         </div>
     )
