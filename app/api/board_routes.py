@@ -14,8 +14,23 @@ def get_one_user_board(username, board_name):
     print("name", name)
     user_board = Board.query.join(User).filter(User.username == username, Board.name.ilike(board_name)).one_or_none()
     
+
+    pin_info = {}
+    pins = user_board.pins_tagged
+
+    for pin in pins:
+        owner_info = {
+            "username" : pin.user.username,
+            "profile_image" : pin.user.profile_image
+        }
+        pinned = pin.to_dict()
+        pinned["owner_info"] = owner_info
+        pin_info[pin.id] = pinned
+
     if user_board:
-        return {"User Boards" : user_board.to_dict()}
+        board = user_board.to_dict()
+        board["pin info"] = pin_info
+        return {"User Boards" : board}
 
     else:
         return {"errors": "No Boards found"}, 404 

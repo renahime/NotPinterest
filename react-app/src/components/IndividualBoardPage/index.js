@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getBoardByName } from "../../store/boards"
 import { useDispatch, useSelector } from "react-redux"
+import PinsForBoardPage from "./PinsForBoardPage"
 
 export default function IndividualBoardPage () {
     let { username, boardName } = useParams()
@@ -40,12 +41,27 @@ export default function IndividualBoardPage () {
                             <p>Board options</p>
                             <p>Edit board</p>
                         </div>
+                        <div>{singleBoard.description ? singleBoard.description : null}</div>
                     </div>
                     : null}
+                    {currentUser.id !== singleBoard.user.id ?
+                    <div>
+                        <div>{singleBoard.user.username}</div>
+                        <i className="fa-solid fa-circle"></i>
+                        <div>{singleBoard.description ? singleBoard.description : null}</div>
+                    </div>
+                    : null
+                    }
                 </div>
                 {singleBoard.user.profile_image ? <img src={singleBoard.user.profile_image}/> : <i className="fa-solid fa-circle-user"></i>}
+                {currentUser.id === singleBoard.user.id ?
+                    <div>
+                        {pinDisplay(singleBoard.pins.length)}
+                    </div>
+                    : null
+                }
                 <div>
-                    {pinDisplay(singleBoard.pins.length)}
+                    <PinsForBoardPage pins={singleBoard["pin info"]}/>
                 </div>
             </div>}
         </div>
