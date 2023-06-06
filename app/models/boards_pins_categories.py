@@ -94,12 +94,29 @@ class Board(db.Model):
     def unpin(self, pin):
         self.pins_tagged.remove(pin)
 
+    def findOtherImages(self):
+        additonal_images = []
+        cover = self.pin_cover_image[0].image
+        n = 0
+        while len(additonal_images) < 2:
+            current_image = self.pins_tagged[n].image
+            if cover and current_image:
+                if current_image != cover:
+                    additonal_images.append(current_image)
+            elif current_image:
+                additonal_images.append(current_image)
+            if not current_image:
+                break
+            n += 1
+        return additonal_images
+
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'private': self.private,
             'cover_image': [image.image for image in self.pin_cover_image],
+            'additional_images': self.findOtherImages(),
             'description': self.description,
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),
