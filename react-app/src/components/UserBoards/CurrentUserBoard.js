@@ -36,6 +36,7 @@ export default function CurrentUserBoard({userBoardsArr}) {
 
     let editBoardClassName = hover ? `profile-edit-board-icon` : "profile-edit-board-icon hidden"
 
+
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
@@ -46,36 +47,28 @@ export default function CurrentUserBoard({userBoardsArr}) {
                             <i className="fa-solid fa-lock"></i>
                         </div> : null}
                         <div className="profile-board-images-wrapper">
-                            {
-                                boards.cover_image.length ? 
-                                <img className="profile-board-images1" src={boards.cover_image[0]} />
-                                : 
-                                boards.additional_images[0] ?
-                                <img className="profile-board-images1" src={boards.additional_images[0]} />
-                                :
-                                <img className="profile-board-images1" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
-                            }
-                            {
-                                boards.additional_images[0] ?
-                                <img className="profile-board-images1" src={boards.additional_images[0]} />
-                                :
-                                boards.additional_images[1] ? 
-                                <img className="profile-board-images2" src={boards.additional_images[1]} />
-                                :
-                                <img className="profile-board-images2" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
-                            }
-                            {
-                                boards.additional_images[0] ?
-                                <img className="profile-board-images1" src={boards.additional_images[0]} />
-                                :
-                                boards.additional_images[1] ? 
-                                <img className="profile-board-images2" src={boards.additional_images[1]} />
-                                :
-                                boards.additional_images[2] ? 
-                                <img className="profile-board-images3" src={boards.additional_images[2]} /> 
-                                :
-                                <img className="profile-board-images3" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
-                            }
+                            <div>
+                                {
+                                    boards.cover_image.length ? 
+                                    <img className="profile-board-cover-image" src={boards.cover_image[0]} />
+                                    : 
+                                    <img className="profile-board-cover-image" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                                }
+                            </div>
+                            <div className="profile-board-additional-image-wrapper">
+                                {
+                                    boards.additional_images[0] ?
+                                    <img className="profile-additonal-image profile-image1" src={boards.additional_images[0]} />
+                                    :
+                                    <img className="profile-additonal-image profile-image1" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                                }
+                                {
+                                    boards.additional_images[1] ? 
+                                    <img className="profile-additonal-image profile-image2" src={boards.additional_images[1]} />
+                                    :
+                                    <img className="profile-additonal-image profile-image2" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                                }
+                            </div>
                         </div>
                         {hoverDiv === boards.id ? 
                         <div className={editBoardClassName}>
