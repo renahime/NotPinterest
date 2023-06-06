@@ -142,3 +142,8 @@
     /* border: 3px solid #7FC1FF; */
     border-radius: 10px;
 }
+
+#follow-button {
+    background-color: red;
+    color: white
+}

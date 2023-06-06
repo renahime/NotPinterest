@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { getBoardsByUsername } from "../../store/boards"
 import './UserBoards.css'
 
-export default function UserBoards({userBoardsArr}) {
+export default function CurrentUserBoard({userBoardsArr}) {
     const [hover, setHover] = useState(false)
     const [hoverDiv, setHoverDiv] = useState("")
 
