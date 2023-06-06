@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
@@ -9,13 +9,18 @@ import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage"
 import CreatePin from "./components/CreatePin"
+import UpdateBoardModal from "./components/UpdateBoardModal";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const sessionUser = useSelector(state => state.session.user)
+
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+  console.log("SESSION USER IS...", sessionUser)
 
   return (
     <>
@@ -34,12 +39,16 @@ function App() {
           <Route exact path="/feed">
             <FeedPage />
           </Route>
+          <Route exact path="/boards/:boardId">
+            <UpdateBoardModal />
+          </Route>
           <Route path="/new_pin">
             <CreatePin />
           </Route>
           <Route path="/:username">
             <ProfilePage />
           </Route>
+
         </Switch>
       )}
     </>

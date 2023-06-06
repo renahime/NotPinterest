@@ -1,0 +1,131 @@
+.create-board-modal-container {
+  width: 450px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(243, 242, 242);
+  /* align-items: center; */
+  justify-content: center;
+  vertical-align: middle;
+  background-color: white;
+  border-radius: 50px;
+  position: relative;
+}
+
+.create-board-modal-header {
+  text-align: center;
+  color: rgb(51, 51, 51);
+  font-size: 25px;
+  font-weight: 600;
+  /* letter-spacing: -1.2px; */
+  padding-left: 16px;
+  padding-right: 16px;
+
+  padding-top: 45px;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  display: block;
+  font-size: 1.5em;
+}
+
+
+
+.create-board-modal-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  /* background-color: red; */
+  height: 100%;
+  width: 55%;
+}
+
+
+.create-board-modal-name {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  padding-top: 20px;
+  margin-left: 20px;
+  align-items: left;
+  margin-bottom: 12px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.create-board-modal-name-input {
+  border-radius: 16px;
+  border: 2px lightgrey solid;
+  height: 35px;
+  width: 350px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.create-board-modal-private-text {
+  font-size: 12px;
+  flex-direction: row;
+
+  width: 100%;
+  margin: 0;
+  margin-left: 7px;
+}
+
+
+.bold {
+  font-weight: bold;
+}
+
+.create-board-modal-flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 20px;
+  padding: 0px 20px;
+
+
+  width: 350px;
+}
+
+
+
+
+
+.checkbox-input {
+
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+
+}
+
+.checkbox-input:checked {
+  border-color: black;
+}
+
+
+.create-board-modal-create-button:disabled {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 15px;
+  border: 0px solid black;
+  background-color:rgb(232, 232, 232);
+  color:black;
+  padding: 10px 15px;
+
+
+}
+
+.create-board-modal-create-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 15px;
+  border: 0px solid black;
+  background-color:rgb(230, 0, 35);;
+  color:white;
+  padding: 10px 15px;
+
+
+}

@@ -1,0 +1,210 @@
+.edit-board-modal-container {
+  width: 400px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(243, 242, 242);
+  /* align-items: center; */
+  border: 1px solid black;
+  /* justify-content: center; */
+  vertical-align: middle;
+  background-color: white;
+  border-radius: 15px;
+  position: relative;
+
+}
+
+.edit-board-modal-header {
+  text-align: center;
+  color: rgb(51, 51, 51);
+  font-size: 25px;
+  font-weight: 600;
+  /* letter-spacing: -1.2px; */
+  /* padding-left: 16px;
+  padding-right: 16px; */
+
+  padding-top: 45px;
+  -webkit-font-smoothing: antialiased;
+  /* display: block; */
+  font-size: 1.5em;
+}
+
+
+
+.edit-board-modal-container form {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+
+  align-items: left;
+  /* background-color: red; */
+  height: 100%;
+  width: 55%;
+}
+
+
+.edit-board-modal-name {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  padding-top: 20px;
+  /* margin-left: 20px; */
+  align-items: left;
+  margin-bottom: 12px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.edit-board-modal-name-input {
+  border-radius: 16px;
+  border: 2px lightgrey solid;
+  height: 35px;
+  width: 350px;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.edit-board-modal-description {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-bottom: 16px;
+  justify-content: center;
+  align-items: left;
+  font-size: 12px;
+  vertical-align: middle;
+
+
+}
+
+.edit-board-modal-description-input {
+  /* padding: 8px; */
+  border-radius: 16px;
+  border: 2px lightgrey solid;
+  /* resize: vertical; */
+  min-height: 70px;
+  width: 350px;
+  resize: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", メイリオ, Meiryo, "ＭＳ Ｐゴシック", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  ;
+  /* margin-left: 175px; */
+}
+
+
+
+
+
+
+
+.edit-board-modal-private-text {
+  font-size: 12px;
+  flex-direction: row;
+
+  width: 100%;
+  margin: 0;
+  margin-left: 7px;
+}
+
+
+.bold {
+  font-weight: bold;
+}
+
+.edit-board-modal-flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 20px;
+  /* padding: 0px 20px; */
+
+
+  width: 350px;
+}
+
+
+
+
+
+.edit-board-checkbox-input {
+
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+
+}
+
+.edit-board-checkbox-input:checked {
+  border-color: black;
+}
+
+
+.edit-board-modal-create-button:disabled {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 15px;
+  border: 0px solid black;
+  background-color: rgb(232, 232, 232);
+  color: black;
+  padding: 10px 15px;
+
+
+}
+
+.edit-board-modal-create-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 15px;
+  border: 0px solid black;
+  background-color: rgb(230, 0, 35);
+  ;
+  color: white;
+  padding: 10px 15px;
+
+
+}
+
+
+
+
+.edit-board-delete-text-bottom-container {
+  /* margin:0 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
+  /* margin: 0px 0px; */
+  margin-left: 20px;
+
+}
+
+
+.edit-board-action {
+  font-size: 10px;
+  padding-top: 70px;
+  margin-bottom: 10px
+}
+
+.edit-board-settings {
+  font-size: 10px;
+  padding-top: 20px;
+  margin-left: 20px
+}
+
+
+.edit-board-delete-text {
+  margin-bottom: 10px;
+  margin-top: 0px;
+  font-weight:500;
+}
+
+
+.edit-board-delete-warning {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 15px;
+  width:auto;
+}

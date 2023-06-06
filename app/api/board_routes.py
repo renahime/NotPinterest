@@ -78,7 +78,8 @@ def create_board():
         new_board = Board(
             name=form.data["name"],
             private=form.data["private"],
-            cover_image=form.data["cover_image"],
+            # cover_image=form.data["cover_image"],
+            owner_id=current_user.id,
             description=form.data["description"]
         )
         db.session.add(new_board)

@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
 import { getAllBoardThunks } from "../../store/boards-mikey";
+import { getBoardsByUsername } from "../../store/boards";
+
+
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import CreateBoardModal from "../CreateBoardModal";
 
 import './FeedPage.css'
 
@@ -11,88 +17,114 @@ function FeedPage() {
 
   const dispatch = useDispatch()
   const history = useHistory()
+  const [isLoading, setIsLoading] = useState(true);
+
+
 
   useEffect(() => {
-    dispatch(getAllBoardThunks())
+    setTimeout(() => {
+      // Assuming you're fetching the boards data here
+      dispatch(getBoardsByUsername(username))
+      setIsLoading(false);
+    }, 2000);
+
   }, [dispatch])
 
-  const boardsSelector = useSelector((state) => state.board.allBoards)
+
+
+  //GET STATE DATA
+  const sessionUser = useSelector(state => state.session.user)
+  console.log(sessionUser)
+
+
+  const username = sessionUser.username
+  console.log("SESSION USER USERNAME", username)
+
+  const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 
-  const boards = Object.values(boardsSelector)
+  const boardsArr = Object.values(boardsSelector)
+  const boards = boardsArr[0]
   console.log("GET ALL BOARDS DATA", boards)
 
-  // test colors and pins for feed
+
+
+
+  // our boards container will loop through this array and keep assigning board backgrounds dynamically
 
   const [boardColors] = useState([
     { backgroundColor: "rgb(233, 212, 212)" },
     { backgroundColor: "rgb(190, 205, 193)" },
     { backgroundColor: "rgb(229, 235, 209)" },
     { backgroundColor: "rgb(244, 230, 219)" },
-    { backgroundColor: "rgb(233, 212, 212)" },
-    { backgroundColor: "rgb(190, 205, 193)" },
-    { backgroundColor: "rgb(229, 235, 209)" },
-    { backgroundColor: "rgb(244, 230, 219)" },
-    // { backgroundColor: "rgb(233, 212, 212)" },
-    // { backgroundColor: "rgb(190, 205, 193)" },
 
   ]);
 
+
+  // control the left and right arrows of the board container.
   const scrollContainerRef = React.useRef(null);
 
   const handleScrollLeft = () => {
-
     const scrollContainer = scrollContainerRef.current;
-
     scrollContainer.scrollLeft -= 200;
-
   };
-
 
   const handleScrollRight = () => {
-
     const scrollContainer = scrollContainerRef.current;
-
     scrollContainer.scrollLeft += 200;
-
   };
 
-  if (boards.length < 1) {
-    return <h1>loading</h1>
+
+
+  //check if we have any boards in our database or state. If not, we will load the page or not render it at all
+  if (typeof boards === 'undefined' || boards.length === 0) {
+
+    //Loading screen
+    if (isLoading) {
+      return <h1>Loading</h1>;
+    } else {
+      return <h1>No boards found</h1>;
+    }
   }
+
 
   return (
     <>
       <div className="feed-container">
 
-        <div className="board-container" ref={scrollContainerRef}>
-
-          <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-            &lt;
-          </div>
-
-          {boardColors.map((color, index) => (
-
-            // <div className="board-top">
-            //   <img className="board-top-container-image" src="https://i.pinimg.com/564x/95/37/a9/9537a91068b3e44e5a9ee4b912b06882.jpg" />
-            <div
-              key={index}
-              className="board-top"
-              style={color}
-            >
-              {boards[index].name}
+        {boards.length > 0 && (
+          <div className="board-container" ref={scrollContainerRef}>
+            <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
+              &lt;
             </div>
-
-
-            // </div>
-          ))}
-
-          <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-            &gt;
+            {boards.map((board, index) => (
+              
+              <div key={index} className="board-top" style={boardColors[index % boardColors.length]}>
+                {board.name}
+              </div>
+            ))}
+            <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
+              &gt;
+            </div>
           </div>
+        )
 
-        </div>
+        }
+
+
+
+
+
+
+        <OpenModalButton
+          buttonText="&#43;"
+          className="test-open-create-board-modal"
+          modalComponent={<CreateBoardModal />}
+          style={{ fontSize: '20px' }}
+        />
+
+
 
 
         <div className="feed-test-container">
