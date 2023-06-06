@@ -3,16 +3,18 @@ import { useParams } from "react-router-dom"
 import { getBoardByName } from "../../store/boards"
 import { useDispatch, useSelector } from "react-redux"
 import PinsForBoardPage from "./PinsForBoardPage"
+import './IndividualBoardPage.css'
+import { Link } from "react-router-dom"
 
-export default function IndividualBoardPage () {
+export default function IndividualBoardPage() {
     let { username, boardName } = useParams()
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [menu, showMenu] = useState(false)
     const dispatch = useDispatch()
     let singleBoard = useSelector(state => state.boards.singleBoard)
     const currentUser = useSelector(state => state.session.user)
 
-    function pinDisplay(pins) { 
+    function pinDisplay(pins) {
         if (pins === 0 || pins > 1) {
             return `${pins} pins`
         } else {
@@ -25,45 +27,49 @@ export default function IndividualBoardPage () {
     }, [dispatch])
 
     if (!Object.values(singleBoard).length) return <h1>..Loading</h1>
-    
-    let ellipsisClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
+
+    let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
 
     return (
-        <div>
-            {loading && 
-            <div>
-                <div>
-                    <h1>{singleBoard.name}</h1>
-                    {currentUser.id === singleBoard.user.id ? 
-                    <div>
-                        <i onClick={() => showMenu(!menu)} className="fa-solid fa-ellipsis"></i>
-                        <div className={ellipsisClassName}>
-                            <p>Board options</p>
-                            <p>Edit board</p>
+        <div >
+            {loading &&
+                <div className="individual-board-wrapper">
+                    <div className="individual-board-info-wrapper">
+                        {currentUser.id === singleBoard.user.id ?
+                            <div className="individual-board-info">
+                                <div className="individual-board-info-owner">
+                                    <h1>{singleBoard.name}</h1>
+                                    <button onClick={() => showMenu(!menu)} className="individual-board-ellipsis">
+                                        <i className="fa-solid fa-ellipsis"></i>
+                                    </button>
+                                    <div className={ellipsisInfoClassName}>
+                                        <p>Board options</p>
+                                        <p>Edit board</p>
+                                    </div>
+                                </div>
+                                {singleBoard.user.profile_image ? <img className="individual-board-profile-image" src={singleBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
+                                <div>
+                                    <div className="individual-board-description-owner">{singleBoard.description ? singleBoard.description : null}</div>
+                                </div>
+                            </div>
+                            :
+                            <div className="individual-board-info">
+                                <h1>{singleBoard.name}</h1>
+                                {singleBoard.user.profile_image ? <img className="individual-board-profile-image" src={singleBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
+                                <div className="individual-board-description">
+                                    <Link className="individual-board-profile-link" to={`/${singleBoard.user.username}`}>{singleBoard.user.username}</Link>
+                                    <i className="fa-solid fa-circle board-dot"></i>
+                                    <div>{singleBoard.description ?
+                                        <div>
+                                            {singleBoard.description}</div> : null}
+                                    </div>
+                                </div>
+                            </div>}
+                    </div>
+                        <div>
+                            <PinsForBoardPage pins={singleBoard["pin info"]} />
                         </div>
-                        <div>{singleBoard.description ? singleBoard.description : null}</div>
-                    </div>
-                    : null}
-                    {currentUser.id !== singleBoard.user.id ?
-                    <div>
-                        <div>{singleBoard.user.username}</div>
-                        <i className="fa-solid fa-circle"></i>
-                        <div>{singleBoard.description ? singleBoard.description : null}</div>
-                    </div>
-                    : null
-                    }
-                </div>
-                {singleBoard.user.profile_image ? <img src={singleBoard.user.profile_image}/> : <i className="fa-solid fa-circle-user"></i>}
-                {currentUser.id === singleBoard.user.id ?
-                    <div>
-                        {pinDisplay(singleBoard.pins.length)}
-                    </div>
-                    : null
-                }
-                <div>
-                    <PinsForBoardPage pins={singleBoard["pin info"]}/>
-                </div>
-            </div>}
+                </div>}
         </div>
     )
 }

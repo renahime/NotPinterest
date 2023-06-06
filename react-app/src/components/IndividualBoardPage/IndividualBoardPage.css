@@ -1,0 +1,159 @@
+
+.individual-board-individual-pins-wrapper {
+    width: 240px;
+    height: fit-content;
+    /* min-height: 250px; */
+}
+
+.individual-board-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.individual-board-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+.individual-board-info-owner > h1 {
+    font-weight: 600;
+}
+
+.individual-board-info-owner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    column-gap: 5px;
+    position: relative;
+}
+
+.hidden {
+    display: none;
+}
+
+.individual-board-ellipsis {
+    padding: 5px;
+    border: transparent;
+    background-color: #E0E0E0;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.board-ellipsis-wrapper:not(.hidden) {
+    position: absolute;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    right: 30px;
+    top: 65px;
+    background-color: white;
+    box-shadow: 0 0 4px gray;
+    width: 150px;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.individual-board-info > h1 {
+    padding: 0;
+    margin: 0;
+}
+
+.individual-board-description-owner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.individual-board-description {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 5px;
+}
+
+.board-dot {
+    font-size: 2px;
+}
+
+.individual-board-pins-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: flex-start;
+    box-sizing: border-box;
+    /* padding: 0; */
+    margin: 0;
+    column-gap: 15px;
+    padding-top: 15px;
+}
+
+.individual-board-pin-image {
+    /* width: 240px;
+    max-height: 400px;
+    min-height: 250px; */
+    height: 80%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.individual-board-individual-pin-profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.individual-board-profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.individual-board-profile-image.fa-solid.fa-circle-user {
+    font-size: 50px;
+}
+
+.individual-board-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    row-gap: 10px;
+}
+
+.individual-board-profile-link {
+    text-decoration: none;
+    font-weight: 500;
+    color: black;
+}
+
+.individual-board-pin-title {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.individual-board-pin-owner-info {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.individual-board-pin-owner-info:hover {
+    text-decoration: underline;
+}
