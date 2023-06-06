@@ -1,15 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getBoardsByUsername } from "../../store/boards"
 import './UserBoards.css'
 
 export default function UserBoards({userBoardsArr}) {
-    // const dispatch = useDispatch()
-    // const { username } = useParams()
-    // let userBoards = useSelector(state => state.boards.currentProfileBoards)
-    // let userBoardsArr = Object.values(userBoards)
-    console.log("userboards", userBoardsArr)
+    const [hover, setHover] = useState(false)
+    const [hoverDiv, setHoverDiv] = useState("")
 
     function pinDisplay(pins) { 
         if (pins === 0 || pins > 1) {
@@ -18,17 +15,27 @@ export default function UserBoards({userBoardsArr}) {
             return "1 pin"
         }
     }
-    // useEffect(() => {
-    //     dispatch(getBoardsByUsername(username))
-    // }, [dispatch, username])
+
+    function onHover(board) {
+        setHover(true)
+        setHoverDiv(board.id)
+    }
+
+    function offHover() {
+        setHover(false)
+        setHoverDiv("")
+    }
+
+    let editBoardClassName = hover ? `profile-edit-board-icon` : "profile-edit-board-icon hidden"
 
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
-                <div>
+                <div className="profile-boards-wrapper" onMouseEnter={() => onHover(boards)} onMouseLeave={() => offHover()}>
+                    
                     <div className="profile-board-pics">
                         {boards.private ? <div className="profile-board-lock-icon-wrapper">
-                            <i class="fa-solid fa-lock"></i>
+                            <i className="fa-solid fa-lock"></i>
                         </div> : null}
                         <div className="profile-board-images-wrapper">
                             {
@@ -62,6 +69,10 @@ export default function UserBoards({userBoardsArr}) {
                                 <img className="profile-board-images3" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
                             }
                         </div>
+                        {hoverDiv === boards.id ? 
+                        <div className={editBoardClassName}>
+                            <i className="fa-solid fa-pencil"></i>
+                        </div> : null}
                     </div>
                     <div className="profile-board-info"> 
                         <div>

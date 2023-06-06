@@ -18,7 +18,10 @@ export default function ProfilePage() {
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
-
+    function formatFollowers(num) {
+        if (num === 1) return "1 follower"
+        else return `${num} followers`
+    }
     useEffect(() => {
         dispatch(getUserInfo(username))
         dispatch(getBoardsByUsername(username))
@@ -49,7 +52,7 @@ export default function ProfilePage() {
                     {currentProfile.about ? <h5 className="profile-about-section">{currentProfile.about}</h5> : null}
                     <h5 className="profile-followers-and-following">
                         <div>
-                            {currentProfile.follower_count} followers
+                            {formatFollowers(currentProfile.follower_count)}
 
                         </div>
                         <i className="fa-solid fa-circle profile-followers-and-following-dot"></i>

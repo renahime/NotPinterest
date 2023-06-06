@@ -35,6 +35,7 @@
     padding: 20px 50px;
     justify-content: center;
     flex-wrap: wrap;
+    cursor: pointer;
 }
 
 .profile-board-info {
@@ -69,4 +70,25 @@
     background-color: white;
     border-radius: 50%;
     padding: 5px;
+}
+
+.profile-edit-board-icon.hidden {
+    display: none;
+}
+
+.profile-boards-wrapper {
+    position: relative;
+}
+
+.profile-edit-board-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.profile-edit-board-icon:hover {
+    background-color: #F0F0F0;
 }
