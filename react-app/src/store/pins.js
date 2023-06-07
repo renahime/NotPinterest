@@ -17,10 +17,10 @@ const getPinsToday = (pins) => ({
     pins
 })
 
-export const createNewPin = (pin_info) => async (dispatch) => {
+export const createNewPin = (pinData) => async (dispatch) => {
     const res = await fetch("/api/pins/new", {
         method: "POST",
-        body: pin_info
+        body: pinData
     })
 
     if (res.ok) {

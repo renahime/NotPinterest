@@ -66,15 +66,15 @@ def get_pin_by_id(id):
     return found_pin
 
 # route to create a new pin
-@pin_routes.route("/", methods=["GET", "POST"])
-@login_required
+@pin_routes.route("/new", methods=["GET", "POST"])
+# @login_required
 def create_pin():
     form = PinForm()
-
+    print("made it")
     # Sets the boards that a user has and can save thier pin to
     user_boards = Board.query.filter(Board.owner_id == current_user.id).all()
     if user_boards:
-        form.board.choices = [board.name for board in user_boards]
+        form.board.choices = [board.id for board in user_boards]
 
     if not user_boards:
         form.board.choices = []
