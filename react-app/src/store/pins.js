@@ -6,10 +6,6 @@ const createPin = (pin) => ({
     pin
 })
 
-const getPinsToday = (pins) => ({
-    type: GET_PINS_MADE_TODAY,
-    pins
-})
 
 export const createNewPin = (pin_info) => async (dispatch) => {
     console.log("pin_info", pin_info)
@@ -28,29 +24,110 @@ export const createNewPin = (pin_info) => async (dispatch) => {
     }
 }
 
-
-export const fetchPinsToday = () => async (dispatch) => {
-    const res = await fetch(`/api/pins/today`, {
-        method: 'GET'
-    })
-    if (res.ok) {
-        let pinsToday = await res.json()
-        dispatch(getPinsToday(pinsToday))
-    } else {
-        const errors = await res.json()
-        return errors
-    }
-}
-
 const initialState = { allPins: {}, todayPins: {} }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, ...action.pin } }
-        case GET_PINS_MADE_TODAY:
-            return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
         default:
             return state
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// case GET_PINS_MADE_TODAY:
+//     return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
+// const getPinsToday = (pins) => ({
+//     type: GET_PINS_MADE_TODAY,
+//     pins
+// })
+// export const fetchPinsToday = () => async (dispatch) => {
+//     const res = await fetch(`/api/pins/today`, {
+//         method: 'GET'
+//     })
+//     if (res.ok) {
+//         let pinsToday = await res.json()
+//         dispatch(getPinsToday(pinsToday))
+//     } else {
+//         const errors = await res.json()
+//         return errors
+//     }
+// }
