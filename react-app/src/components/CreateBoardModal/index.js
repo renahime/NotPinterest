@@ -4,8 +4,11 @@ import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
 import { createBoardThunk } from "../../store/boards";
-
+import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
+import SavePinsToBoardModal from "./SavePinsToBoard";
 import './CreateBoardModal.css'
+
+
 
 
 function CreateBoardModal() {
@@ -15,14 +18,25 @@ function CreateBoardModal() {
   const [name, setName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
+  const { setModalContent, closeModal } = useModal();
 
 
   useEffect(() => {
-
   }, [name, isPrivate])
 
+  const openModal = () => {
+    const modalContent = (
+      <div>
+       <SavePinsToBoardModal/>
+      </div>
+    );
+    setModalContent(modalContent);
+  };
+
+
   const disabledButton = name === "";
+
+
 
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
@@ -45,17 +59,12 @@ function CreateBoardModal() {
     }
     //log formData
     console.log("FORM DATA:", formData)
-
     await dispatch(createBoardThunk(formData))
-
     closeModal()
 
-    history.push('/boards/1')
+    // openModal(<SavePinsToBoardModal />);
 
-
-
-
-
+    // history.push('/boards/1')
   };
 
 
@@ -94,16 +103,11 @@ function CreateBoardModal() {
             </div>
           </label>
 
-          <button className="create-board-modal-create-button" disabled={disabledButton}>
+          <button className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}>
             Create
           </button>
 
         </form>
-
-
-
-
-
       </div>
     </>
   )

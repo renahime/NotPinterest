@@ -6,32 +6,46 @@ import { useHistory, useParams } from 'react-router-dom'
 import { createBoardThunk, getBoardsByUsername, updateBoardThunk } from "../../store/boards";
 import DeleteBoardModal from "../DeleteBoardModal";
 import { deleteBoardThunk } from "../../store/boards";
+import SavePinsToBoardModal from "../CreateBoardModal/SavePinsToBoard";
+import ChangeBoardCoverModal from "./ChangeBoardCoverModal";
 
 import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal({ sessionUser }) {
+function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
-  const { closeModal } = useModal();
+  const { setModalContent, closeModal } = useModal();
 
-
-  const { id } = useParams();
-  const username = sessionUser?.username;
+  console.log("BOARD ID", id)
+  console.log("BOARD USERNAME", username)
+  console.log("newCoverIMAGE", newCoverImage)
+  // const { id } = useParams();
+  // const username = sessionUser?.username;
   console.log("SESSION USERNAME", sessionUser?.username)
   const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards);
+  console.log("CURRENT PROFILE BOARDS",currentProfileBoards)
 
 
   const oldBoardData = currentProfileBoards[id];
   console.log("OLD BOARD DATA", oldBoardData)
 
+  const pinImages = oldBoardData.additional_images
+  console.log("PIN IMAGES", pinImages)
+
+
   const [name, setName] = useState(oldBoardData?.name || "");
   const [description, setDescription] = useState(oldBoardData?.description || "");
   const [isPrivate, setIsPrivate] = useState(oldBoardData?.private || false);
+  const [cover_image, setCoverImage] = useState(
+    newCoverImage ? newCoverImage : oldBoardData?.cover_image || ""
+  );
+
+
 
   useEffect(() => {
     dispatch(getBoardsByUsername(username)).then(() => setIsLoaded(true));
@@ -41,8 +55,20 @@ function UpdateBoardModal({ sessionUser }) {
     setName(oldBoardData?.name || "");
     setDescription(oldBoardData?.description || "")
     setIsPrivate(oldBoardData?.private || false);
+    setCoverImage(newCoverImage ? newCoverImage : oldBoardData?.cover_image || "")
+  }, [isLoaded])
 
-  },[isLoaded])
+
+  // when we click on Board Cover we need to open up modal to save pins to board.
+  const openModal = () => {
+    const modalContent = (
+      <div>
+        <ChangeBoardCoverModal pinImages={pinImages} updatedBoardData={updatedBoardData} id={id} username={username}/>
+      </div>
+    );
+    setModalContent(modalContent);
+  };
+
 
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
@@ -50,22 +76,36 @@ function UpdateBoardModal({ sessionUser }) {
 
   const disabledButton = name === "";
 
+
+  // when they click the delete section, it will update
   const onDelete = () => {
     dispatch(deleteBoardThunk(id));
     history.push('/feed');
   };
 
+
+
+
+
+  const updatedBoardData = {
+    name,
+    private: isPrivate,
+    description: description,
+    cover_image: cover_image
+
+  };
+
+console.log("UPADATE BOARD STATE", updatedBoardData)
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    const updatedBoardData = {
-      name,
-      private: isPrivate,
-      description: description
-    };
+
 
     await dispatch(updateBoardThunk(updatedBoardData, id));
-    const boardName = currentProfileBoards[id]?.name;
-    history.push(`/${username}/${boardName}`);
+    // const boardName = currentProfileBoards[id]?.name;
+    history.push(`/feed`);
+    closeModal()
   };
 
   if (!currentProfileBoards || !username) {
@@ -85,8 +125,9 @@ function UpdateBoardModal({ sessionUser }) {
 
             <div className="edit-board-cover-image-container">
               <div className="edit-board-cover-image-text">Board cover</div>
-              <div className="edit-board-cover-image">
-                <div className="edit-board-cover-image-plus-sign">+</div>
+              <div className="edit-board-cover-image" onClick={openModal}>
+                {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
+                <img src={cover_image} className="edit-board-cover-image" />
               </div>
 
             </div>

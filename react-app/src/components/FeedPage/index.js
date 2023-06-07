@@ -20,7 +20,25 @@ function FeedPage() {
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
+  const [hover, setHover] = useState(false)
+  const [hoverDiv, setHoverDiv] = useState("")
 
+
+  function onHover(board) {
+    setHover(true)
+    setHoverDiv(board.id)
+  }
+
+  function offHover() {
+    setHover(false)
+    setHoverDiv("")
+  }
+
+  function viewIndividualBoard (username, name) {
+    let nameArr = name.toLowerCase().split(" ")
+    let formattedName = nameArr.join("_")
+    history.push(`/${username}/${formattedName}`)
+}
 
 
   useEffect(() => {
@@ -109,13 +127,14 @@ function FeedPage() {
             </div>
             {boards.map((board, index) => (
 
-              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} >
-                <OpenModalButton
+              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHover(board)} onMouseLeave={() => offHover()}>
+                {/* <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"
                   modalComponent={<UpdateBoardModal id={board.id} />}
                   onClick={() => history.push(`/boards/${board.id}`)}
-                />
+                /> */}
+                {board.name}
               </div>
             ))}
             <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>

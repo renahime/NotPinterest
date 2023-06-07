@@ -12,6 +12,7 @@ import CreatePin from "./components/CreatePin"
 import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
+import SavePinsToBoardModal from "./components/CreateBoardModal/SavePinsToBoard";
 
 import Settings from "./components/Forms/SettingsForm";
 import TodayPage from "./components/TodayPage";
@@ -31,40 +32,41 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path="/settings">
+            <Settings />
+          </Route>
+          <Route path="/test/update">
+            <SavePinsToBoardModal />
+          </Route>
+          <Route exact path="/today">
+            <TodayPage />
+          </Route>
+          <Route exact path="/login" >
+            <LoginFormPage />
+          </Route>
+          <Route exact path="/signup">
+            <SignupFormPage />
+          </Route>
+          <Route exact path="/create">
+            <CreatePin />
+          </Route>
           <Route exact path="/">
             <LandingPage />
           </Route>
           <Route exact path="/feed">
             <FeedPage />
           </Route>
-          <Route path="/settings">
-            <Settings />
-          </Route>
-          <Route path="/today">
-            <TodayPage />
-          </Route>
-          <Route path="/login">
-            <LoginFormPage />
-          </Route>
-          <Route path="/signup">
-            <SignupFormPage />
-          </Route>
-          <Route path="/new_pin">
-            <CreatePin />
-          </Route>
-          <Route path="/pin/:id">
-            <IndividualPinPage />
-          </Route>
-
           <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
           </Route>
+          <Route exact path="/pin/:id">
+            <IndividualPinPage />
+          </Route>
+          <Route exact path="/:username/:boardName">
+            <IndividualBoardPage />
+          </Route>
           <Route path="/:username">
             <ProfilePage />
-          </Route>
-
-          <Route path="/:username/:boardName">
-            <IndividualBoardPage />
           </Route>
 
         </Switch>

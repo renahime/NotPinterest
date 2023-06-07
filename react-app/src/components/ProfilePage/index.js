@@ -7,6 +7,9 @@ import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import "./ProfilePage.css"
 
+import OpenModalButton from "../OpenModalButton"
+import CreateBoardModal from "../CreateBoardModal"
+
 
 export default function ProfilePage() {
     const { username } = useParams()
@@ -66,7 +69,7 @@ export default function ProfilePage() {
                             {currentProfile.following_count} following
                         </div>
                     </h5>
-                    {checkUser() ? 
+                    {checkUser() ?
                     <button className="profile-button edit-profile">Edit Profile</button> : null}
                     {
                         <button className="profile-button" id="follow-button">Follow</button>
@@ -86,15 +89,20 @@ export default function ProfilePage() {
                     {openMenu && <div className={menuClassName}>
                         <div className="profile-dropdown-create-label">Create</div>
                         <div className="profile-dropdown-create">Pin</div>
-                        <div className="profile-dropdown-create">Board</div>
+                        <div className="profile-dropdown-create" onClick={showMenu}>
+                            <OpenModalButton
+										buttonText="Board"
+										modalComponent={<CreateBoardModal />}
+									/>
+                        </div>
                     </div>}
                 </div>
-                <CurrentUserBoard userBoardsArr={userBoardsArr}/> 
+                <CurrentUserBoard userBoardsArr={userBoardsArr}/>
             </div>
-            : 
+            :
             <NotUSerProfile userBoardsArr={userBoardsArr} />
         }
-        
+
         </div>
     )
 }
