@@ -14,20 +14,8 @@ export default function IndividualPinPage() {
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
-
-    // Select a Color
-    //     <select
-    //     value={color}
-    //     onChange={(e) => setColor(e.target.value)}
-    //     >
-    //       {COLORS.map(color => (
-    //         <option
-    //           key={color}
-    //         >
-    //           {color}
-    //         </option>
-    //       ))}
-    //     </select>
+    const currentUserBoardsArr = Object.values(currentUserBoards)
+    console.log("currentUserBoardsArr", board)
     useEffect(() => {
         dispatch(getPinById(id))
         dispatch(getBoardsofCurrentUser())
@@ -69,10 +57,16 @@ export default function IndividualPinPage() {
 
                         <form className="single-pin-edit-board-form">
                             <label>
-                                <input
-                                    type="list"
-                                    onChange={(e) => setBoard(e.target.name)}
-                                />
+                                <select
+                                    value={board}
+                                    onChange={(e) => setBoard(e.target.value)}
+                                >
+                                    {currentUserBoardsArr.map(boardValue => (
+                                        <option value={boardValue.id}>
+                                            {boardValue.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </label>
                             <button className="single-pin-edit-board-button">Save</button>
                         </form>
