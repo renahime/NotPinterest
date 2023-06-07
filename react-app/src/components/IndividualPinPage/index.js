@@ -26,35 +26,41 @@ export default function IndividualPinPage() {
         <div className="single-pin-wrapper">
             <div className="single-pin">
                 <div>
-                    <img className="single-pin-image" src={singlePin.image} alt={singlePin.alt_text ? singlePin.alt_text : ""}/>
+                    <img className="single-pin-image" src={singlePin.image} alt={singlePin.alt_text ? singlePin.alt_text : ""} />
                 </div>
-                <div>
-                    <div>
-                        <button>
-                        <i className="fa-solid fa-ellipsis"></i>
-                        </button>
-                        <form>
+                <div className="single-pin-details">
+                    <div className="single-pin-edit-board">
+                        {currentUser.id === singlePin.owner_id ? <button className="single-pin-ellipsis"><i className="fa-solid fa-ellipsis"></i></button> : null}
+
+                        <form className="single-pin-edit-board-form">
                             <label>
                                 <input
                                     type="list"
                                     onChange={(e) => setBoard(e.target.name)}
                                 />
                             </label>
-                            <button>Save</button>
+                            <button className="single-pin-edit-board-button">Save</button>
                         </form>
                     </div>
-                    <div> {singlePin.title ? <h2>{singlePin.title}</h2> : null} </div>
-                    <div>
+                    <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
+                    <div className="single-pin-owner-info">
                         <div>
-                            {singlePin.profile_image ? <img src={singlePin.profile_image} /> : <i className="fa-solid fa-circle-user"></i>}
+                            <div>
+                                {singlePin.profile_image ? <img className="single-pin-profile-image" src={singlePin.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
+                            </div>
+                            <div>
+                                <div>
+                                    <p>{singlePin.owner_info?.first_name} {singlePin.owner_info?.last_name}</p>
+                                </div>
+                                <div>
+                                    {formatFollowers(singlePin?.owner_info?.followers.length)}
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            {formatFollowers(singlePin?.owner_info?.followers.length)}
+                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button>Follow</button> : null}
+                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button>Following</button> : null}
                         </div>
-                    </div>
-                    <div>
-                        {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button>Follow</button> : null}
-                        {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button>Following</button> : null}
                     </div>
                 </div>
             </div>
