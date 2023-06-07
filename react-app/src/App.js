@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
@@ -9,21 +9,37 @@ import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage"
 import CreatePin from "./components/CreatePin"
+import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
 
+import Settings from "./components/Forms/SettingsForm";
+import TodayPage from "./components/TodayPage";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const sessionUser = useSelector(state => state.session.user)
+
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
+
+  console.log("SESSION USER IS...", sessionUser)
 
   return (
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route path="/settings">
+            <Settings />
+          </Route>
+          <Route path="/today">
+            <TodayPage />
+          </Route>
+          <Route path="/:username">
+            <ProfilePage />
+          </Route>
           <Route path="/login" >
             <LoginFormPage />
           </Route>
@@ -33,8 +49,11 @@ function App() {
           <Route exact path="/">
             <LandingPage />
           </Route>
-          <Route exact path="/feed">
+          {/* <Route exact path="/feed">
             <FeedPage />
+          </Route> */}
+          <Route exact path="/boards/:id">
+            <UpdateBoardModal sessionUser={sessionUser} />
           </Route>
           <Route path="/new_pin">
             <CreatePin />
@@ -44,9 +63,6 @@ function App() {
           </Route>
           <Route path="/:username/:boardName">
             <IndividualBoardPage />
-          </Route>
-          <Route path="/:username">
-            <ProfilePage />
           </Route>
         </Switch>
       )}

@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect,request
 from app.models import db,Board, User, Pin
 from flask_login import current_user, login_user, logout_user, login_required
-from ..forms import BoardForm #need to see BoardForm
+from ..forms import BoardForm, EditBoardForm
 from .auth_routes import validation_errors_to_error_messages
 
 board_routes = Blueprint('boards', __name__)
@@ -33,7 +33,7 @@ def get_one_user_board(username, board_name):
         return {"User Boards" : board}
 
     else:
-        return {"errors": "No Boards found"}, 404 
+        return {"errors": "No Boards found"}, 404
 
 #Route to get all board
 @board_routes.route('/', methods = ["GET"])
@@ -77,13 +77,13 @@ def get_current_user_boards():
         all_boards[board.id] = board.to_dict()
     return all_boards
 
-    
+
 
 #Route to get a specific user's boards
 @board_routes.route("/users/<username>", methods= ["GET"])
 def get_user_boards(username):
     user_boards = Board.query.join(User).filter(User.username == username).all()
-    
+
     if user_boards:
         return {"User Boards" : [board.to_dict() for board in user_boards]}
 
@@ -93,9 +93,10 @@ def get_user_boards(username):
 
 
 # Route to create a board
-@board_routes.route('/', methods=['POST'])
+@board_routes.route('/', methods=['GET','POST'])
 @login_required
 def create_board():
+    user = User.query.get(current_user.id)
 
     form = BoardForm() #confirm name of form
 
@@ -106,7 +107,8 @@ def create_board():
         new_board = Board(
             name=form.data["name"],
             private=form.data["private"],
-            description=form.data["description"]
+            description=form.data["description"],
+            user=user
         )
         db.session.add(new_board)
         db.session.commit()
@@ -117,34 +119,48 @@ def create_board():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 # Route to edit a board
-@board_routes.route('/<int:id>', methods=['PUT'])
+@board_routes.route('/<int:id>', methods=['GET','PUT'])
 @login_required
 def edit_board(id):
+    print("WE ARE In edit board route")
     board_to_edit = Board.query.get(id)
+
+    print("WE ARE In edit board route 2")
 
     if current_user.id != board_to_edit.owner_id:
         return {"errors":"you do not own this board"}
 
-    form = BoardForm() #confirm name of form
+    form = EditBoardForm() #confirm name of form
+
+    choices = []
+
+    # for pinId in board_to_edit.pins_tagged:
+    #     pin = Pin.query.get(pinId)
+    #     choices.append(pin.name)
+
+    form.cover_image.choices = choices
+
 
     form['csrf_token'].data = request.cookies['csrf_token']
 
+
+
     if form.validate_on_submit():
-        image_found = False
         if form.data["name"]:
             board_to_edit.name = form.data["name"]
         if form.data["private"]:
             board_to_edit.private = form.data["private"]
         if form.data["cover_image"]:
+            image_found = False
             for pin in board_to_edit.pins_tagged:
                 if pin.image == form.data["cover_image"]:
                     if form.data["cover_image"] == pin.image:
                         return {"error": "image is already a cover image"}
-                    board_to_edit.pins_tagged.pop()
-                    board_to_edit.pins_tagged.append(pin)
+                    board_to_edit.pin_cover_image.pop()
+                    board_to_edit.pin_cover_image.append(pin)
                     image_found = True
-        if not image_found:
-            return {"error":"pin was not found inside board"}
+            if not image_found:
+                return {"error":"pin was not found inside board"}
         if form.data["description"]:
             board_to_edit.description = form.data["description"]
         db.session.commit()
@@ -152,6 +168,7 @@ def edit_board(id):
 
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
 
 #Route to delete a single board
 @board_routes.route('/<int:id>/delete', methods = ["DELETE"])
@@ -218,6 +235,8 @@ def unpin(boardId,pinId):
 
     for pin in board.pins_tagged:
         if pin.id == pinId:
+            if pin.id == board.pin_cover_image[0].id:
+                board.pin_cover_image.pop()
             board.pins_tagged.remove(_pin)
             db.session.commit()
             return {"message": "You are no longer pinning {}!".format(_pin.title)}

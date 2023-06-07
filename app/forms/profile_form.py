@@ -31,4 +31,4 @@ class ProfileForm(FlaskForm):
     about = StringField('About', validators=[Length(max=255, message="Name must be less than 255 chars!")])
     pronouns = SelectField('Pronouns', choices=PRONOUNS, validators=[Length(max=255, message="Name must be less than 255 chars!")])
     website = StringField('Website', validators=[URL(),Length(max=255, message="Name must be less than 255 chars!")])
-    username = StringField('Board Name', validators=[Length(max=40, message="Name must be less than 40 chars!"), username_exists])
+    username = StringField('Username', validators=[Length(max=40, message="Name must be less than 40 chars!"), username_exists])

@@ -31,7 +31,7 @@ function Navigation({ isLoaded }) {
 							Home
 						</NavLink>
 
-						<NavLink to="/today" className="tab" activeClassName="active">
+						<NavLink to="/todaypage" className="tab" activeClassName="active">
 							Today
 						</NavLink>
 
@@ -41,8 +41,10 @@ function Navigation({ isLoaded }) {
 
 					</div>
 				</div>
+
+				<input type="text" className="search-bar" placeholder="Search" />
 				<div className="right-section">
-					<input type="text" placeholder="Search" className="search-bar" />
+
 				</div>
 				{isLoaded && sessionUser ? (
 					<ProfileButton user={sessionUser} />
