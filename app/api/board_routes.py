@@ -7,6 +7,18 @@ from .auth_routes import validation_errors_to_error_messages
 board_routes = Blueprint('boards', __name__)
 
 
+#Route to get a specific board of a user
+@board_routes.route("/users/<username>/<board_name>", methods= ["GET"])
+def get_one_user_board(username, board_name):
+    name = board_name.split("_")
+    print("name", name)
+    user_board = Board.query.join(User).filter(User.username == username, Board.name.ilike(board_name)).one_or_none()
+
+    if user_board:
+        return {"User Boards" : user_board.to_dict()}
+
+    else:
+        return {"errors": "No Boards found"}, 404
 
 #Route to get all board
 @board_routes.route('/', methods = ["GET"])
@@ -50,18 +62,19 @@ def get_current_user_boards():
         all_boards[board.id] = board.to_dict()
     return all_boards
 
+
+
 #Route to get a specific user's boards
 @board_routes.route("/users/<username>", methods= ["GET"])
 def get_user_boards(username):
     user_boards = Board.query.join(User).filter(User.username == username).all()
-
-    # print("user_boards[0].cover_image", user_boards[0].cover_image.pin[0])
 
     if user_boards:
         return {"User Boards" : [board.to_dict() for board in user_boards]}
 
     else:
         return {"errors": "No Boards found"}
+
 
 
 # Route to create a board
@@ -118,7 +131,7 @@ def edit_board(id):
 
 
     if form.validate_on_submit():
-        print("WE ARE CHECKING FOR SUBMISSION")
+        image_found = False
         if form.data["name"]:
             board_to_edit.name = form.data["name"]
         if form.data["private"]:
@@ -240,5 +253,5 @@ def change_board_to_pin(current_board_id, pin_id, new_board_id):
             db.session.commit()
             pin_new_board.board_tagged.append(new_board)
             db.session.commit()
-            return {"message":"Pin is now attached to".format(new_board.name)}
+            return {"message":"Pin is now attached to {}".format(new_board.name)}
     return {"errors": "Could not find pin inside of {}!".format(current_board.name)}

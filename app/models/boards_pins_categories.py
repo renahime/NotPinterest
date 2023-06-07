@@ -39,14 +39,30 @@ if environment == "production":
 pin_categories = db.Table(
     "pin_categories",
     db.Column(
-        "pin_id",
+        "board_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("pins.id"), ondelete='CASCADE'),
     ),
     db.Column(
-        "category_id",
+        "pin_id",
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("categories.id"), ondelete='CASCADE')
+    )
+)
+
+
+board_cover_images = db.Table(
+    "board_cover_image",
+    db.Column(
+        "board_image_is_on_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("boards.id"), ondelete='CASCADE'),
+        primary_key=True
+    ),
+    db.Column(
+        "pin_used_on_board_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("pins.id"), ondelete='CASCADE')
     )
 )
 
@@ -59,7 +75,6 @@ class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     private = db.Column(db.Boolean)
-    # board_cover_image = db.Column(db.String(255))
     description = db.Column(db.String(255))
     owner_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -68,17 +83,49 @@ class Board(db.Model):
     user = db.relationship('User', back_populates='boards')
     categories = db.relationship('Category', secondary= board_categories, back_populates='boards',cascade="all, delete", passive_deletes=True)
     pins_tagged = db.relationship('Pin', secondary=boards_pins, backref='board_pinned',passive_deletes=True)
-    cover_image = db.relationship('BoardCoverImage', back_populates="board_for_image")
+    pin_cover_image = db.relationship('Pin', secondary=board_cover_images, backref='board_image_is_on',passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
+
+    def pin(self, pin):
+        self.pins_tagged.append(pin)
+
+    def unpin(self, pin):
+        self.pins_tagged.remove(pin)
+
+    def findOtherImages(self):
+        additonal_images = []
+        cover = ""
+        # check to see if we even have a cover image
+        if len(self.pin_cover_image):
+            cover = self.pin_cover_image[0].image
+        n = 0
+        # continue this loop while there are less than three items in the loop
+        while len(additonal_images) < 3:
+            current_image = ""
+            # if there are no pins, quiet the loop
+            if not len(self.pins_tagged):
+                break
+            # there are additional pins, so set the current image to the image on the next pin
+            current_image = self.pins_tagged[n].image
+            # if there is a cover and and a current image make sure that the current image isn't same thing as the cover, if it isn't add it to our list
+            if cover and current_image:
+                if current_image != cover:
+                    additonal_images.append(current_image)
+            # add the current image to the additional images loop
+            elif current_image:
+                additonal_images.append(current_image)
+            n += 1
+        return additonal_images
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'private': self.private,
-            # 'cover_image': BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id).one_or_().pin.image if BoardCoverImage.query.filter(BoardCoverImage.board_id == self.id) else None,
+            'cover_image': [image.image for image in self.pin_cover_image],
+            'additional_images': self.findOtherImages(),
             'description': self.description,
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),
@@ -103,7 +150,7 @@ class Pin(db.Model):
     user = db.relationship('User', back_populates='pins')
     categories = db.relationship('Category', secondary=pin_categories, back_populates='pins', passive_deletes=True)
     board_tagged = db.relationship('Board', secondary=boards_pins, backref='pinned_boards', passive_deletes=True)
-    cover_image = db.relationship('BoardCoverImage', back_populates="pin")
+    board_image_on = db.relationship('Board', secondary=board_cover_images, backref='pin_used_on_board',passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -142,13 +189,3 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
-
-
-class BoardCoverImage(db.Model):
-    __tablename__ = 'board_cover_images'
-
-    board_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('boards.id')),  primary_key=True)
-    pin_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('pins.id')), primary_key=True)
-
-    board_for_image = db.relationship('Board', back_populates="cover_image")
-    pin = db.relationship('Pin', back_populates="cover_image")

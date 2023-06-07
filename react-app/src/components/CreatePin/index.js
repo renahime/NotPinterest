@@ -11,6 +11,7 @@ export default function CreatePin() {
         const pinData = new FormData()
 
         pinData.append("image", image)
+        pinData.append("board", "Summer Men Outfits")
 
         // let pin_info = {
         //     image: image

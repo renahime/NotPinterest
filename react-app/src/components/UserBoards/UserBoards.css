@@ -1,0 +1,94 @@
+.profile-board-images-wrapper {
+    display: grid;
+    grid-template-columns: 150px 75px;
+    grid-gap:3px;
+    height: 150px;
+    grid-template-areas: 
+    "pic1 pic2"
+    "pic1 pic3";
+}
+
+.profile-board-images-wrapper > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-board-images1 {
+    grid-area: pic1;
+    border-radius: 20px 0 0 20px;
+}
+
+.profile-board-images2 {
+    grid-area: pic2;
+    border-radius: 0 20px 0 0;
+}
+
+.profile-board-images3 {
+    grid-area: pic3;
+    border-radius: 0 0px 20px 0;
+}
+
+.profile-boards-all {
+    display: flex;
+    gap: 20px;
+    padding: 20px 50px;
+    justify-content: center;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+
+.profile-board-info {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding-top: 10px;
+    row-gap: 5px;
+}
+
+.profile-board-info > div > * {
+    /* border: 2px solid red; */
+    margin: 0;
+}
+
+.profile-board-name {
+    font-weight: 500;
+}
+
+.profile-pins-on-board {
+    font-size: 13px;
+}
+
+.profile-board-pics {
+    position: relative;
+}
+
+.profile-board-lock-icon-wrapper {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.profile-edit-board-icon.hidden {
+    display: none;
+}
+
+.profile-boards-wrapper {
+    position: relative;
+}
+
+.profile-edit-board-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.profile-edit-board-icon:hover {
+    background-color: #F0F0F0;
+}
