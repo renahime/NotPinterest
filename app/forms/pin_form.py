@@ -18,5 +18,5 @@ class PinForm(FlaskForm):
   image = FileField("Image File", validators=[FileAllowed(list(ALLOWED_EXTENSIONS)), FileRequired()])
   description = StringField('Description Text', validators=[Length(max=255, message="Name must be less than 255 chars!")])
   alt_text = StringField('Alternative Text', validators=[Length(max=255, message="Name must be less than 255 chars!")])
-  destination = StringField('Destination Link', validators=[Length(max=255, message="Name must be less than 255 chars!"), URL()])
+  destination = StringField('Destination Link', validators=[Length(max=255, message="Name must be less than 255 chars!")])
   board = SelectField('Board Name', choices=[], validators=[DataRequired()])

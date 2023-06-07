@@ -9,6 +9,7 @@
 .nav-bar {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   top: 0;
   width: 100%;
@@ -24,6 +25,8 @@
 
 .right-section {
   margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 
 .logo {
@@ -63,20 +66,20 @@
 
 .tab.active {
   color: white;
-  padding:10px 10px;
+  padding: 10px 10px;
   background-color: black;
   border-radius: 15px;
   font-weight: 600;
 }
 
 .search-bar {
-  flex: 1 1 auto;
+  flex: 1;
   min-width: 407px;
   padding: 8px;
+  margin-right: 20px;
   border-radius: 20px;
-  border: 1px solid gray;
-  margin-left: 16px;
-  /* width: auto; */
+  background-color: rgb(230, 230, 230);
+  border: 0;
   font-size: 14px;
 }
 

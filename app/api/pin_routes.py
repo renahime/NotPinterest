@@ -73,7 +73,7 @@ def create_pin():
     form = PinForm()
 
     # Sets the boards that a user has and can save thier pin to
-    user_boards = User.boards.all()
+    user_boards = Board.query.filter(Board.owner_id == current_user.id).all()
     if user_boards:
         form.board.choices = [board.name for board in user_boards]
 
@@ -84,9 +84,14 @@ def create_pin():
     if not user:
         return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
+    print("pin route errors part1")
     form['csrf_token'].data = request.cookies['csrf_token']
+    print("pin route errors part2")
+
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
+        print("pin route errors part3")
+
         data = form.data
 
 
@@ -112,6 +117,7 @@ def create_pin():
         return new_pin.to_dict()
 
     # if the form has issues send the error messages back to the user
+    print("pin route errors part4")
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 

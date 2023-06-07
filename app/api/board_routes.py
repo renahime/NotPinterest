@@ -7,6 +7,18 @@ from .auth_routes import validation_errors_to_error_messages
 board_routes = Blueprint('boards', __name__)
 
 
+#Route to get a specific board of a user
+@board_routes.route("/users/<username>/<board_name>", methods= ["GET"])
+def get_one_user_board(username, board_name):
+    name = board_name.split("_")
+    print("name", name)
+    user_board = Board.query.join(User).filter(User.username == username, Board.name.ilike(board_name)).one_or_none()
+
+    if user_board:
+        return {"User Boards" : user_board.to_dict()}
+
+    else:
+        return {"errors": "No Boards found"}, 404
 
 #Route to get all board
 @board_routes.route('/', methods = ["GET"])
@@ -50,18 +62,19 @@ def get_current_user_boards():
         all_boards[board.id] = board.to_dict()
     return all_boards
 
+
+
 #Route to get a specific user's boards
 @board_routes.route("/users/<username>", methods= ["GET"])
 def get_user_boards(username):
     user_boards = Board.query.join(User).filter(User.username == username).all()
-
-    # print("user_boards[0].cover_image", user_boards[0].cover_image.pin[0])
 
     if user_boards:
         return {"User Boards" : [board.to_dict() for board in user_boards]}
 
     else:
         return {"errors": "No Boards found"}
+
 
 
 # Route to create a board
@@ -94,7 +107,10 @@ def create_board():
 @board_routes.route('/<int:id>', methods=['GET','PUT'])
 @login_required
 def edit_board(id):
+    print("WE ARE In edit board route")
     board_to_edit = Board.query.get(id)
+
+    print("WE ARE In edit board route 2")
 
     if current_user.id != board_to_edit.owner_id:
         return {"errors":"you do not own this board"}
@@ -103,14 +119,16 @@ def edit_board(id):
 
     choices = []
 
-    for pinId in board_to_edit.pins_tagged:
-        pin = Pin.query.get(pinId)
-        choices.append(pin.image)
+    # for pinId in board_to_edit.pins_tagged:
+    #     pin = Pin.query.get(pinId)
+    #     choices.append(pin.name)
 
     form.cover_image.choices = choices
 
 
     form['csrf_token'].data = request.cookies['csrf_token']
+
+
 
     if form.validate_on_submit():
         if form.data["name"]:
@@ -135,6 +153,7 @@ def edit_board(id):
 
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
 
 #Route to delete a single board
 @board_routes.route('/<int:id>/delete', methods = ["DELETE"])
