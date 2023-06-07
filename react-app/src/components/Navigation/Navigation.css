@@ -1,5 +1,15 @@
 .profile-dropdown {
   position: absolute;
+
+  top: 50px;
+  right: 5px;
+  height: 350px;
+  width: 170px;
+  background-color: white;
+  border-radius: 15px;
+
+  z-index: 9999;
+
 }
 
 .hidden {
@@ -9,7 +19,7 @@
 .nav-bar {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   top: 0;
   width: 100%;
@@ -20,6 +30,7 @@
 .left-section {
   display: flex;
   align-items: center;
+  flex-grow: 1;
 
 }
 
@@ -27,6 +38,7 @@
   margin-left: auto;
   display: flex;
   align-items: center;
+  /* flex-grow: 1; */
 }
 
 .logo {
@@ -51,17 +63,29 @@
 .tabs {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-left: 16px;
 }
 
 .tab {
   color: black;
   text-decoration: none;
-  margin-right: 16px;
-  font-size: 16px;
+  margin-right: 0px;
+  font-size: 13px;
   font-weight: 500;
   padding: 10px 10px;
 
+}
+
+.tab-create {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-arrow {
+margin-left:10px
 }
 
 .tab.active {
@@ -126,4 +150,16 @@
 .pinterest-svg {
   width: 30px;
   height: 30px;
+}
+
+
+.nav-icon-button {
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
 }

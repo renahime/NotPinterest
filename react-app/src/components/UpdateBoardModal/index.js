@@ -13,191 +13,141 @@ import OpenModalButton from "../OpenModalButton";
 
 function UpdateBoardModal({ sessionUser }) {
 
-
   const dispatch = useDispatch();
-  const params = useParams()
-  const history = useHistory()
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("")
-  const [isPrivate, setIsPrivate] = useState(false);
+  const history = useHistory();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
   const { closeModal } = useModal();
 
 
-  // get board if from url
-  let { id } = params;
-  id = parseInt(id)
+  const { id } = useParams();
+  const username = sessionUser?.username;
+  console.log("SESSION USERNAME", sessionUser?.username)
+  const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards);
 
-  console.log("CURRENT BOARD ID", id)
 
+  const oldBoardData = currentProfileBoards[id];
+  console.log("OLD BOARD DATA", oldBoardData)
 
-  console.log("UPDATE BOARD SESSION USER", sessionUser)
-  console.log("UPDATE BOARD SESSION USER USERNAME", sessionUser.username)
-  const username = sessionUser.username
-
+  const [name, setName] = useState(oldBoardData?.name || "");
+  const [description, setDescription] = useState(oldBoardData?.description || "");
+  const [isPrivate, setIsPrivate] = useState(oldBoardData?.private || false);
 
   useEffect(() => {
-  }, [name, isPrivate, description])
+    dispatch(getBoardsByUsername(username)).then(() => setIsLoaded(true));
+  }, [username]);
 
-
-
-
-  const currentState = useSelector(state => state.boards)
-  console.log("CURRENT STATE", currentState)
-
-
-  const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards)
-  console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
-
-  // const currentBoard = useSelector((state) => state.boards.currentProfileBoards["User Boards"][id -1])
-  // console.log("CURRENT BOARD", currentBoard)
-
-
-  // if (currentProfileBoards.values().length > 0) {
-  //   const currentBoard = useSelector((state) => state.boards.currentProfileBoards["User Boards"][id])
-  //   console.log("CURRENT BOARD", currentBoard)
-  // }
-
-
-
-
-  // get current board details
   useEffect(() => {
-    dispatch(getBoardsByUsername(username))
-  }, [dispatch])
+    setName(oldBoardData?.name || "");
+    setDescription(oldBoardData?.description || "")
+    setIsPrivate(oldBoardData?.private || false);
 
-
-  // if (!currentBoard) {
-  //   return <h1>loading</h1>
-  // }
-
-
-
-  const disabledButton = name === "";
+  },[isLoaded])
 
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
   };
 
-
-
+  const disabledButton = name === "";
 
   const onDelete = () => {
-
-    dispatch(deleteBoardThunk(id))
-    history.push('/feed')
-
-  }
-
-
-
-
+    dispatch(deleteBoardThunk(id));
+    history.push('/feed');
+  };
 
   const onSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission
-
-
-    //VALIDATIONS
-
-
-
-    //create form data
+    e.preventDefault();
     const updatedBoardData = {
       name,
       private: isPrivate,
       description: description
-    }
-    //log formData
-    console.log("UPDATED BOARD DATA:", updatedBoardData)
+    };
 
-    await dispatch(updateBoardThunk(updatedBoardData, 1))
-
-
-
-
+    await dispatch(updateBoardThunk(updatedBoardData, id));
+    const boardName = currentProfileBoards[id]?.name;
+    history.push(`/${username}/${boardName}`);
   };
 
-
-
-  if (!currentProfileBoards) {
-    return <h1>loading</h1>
+  if (!currentProfileBoards || !username) {
+    return <h1>loading</h1>;
   }
-
   return (
     <>
-      <div className="edit-board-modal-container">
+      {isLoaded && (
 
-        <div className="edit-board-modal-header">
-          Edit board
-        </div>
+        <div className="edit-board-modal-container">
 
-        <form onSubmit={onSubmit}>
-
-          <div className="edit-board-cover-image-container">
-            <div className="edit-board-cover-image-text">Board cover</div>
-            <div className="edit-board-cover-image">
-              <div className="edit-board-cover-image-plus-sign">+</div>
-            </div>
-
+          <div className="edit-board-modal-header">
+            Edit board
           </div>
 
-          <label className="edit-board-modal-name">
-            Name
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="edit-board-modal-name-input"
+          <form onSubmit={onSubmit}>
 
-            ></input>
-          </label>
-
-          <label className="edit-board-modal-description">
-            Description
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's your board about?"
-              className="edit-board-modal-description-input"
-            ></textarea>
-          </label>
-
-          <label>
-
-
-            <p className="edit-board-settings">Settings</p>
-
-            <div className="edit-board-modal-flex-row">
-
-              <input type="checkbox" checked={isPrivate} onChange={handlePrivateChange} className="edit-board-checkbox-input" />
-
-              <div>
-                <p className="edit-board-modal-private-text bold">Keep this board secret</p>
-                <p className="edit-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
+            <div className="edit-board-cover-image-container">
+              <div className="edit-board-cover-image-text">Board cover</div>
+              <div className="edit-board-cover-image">
+                <div className="edit-board-cover-image-plus-sign">+</div>
               </div>
 
             </div>
-          </label>
+
+            <label className="edit-board-modal-name">
+              Name
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="edit-board-modal-name-input"
+
+              ></input>
+            </label>
+
+            <label className="edit-board-modal-description">
+              Description
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="What's your board about?"
+                className="edit-board-modal-description-input"
+              ></textarea>
+            </label>
+
+            <label>
 
 
-          <button className="edit-board-modal-create-button" disabled={disabledButton}>
-            Done
-          </button>
+              <p className="edit-board-settings">Settings</p>
 
-          <div className="edit-board-delete-text-bottom-container" onClick={onDelete}>
-            <p className="edit-board-action">Action</p>
-            <h3 className="edit-board-delete-text">Delete board</h3>
-            <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>
-            <br></br>
-            <p className="edit-board-delete-warning">You can't undo this!</p>
-          </div>
+              <div className="edit-board-modal-flex-row">
 
-        </form>
-      </div>
+                <input type="checkbox" checked={isPrivate} onChange={handlePrivateChange} className="edit-board-checkbox-input" />
+
+                <div>
+                  <p className="edit-board-modal-private-text bold">Keep this board secret</p>
+                  <p className="edit-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
+                </div>
+
+              </div>
+            </label>
+
+
+            <button className="edit-board-modal-create-button" disabled={disabledButton}>
+              Done
+            </button>
+
+            <div className="edit-board-delete-text-bottom-container" onClick={onDelete}>
+              <p className="edit-board-action">Action</p>
+              <h3 className="edit-board-delete-text">Delete board</h3>
+              <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>
+              <br></br>
+              <p className="edit-board-delete-warning">You can't undo this!</p>
+            </div>
+
+          </form>
+        </div>
+      )}
     </>
   )
-
 }
 
 

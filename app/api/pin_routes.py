@@ -60,7 +60,7 @@ def get_pin_by_id(id):
 
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
-    
+
     found_pin = pin.to_dict()
     found_pin["owner_info"] = owner_info
     return found_pin
@@ -220,16 +220,4 @@ def get_latest_pins():
         for pin in pins:
             if pin.created_at.date() == latest_date:
                 all_pins[pin.id] = pin.to_dict()
-    return all_pins
-
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
-    pins = Pin.query.all()
-    all_pins = {}
-    # standardizes the output that is returned to user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    # return all_pins
     return all_pins

@@ -40,6 +40,7 @@ export const getBoardsByUsername = (username) => async (dispatch) => {
     console.log("res", res)
     if (res.ok) {
         let boards = await res.json()
+        console.log("GET BOARDS BY USERNAME TEST", boards)
         dispatch(getUserBoards(boards))
     }
 }
@@ -136,7 +137,8 @@ export default function boardsReducer(state = initialState, action) {
 
     switch (action.type) {
         case GET_BOARDS_OF_USER:
-            let newState = {}
+            newState = {}
+            console.log("ACTION", action)
             console.log("action.boards", action.boards)
             for (let board of action.boards) {
                 newState[board.id] = board

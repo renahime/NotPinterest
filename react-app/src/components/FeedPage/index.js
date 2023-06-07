@@ -26,9 +26,12 @@ function FeedPage() {
   useEffect(() => {
     setTimeout(() => {
       // Assuming you're fetching the boards data here
-      dispatch(getBoardsByUsername(username))
+      if (username) {
+        dispatch(getBoardsByUsername(username))
+      }
+
       setIsLoading(false);
-    }, 2000);
+    }, 200);
 
   }, [dispatch])
 
@@ -41,16 +44,18 @@ function FeedPage() {
   const sessionUser = useSelector(state => state.session.user)
   console.log(sessionUser)
 
+  const currentState = useSelector(state => state)
 
-  const username = sessionUser.username
+
+  const username = sessionUser?.username
   console.log("SESSION USER USERNAME", username)
 
-  const boardsSelector = useSelector((state) => state.boardss.currentProfileBoards)
+  const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 
-  const boardsArr = Object.values(boardsSelector)
-  const boards = boardsArr[0]
+  const boards = Object.values(boardsSelector)
+  // const boards = boardsArr[0]
   console.log("GET ALL BOARDS DATA", boards)
 
 
@@ -88,9 +93,8 @@ function FeedPage() {
     //Loading screen
     if (isLoading) {
       return <h1>Loading</h1>;
-    } else {
-      return <h1>No boards found</h1>;
     }
+
   }
 
 
@@ -101,21 +105,21 @@ function FeedPage() {
         {boards.length > 0 && (
           <div className="board-container" ref={scrollContainerRef}>
             <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-              &lt;
+              <i class="fa-solid fa-angle-left"></i>
             </div>
             {boards.map((board, index) => (
 
-              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => setSelectedBoardId(board.id)}>
+              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} >
                 <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"
-                  modalComponent={<UpdateBoardModal id={selectedBoardId} />}
-                  style={{ fontSize: '20px' }}
+                  modalComponent={<UpdateBoardModal id={board.id} />}
+                  onClick={() => history.push(`/boards/${board.id}`)}
                 />
               </div>
             ))}
             <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-              &gt;
+              <i class="fa-solid fa-angle-left fa-rotate-180"></i>
             </div>
           </div>
         )
@@ -123,16 +127,12 @@ function FeedPage() {
         }
 
 
-
-
-
-
-        <OpenModalButton
-          buttonText="&#43;"
+        {/* <OpenModalButton
+          buttonText=<i class="fa-solid fa-plus"></i>
           className="test-open-create-board-modal"
           modalComponent={<CreateBoardModal />}
           style={{ fontSize: '20px' }}
-        />
+        /> */}
 
 
 
