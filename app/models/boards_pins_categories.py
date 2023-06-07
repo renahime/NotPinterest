@@ -50,6 +50,8 @@ pin_categories = db.Table(
     )
 )
 
+if environment == "production":
+    pin_categories.schema = SCHEMA
 
 board_cover_images = db.Table(
     "board_cover_image",
@@ -66,9 +68,9 @@ board_cover_images = db.Table(
     )
 )
 
-if environment == "production":
-    pin_categories.schema = SCHEMA
 
+if environment == "production":
+    board_cover_images.schema = SCHEMA
 
 class Board(db.Model):
     __tablename__ = 'boards'
