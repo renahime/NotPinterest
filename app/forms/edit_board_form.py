@@ -9,5 +9,5 @@ from ..routes.AWS_helpers import ALLOWED_EXTENSIONS
 class EditBoardForm(FlaskForm):
     name = StringField('Description', validators=[Length(max=255, message="Name must be less than 255 chars!"), DataRequired()])
     private = BooleanField('Private Board')
-    cover_image = SelectField('Cover Image', choices=[])
-    description = StringField('Description', validators=[Length(max=255, message="Name must be less than 255 chars!"), DataRequired()])
+    cover_image = StringField('Cover Image')
+    description = StringField('Description', validators=[Length(max=255, message="Name must be less than 255 chars!")])
