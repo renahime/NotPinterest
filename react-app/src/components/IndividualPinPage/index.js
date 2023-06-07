@@ -44,7 +44,7 @@ export default function IndividualPinPage() {
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
                     <div className="single-pin-owner-info">
-                        <div>
+                        <div className="single-pin-profile-info">
                             <div>
                                 {singlePin.profile_image ? <img className="single-pin-profile-image" src={singlePin.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
                             </div>
