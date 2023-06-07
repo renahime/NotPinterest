@@ -5,6 +5,8 @@ from ..forms import PinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
 from datetime import datetime, date
+import random
+
 
 pin_routes = Blueprint('pins', __name__)
 
@@ -204,11 +206,12 @@ def get_latest_pins():
     input_str, '%d/%m/%y').date()
 
     for pin in pins:
+        print(latest_date)
         if pin.created_at.date() > latest_date:
             latest_date = pin.created_at.date()
         if pin.created_at.date() == today.date():
                 all_pins[pin.id] = pin.to_dict()
-    if all_pins == False:
+    if not bool(all_pins):
         for pin in pins:
             if pin.created_at.date() == latest_date:
                 all_pins[pin.id] = pin.to_dict()

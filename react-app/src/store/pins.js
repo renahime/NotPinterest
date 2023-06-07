@@ -36,6 +36,9 @@ export const fetchPinsToday = () => async (dispatch) => {
     if (res.ok) {
         let pinsToday = await res.json()
         dispatch(getPinsToday(pinsToday))
+    } else {
+        const errors = await res.json()
+        return errors
     }
 }
 

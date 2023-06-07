@@ -16,7 +16,7 @@ function FeedPage() {
     dispatch(getAllBoardThunks())
   }, [dispatch])
 
-  const boardsSelector = useSelector((state) => state.board.allBoards)
+  const boardsSelector = useSelector((state) => state.boards.allBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 

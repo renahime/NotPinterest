@@ -105,7 +105,7 @@ def edit_board(id):
 
     for pinId in board_to_edit.pins_tagged:
         pin = Pin.query.get(pinId)
-        choices.append(pin.name)
+        choices.append(pin.image)
 
     form.cover_image.choices = choices
 
@@ -121,7 +121,7 @@ def edit_board(id):
             image_found = False
             for pin in board_to_edit.pins_tagged:
                 if pin.image == form.data["cover_image"]:
-                    if form.data["cover_image"] == pin.name:
+                    if form.data["cover_image"] == pin.image:
                         return {"error": "image is already a cover image"}
                     board_to_edit.pin_cover_image.pop()
                     board_to_edit.pin_cover_image.append(pin)

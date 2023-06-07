@@ -9,7 +9,8 @@ import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage"
 import CreatePin from "./components/CreatePin"
-
+import Settings from "./components/Forms/SettingsForm";
+import TodayPage from "./components/TodayPage";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -22,6 +23,15 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route path="/settings">
+            <Settings />
+          </Route>
+          <Route path="/today">
+            <TodayPage />
+          </Route>
+          <Route path="/:username">
+            <ProfilePage />
+          </Route>
           <Route path="/login" >
             <LoginFormPage />
           </Route>
@@ -31,20 +41,11 @@ function App() {
           <Route exact path="/">
             <LandingPage />
           </Route>
-          <Route exact path="/feed">
+          {/* <Route exact path="/feed">
             <FeedPage />
-          </Route>
+          </Route> */}
           <Route path="/new_pin">
             <CreatePin />
-          </Route>
-          <Route path="/:username">
-            <ProfilePage />
-          </Route>
-          <Route path="/today">
-            <ProfilePage />
-          </Route>
-          <Route path="/settings">
-            <ProfilePage />
           </Route>
         </Switch>
       )}
