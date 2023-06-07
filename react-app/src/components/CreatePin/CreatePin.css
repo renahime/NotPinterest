@@ -1,0 +1,216 @@
+.new-pin-wrapper {
+    width: 100%;
+    background-color: #E9E9E9;
+    display: grid;
+    justify-items: center;
+}
+
+.new-pin-form {
+    display: grid;
+    background-color: white;
+    grid-template-columns: 270px 1fr;
+    width: 70%;
+    margin: 40px;
+    box-sizing: border-box;
+    border-radius: 30px;
+    padding: 40px;
+}
+
+.new-pin-image-side {
+    position: relative;
+}
+
+.new-pin-open-menu {
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.new-pin-open-menu:hover {
+    background-color: #E9E9E9;
+}
+
+.new-pin-menu {
+    position: absolute;
+    background-color: white;
+    padding: 5px;
+    z-index: 51;
+}
+
+.new-pin-menu > p:hover {
+    background-color: #E9E9E9;
+}
+
+.file-input-wrapper-wrapper {
+    padding: 2px;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+}
+
+.file-input-wrapper {
+    position: relative;
+    box-sizing: border-box;
+    margin: 15px;
+    height: 450px;
+    border: 2px dashed #c0b7b7;
+    /* border-radius: 20px; */
+}
+
+input[type="file"] {
+    display: flex;
+    height: 100%;
+    opacity: 0;
+    position: relative;
+    z-index: 5;
+}
+
+.new-pin-image-file-styled {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: #E9E9E9;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.new-pin-default-image {
+    width: 100%;
+    height: 450px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 175px;
+    box-sizing: border-box;
+    padding-bottom: 8px;
+}
+
+.new-pin-default-image > p {
+    justify-self: center;
+    text-align: center;
+    font-size: 12px;
+}
+
+.new-pin-upload-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.new-pin-upload-caption > p {
+    padding-top: 20px;
+    font-size: 15px;
+}
+
+.new-pin-upload-caption > i {
+    font-size: 30px;
+    color: #5F5F5F;
+}
+
+.new-pin-info-side {
+    box-sizing: border-box;
+    padding-left: 40px;
+    width: 100%;
+    display: grid;
+    justify-items: left;
+}
+
+.new-pin-save-and-board {
+    justify-self: right;
+    display: flex;
+    height: 40px;
+}
+
+.new-pin-save-and-board  > button {
+    color: #FEFDFA;
+    background-color: #E60023;
+    height: 100%;
+    border-radius: 0 10px 10px 0;
+    width: 60px;
+    border-color: transparent;
+}
+
+.new-pin-input {
+    border: none;
+    width: 100%;
+    padding-bottom: 5px;
+    border-bottom: 2px solid black;
+}
+
+.new-pin-input:focus {
+    border-bottom: 2px solid blue;
+    outline: none;
+}
+
+.new-pin-input.new-pin-title {
+    font-size: 35px;
+    font-weight: 700;
+}
+
+.new-pin-input.new-pin-description {
+    font-size: 15px;
+    font-weight: 400;
+    padding-bottom: 20px;
+    opacity: 80%;
+}
+
+.new-pin-alt-and-destination-wraper-with-button {
+    width: 90%;
+}
+
+.new-pin-description-input-wrapper {
+    box-sizing: border-box;
+    width: 90%;
+}
+
+.new-pin-title-input-wraper {
+    padding-top: 30px;
+    width: 90%;
+    box-sizing: border-box;
+    width: 90%;
+}
+
+.new-pin-alt-text-input-wraper {
+    width: 100%;
+}
+
+.new-pin-active-caption {
+    display: flex;
+    font-size: 12px;
+    justify-content: space-between;
+}
+
+.new-pin-active-caption > p {
+    padding: 0;
+    margin: 0;
+}
+
+.create-pin-owner-followers-image {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    column-gap: 10px;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+}
+
+.create-pin-profile-image {
+    width: 40px;
+    height: 40px;
+}
+
+.create-pin-default-image {
+    font-size: 40px;
+}
+
+.create-pin-owner-name-followers > p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.create-pin-owner {
+    font-weight: 600;
+    font-size: 16px;
+}

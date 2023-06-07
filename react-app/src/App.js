@@ -46,12 +46,12 @@ function App() {
           <Route exact path="/create">
             <CreatePin />
           </Route>
+          <Route exact path="/feed">
+            <FeedPage />
+          </Route>
           <Route exact path="/">
             <LandingPage />
           </Route>
-          {/* <Route exact path="/feed">
-            <FeedPage />
-          </Route> */}
           <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
           </Route>

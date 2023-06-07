@@ -45,7 +45,7 @@ function FeedPage() {
   const username = sessionUser.username
   console.log("SESSION USER USERNAME", username)
 
-  const boardsSelector = useSelector((state) => state.boardss.currentProfileBoards)
+  const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 
