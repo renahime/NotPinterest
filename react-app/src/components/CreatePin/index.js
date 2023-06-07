@@ -67,13 +67,10 @@ export default function CreatePin() {
         let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
 
         if ((new_pin.errors)) {
-            console.log("board", board)
-            console.log(new_pin)
             setErrors(new_pin.errors)
             return
         } else{
-            console.log("hello")
-            history.push(`/pins/${new_pin.id}`)
+            history.push(`/pin/${new_pin.pin.id}`)
         }
 
     }

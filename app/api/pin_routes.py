@@ -108,7 +108,7 @@ def create_pin():
             user=user
         )
 
-        board_to_save_pin_to = Board.query.filter(Board.name == data["board"]).one()
+        board_to_save_pin_to = Board.query.get(data["board"])
         new_pin.board_tagged.append(board_to_save_pin_to)
 
         db.session.add(new_pin)
