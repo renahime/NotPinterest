@@ -17,6 +17,7 @@ function CreateBoardModal() {
   const history = useHistory()
   const [name, setName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [description, setDescription] = useState("")
   const [errors, setErrors] = useState([]);
   const { setModalContent, closeModal } = useModal();
 
@@ -55,7 +56,7 @@ function CreateBoardModal() {
     const formData = {
       name,
       private: isPrivate,
-      description: "this is a test"
+      description:"this is a test"
     }
     //log formData
     console.log("FORM DATA:", formData)
@@ -103,7 +104,7 @@ function CreateBoardModal() {
             </div>
           </label>
 
-          <button className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}>
+          <button className="create-board-modal-create-button" disabled={disabledButton} >
             Create
           </button>
 

@@ -34,15 +34,15 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const oldBoardData = currentProfileBoards[id];
   console.log("OLD BOARD DATA", oldBoardData)
 
-  const pinImages = oldBoardData.additional_images
-  console.log("PIN IMAGES", pinImages)
+  // const pinImages = oldBoardData.additional_images
+  // console.log("PIN IMAGES", pinImages)
 
 
   const [name, setName] = useState(oldBoardData?.name || "");
   const [description, setDescription] = useState(oldBoardData?.description || "");
   const [isPrivate, setIsPrivate] = useState(oldBoardData?.private || false);
   const [cover_image, setCoverImage] = useState(
-    newCoverImage ? newCoverImage : oldBoardData?.cover_image || ""
+    oldBoardData?.cover_image || ""
   );
 
 
@@ -55,7 +55,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
     setName(oldBoardData?.name || "");
     setDescription(oldBoardData?.description || "")
     setIsPrivate(oldBoardData?.private || false);
-    setCoverImage(newCoverImage ? newCoverImage : oldBoardData?.cover_image || "")
+    // setCoverImage(newCoverImage ? newCoverImage : oldBoardData?.cover_image || "")
   }, [isLoaded])
 
 
@@ -63,7 +63,8 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <ChangeBoardCoverModal pinImages={pinImages} updatedBoardData={updatedBoardData} id={id} username={username}/>
+        {/* <ChangeBoardCoverModal pinImages={pinImages} updatedBoardData={updatedBoardData} id={id} username={username}/> */}
+        <ChangeBoardCoverModal  updatedBoardData={updatedBoardData} id={id} username={username}/>
       </div>
     );
     setModalContent(modalContent);
@@ -91,7 +92,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
     name,
     private: isPrivate,
     description: description,
-    cover_image: cover_image
+    // cover_image: cover_image
 
   };
 
@@ -104,7 +105,7 @@ console.log("UPADATE BOARD STATE", updatedBoardData)
 
     await dispatch(updateBoardThunk(updatedBoardData, id));
     // const boardName = currentProfileBoards[id]?.name;
-    history.push(`/feed`);
+    // history.push(`/feed`);
     closeModal()
   };
 
@@ -125,7 +126,8 @@ console.log("UPADATE BOARD STATE", updatedBoardData)
 
             <div className="edit-board-cover-image-container">
               <div className="edit-board-cover-image-text">Board cover</div>
-              <div className="edit-board-cover-image" onClick={openModal}>
+              {/* <div className="edit-board-cover-image" onClick={openModal}> */}
+              <div className="edit-board-cover-image" >
                 {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
                 <img src={cover_image} className="edit-board-cover-image" />
               </div>
