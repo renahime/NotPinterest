@@ -69,6 +69,8 @@ board_cover_images = db.Table(
     )
 )
 
+if environment == "production":
+    board_cover_images.schema = SCHEMA
 
 
 
