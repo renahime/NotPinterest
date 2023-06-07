@@ -59,7 +59,6 @@ function App() {
           <Route path="/:username/:boardName">
             <IndividualBoardPage />
           </Route>
-
         </Switch>
       )}
     </>
