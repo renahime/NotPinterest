@@ -1,6 +1,7 @@
 const GET_BOARDS_OF_USER = "boards/getUserBoards"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
+const DELETE_USER_BOARD = "boards/delete";
 
 
 
@@ -19,6 +20,12 @@ const updateUserBoard = (board) => ({
     type: UPDATE_USER_BOARD,
     board
 })
+
+const deleteUserBoard = (id) => ({
+    type: DELETE_USER_BOARD,
+    id,
+});
+
 
 
 export const getBoardsByUsername = (username) => async (dispatch) => {
@@ -49,37 +56,64 @@ export const createBoardThunk = (board) => async (dispatch) => {
 
 
 
+export const updateBoardThunk = (board, id) => async (dispatch) => {
+    console.log("UPDATE BOARD THUNK ID", id);
+    console.log("UPDATE BOARD THUNK board", board);
 
+    try {
+        const res = await fetch(`/api/boards/${id}`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(board)
+        });
 
+        console.log("UPDATE BOARD THUNK RESPONSE", res);
 
-
-
-
-
-export const updateBoardThunk = (board, boardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/boardId`, {
-        method: "PUT",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(board)
-    })
-
-    console.log("UPDATE BOARD THUNK RESPONSE", res)
-
-    if (res.ok) {
-        const updated_board = await res.json()
-        dispatch(updateUserBoard(board))
-        return updated_board
-
-    } else {
-        return ("Error response:", res)
+        if (res.ok) {
+            const updated_board = await res.json();
+            dispatch(updateUserBoard(updated_board));
+            return updated_board;
+        } else {
+            throw new Error("Update board request failed");
+        }
+    } catch (error) {
+        console.error("Error occurred during updateBoardThunk:", error);
+        return null; // or handle the error in an appropriate way
     }
+};
 
-}
+
+
+export const deleteBoardThunk = (id) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/boards/${id}/delete`, {
+            method: "DELETE",
+        });
+
+        console.log("DELETE BOARD THUNK RESPONSE", res);
+
+        if (res.ok) {
+            const data = res.json()
+            dispatch(deleteUserBoard(id));
+            return data;
+        }
+        else {
+            throw new Error("Delete board request failed");
+        }
+
+    } catch (error) {
+        console.error("Error occurred during deleteBoardThunk:", error);
+        return false;
+    }
+};
+
 
 
 const initialState = { allBoards: {}, currentProfileBoards: {} }
 
 export default function boardsReducer(state = initialState, action) {
+    let newState = {}
+
     switch (action.type) {
         case GET_BOARDS_OF_USER:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...action.boards } }
@@ -93,12 +127,12 @@ export default function boardsReducer(state = initialState, action) {
                     [action.board.id]: action.board
                 }
             };
-            console.log("New State:", newState);
-            return newState;
+        // console.log("New State:", newState);
+        // return newState;
 
         case UPDATE_USER_BOARD:
 
-            const newState = {
+            newState = {
                 ...state,
                 allBoards: {
                     ...state.allBoards,
@@ -106,11 +140,23 @@ export default function boardsReducer(state = initialState, action) {
                 },
                 currentProfileBoards: {
                     ...state.currentProfileBoards,
-                    [action.board.id]: action.board 
+                    [action.board.id]: action.board
                 }
             };
             console.log("New State:", newState);
             return newState;
+
+        case DELETE_USER_BOARD:
+            const newAllBoards = { ...state.allBoards };
+            const updatedCurrentProfileBoards = { ...state.currentProfileBoards };
+            delete newAllBoards[action.id];
+            delete updatedCurrentProfileBoards[action.id];
+            return {
+                ...state,
+                allBoards: newAllBoards,
+                currentProfileBoards: updatedCurrentProfileBoards,
+            };
+
 
 
         default:

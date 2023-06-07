@@ -8,6 +8,7 @@ import { getBoardsByUsername } from "../../store/boards";
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import CreateBoardModal from "../CreateBoardModal";
+import UpdateBoardModal from "../UpdateBoardModal";
 
 import './FeedPage.css'
 
@@ -18,6 +19,7 @@ function FeedPage() {
   const dispatch = useDispatch()
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBoardId, setSelectedBoardId] = useState(null);
 
 
 
@@ -29,6 +31,9 @@ function FeedPage() {
     }, 2000);
 
   }, [dispatch])
+
+
+
 
 
 
@@ -99,9 +104,14 @@ function FeedPage() {
               &lt;
             </div>
             {boards.map((board, index) => (
-              
-              <div key={index} className="board-top" style={boardColors[index % boardColors.length]}>
-                {board.name}
+
+              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => setSelectedBoardId(board.id)}>
+                <OpenModalButton
+                  buttonText={board.name}
+                  className="test-open-create-board-modal"
+                  modalComponent={<UpdateBoardModal id={selectedBoardId} />}
+                  style={{ fontSize: '20px' }}
+                />
               </div>
             ))}
             <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
@@ -123,6 +133,10 @@ function FeedPage() {
           modalComponent={<CreateBoardModal />}
           style={{ fontSize: '20px' }}
         />
+
+
+
+
 
 
 

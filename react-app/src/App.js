@@ -39,8 +39,8 @@ function App() {
           <Route exact path="/feed">
             <FeedPage />
           </Route>
-          <Route exact path="/boards/:boardId">
-            <UpdateBoardModal />
+          <Route exact path="/boards/:id">
+            <UpdateBoardModal sessionUser={sessionUser} />
           </Route>
           <Route path="/new_pin">
             <CreatePin />

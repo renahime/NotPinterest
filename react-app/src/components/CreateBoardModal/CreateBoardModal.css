@@ -48,7 +48,7 @@
   margin-left: 20px;
   align-items: left;
   margin-bottom: 12px;
-  font-size: 12px;
+  font-size: 11px;
   vertical-align: middle;
 }
 
@@ -63,7 +63,7 @@
 
 
 .create-board-modal-private-text {
-  font-size: 12px;
+  font-size: 11px;
   flex-direction: row;
 
   width: 100%;
@@ -110,8 +110,8 @@
   right: 20px;
   border-radius: 15px;
   border: 0px solid black;
-  background-color:rgb(232, 232, 232);
-  color:black;
+  background-color: rgb(232, 232, 232);
+  color: black;
   padding: 10px 15px;
 
 
@@ -123,9 +123,12 @@
   right: 20px;
   border-radius: 15px;
   border: 0px solid black;
-  background-color:rgb(230, 0, 35);;
-  color:white;
+  background-color: rgb(230, 0, 35);
+  ;
+  color: white;
   padding: 10px 15px;
 
 
 }
+
+

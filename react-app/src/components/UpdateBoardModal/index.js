@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
-import { createBoardThunk } from "../../store/boards";
+import { useHistory, useParams } from 'react-router-dom'
+import { createBoardThunk, getBoardsByUsername, updateBoardThunk } from "../../store/boards";
+import DeleteBoardModal from "../DeleteBoardModal";
+import { deleteBoardThunk } from "../../store/boards";
 
 import './UpdateBoardModal.css'
+import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal() {
+function UpdateBoardModal({ sessionUser }) {
 
 
   const dispatch = useDispatch();
+  const params = useParams()
+  const history = useHistory()
   const [name, setName] = useState("");
   const [description, setDescription] = useState("")
   const [isPrivate, setIsPrivate] = useState(false);
@@ -18,15 +24,73 @@ function UpdateBoardModal() {
   const { closeModal } = useModal();
 
 
-  useEffect(() => {
+  // get board if from url
+  let { id } = params;
+  id = parseInt(id)
 
-  }, [name, isPrivate])
+  console.log("CURRENT BOARD ID", id)
+
+
+  console.log("UPDATE BOARD SESSION USER", sessionUser)
+  console.log("UPDATE BOARD SESSION USER USERNAME", sessionUser.username)
+  const username = sessionUser.username
+
+
+  useEffect(() => {
+  }, [name, isPrivate, description])
+
+
+
+
+  const currentState = useSelector(state => state.boards)
+  console.log("CURRENT STATE", currentState)
+
+
+  const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards)
+  console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
+
+  // const currentBoard = useSelector((state) => state.boards.currentProfileBoards["User Boards"][id -1])
+  // console.log("CURRENT BOARD", currentBoard)
+
+
+  // if (currentProfileBoards.values().length > 0) {
+  //   const currentBoard = useSelector((state) => state.boards.currentProfileBoards["User Boards"][id])
+  //   console.log("CURRENT BOARD", currentBoard)
+  // }
+
+
+
+
+  // get current board details
+  useEffect(() => {
+    dispatch(getBoardsByUsername(username))
+  }, [dispatch])
+
+
+  // if (!currentBoard) {
+  //   return <h1>loading</h1>
+  // }
+
+
 
   const disabledButton = name === "";
 
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
   };
+
+
+
+
+  const onDelete = () => {
+
+    dispatch(deleteBoardThunk(id))
+    history.push('/feed')
+
+  }
+
+
+
 
 
   const onSubmit = async (e) => {
@@ -38,20 +102,26 @@ function UpdateBoardModal() {
 
 
     //create form data
-    const formData = {
+    const updatedBoardData = {
       name,
       private: isPrivate,
-      description: "this is a test"
+      description: description
     }
     //log formData
-    console.log("FORM DATA:", formData)
+    console.log("UPDATED BOARD DATA:", updatedBoardData)
 
-    await dispatch(createBoardThunk(formData))
+    await dispatch(updateBoardThunk(updatedBoardData, 1))
+
 
 
 
   };
 
+
+
+  if (!currentProfileBoards) {
+    return <h1>loading</h1>
+  }
 
   return (
     <>
@@ -62,6 +132,14 @@ function UpdateBoardModal() {
         </div>
 
         <form onSubmit={onSubmit}>
+
+          <div className="edit-board-cover-image-container">
+            <div className="edit-board-cover-image-text">Board cover</div>
+            <div className="edit-board-cover-image">
+              <div className="edit-board-cover-image-plus-sign">+</div>
+            </div>
+
+          </div>
 
           <label className="edit-board-modal-name">
             Name
@@ -107,7 +185,7 @@ function UpdateBoardModal() {
             Done
           </button>
 
-          <div className="edit-board-delete-text-bottom-container">
+          <div className="edit-board-delete-text-bottom-container" onClick={onDelete}>
             <p className="edit-board-action">Action</p>
             <h3 className="edit-board-delete-text">Delete board</h3>
             <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>

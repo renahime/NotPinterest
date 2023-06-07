@@ -5,10 +5,10 @@ import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
 import { createBoardThunk } from "../../store/boards";
 
-import './CreateBoardModal.css'
+// import './CreateBoardModal.css'
 
 
-function CreateBoardModal() {
+function DeleteBoardModal() {
 
   const dispatch = useDispatch();
   const history = useHistory()
@@ -61,7 +61,7 @@ function CreateBoardModal() {
 
   return (
     <>
-      <div className="create-board-modal-container">
+      <div className="board-modal-container">
 
         <div className="create-board-modal-header">
           Create board
@@ -111,4 +111,4 @@ function CreateBoardModal() {
 }
 
 
-export default CreateBoardModal
+export default DeleteBoardModal
