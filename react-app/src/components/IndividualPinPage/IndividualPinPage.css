@@ -152,3 +152,9 @@
 .single-pin-image-button > * {
     padding-right: 5px;
 }
+
+.single-pin-edit-board-form-select {
+    border: 1px solid white;
+    cursor: pointer;
+    font-size: 15px;
+}

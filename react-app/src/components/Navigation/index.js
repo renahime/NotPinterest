@@ -31,7 +31,7 @@ function Navigation({ isLoaded }) {
 							Home
 						</NavLink>
 
-						<NavLink to="/todaypage" className="tab" activeClassName="active">
+						<NavLink to="/today" className="tab" activeClassName="active">
 							Today
 						</NavLink>
 

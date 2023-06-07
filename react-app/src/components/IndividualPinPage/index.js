@@ -15,7 +15,7 @@ export default function IndividualPinPage() {
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const currentUserBoardsArr = Object.values(currentUserBoards)
-    console.log("currentUserBoardsArr", board)
+
     useEffect(() => {
         dispatch(getPinById(id))
         dispatch(getBoardsofCurrentUser())
@@ -24,6 +24,11 @@ export default function IndividualPinPage() {
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
         else return `${num} followers`
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        console.log(board)
     }
 
     if (!singlePin) return <h1>...Loading</h1>
@@ -54,15 +59,17 @@ export default function IndividualPinPage() {
                 <div className="single-pin-details">
                     <div className="single-pin-edit-board">
                         {currentUser.id === singlePin.owner_id ? <button className="single-pin-ellipsis"><i className="fa-solid fa-ellipsis"></i></button> : null}
-
-                        <form className="single-pin-edit-board-form">
+                        <form className="single-pin-edit-board-form" onSubmit={e => handleSubmit(e)}>
                             <label>
                                 <select
+                                    className="single-pin-edit-board-form-select"
                                     value={board}
                                     onChange={(e) => setBoard(e.target.value)}
                                 >
                                     {currentUserBoardsArr.map(boardValue => (
-                                        <option value={boardValue.id}>
+                                        <option
+                                        className="blue"
+                                        value={boardValue.id}>
                                             {boardValue.name}
                                         </option>
                                     ))}

@@ -31,19 +31,19 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/settings">
+          <Route exact path="/settings">
             <Settings />
           </Route>
-          <Route path="/today">
+          <Route exact path="/today">
             <TodayPage />
           </Route>
-          <Route path="/login" >
+          <Route exact path="/login" >
             <LoginFormPage />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <SignupFormPage />
           </Route>
-          <Route path="/new_pin">
+          <Route exact path="/create">
             <CreatePin />
           </Route>
           <Route exact path="/">
@@ -55,10 +55,10 @@ function App() {
           <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
           </Route>
-          <Route path="/pin/:id">
+          <Route exact path="/pin/:id">
             <IndividualPinPage />
           </Route>
-          <Route path="/:username/:boardName">
+          <Route exact path="/:username/:boardName">
             <IndividualBoardPage />
           </Route>
           <Route path="/:username">
