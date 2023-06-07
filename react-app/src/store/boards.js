@@ -3,8 +3,7 @@ const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_USER_BOARD = "boards/delete";
-
-
+const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
 
 
 const getUserBoards = (boards) => ({
@@ -33,11 +32,23 @@ const deleteUserBoard = (id) => ({
     id,
 });
 
+const getCurrentUserBoard = (boards) => ({
+    type: GET_CURRENT_USER_BOARDS,
+    boards
+})
 
+
+export const getBoardsofCurrentUser = () => async (dispatch) => {
+    const res = await fetch("/api/boards/current_user")
+    if (res.ok) {
+        let boards = await res.json()
+        console.log("boards", boards)
+        dispatch(getCurrentUserBoard(boards))
+    }
+}
 
 export const getBoardsByUsername = (username) => async (dispatch) => {
     const res = await fetch(`/api/boards/users/${username}`)
-    console.log("res", res)
     if (res.ok) {
         let boards = await res.json()
         dispatch(getUserBoards(boards))
@@ -61,7 +72,6 @@ export const createBoardThunk = (board) => async (dispatch) => {
         return ("Error response:", res)
     }
 }
-
 
 
 export const updateBoardThunk = (board, id) => async (dispatch) => {
@@ -117,11 +127,8 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
 
 
 
-const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {} }
 export const getBoardByName = (username, boardname) => async (dispatch) => {
-    console.log(username)
     const res = await fetch(`/api/boards/users/${username}/${boardname}`)
-    console.log(res)
     if (res.ok) {
         let board = await res.json()
         dispatch(getOneBoardByName(board))
@@ -129,19 +136,21 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
 }
 
 
-
+const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
 
     switch (action.type) {
+        case GET_CURRENT_USER_BOARDS:
+            return {...state, allBoards: {...state.allBoards}, currentProfileBoards: {...state.currentProfileBoards}, singleBoard: {...state.singleBoard}, currentUserBoards: {...action.boards}}
+
         case GET_BOARDS_OF_USER:
-            let newState = {}
-            console.log("action.boards", action.boards)
             for (let board of action.boards) {
                 newState[board.id] = board
             }
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {} }
+
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: {...state.currentUserBoards} }
 
         case CREATE_USER_BOARD:
             return {
@@ -152,8 +161,7 @@ export default function boardsReducer(state = initialState, action) {
                     [action.board.id]: action.board
                 }
             };
-        // console.log("New State:", newState);
-        // return newState;
+
 
         case UPDATE_USER_BOARD:
 
@@ -184,7 +192,7 @@ export default function boardsReducer(state = initialState, action) {
 
 
         case GET_BOARD_BY_NAME:
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board }, currentUserBoards: {...state.currentUserBoards} }
         default:
             return state
     }

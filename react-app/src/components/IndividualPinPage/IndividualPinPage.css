@@ -61,8 +61,9 @@
 
 .single-pin-edit-board-form {
     display: flex;
+    width: 100%;
     column-gap: 10px;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -92,6 +93,62 @@
 
 .single-pin-profile-info {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     width: 80%;
+    flex-wrap: wrap;
+    column-gap: 5px;
+}
+
+.single-pin-owner-name-followers {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.single-pin-owner-name-followers > p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+.single-pin-owner-link  {
+    font-weight: 600;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.single-pin-follow-button, .single-pin-following-button, .single-pin-image-button {
+    border-radius: 30px;
+    border-color: transparent;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.single-pin-follow-button {
+    background-color: #F0F0F0;
+    color: black;
+}
+
+.single-pin-following-button {
+    background-color: black;
+    color: white;
+}
+
+.single-pin-image-wrapper {
+    position: relative;
+}
+
+.single-pin-image-button {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    background-color: rgb(255 255 255 / 0.75);
+    cursor: pointer;
+}
+
+.single-pin-image-button > * {
+    padding-right: 5px;
 }

@@ -37,14 +37,14 @@ function App() {
           <Route path="/today">
             <TodayPage />
           </Route>
-          <Route path="/:username">
-            <ProfilePage />
-          </Route>
           <Route path="/login" >
             <LoginFormPage />
           </Route>
           <Route path="/signup">
             <SignupFormPage />
+          </Route>
+          <Route path="/new_pin">
+            <CreatePin />
           </Route>
           <Route exact path="/">
             <LandingPage />
@@ -55,14 +55,14 @@ function App() {
           <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
           </Route>
-          <Route path="/new_pin">
-            <CreatePin />
-          </Route>
           <Route path="/pin/:id">
             <IndividualPinPage />
           </Route>
           <Route path="/:username/:boardName">
             <IndividualBoardPage />
+          </Route>
+          <Route path="/:username">
+            <ProfilePage />
           </Route>
         </Switch>
       )}
