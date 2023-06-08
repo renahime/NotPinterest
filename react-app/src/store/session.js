@@ -1,6 +1,9 @@
 // constants
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
+const UNFOLLOW_USER = "session/UNFOLLOW_USER"
+const FOLLOW_USER = "session/FOLLOW_USER"
+
 
 const setUser = (user) => ({
 	type: SET_USER,
@@ -11,7 +14,47 @@ const removeUser = () => ({
 	type: REMOVE_USER,
 });
 
+const removeFollowing = (user) => ({
+	type: UNFOLLOW_USER,
+	user
+})
+
+const newFollow = (user) => ({
+	type: FOLLOW_USER,
+	user
+})
+
+
 const initialState = { user: null };
+
+export const followUser = (username) => async (dispatch) => {
+	const res = await fetch(`/api/users/follow/${username}`, {
+		method: "POST"
+	})
+	if (res.ok) {
+		dispatch(newFollow(username))
+		let response = res.json()
+		return response
+	} else {
+		let errors = res.json()
+		return errors
+	}
+}
+
+export const unfollowUser = (username) => async (dispatch) => {
+	const res = await fetch(`/api/users/unfollow/${username}`,  {
+		method: "DELETE"
+	})
+	// const res = await fetch(`/api/users/unfollow/${username}`)
+	if (res.ok) {
+		dispatch(removeFollowing(username))
+		let response = res.json()
+		return response
+	} else {
+		let errors = res.json()
+		return errors
+	}
+}
 
 export const authenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/", {
@@ -96,10 +139,24 @@ export const signUp = (username, email, password) => async (dispatch) => {
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
+		case FOLLOW_USER:
+			let newState = {...state}
+			let following = [...newState.user.following]
+			following.push(action.user)
+			newState.user.following = following
+			console.log()
+			return newState
 		case SET_USER:
 			return { user: action.payload };
 		case REMOVE_USER:
 			return { user: null };
+		case UNFOLLOW_USER:
+			let unfollowed = action.user
+			let i = state.user.following.indexOf(unfollowed)
+			console.log("state.user.following", state.user.following)
+			console.log("state.user", state.user)
+			state.user.following.slice(i, 1)
+			return  {user: {...state.user}}
 		default:
 			return state;
 	}

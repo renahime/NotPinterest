@@ -208,7 +208,7 @@ export default function CreatePin() {
                         </div>
                         <div className="create-pin-owner-name-followers">
                             <p className="create-pin-owner">{currentUser.first_name} {currentUser.last_name}</p>
-                            <p>{formatFollowers(currentUser.followers.length)}</p>
+                            <p>{formatFollowers(currentUser?.followers.length)}</p>
                         </div>
                     </div>
                     <div className="new-pin-description-input-wrapper">

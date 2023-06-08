@@ -57,6 +57,7 @@ def get_pin_by_id(id):
     owner_info["first_name"] = owner["first_name"]
     owner_info["last_name"] = owner["last_name"]
     owner_info["followers"] = owner["followers"]
+    owner_info["username"] = owner["username"]
 
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
