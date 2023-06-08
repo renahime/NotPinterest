@@ -12,7 +12,6 @@ export default function CreatePin() {
     const [errors, setErrors] = useState("")
     const [viewAltText, setViewAltText] = useState(false)
     const [altText, setAltText] = useState("")
-    const [hasSubmitted, setHasSubmitted] = useState(false)
     const [destinationLink, setDestinationLink] = useState("")
     const [loadingImage, setLoadingImage] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
@@ -23,10 +22,9 @@ export default function CreatePin() {
     const [titleActive, setTitleActive] = useState(false)
     const [descActive, setDescActive] = useState(false)
     const [altActive, setAltActive] = useState(false)
-
     const [image, setImage] = useState("")
     const [previewImage, setPreviewImage] = useState("")
-    const [previewImage2, setPreviewImage2] = useState("")
+    const [submit, setSubmit] = useState(false)
     const dispatch = useDispatch()
 
     function formatFollowers(num) {
@@ -36,14 +34,12 @@ export default function CreatePin() {
 
     let handleSubmit = async (e) => {
         e.preventDefault();
-        if (!hasSubmitted) {
-            return
-        }
+
         setErrors({})
 
         let validationErrors = {}
 
-        if (!previewImage) {
+        if (!image) {
             validationErrors["image"] = "Image is required"
         }
         if (title.length > 100) {
@@ -65,7 +61,7 @@ export default function CreatePin() {
             setErrors(validationErrors)
             return
         }
-
+        setSubmit(true)
         setImage(previewImage)
 
         const pinData = new FormData()
@@ -78,8 +74,7 @@ export default function CreatePin() {
         setLoadingImage(true)
 
         let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
-
-        if ((new_pin.errors)) {
+        if (new_pin.errors) {
             setErrors(new_pin.errors)
             return
         } else {
@@ -111,14 +106,18 @@ export default function CreatePin() {
     }, [currentUserBoards])
 
     useEffect(() => {
-        if (previewImage) {
-            let prev = URL.createObjectURL(previewImage)
-            setPreviewImage2(prev)
+        if (submit) {
+            return
+        }
+        if (image) {
+            let prev = URL.createObjectURL(image)
+            setPreviewImage(prev)
             return () => {
                 URL.revokeObjectURL(prev)
             }
         }
-    }, [previewImage])
+    }, [image])
+    
 
     return (
         <div className="new-pin-wrapper">
@@ -134,11 +133,11 @@ export default function CreatePin() {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    onChange={(e) => setPreviewImage(e.target.files[0])}
+                                    onChange={(e) => setImage(e.target.files[0])}
                                     required
                                 />
                                 <div className="new-pin-image-file-styled">
-                                    {previewImage2 ? <img className="new-pin-preview-image" src={previewImage2} /> : <div className="new-pin-default-image">
+                                    {previewImage ? <img className="new-pin-preview-image" src={previewImage} /> : <div className="new-pin-default-image">
                                         <div className="new-pin-upload-caption">
                                             <i className="fa-solid fa-circle-arrow-up"></i>
                                             <p>Drag and drop or click to upload</p>

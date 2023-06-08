@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams, useHistory } from "react-router-dom"
-import { getBoardsByUsername } from "../../store/boards"
+import { getBoardsByUsername } from "../../../store/boards"
 import './UserBoards.css'
 
 export default function CurrentUserBoard({userBoardsArr}) {
