@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from ..models import Pin, db, User, Board, Category
-from ..forms import PinForm
+from ..forms import PinForm, EditPinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
 from datetime import datetime, date
@@ -125,7 +125,7 @@ def create_pin():
 @pin_routes.route("/<int:id>", methods=["GET","PUT"])
 @login_required
 def edit_pin(id):
-    form = PinForm()
+    form = EditPinForm()
     # gets the pin that the user wants to edit from the database by searching for the pin with it's id
     pin = Pin.query.get(id)
     # sends back an error message if the pin id isn't valid
@@ -134,12 +134,7 @@ def edit_pin(id):
     if current_user.id != pin.owner_id:
         return {"errors":"you do not own this pin"}
 
-    user_boards = User.boards.all()
-    if user_boards:
-        form.board.choices = [board.name for board in user_boards]
-
-    if not user_boards:
-        form.board.choices = []
+    user = User.query.get(current_user.id)
 
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -148,15 +143,6 @@ def edit_pin(id):
         data = form.data
         if data["title"]:
             pin.title = data["title"]
-        if data["image"]:
-            pin_image = data["image"]
-            pin_image.filename=get_unique_filename(pin_image.filename)
-            remove_file_from_s3(pin.image)
-            upload = upload_file_to_s3(pin_image)
-            if 'url' not in upload:
-                return upload['errors']
-            aws_url = upload['url']
-            pin.image = aws_url
         if data["description"]:
             pin.description = data["description"]
         if data["alt_text"]:
@@ -164,11 +150,14 @@ def edit_pin(id):
         if data["destination"]:
             pin.destination = data["destination"]
         if data["board"]:
-            for board in user_boards:
+            for board in user.boards:
                 if board.name == data["board"]:
+                    for board in user.boards:
+                        for pinId in board.pins:
+                            if pin.id == pinId:
+                                pin.boards_tagged.remove(board)
                     new_board = board
                     pin.board_tagged.append(new_board)
-
         db.session.commit()
         return pin.to_dict()
     # if the form has issues send the error messages back to the user
@@ -221,4 +210,16 @@ def get_latest_pins():
         for pin in pins:
             if pin.created_at.date() == latest_date:
                 all_pins[pin.id] = pin.to_dict()
+    return all_pins
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
     return all_pins

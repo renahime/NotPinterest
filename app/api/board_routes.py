@@ -154,7 +154,6 @@ def edit_board(id):
             image_found = False
             for pin in board_to_edit.pins_tagged:
                 if pin.image == form.data["cover_image"]:
-
                     board_to_edit.pin_cover_image.pop()
                     board_to_edit.pin_cover_image.append(pin)
                     image_found = True
@@ -232,10 +231,9 @@ def unpin(boardId,pinId):
         return {"errors": "Pin not found"}, 404
     if current_user.id != board.owner_id:
         return {"errors":"you do not own this board"}
-
     for pin in board.pins_tagged:
         if pin.id == pinId:
-            if pin.id == board.pin_cover_image[0].id:
+            if len(board.pin_cover_image) and pin.id == board.pin_cover_image[0].id:
                 board.pin_cover_image.pop()
             board.pins_tagged.remove(_pin)
             db.session.commit()

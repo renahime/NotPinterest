@@ -23,7 +23,6 @@ export default function ProfilePage() {
     const currentUser = useSelector(state => state.session.user)
     let userBoards = useSelector(state => state.boards.currentProfileBoards)
     let userBoardsArr = Object.values(userBoards)
-
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }

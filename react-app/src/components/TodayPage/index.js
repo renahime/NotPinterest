@@ -23,16 +23,10 @@ function TodayPage() {
   const dispatch = useDispatch()
   let pinsTodayObj = useSelector(state => state.pins.todayPins)
   let pinsToday
-  // let dbLatestDate;
   if (pinsTodayObj) {
     pinsToday = shuffle(Object.values(pinsTodayObj))
-    // dbLatestDate = pinsToday[0].created_at
   }
   const date = new Date();
-  // dbLatestDate = dbLatestDate.slice(5, 6)
-  // const dateCheck = new Date(dbLatestDate)
-  // console.log(date)
-  // console.log(dateCheck)
 
   const month = date.toLocaleString('default', { month: 'long' });
   let year = date.getFullYear();
@@ -40,6 +34,8 @@ function TodayPage() {
   useEffect(() => {
     dispatch(fetchPinsToday())
   }, [dispatch])
+
+  console.log(pinsToday)
   return (
     <div className="main-div">
       <div className="date-div">

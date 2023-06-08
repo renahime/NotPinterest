@@ -26,8 +26,6 @@ function App() {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  console.log("SESSION USER IS...", sessionUser)
-
   return (
     <>
       <Navigation isLoaded={isLoaded} />

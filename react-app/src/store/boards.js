@@ -3,6 +3,10 @@ const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_USER_BOARD = "boards/delete";
+const UN_PIN = "boards/unpin"
+const PIN = "boards/pin"
+const REPIN = "boards/repin"
+
 const PIN_A_PIN_TO_BOARD = "boards/pin/new"
 const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
 
@@ -32,6 +36,25 @@ const deleteUserBoard = (id) => ({
     type: DELETE_USER_BOARD,
     id,
 });
+
+const unPin = (pinId, boardId) => ({
+    type: UN_PIN,
+    pinId,
+    boardId,
+})
+
+const rePin = (pinId, oldBoardId, newBoardId) => ({
+    type: REPIN,
+    pinId,
+    oldBoardId,
+    newBoardId
+})
+
+const pinBoard = (pinId, boardId) => ({
+    type: PIN,
+    pinId,
+    boardId,
+})
 
 const addPinToBoard = (pin) => ({
     type: PIN_A_PIN_TO_BOARD,
@@ -86,18 +109,12 @@ export const createBoardThunk = (board) => async (dispatch) => {
 
 
 export const updateBoardThunk = (board, id) => async (dispatch) => {
-    console.log("UPDATE BOARD THUNK ID", id);
-    console.log("UPDATE BOARD THUNK board", board);
-
     try {
         const res = await fetch(`/api/boards/${id}`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(board)
         });
-
-        console.log("UPDATE BOARD THUNK RESPONSE", res);
-
         if (res.ok) {
             const updated_board = await res.json();
             dispatch(updateUserBoard(updated_board));
@@ -118,9 +135,6 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
         const res = await fetch(`/api/boards/${id}/delete`, {
             method: "DELETE",
         });
-
-        console.log("DELETE BOARD THUNK RESPONSE", res);
-
         if (res.ok) {
             const data = res.json()
             dispatch(deleteUserBoard(id));
@@ -129,7 +143,6 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
         else {
             throw new Error("Delete board request failed");
         }
-
     } catch (error) {
         console.error("Error occurred during deleteBoardThunk:", error);
         return false;
@@ -147,6 +160,47 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
         dispatch(getOneBoardByName(board))
     }
 }
+
+
+export const unpinThunk = (pinId, boardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${boardId}/unpin/${pinId}`, {
+        method: "DELETE",
+    });
+    if (res.ok) {
+        dispatch(unPin(pinId, boardId));
+        return pinId
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
+export const pinThunk = (pinId, boardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${boardId}/pin/${pinId}`, {
+        method: "POST",
+    });
+    if (res.ok) {
+        dispatch(pinBoard(pinId, boardId));
+        return pinId
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
+export const repinThunk = (pinId, oldBoardId, newBoardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${oldBoardId}/${pinId}/pin_to/${newBoardId}`, {
+        method: "POST",
+    });
+    if (res.ok) {
+        dispatch(rePin(pinId, oldBoardId, newBoardId));
+        return pinId
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
 
 
 export const addPinToBoardThunk = (boardId, pin, pinId) => async (dispatch) => {
@@ -196,7 +250,6 @@ export default function boardsReducer(state = initialState, action) {
 
 
         case UPDATE_USER_BOARD:
-
             newState = {
                 ...state,
                 allBoards: {
@@ -208,9 +261,7 @@ export default function boardsReducer(state = initialState, action) {
                     [action.board.id]: action.board
                 }
             };
-            console.log("New State:", newState);
             return newState;
-
         case DELETE_USER_BOARD:
             const newAllBoards = { ...state.allBoards };
             const updatedCurrentProfileBoards = { ...state.currentProfileBoards };
@@ -221,6 +272,7 @@ export default function boardsReducer(state = initialState, action) {
                 allBoards: newAllBoards,
                 currentProfileBoards: updatedCurrentProfileBoards,
             };
+
 
         case GET_BOARD_BY_NAME:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board }, currentUserBoards: {...state.currentUserBoards} }
@@ -242,6 +294,82 @@ export default function boardsReducer(state = initialState, action) {
               };
 
 
+        case UN_PIN:
+            const unPinAllBoards = { ...state.allBoards }
+            const unPinCurrent = { ...state.currentProfileBoards }
+            const unPinSingle = { ...state.singleBoard }
+            if (action.boardId.toString() in unPinAllBoards) {
+                for (let pinIndex in unPinAllBoards[action.boardId].pins) {
+                    if (unPinAllBoards[action.boardId].pins[pinIndex] === action.pinId) {
+                        unPinAllBoards[action.boardId].pins.splice(pinIndex, 1)
+                    }
+                }
+            }
+            if (action.boardId.toString() in unPinAllBoards) {
+                for (let pinIndex in unPinCurrent[action.boardId].pins) {
+                    if (unPinCurrent[action.boardId].pins[pinIndex] === action.pinId) {
+                        unPinCurrent[action.boardId].pins.splice(pinIndex, 1)
+                    }
+                }
+            }
+            if (action.boardId.toString() in unPinSingle) {
+                for (let pinIndex in unPinSingle[action.boardId].pins) {
+                    if (unPinSingle[action.boardId].pins[pinIndex] === action.pinId) {
+                        unPinSingle[action.boardId].pins.splice(pinIndex, 1)
+                    }
+                }
+
+            }
+            return { ...state, allBoards: unPinAllBoards, currentProfileBoards: unPinCurrent, singleBoard: unPinSingle }
+        case PIN:
+            const pinAllBoards = { ...state.allBoards }
+            const pinCurrent = { ...state.currentProfileBoards }
+            const pinSingle = { ...state.singleBoard }
+            if (action.boardId.toString() in pinAllBoards) {
+                pinAllBoards[action.boardId].pins.push(action.pinId)
+            }
+            if (action.boardId.toString() in pinCurrent) {
+                pinCurrent[action.boardId].pins.push(action.pinId)
+            }
+            if (action.boardId.toString() in pinSingle) {
+                pinSingle[action.boardId].pins.push(action.pinId)
+            }
+            return { ...state, allBoards: pinAllBoards, currentProfileBoards: pinCurrent, singleBoard: pinSingle }
+        case REPIN:
+            const repinAllBoards = { ...state.allBoards }
+            const repinCurrent = { ...state.currentProfileBoards }
+            const repinSingle = { ...state.singleBoard }
+            if (action.oldBoardId.toString() in repinAllBoards) {
+                for (let pinIndex in repinAllBoards[action.oldBoardId.toString()].pins) {
+                    if (repinAllBoards[action.boardId.toString()].pins[pinIndex] === action.pinId) {
+                        repinAllBoards[action.boardId.toString()].pins.splice(pinIndex, 1)
+                    }
+                }
+            }
+            if (action.oldBoardId.toString() in repinCurrent) {
+                for (let pinIndex in repinCurrent[action.oldBoardId.toString()].pins) {
+                    if (repinCurrent[action.boardId.toString()].pins[pinIndex] === action.pinId) {
+                        repinCurrent[action.boardId.toString()].pins.splice(pinIndex, 1)
+                    }
+                }
+            }
+            if (action.oldBoardId.toString() in repinSingle) {
+                for (let pinIndex in repinSingle[action.oldBoardId.toString()].pins) {
+                    if (repinSingle[action.boardId.toString()].pins[pinIndex] === action.pinId) {
+                        repinSingle[action.boardId.toString()].pins.splice(pinIndex, 1)
+                    }
+                }
+            }
+            if (action.newBoardId.toString() in repinAllBoards) {
+                repinAllBoards[action.newBoardId.toString()].pins.push(action.pinId)
+            }
+            if (action.newboardId.toString() in repinCurrent) {
+                repinCurrent[action.newBoardId.toString()].pins.push(action.pinId)
+            }
+            if (action.newboardId.toString() in repinSingle) {
+                repinSingle[action.newBoardId.toString()].pins.push(action.pinId)
+            }
+            return { ...state, allBoards: repinAllBoards, currentProfileBoards: repinCurrent, singleBoard: repinSingle }
         default:
             return state
     }

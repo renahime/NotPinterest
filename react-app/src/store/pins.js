@@ -1,6 +1,8 @@
 const CREATE_PIN = "pins/createNewPin"
 const GET_PIN = "pins/getById"
 const GET_PINS_MADE_TODAY = "pins/getPinsToday"
+const DELETE_PIN = "pins/delete"
+const UPDATE_USER_PIN = "pins/edit"
 const GET_PINS_BY_CATEGORY = "pins/getPinsByCategory"
 const GET_PINS_BY_USERNAME = "pins/getPinsByUsername"
 
@@ -17,6 +19,16 @@ const getPin = (pin) => ({
 const getPinsToday = (pins) => ({
     type: GET_PINS_MADE_TODAY,
     pins
+})
+
+const deletePin = (pinId) => ({
+    type: DELETE_PIN,
+    pinId
+})
+
+const updateUserPin = (pin) => ({
+    type: UPDATE_USER_PIN,
+    pin
 })
 
 const pinsByCategory = (pins) => ({
@@ -40,10 +52,10 @@ export const getPinsByUsername = (username) => async (dispatch) => {
     }
 }
 
-export const createNewPin = (pinData) => async (dispatch) => {
+export const createNewPin = (pin_info) => async (dispatch) => {
     const res = await fetch("/api/pins/new", {
         method: "POST",
-        body: pinData
+        body: pin_info
     })
 
     if (res.ok) {
@@ -55,15 +67,7 @@ export const createNewPin = (pinData) => async (dispatch) => {
     }
 }
 
-export const getPinById = (pin_id) => async (dispatch) => {
-    const res = await fetch(`/api/pins/${pin_id}`)
 
-    if (res.ok) {
-        const pin = await res.json()
-        return dispatch(getPin(pin))
-    }
-    
-}
 export const fetchPinsToday = () => async (dispatch) => {
     const res = await fetch(`/api/pins/today`, {
         method: 'GET'
@@ -77,15 +81,50 @@ export const fetchPinsToday = () => async (dispatch) => {
     }
 }
 
-// export const getPinsByCategory = (category) => async (dispatch) => {
-//     const res = await fetch(`/api/pins/${category}`)
-//     if (res.ok) {
-//         let pins = await res.json()
-//         dispatch(getPinsByCategory)
-//         return pins
-//     }
-// }
+export const deletePinThunk = (pinId) => async (dispatch) => {
+    const res = await fetch(`/api/pins/${pinId}/delete`, {
+        method: "DELETE",
+    });
+    if (res.ok) {
+        dispatch(deletePin(pinId));
+        return pinId
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+};
 
+
+export const getPinById = (pin_id) => async (dispatch) => {
+    const res = await fetch(`/api/pins/${pin_id}`)
+
+    if (res.ok) {
+        const pin = await res.json()
+        return dispatch(getPin(pin))
+    }
+
+}
+
+
+export const updatePinThunk = (pin) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/pins/${pin.id}`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pin)
+        });
+        if (res.ok) {
+            const updatedPin = await res.json();
+            dispatch(updateUserPin(updatedPin));
+            return updatedPin;
+        } else {
+            throw new Error("Update board request failed");
+        }
+    } catch (error) {
+        console.error("Error occurred during updateBoardThunk:", error);
+        return null; // or handle the error in an appropriate way
+    }
+};
 const initialState = {pins: {}, singlePin: {}, todayPins: {}, categories: {}, userPins: {} }
 
 export default function pinsReducer(state = initialState, action) {
@@ -97,9 +136,30 @@ export default function pinsReducer(state = initialState, action) {
         case GET_PINS_MADE_TODAY:
             return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
         case GET_PIN:
-            return {...state, pins: {...state.pins}, singlePin: {...action.pin}}
+            return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin } }
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, ...action.pin } }
+        case GET_PINS_MADE_TODAY:
+            return { ...state, pins: { ...state.pins }, todayPins: { ...action.pins } }
+        case DELETE_PIN:
+            const newPins = { ...state.pins };
+            const updatedTodayPins = { ...state.todayPins };
+            delete newPins[action.id];
+            if (updatedTodayPins[action.id]) {
+                delete updatedTodayPins[action.id]
+            }
+            return {
+                ...state,
+                pins: newPins,
+                todayPins: updatedTodayPins,
+            };
+        case UPDATE_USER_PIN:
+            const updatedPins = { ...state.pins, [action.pin.id]: action.pin };
+            const checkTodayPins = { ...state.todayPins };
+            if (checkTodayPins[action.id]) {
+                checkTodayPins[action.id] = action.pin
+            }
+            return { ...state, pins: updatedPins, todayPins: checkTodayPins }
         default:
             return state
     }
@@ -183,3 +243,21 @@ export default function pinsReducer(state = initialState, action) {
 
 
 
+// case GET_PINS_MADE_TODAY:
+//     return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
+// const getPinsToday = (pins) => ({
+//     type: GET_PINS_MADE_TODAY,
+//     pins
+// })
+// export const fetchPinsToday = () => async (dispatch) => {
+//     const res = await fetch(`/api/pins/today`, {
+//         method: 'GET'
+//     })
+//     if (res.ok) {
+//         let pinsToday = await res.json()
+//         dispatch(getPinsToday(pinsToday))
+//     } else {
+//         const errors = await res.json()
+//         return errors
+//     }
+// }
