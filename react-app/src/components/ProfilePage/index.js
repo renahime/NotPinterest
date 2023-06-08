@@ -82,9 +82,10 @@ export default function ProfilePage() {
                         </div>
                     </h5>
                     {checkUser() ? 
-                    <button className="profile-button edit-profile">Edit Profile</button> : null}
-                    {
-                        <button className="profile-button" id="follow-button">Follow</button>
+                    <button className="profile-button edit-profile">Edit Profile</button> : 
+                    !currentUser.followers.includes(currentProfile.owner_info.username) ?
+                        <button className="profile-button" id="follow-button">Follow</button> :
+                        <button>Unfollow</button>
                     }
                     <div>
                         <button onClick={() => history.push(`/${username}/_created`)} className="profile-button">Created</button>
