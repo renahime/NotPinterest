@@ -16,7 +16,6 @@ export default function ProfilePage() {
     const currentUser = useSelector(state => state.session.user)
     let userBoards = useSelector(state => state.boards.currentProfileBoards)
     let userBoardsArr = Object.values(userBoards)
-    console.log("currentProfile", currentProfile)
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
@@ -66,8 +65,8 @@ export default function ProfilePage() {
                             {currentProfile.following_count} following
                         </div>
                     </h5>
-                    {checkUser() ? 
-                    <button className="profile-button edit-profile">Edit Profile</button> : null}
+                    {checkUser() ?
+                        <button className="profile-button edit-profile">Edit Profile</button> : null}
                     {
                         <button className="profile-button" id="follow-button">Follow</button>
                     }
@@ -77,24 +76,24 @@ export default function ProfilePage() {
                     </div>
                 </div>
             }
-            { checkUser() ?
-            <div>
-                <div className="profile-plus-icon-wrapper">
-                    <button onClick={showMenu} className="profile-plus-button">
-                        <i className="fa-solid fa-plus"></i>
-                    </button>
-                    {openMenu && <div className={menuClassName}>
-                        <div className="profile-dropdown-create-label">Create</div>
-                        <div className="profile-dropdown-create">Pin</div>
-                        <div className="profile-dropdown-create">Board</div>
-                    </div>}
+            {checkUser() ?
+                <div>
+                    <div className="profile-plus-icon-wrapper">
+                        <button onClick={showMenu} className="profile-plus-button">
+                            <i className="fa-solid fa-plus"></i>
+                        </button>
+                        {openMenu && <div className={menuClassName}>
+                            <div className="profile-dropdown-create-label">Create</div>
+                            <div className="profile-dropdown-create">Pin</div>
+                            <div className="profile-dropdown-create">Board</div>
+                        </div>}
+                    </div>
+                    <CurrentUserBoard userBoardsArr={userBoardsArr} />
                 </div>
-                <CurrentUserBoard userBoardsArr={userBoardsArr}/> 
-            </div>
-            : 
-            <NotUSerProfile userBoardsArr={userBoardsArr} />
-        }
-        
+                :
+                <NotUSerProfile userBoardsArr={userBoardsArr} />
+            }
+
         </div>
     )
 }

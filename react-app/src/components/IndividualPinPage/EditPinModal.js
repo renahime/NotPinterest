@@ -7,8 +7,8 @@ import OpenModalButton from '../OpenModalButton';
 import DeletePinModal from "./DeletePinModal";
 import DeletePinNonOwner from "./DeletePinNonOwner";
 import { updatePinThunk } from "../../store/pins";
-import { repinThunk } from "../../store/pins";
-
+import { repinThunk } from "../../store/boards";
+import "./EditPinModal.css"
 
 
 function EditPinModal({ pin, originalBoardName, grabBoardName }) {
@@ -75,11 +75,11 @@ function EditPinModal({ pin, originalBoardName, grabBoardName }) {
           </div>
           <div className="pin-title-container">
             <h6 className="pin-title-text">Title</h6>
-            <input value={title} type="text" onChange={(e) => setTitle(e.target.value)}></input>
+            <input value={title} className="pin-edit-title-input" type="text" onChange={(e) => setTitle(e.target.value)}></input>
           </div>
           <div className="pin-description-container">
             <h6 className="pin-description-text">Description</h6>
-            <input value={description} onChange={(e) => setDescription(e.target.value)} type="text"></input>
+            <input className="pin-edit-description-input" value={description} onChange={(e) => setDescription(e.target.value)} type="text"></input>
           </div>
           <div className="pin-website-container">
             <h6 className="pin-website-text">Website</h6>

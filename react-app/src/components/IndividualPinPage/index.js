@@ -8,7 +8,7 @@ import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
 import Dropdown from "./Dropdown";
-import { pinThunk } from "../../store/pins";
+import { pinThunk } from "../../store/boards";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Icon = () => {

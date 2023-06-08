@@ -2,10 +2,7 @@ const CREATE_PIN = "pins/createNewPin"
 const GET_PIN = "pins/getById"
 const GET_PINS_MADE_TODAY = "pins/getPinsToday"
 const DELETE_PIN = "pins/delete"
-const UN_PIN = "pins/unpin"
-const PIN = "pins/pin"
 const UPDATE_USER_PIN = "pins/edit"
-const REPIN = "pins/repin"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
@@ -27,24 +24,7 @@ const deletePin = (pinId) => ({
     pinId
 })
 
-const unPin = (pinId, boardId) => ({
-    type: UN_PIN,
-    pinId,
-    boardId,
-})
 
-const rePin = (pinId, oldBoardId, newBoardId) => ({
-    type: UN_PIN,
-    pinId,
-    oldBoardId,
-    newBoardId
-})
-
-const pinBoard = (pinId, boardId) => ({
-    type: PIN,
-    pinId,
-    boardId,
-})
 
 const updateUserPin = (pin) => ({
     type: UPDATE_USER_PIN,
@@ -104,44 +84,6 @@ export const getPinById = (pin_id) => async (dispatch) => {
 
 }
 
-export const unpinThunk = (pinId, boardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${boardId}/unpin/${pinId}`, {
-        method: "DELETE",
-    });
-    if (res.ok) {
-        dispatch(unPin(pinId, boardId));
-        return pinId
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
-
-export const pinThunk = (pinId, boardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${boardId}/pin/${pinId}`, {
-        method: "POST",
-    });
-    if (res.ok) {
-        dispatch(pinBoard(pinId, boardId));
-        return pinId
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
-
-export const repinThunk = (pinId, oldBoardId, newBoardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${oldBoardId}/${pinId}/pin_to/${newBoardId}`, {
-        method: "POST",
-    });
-    if (res.ok) {
-        dispatch(rePin(pinId, oldBoardId, newBoardId));
-        return pinId
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
 
 export const updatePinThunk = (pin) => async (dispatch) => {
     try {
@@ -185,12 +127,6 @@ export default function pinsReducer(state = initialState, action) {
                 pins: newPins,
                 todayPins: updatedTodayPins,
             };
-        case UN_PIN:
-            return { ...state }
-        case PIN:
-            return { ...state }
-        case REPIN:
-            return { ...state }
         case UPDATE_USER_PIN:
             const updatedPins = { ...state.pins, [action.pin.id]: action.pin };
             const checkTodayPins = { ...state.todayPins };

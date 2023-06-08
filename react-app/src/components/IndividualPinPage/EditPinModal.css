@@ -1,0 +1,22 @@
+.pin-edit-title-input {
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+
+.board-dropdown{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+.board-options{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}

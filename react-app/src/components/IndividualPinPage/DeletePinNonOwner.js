@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import OpenModalButton from '../OpenModalButton';
 import DeletePinModal from "./DeletePinModal";
 import EditPinModal from "./EditPinModal";
-import { unpinThunk } from "../../store/pins";
-
+import { unpinThunk } from "../../store/boards";
 
 function DeletePinNonOwner({ pin, user }) {
   const { closeModal } = useModal();
