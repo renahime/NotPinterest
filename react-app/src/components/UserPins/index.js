@@ -2,24 +2,24 @@ import { useEffect, useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo, clearProfile } from "../../store/profile"
-import { getBoardsByUsername } from "../../store/boards"
+import { getPinsByUsername } from "../../store/pins"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
-import "./ProfilePage.css"
+import "../ProfilePage/ProfilePage.css"
+import PinsForBoardPage from "../IndividualBoardPage/PinsForBoardPage"
 
-
-export default function ProfilePage() {
+export default function UserPins() {
     const history = useHistory()
     const { username } = useParams()
     const dispatch = useDispatch()
     const [openMenu, setOpenMenu] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [foundUser, setFoundUser] = useState(false)
     const currentProfile = useSelector(state => state.profile.currentProfile)
     const currentUser = useSelector(state => state.session.user)
-    let userBoards = useSelector(state => state.boards.currentProfileBoards)
-    let userBoardsArr = Object.values(userBoards)
+    let userPins = useSelector(state => state.pins.userPins)
+    let userPinsArr = Object.values(userPins)
+    console.log("userPinsArr", userPinsArr)
 
     let showMenu = () => {
         setOpenMenu(!openMenu)
@@ -45,9 +45,9 @@ export default function ProfilePage() {
     useEffect(() => {
         if (!loading) return
         if (!Object.values(currentProfile).length) return
-        else dispatch(getBoardsByUsername(username))
+        else dispatch(getPinsByUsername(username))
     }, [loading, currentProfile])
-    
+    console.log("loading", loading)
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
     if (!loading) return <h1>Loading...</h1>
@@ -81,8 +81,8 @@ export default function ProfilePage() {
                             {currentProfile.following_count} following
                         </div>
                     </h5>
-                    {checkUser() ? 
-                    <button className="profile-button edit-profile">Edit Profile</button> : null}
+                    {checkUser() ?
+                        <button className="profile-button edit-profile">Edit Profile</button> : null}
                     {
                         <button className="profile-button" id="follow-button">Follow</button>
                     }
@@ -90,26 +90,26 @@ export default function ProfilePage() {
                         <button onClick={() => history.push(`/${username}/_created`)} className="profile-button">Created</button>
                         <button onClick={() => history.push(`/${username}/_saved`)} className="profile-button">Saved</button>
                     </div>
+                    <div className="individual-board-pins-wrapper">
+                        {userPinsArr.length ?
+                            
+                                userPinsArr.map(pin => (
+                                    <div className="individual-board-individual-pins-wrapper">
+                                        <div className="individual-boards-link-to-pin" onClick={() => history.push(`/pin/${pin.id}`)}>
+                                            <img className="individual-board-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
+                                            <div>
+                                                {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            
+                            : <h2>Share your threads with us today!</h2>
+                    }
+                    </div>
                 </div>
             }
-            { checkUser() ?
-            <div>
-                <div className="profile-plus-icon-wrapper">
-                    <button onClick={showMenu} className="profile-plus-button">
-                        <i className="fa-solid fa-plus"></i>
-                    </button>
-                    {openMenu && <div className={menuClassName}>
-                        <div className="profile-dropdown-create-label">Create</div>
-                        <div className="profile-dropdown-create">Pin</div>
-                        <div className="profile-dropdown-create">Board</div>
-                    </div>}
-                </div>
-                <CurrentUserBoard userBoardsArr={userBoardsArr}/> 
-            </div>
-            : 
-            <NotUSerProfile userBoardsArr={userBoardsArr} />
-        }
-        
+
         </div>
     )
 }

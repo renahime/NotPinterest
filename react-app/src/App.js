@@ -12,7 +12,7 @@ import CreatePin from "./components/CreatePin"
 import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
-import UserPins from "./components/ProfilePage/UserPins";
+import UserPins from "./components/UserPins";
 
 import Settings from "./components/Forms/SettingsForm";
 import TodayPage from "./components/TodayPage";
@@ -60,10 +60,10 @@ function App() {
             <IndividualPinPage />
           </Route>
           <Route path="/:username/_created">
-            <ProfilePage request={"created pins"}/>
+            <UserPins />
           </Route>
           <Route path="/:username/_saved">
-            <ProfilePage request={"saved pins"}/>
+            <ProfilePage re/>
           </Route>
           <Route exact path="/:username/:boardName">
             <IndividualBoardPage />
