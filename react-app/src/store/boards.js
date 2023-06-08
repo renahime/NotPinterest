@@ -65,18 +65,12 @@ export const createBoardThunk = (board) => async (dispatch) => {
 
 
 export const updateBoardThunk = (board, id) => async (dispatch) => {
-    console.log("UPDATE BOARD THUNK ID", id);
-    console.log("UPDATE BOARD THUNK board", board);
-
     try {
         const res = await fetch(`/api/boards/${id}`, {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(board)
         });
-
-        console.log("UPDATE BOARD THUNK RESPONSE", res);
-
         if (res.ok) {
             const updated_board = await res.json();
             dispatch(updateUserBoard(updated_board));
@@ -97,9 +91,6 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
         const res = await fetch(`/api/boards/${id}/delete`, {
             method: "DELETE",
         });
-
-        console.log("DELETE BOARD THUNK RESPONSE", res);
-
         if (res.ok) {
             const data = res.json()
             dispatch(deleteUserBoard(id));
@@ -108,7 +99,6 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
         else {
             throw new Error("Delete board request failed");
         }
-
     } catch (error) {
         console.error("Error occurred during deleteBoardThunk:", error);
         return false;
@@ -142,7 +132,6 @@ export default function boardsReducer(state = initialState, action) {
                 newState[board.id] = board
             }
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {} }
-
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {
@@ -152,11 +141,7 @@ export default function boardsReducer(state = initialState, action) {
                     [action.board.id]: action.board
                 }
             };
-        // console.log("New State:", newState);
-        // return newState;
-
         case UPDATE_USER_BOARD:
-
             newState = {
                 ...state,
                 allBoards: {
@@ -168,9 +153,7 @@ export default function boardsReducer(state = initialState, action) {
                     [action.board.id]: action.board
                 }
             };
-            console.log("New State:", newState);
             return newState;
-
         case DELETE_USER_BOARD:
             const newAllBoards = { ...state.allBoards };
             const updatedCurrentProfileBoards = { ...state.currentProfileBoards };
@@ -181,8 +164,6 @@ export default function boardsReducer(state = initialState, action) {
                 allBoards: newAllBoards,
                 currentProfileBoards: updatedCurrentProfileBoards,
             };
-
-
         case GET_BOARD_BY_NAME:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
         default:
