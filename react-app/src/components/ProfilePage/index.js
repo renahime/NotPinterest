@@ -92,7 +92,7 @@ export default function ProfilePage() {
                         <div className="profile-dropdown-create" onClick={showMenu}>
                             <OpenModalButton
 										buttonText="Board"
-										modalComponent={<CreateBoardModal />}
+										modalComponent={<CreateBoardModal username={currentUser?.username} />}
 									/>
                         </div>
                     </div>}

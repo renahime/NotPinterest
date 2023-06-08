@@ -28,7 +28,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   // const username = sessionUser?.username;
   console.log("SESSION USERNAME", sessionUser?.username)
   const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards);
-  console.log("CURRENT PROFILE BOARDS",currentProfileBoards)
+  console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
 
 
   const oldBoardData = currentProfileBoards[id];
@@ -63,7 +63,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <ChangeBoardCoverModal pinImages={pinImages} updatedBoardData={updatedBoardData} id={id} username={username}/>
+        <ChangeBoardCoverModal pinImages={pinImages} updatedBoardData={updatedBoardData} id={id} username={username} />
       </div>
     );
     setModalContent(modalContent);
@@ -77,9 +77,16 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const disabledButton = name === "";
 
 
+
+
+  // `/${user.username}/${boardName}`
+
+console.log(username)
+
   // when they click the delete section, it will update
   const onDelete = () => {
     dispatch(deleteBoardThunk(id));
+
     history.push('/feed');
   };
 
@@ -95,16 +102,19 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
 
   };
 
-console.log("UPADATE BOARD STATE", updatedBoardData)
+  console.log("UPADATE BOARD STATE", updatedBoardData)
 
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
 
-    await dispatch(updateBoardThunk(updatedBoardData, id));
+    await dispatch(updateBoardThunk(updatedBoardData, id))
+
+    const boardName = updatedBoardData.name.split(' ').join('_').toLowerCase()
     // const boardName = currentProfileBoards[id]?.name;
-    history.push(`/feed`);
+
+    history.push(`/${username}/${boardName}`);
     closeModal()
   };
 

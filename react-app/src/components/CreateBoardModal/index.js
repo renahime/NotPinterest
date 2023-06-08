@@ -11,7 +11,7 @@ import './CreateBoardModal.css'
 
 
 
-function CreateBoardModal() {
+function CreateBoardModal({ username }) {
 
   const dispatch = useDispatch();
   const history = useHistory()
@@ -20,14 +20,19 @@ function CreateBoardModal() {
   const [errors, setErrors] = useState([]);
   const { setModalContent, closeModal } = useModal();
 
+  console.log("USER NAME", username)
+
+
 
   useEffect(() => {
   }, [name, isPrivate])
 
+
+
   const openModal = () => {
     const modalContent = (
       <div>
-       <SavePinsToBoardModal/>
+        <SavePinsToBoardModal />
       </div>
     );
     setModalContent(modalContent);
@@ -35,8 +40,6 @@ function CreateBoardModal() {
 
 
   const disabledButton = name === "";
-
-
 
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
@@ -60,6 +63,7 @@ function CreateBoardModal() {
     //log formData
     console.log("FORM DATA:", formData)
     await dispatch(createBoardThunk(formData))
+    history.push(`/${username}/${formData.name}`)
     closeModal()
 
     // openModal(<SavePinsToBoardModal />);
@@ -103,7 +107,8 @@ function CreateBoardModal() {
             </div>
           </label>
 
-          <button className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}>
+          {/* <button type="submit" className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}> */}
+          <button type="submit" className="create-board-modal-create-button" disabled={disabledButton}>
             Create
           </button>
 
