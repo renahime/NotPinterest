@@ -49,7 +49,7 @@ function Navigation({ isLoaded }) {
 									Today
 								</NavLink>
 								<div className='tab'>Create</div>
-								<i class="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
+								<i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
 							</div>
 							<input type="text" className="search-bar" placeholder="Search" />
 

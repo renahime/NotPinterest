@@ -123,7 +123,7 @@ function FeedPage() {
         {boards.length > 0 && (
           <div className="board-container" ref={scrollContainerRef}>
             <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-              <i class="fa-solid fa-angle-left"></i>
+              <i className="fa-solid fa-angle-left"></i>
             </div>
             {boards.map((board, index) => (
 
@@ -138,7 +138,7 @@ function FeedPage() {
               </div>
             ))}
             <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-              <i class="fa-solid fa-angle-left fa-rotate-180"></i>
+              <i clasName="fa-solid fa-angle-left fa-rotate-180"></i>
             </div>
           </div>
         )

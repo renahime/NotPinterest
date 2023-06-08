@@ -21,6 +21,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const [errors, setErrors] = useState([]);
   const { setModalContent, closeModal } = useModal();
 
+  //Console.logs to check data is fetching
   console.log("BOARD ID", id)
   console.log("BOARD USERNAME", username)
   console.log("newCoverIMAGE", newCoverImage)
@@ -30,7 +31,6 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards);
   console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
 
-
   const oldBoardData = currentProfileBoards[id];
   console.log("OLD BOARD DATA", oldBoardData)
 
@@ -38,6 +38,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   console.log("PIN IMAGES", pinImages)
 
 
+  //set form data
   const [name, setName] = useState(oldBoardData?.name || "");
   const [description, setDescription] = useState(oldBoardData?.description || "");
   const [isPrivate, setIsPrivate] = useState(oldBoardData?.private || false);
@@ -47,10 +48,13 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
 
 
 
+  //fetch boards by username
   useEffect(() => {
     dispatch(getBoardsByUsername(username)).then(() => setIsLoaded(true));
   }, [username]);
 
+
+  // on render, set the board data in fields
   useEffect(() => {
     setName(oldBoardData?.name || "");
     setDescription(oldBoardData?.description || "")
@@ -70,40 +74,33 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   };
 
 
+  // sets the private variable
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
   };
 
+  // validate Done button
   const disabledButton = name === "";
 
 
 
-
-  // `/${user.username}/${boardName}`
-
-  console.log(username)
-
-  // when they click the delete section, it will update
+  // when they click the delete section, it will delete the board and send them back to boards page
   const onDelete = () => {
     dispatch(deleteBoardThunk(id));
     closeModal()
   };
 
 
-
-  console.log("COVER IMAGE FOR IF STATEMENT", cover_image)
-
+  //updated data that we will send to the thunk
   const updatedBoardData = {
     name,
     private: isPrivate,
     description: description,
     cover_image: cover_image
-
   };
 
-  console.log("UPADATE BOARD STATE", updatedBoardData)
 
-
+  // on Submit we update the new Board data and then we redirect user to their new board page
   const onSubmit = async (e) => {
     e.preventDefault();
     await dispatch(updateBoardThunk(updatedBoardData, id))
@@ -123,25 +120,20 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
       {isLoaded && (
 
         <div className="edit-board-modal-container">
-
           <div className="edit-board-modal-header">
             Edit board
           </div>
 
           <form onSubmit={onSubmit}>
             {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
-
             {cover_image[0] !== undefined && (
               <div className="edit-board-cover-image-container">
                 <div className="edit-board-cover-image-text">Board cover</div>
                 <div className="edit-board-cover-image" onClick={openModal}>
-
                   <img src={cover_image} className="edit-board-cover-image" />
                 </div>
-
               </div>
-            )
-            }
+            )}
 
             <label className="edit-board-modal-name">
               Name
@@ -151,7 +143,6 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
                 onChange={(e) => setName(e.target.value)}
                 required
                 className="edit-board-modal-name-input"
-
               ></input>
             </label>
 
@@ -166,22 +157,15 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
             </label>
 
             <label>
-
-
               <p className="edit-board-settings">Settings</p>
-
               <div className="edit-board-modal-flex-row">
-
                 <input type="checkbox" checked={isPrivate} onChange={handlePrivateChange} className="edit-board-checkbox-input" />
-
                 <div>
                   <p className="edit-board-modal-private-text bold">Keep this board secret</p>
                   <p className="edit-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
                 </div>
-
               </div>
             </label>
-
 
             <button className="edit-board-modal-create-button" disabled={disabledButton}>
               Done

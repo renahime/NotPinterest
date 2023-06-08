@@ -3,6 +3,7 @@ const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_USER_BOARD = "boards/delete";
+const PIN_A_PIN_TO_BOARD = "boards/pin/new"
 
 
 
@@ -33,6 +34,10 @@ const deleteUserBoard = (id) => ({
     id,
 });
 
+const addPinToBoard = (pin) => ({
+    type: PIN_A_PIN_TO_BOARD,
+    pin
+})
 
 
 export const getBoardsByUsername = (username) => async (dispatch) => {
@@ -118,6 +123,7 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
 
 
 
+
 const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {} }
 export const getBoardByName = (username, boardname) => async (dispatch) => {
     console.log(username)
@@ -130,6 +136,22 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
 }
 
 
+export const addPinToBoardThunk = (boardId, pin, pinId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${boardId}/pin/${pinId}`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pin)
+
+    })
+
+    if (res.ok) {
+        const new_pin = await res.json()
+        dispatch(addPinToBoard(new_pin))
+        return new_pin
+    } else {
+        throw new Error("Pin could not be added to board")
+    }
+}
 
 
 export default function boardsReducer(state = initialState, action) {
@@ -184,9 +206,26 @@ export default function boardsReducer(state = initialState, action) {
                 currentProfileBoards: updatedCurrentProfileBoards,
             };
 
-
         case GET_BOARD_BY_NAME:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
+
+
+        case PIN_A_PIN_TO_BOARD:
+            return {
+                ...state,
+                singleBoard: {
+                  ...state.singleBoard,
+                  "User Boards": {
+                    ...state.singleBoard["User Boards"],
+                      "pin info": {
+                        ...state.singleBoard["User Boards"]["pin info"],
+                        [action.pin.id]: action.pin
+                      }
+                  }
+                }
+              };
+
+              
         default:
             return state
     }

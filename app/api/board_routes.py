@@ -205,6 +205,7 @@ def get_board_by_category(category_name):
 @login_required
 def pin(boardId,pinId):
     board = Board.query.get(boardId)
+    print("BOARD IN PIN ROUTE", board)
     if current_user.id != board.owner_id:
         return {"errors":"you do not own this board"}
     _pin = Pin.query.get(pinId)
