@@ -43,10 +43,21 @@
     background-color: white;
     padding: 5px;
     z-index: 51;
+    width: 170px;
+    left: -20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(128, 128, 128, 20%);
+}
+
+.new-pin-menu > p {
+    padding: 10px 0;
+    margin: 10px 0;
 }
 
 .new-pin-menu > p:hover {
     background-color: #E9E9E9;
+    border-radius: 10px;
 }
 
 .file-input-wrapper-wrapper {

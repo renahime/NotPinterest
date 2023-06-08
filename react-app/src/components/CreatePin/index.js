@@ -218,7 +218,7 @@ export default function CreatePin() {
                         </label>
                     </div>
                     <div className="new-pin-alt-text-input-wraper">
-                        <button onClick={() => setViewAltText(true)} className={altTextButtonClassName}>Add alt text</button>
+                        <p onClick={() => setViewAltText(true)} className={altTextButtonClassName}>Add alt text</p>
                         <div className="new-pin-alt-and-destination-wraper-with-button">
                             <label>
                                 <input
