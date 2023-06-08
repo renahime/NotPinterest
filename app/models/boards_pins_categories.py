@@ -199,6 +199,7 @@ class Category(db.Model):
 
     boards = db.relationship('Board', secondary='board_categories', back_populates='categories', passive_deletes=True)
     pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories', passive_deletes=True)
+    users = db.relationship('User', secondary=user_categories, back_populates='categories', passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
