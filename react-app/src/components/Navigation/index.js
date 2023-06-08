@@ -45,24 +45,11 @@ function Navigation({ isLoaded }) {
 								<NavLink exact to="/feed" className="tab" activeClassName="active">
 									Home
 								</NavLink>
-
 								<NavLink to="/today" className="tab" activeClassName="active">
 									Today
 								</NavLink>
-
-								{/* <NavLink to="/create" className="tab tab-create" activeClassName="active"> */}
-									<OpenModalButton
-										buttonText="Create"
-										// className="test-open-create-board-modal"
-										className="tab tab-create"
-										activeClassName="active"
-										modalComponent={<CreateBoardModal />}
-										// style={{ fontSize: '20px' }}
-									/>
-
-									<i class="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
-								{/* </NavLink> */}
-
+								<div className='tab'>Create</div>
+								<i class="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
 							</div>
 							<input type="text" className="search-bar" placeholder="Search" />
 
@@ -70,13 +57,7 @@ function Navigation({ isLoaded }) {
 					</>
 				)}
 
-
-
-
-
-
 				<div className="right-section">
-
 
 					{isLoaded && sessionUser ? (
 						<ProfileButton user={sessionUser} />

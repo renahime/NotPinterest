@@ -34,7 +34,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const oldBoardData = currentProfileBoards[id];
   console.log("OLD BOARD DATA", oldBoardData)
 
-  const pinImages = oldBoardData.additional_images
+  const pinImages = oldBoardData?.additional_images
   console.log("PIN IMAGES", pinImages)
 
 
@@ -81,18 +81,17 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
 
   // `/${user.username}/${boardName}`
 
-console.log(username)
+  console.log(username)
 
   // when they click the delete section, it will update
   const onDelete = () => {
     dispatch(deleteBoardThunk(id));
-
-    history.push('/feed');
+    closeModal()
   };
 
 
 
-
+  console.log("COVER IMAGE FOR IF STATEMENT", cover_image)
 
   const updatedBoardData = {
     name,
@@ -107,16 +106,14 @@ console.log(username)
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-
     await dispatch(updateBoardThunk(updatedBoardData, id))
-
     const boardName = updatedBoardData.name.split(' ').join('_').toLowerCase()
     // const boardName = currentProfileBoards[id]?.name;
-
     history.push(`/${username}/${boardName}`);
     closeModal()
   };
+
+
 
   if (!currentProfileBoards || !username) {
     return <h1>loading</h1>;
@@ -132,15 +129,19 @@ console.log(username)
           </div>
 
           <form onSubmit={onSubmit}>
+            {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
 
-            <div className="edit-board-cover-image-container">
-              <div className="edit-board-cover-image-text">Board cover</div>
-              <div className="edit-board-cover-image" onClick={openModal}>
-                {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
-                <img src={cover_image} className="edit-board-cover-image" />
+            {cover_image[0] !== undefined && (
+              <div className="edit-board-cover-image-container">
+                <div className="edit-board-cover-image-text">Board cover</div>
+                <div className="edit-board-cover-image" onClick={openModal}>
+
+                  <img src={cover_image} className="edit-board-cover-image" />
+                </div>
+
               </div>
-
-            </div>
+            )
+            }
 
             <label className="edit-board-modal-name">
               Name
