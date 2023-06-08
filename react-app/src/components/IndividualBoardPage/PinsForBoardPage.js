@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom"
 
-export default function PinsForBoardPage({pins}) {
+export default function PinsForBoardPage({ pins }) {
     const history = useHistory()
     let pinsArr = Object.values(pins)
     return (
@@ -8,7 +8,7 @@ export default function PinsForBoardPage({pins}) {
             {pinsArr.map(pin => (
                 <div className="individual-board-individual-pins-wrapper">
                     <div className="individual-boards-link-to-pin" onClick={() => history.push(`/pin/${pin.id}`)}>
-                        <img className="individual-board-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""}/>
+                        <img className="individual-board-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
                         <div>
                             {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
                         </div>

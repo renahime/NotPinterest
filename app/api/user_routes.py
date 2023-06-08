@@ -19,12 +19,13 @@ def users():
 # gets user data by username
 @user_routes.route('/users/<username>')
 def user_profile(username):
+
     user = User.query.filter(User.username == username).one_or_none()
-    print("user.profile_image", user.profile_image)
+
     if not user:
          return {"errors": "User couldn't be found"}, 404
+    
     return user.to_dict()
-
 
 
 @user_routes.route('/<int:id>')
@@ -100,6 +101,33 @@ def follow(username):
     db.session.commit()
     return {"message":"You are now following {}!".format(username)}
 
+@user_routes.route('/<username>/followering')
+@login_required
+def getFollowing(username):
+    user = User.query.filter_by(username=username).one_or_none()
+
+    if not user:
+         return {'errors': 'User was not found'}, 404
+
+    # return "hello"
+    followingDict = {following.id: following.name for following in user.following}
+    return followingDict
+
+@user_routes.route('/<username>/followers')
+@login_required
+def getFollowers(username):
+    user = User.query.filter_by(username=username).one_or_none()
+
+    if not user:
+         return {'errors': 'User was not found'}, 404
+
+    # return "hello"
+    followersDict = {follower.id: follower.name for follower in user.followers}
+    return followersDict
+    # for follower in user.followers:
+
+
+
 @user_routes.route('/unfollow/<username>', methods=['DELETE'])
 @login_required
 def unfollow(username):
@@ -115,3 +143,4 @@ def unfollow(username):
             db.session.commit()
             return {"message": "You are no longer following {}!".format(username)}
     return {"message": "You are not following {}!".format(username)}
+

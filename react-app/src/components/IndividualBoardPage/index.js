@@ -25,7 +25,7 @@ export default function IndividualBoardPage() {
     }
 
     useEffect(() => {
-        dispatch(getBoardByName(username, boardName)).then(setLoading(true))
+        dispatch(getBoardByName(username, boardName)).then(setLoading(true)).catch((e) => console.log("e", e))
     }, [dispatch])
 
     if (!Object.values(singleBoard).length) return <h1>..Loading</h1>
@@ -51,7 +51,8 @@ export default function IndividualBoardPage() {
                                 </div>
                                 {singleBoard.user.profile_image ? <img className="individual-board-profile-image" src={singleBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
                                 <div>
-                                    <div className="individual-board-description-owner">{singleBoard.description ? singleBoard.description : null}</div>
+                                    <div className="individual-board-description-owner">{singleBoard.description ? singleBoard.description : null}
+                                    </div>
                                 </div>
                             </div>
                             :
@@ -68,9 +69,11 @@ export default function IndividualBoardPage() {
                                 </div>
                             </div>}
                     </div>
-                        <div>
-                            <PinsForBoardPage pins={singleBoard["pin info"]} />
-                        </div>
+                    {singleBoard.user.id === currentUser.id &&
+                        <div className="singleboard-pins-length">
+                            {pinDisplay(singleBoard.pins.length)}
+                        </div>}
+                    <PinsForBoardPage pins={singleBoard["pin info"]} />
                 </div>}
         </div>
     )

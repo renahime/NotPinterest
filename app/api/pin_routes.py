@@ -57,6 +57,7 @@ def get_pin_by_id(id):
     owner_info["first_name"] = owner["first_name"]
     owner_info["last_name"] = owner["last_name"]
     owner_info["followers"] = owner["followers"]
+    owner_info["username"] = owner["username"]
 
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
@@ -66,15 +67,15 @@ def get_pin_by_id(id):
     return found_pin
 
 # route to create a new pin
-@pin_routes.route("/", methods=["GET", "POST"])
-@login_required
+@pin_routes.route("/new", methods=["GET", "POST"])
+# @login_required
 def create_pin():
     form = PinForm()
-
+    print("made it")
     # Sets the boards that a user has and can save thier pin to
     user_boards = Board.query.filter(Board.owner_id == current_user.id).all()
     if user_boards:
-        form.board.choices = [board.name for board in user_boards]
+        form.board.choices = [board.id for board in user_boards]
 
     if not user_boards:
         form.board.choices = []
@@ -108,7 +109,7 @@ def create_pin():
             user=user
         )
 
-        board_to_save_pin_to = Board.query.filter(Board.name == data["board"]).one()
+        board_to_save_pin_to = Board.query.get(data["board"])
         new_pin.board_tagged.append(board_to_save_pin_to)
 
         db.session.add(new_pin)

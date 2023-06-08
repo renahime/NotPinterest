@@ -13,6 +13,7 @@ import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
 import SavePinsToBoardModal from "./components/CreateBoardModal/SavePinsToBoard";
+import UserPins from "./components/UserPins";
 
 import Settings from "./components/Forms/SettingsForm";
 import TodayPage from "./components/TodayPage";
@@ -50,11 +51,11 @@ function App() {
           <Route exact path="/create">
             <CreatePin />
           </Route>
-          <Route exact path="/">
-            <LandingPage />
-          </Route>
           <Route exact path="/feed">
             <FeedPage />
+          </Route>
+          <Route exact path="/">
+            <LandingPage />
           </Route>
           <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
@@ -62,13 +63,18 @@ function App() {
           <Route exact path="/pin/:id">
             <IndividualPinPage />
           </Route>
+          <Route path="/:username/_created">
+            <UserPins />
+          </Route>
+          <Route path="/:username/_saved">
+            <ProfilePage re/>
+          </Route>
           <Route exact path="/:username/:boardName">
             <IndividualBoardPage />
           </Route>
           <Route path="/:username">
             <ProfilePage />
           </Route>
-
         </Switch>
       )}
     </>
