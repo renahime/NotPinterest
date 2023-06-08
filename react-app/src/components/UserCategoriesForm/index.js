@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, Redirect } from "react-router-dom";
+import { getPinsByCategory } from "../../store/pins";
 import "./UserCategoriesForm.css"
+import {  } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function UserCategoriesForm() {
     const history = useHistory()
+    const dispatch = useDispatch()
     const currentUser = useSelector(state => state.session.user)
     let [errors, setErrors] = useState({})
     let [bohoImage, setBohoImage] = useState(false)
@@ -21,10 +24,12 @@ export default function UserCategoriesForm() {
     let oldMoneyImageClassName = oldMoneyImage ? "selected" : "notSelected"
     let streetwearImageClassName = streetWearImage ? "selected" : "notSelected"
 
-    // if (currentUser.categories) history.push("/feed")
-    // if (!currentUser) history.push("/")
+    console.log("current user", currentUser)
+    if (currentUser === null) history.push("/")
+    if (currentUser.categories != null) history.push("/feed")
 
-    let handleSubmit = () => {
+    let handleSubmit = async () => {
+        console.log("i work")
         setErrors({})
         let interests = []
         if (bohoImage) interests.push("Boho")
@@ -35,6 +40,11 @@ export default function UserCategoriesForm() {
         if (athleisureImage) interests.push("Athleisure")
         if (!interests.length) {
             return setErrors({errors: "Must select at least one category."})
+        } else {
+            let pins = await dispatch(getPinsByCategory(interests)).then((res) => <Redirect to="/feed" pins={res} /> )
+            if (pins.errors){
+                return setErrors(pins.errors)
+            }
         }
     }
 
