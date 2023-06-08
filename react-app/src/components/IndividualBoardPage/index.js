@@ -23,7 +23,7 @@ export default function IndividualBoardPage() {
     }
 
     useEffect(() => {
-        dispatch(getBoardByName(username, boardName)).then(setLoading(true))
+        dispatch(getBoardByName(username, boardName)).then(setLoading(true)).catch((e) => console.log("e", e))
     }, [dispatch])
 
     if (!Object.values(singleBoard).length) return <h1>..Loading</h1>

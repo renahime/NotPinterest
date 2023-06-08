@@ -39,11 +39,16 @@ const getCurrentUserBoard = (boards) => ({
 
 
 export const getBoardsofCurrentUser = () => async (dispatch) => {
-    const res = await fetch("/api/boards/current_user")
+    const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
+    if (res.status >= 400) {
+        console.log("in the get boards of current user reducer")
+        return
+    }
     if (res.ok) {
         let boards = await res.json()
         console.log("boards", boards)
         dispatch(getCurrentUserBoard(boards))
+        return
     }
 }
 
@@ -146,6 +151,7 @@ export default function boardsReducer(state = initialState, action) {
             return {...state, allBoards: {...state.allBoards}, currentProfileBoards: {...state.currentProfileBoards}, singleBoard: {...state.singleBoard}, currentUserBoards: {...action.boards}}
 
         case GET_BOARDS_OF_USER:
+            console.log("action", action.boards)
             for (let board of action.boards) {
                 newState[board.id] = board
             }
