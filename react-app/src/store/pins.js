@@ -4,6 +4,7 @@ const GET_PINS_MADE_TODAY = "pins/getPinsToday"
 const GET_PINS_BY_CATEGORY = "pins/getPinsByCategory"
 const GET_PINS_BY_USERNAME = "pins/getPinsByUsername"
 
+
 const createPin = (pin) => ({
     type: CREATE_PIN,
     pin
@@ -28,6 +29,8 @@ const getUserPins = (pins) => ({
     type: GET_PINS_BY_USERNAME,
     pins
 })
+
+
 
 export const getPinsByUsername = (username) => async (dispatch) => {
     let res = await fetch(`/api/pins/users/${username}`)
@@ -77,21 +80,24 @@ export const fetchPinsToday = () => async (dispatch) => {
     }
 }
 
-// export const getPinsByCategory = (category) => async (dispatch) => {
-//     const res = await fetch(`/api/pins/${category}`)
-//     if (res.ok) {
-//         let pins = await res.json()
-//         dispatch(getPinsByCategory)
-//         return pins
-//     }
-// }
+export const getPinsByCategory = (categories) => async (dispatch) => {
+    const res = await fetch(`/api/pins/${categories}`)
+    if (res.ok) {
+        let pins = await res.json()
+        dispatch(getUserPins(pins))
+        return pins
+    } else {
+        let errors = await res.json()
+        return errors
+    }
+}
 
-const initialState = {pins: {}, singlePin: {}, todayPins: {}, categories: {}, userPins: {} }
+const initialState = {pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_PINS_BY_USERNAME:
-            return {...state, singlePin: {...state.singlePin}, todayPins: {...state.todayPins}, categories: {...state.categories}, pins: {...state.pins}, userPins: {...action.pins}}
+            return {...state, singlePin: {...state.singlePin}, todayPins: {...state.todayPins}, pins: {...action.pins}, userPins: {...action.pins}}
         case GET_PINS_BY_CATEGORY:
             return {...state, singlePin: {... state.singlePin}, pins: {...state.pins}, todayPins : {...state.todayPins}, categories: {...action.pins}}
         case GET_PINS_MADE_TODAY:

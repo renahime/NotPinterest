@@ -25,6 +25,7 @@ export default function UserCategoriesForm() {
     // if (!currentUser) history.push("/")
 
     let handleSubmit = () => {
+        setErrors({})
         let interests = []
         if (bohoImage) interests.push("Boho")
         if (athleisureImage) interests.push("Athleisure")
