@@ -43,8 +43,9 @@ export default function ProfilePage() {
 
     useEffect(() => {
         if (!loading) return
+        if (!Object.values(currentProfile).length) return
         else dispatch(getBoardsByUsername(username))
-    }, [currentProfile])
+    }, [loading, currentProfile])
     
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 

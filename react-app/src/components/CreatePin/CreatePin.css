@@ -18,6 +18,15 @@
 
 .new-pin-image-side {
     position: relative;
+    width: 100%;
+}
+
+.new-pin-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .new-pin-open-menu {
@@ -44,6 +53,11 @@
     padding: 2px;
     background-color: #E9E9E9;
     border-radius: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .file-input-wrapper {
@@ -52,7 +66,11 @@
     margin: 15px;
     height: 450px;
     border: 2px dashed #c0b7b7;
-    /* border-radius: 20px; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 input[type="file"] {
@@ -68,9 +86,11 @@ input[type="file"] {
     width: 100%;
     height: 100%;
     top: 0;
-    background-color: #E9E9E9;
     box-sizing: border-box;
     padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .new-pin-default-image {
@@ -213,4 +233,14 @@ input[type="file"] {
 .create-pin-owner {
     font-weight: 600;
     font-size: 16px;
+}
+
+.new-pin-preview-image {
+    width: 95%;
+    position: absolute;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
 }

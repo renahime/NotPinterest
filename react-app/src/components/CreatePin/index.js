@@ -7,7 +7,6 @@ import "./CreatePin.css"
 
 export default function CreatePin() {
     const history = useHistory()
-    let [image, setImage] = useState("")
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [errors, setErrors] = useState("")
@@ -21,7 +20,8 @@ export default function CreatePin() {
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoardsArr = Object.values(currentUserBoards)
     const [board, setBoard] = useState("")
-    const [previewImage, setAndPreviewImage] = useState("")
+    const [image, setImage] = useState("")
+    const [previewImage, setPreviewImage] = useState("")
     const [previewImage2, setPreviewImage2] = useState("")
     const dispatch = useDispatch()
 
@@ -84,24 +84,6 @@ export default function CreatePin() {
 
     }
 
-    // useEffect(() => {
-    //     console.log("i ran")
-    //     let imageUrl = URL.createObjectURL(previewImage)
-    //     console.log(imageUrl)
-    //     console.log("imageUrl", imageUrl)
-    //     setPreviewImage2(imageUrl)
-    //     return URL.revokeObjectURL()
-    // }, [previewImage])
-
-    // async function setAndPreviewImage (e) {
-    //     setPreviewImage(e.target.files[0])
-    //     console.log(previewImage)
-    //     console.log(previewImage.name.createObjectURL())
-    //     const fileReader = new FileReader()
-    //     let newPinImage = await fileReader.readAsDataURL(e.target.files[0]).then(res => console.log("res", res))
-    //     console.log(newPinImage)
-    // }
-
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
         else return `${num} followers`
@@ -115,15 +97,23 @@ export default function CreatePin() {
 
     useEffect(() => {
         dispatch(getBoardsofCurrentUser())
-
     }, [dispatch])
 
     useEffect(() => {
         if (Object.values(currentUserBoards).length) {
             setBoard(Object.values(currentUserBoards)[0].id)
         }
-        // console.log("image", image.filename)
     }, [currentUserBoards])
+
+    useEffect(() => {
+        if (previewImage) {
+            let prev = URL.createObjectURL(previewImage)
+            setPreviewImage2(prev)
+            return () =>{
+                URL.revokeObjectURL(prev)
+            } 
+        }
+    }, [previewImage])
 
     return (
         <div className="new-pin-wrapper">
@@ -139,12 +129,11 @@ export default function CreatePin() {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    // onChange={(e) => setAndPreviewImage(e)}
-                                    onChange={(e) => setAndPreviewImage}
+                                    onChange={(e) => setPreviewImage(e.target.files[0])}
                                     required
                                 />
                                 <div className="new-pin-image-file-styled">
-                                    {image ? <img src={image.name} /> : <div className="new-pin-default-image">
+                                    {previewImage2 ? <img className="new-pin-preview-image" src={previewImage2} /> : <div className="new-pin-default-image">
                                         <div className="new-pin-upload-caption">
                                             <i className="fa-solid fa-circle-arrow-up"></i>
                                             <p>Drag and drop or click to upload</p>
