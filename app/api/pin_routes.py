@@ -22,6 +22,27 @@ def get_users_pins_by_username(username):
     return all_pins
 
 #Route to get a pins by category
+@pin_routes.route('/pins/<categories>')
+def get_all_user_selected_categories(categories):
+    pins = {}
+
+    if len(categories) == 0:
+        return {"errors": "User has selected no categories"}
+
+    for category in categories:
+        Category.query.filter(Category.name == category).one()
+
+    # pins = Pin.query.all()
+    # all_pins = {}
+
+    # for pin in pins:
+    #     for category in pin.categories:
+    #         if category.name == category_name:
+    #             all_pins[pin.id] = pin.to_dict()
+
+    # return all_pins
+
+#Route to get a pins by category
 @pin_routes.route('/<category_name>')
 def get_pin_by_category(category_name):
     pins = Pin.query.all()

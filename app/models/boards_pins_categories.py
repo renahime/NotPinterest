@@ -72,6 +72,23 @@ board_cover_images = db.Table(
 if environment == "production":
     board_cover_images.schema = SCHEMA
 
+user_categories = db.Table(
+    "user_categories",
+    db.Column(
+        "user_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("users.id"), ondelete='CASCADE')
+    ),
+    db.Column(
+        "category_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("categories.id"), ondelete='CASCADE')
+    )
+)
+
+if environment == "production":
+    user_categories.schema = SCHEMA
+
 class Board(db.Model):
     __tablename__ = 'boards'
     id = db.Column(db.Integer, primary_key=True)
@@ -191,3 +208,4 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
+    

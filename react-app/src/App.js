@@ -13,6 +13,7 @@ import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
 import UserPins from "./components/UserPins";
+import UserCategoriesForm from "./components/UserCategoriesForm";
 
 import Settings from "./components/Forms/SettingsForm";
 import TodayPage from "./components/TodayPage";
@@ -32,6 +33,9 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path="/setCategories">
+            <UserCategoriesForm />
+          </Route>
           <Route exact path="/settings">
             <Settings />
           </Route>
@@ -63,7 +67,7 @@ function App() {
             <UserPins />
           </Route>
           <Route path="/:username/_saved">
-            <ProfilePage re/>
+            <ProfilePage re />
           </Route>
           <Route exact path="/:username/:boardName">
             <IndividualBoardPage />
