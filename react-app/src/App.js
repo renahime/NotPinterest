@@ -12,7 +12,6 @@ import CreatePin from "./components/CreatePin"
 import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
-import PageNotFound from "./components/PageNotFound";
 
 import Settings from "./components/Forms/SettingsForm";
 import TodayPage from "./components/TodayPage";
