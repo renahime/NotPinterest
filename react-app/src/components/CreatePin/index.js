@@ -20,6 +20,10 @@ export default function CreatePin() {
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoardsArr = Object.values(currentUserBoards)
     const [board, setBoard] = useState("")
+    const [titleActive, setTitleActive] = useState(false)
+    const [descActive, setDescActive] = useState(false)
+    const [altActive, setAltActive] = useState(false)
+
     const [image, setImage] = useState("")
     const [previewImage, setPreviewImage] = useState("")
     const [previewImage2, setPreviewImage2] = useState("")
@@ -90,10 +94,11 @@ export default function CreatePin() {
     }
 
     let altTextButtonClassName = viewAltText ? "hidden" : "create-pin-alt-text-button"
-
     let altTextInputClassName = viewAltText ? "create-pin-alt-text-input" : "hidden"
-
     let pinMenuClassName = showMenu ? "new-pin-menu" : "hidden"
+    let activeTitleClassName = titleActive ? "" : "hidden"
+    let activeDescClassName = descActive ? "" : "hidden"
+    let activeAltClassName = altActive ? "" : "hidden"
 
     useEffect(() => {
         dispatch(getBoardsofCurrentUser())
@@ -109,9 +114,9 @@ export default function CreatePin() {
         if (previewImage) {
             let prev = URL.createObjectURL(previewImage)
             setPreviewImage2(prev)
-            return () =>{
+            return () => {
                 URL.revokeObjectURL(prev)
-            } 
+            }
         }
     }, [previewImage])
 
@@ -144,7 +149,7 @@ export default function CreatePin() {
                             </label>
                         </div>
                     </div>
-                    {errors.image ? <p>{errors.image}</p> : null}
+                    {errors.image ? <p className="create-pin-errors">{errors.image}</p> : null}
                     {loadingImage && <h3>Wait while your image is uploaded</h3>}
                 </div>
                 <div className="new-pin-info-side">
@@ -161,13 +166,15 @@ export default function CreatePin() {
                                     </option>
                                 ))}
                             </select>
-                            {errors.board ? <p>{errors.board}</p> : null}
+                            {errors.board ? <p className="create-pin-errors">{errors.board}</p> : null}
                         </label>
-                        <button onClick={() => setHasSubmitted(true)}>Save</button>
+                        <button>Save</button>
                     </div>
                     <div className="new-pin-title-input-wraper">
                         <label>
                             <input
+                                onFocus={() => setTitleActive(true)}
+                                onBlur={() => setTitleActive(false)}
                                 className="new-pin-input new-pin-title"
                                 type="text"
                                 value={title}
@@ -177,14 +184,14 @@ export default function CreatePin() {
                             />
                             {errors.title || title.length > 100 ?
                                 <div className="new-pin-active-caption">
-                                    <p>
+                                    <p className={`create-pin-errors`}>
                                         {errors.title ? errors.title : " Ooops! This title is getting long. Try trimming it down."
                                         }
                                     </p>
-                                    <p>{100 - title.length}</p>
+                                    <p className="create-pin-errors">{100 - title.length}</p>
                                 </div>
                                 :
-                                <div className="new-pin-active-caption">
+                                <div className={`new-pin-active-caption ${activeTitleClassName}` }>
                                     <p>Your first 40 characters are what usually show up in feeds</p>
                                     <p>{100 - title.length}</p>
                                 </div>
@@ -203,18 +210,30 @@ export default function CreatePin() {
                     <div className="new-pin-description-input-wrapper">
                         <label>
                             <input
+                                onFocus={() => setDescActive(true)}
+                                onBlur={() => setDescActive(false)}
                                 className="new-pin-input new-pin-description"
                                 type="text"
                                 value={description}
                                 onChange={e => setDescription(e.target.value)}
                                 placeholder="Tell everyone what your Thread is about"
-                                maxLength={225}
+                            // maxLength={225}
                             />
-                            <div className="new-pin-active-caption">
-                                <p>People will usually see the first 50 characters when they click on your pin</p>
-                                <p>{225 - description.length}</p>
-                            </div>
-                            {errors.description ? <p>{errors.description}</p> : null}
+                            {errors.description || description.length > 225 ?
+                                <div className="new-pin-active-caption">
+                                    <p className="create-pin-errors ">
+                                        {errors.description ? errors.description : " Ooops! This description is getting long. Try trimming it down."
+                                        }
+                                    </p>
+                                    <p className="create-pin-errors">{225 - description.length}</p>
+                                </div>
+                                :
+                                <div className={`new-pin-active-caption ${activeDescClassName}`}>
+                                    <p>People will usually see the first 50 characters when they click on your pin</p>
+                                    <p>{225 - description.length}</p>
+                                </div>
+                            }
+
                         </label>
                     </div>
                     <div className="new-pin-alt-text-input-wraper">
@@ -222,18 +241,29 @@ export default function CreatePin() {
                         <div className="new-pin-alt-and-destination-wraper-with-button">
                             <label>
                                 <input
+                                    onFocus={() => setAltActive(true)}
+                                    onBlur={() => setAltActive(false)}
                                     className={`new-pin-input ${altTextInputClassName}`}
                                     type="text"
                                     value={altText}
                                     onChange={e => setAltText(e.target.value)}
                                     placeholder="Explain what people can see in your Thread"
-                                    maxLength={225}
+                                // maxLength={225}
                                 />
-                                <div className="new-pin-active-caption">
-                                    <p>This text will be read aloud by screen readers</p>
-                                    <p>{225 - altText.length}</p>
-                                </div>
-                                {errors.altText ? <p>{errors.altText}</p> : null}
+                                {errors.altText || altText.length > 225 ?
+                                    <div className="new-pin-active-caption">
+                                        <p className="create-pin-errors ">
+                                            {errors.altText ? errors.altText : " Ooops! This alternate text is getting long. Try trimming it down."
+                                            }
+                                        </p>
+                                        <p className="create-pin-errors">{225 - altText.length}</p>
+                                    </div>
+                                    :
+                                    <div className={`new-pin-active-caption ${activeAltClassName}`}>
+                                        <p>This text will be read aloud by screen readers</p>
+                                        <p>{225 - altText.length}</p>
+                                    </div>
+                                }
                             </label>
                         </div>
                     </div>
@@ -245,9 +275,9 @@ export default function CreatePin() {
                                 value={destinationLink}
                                 onChange={e => setDestinationLink(e.target.value)}
                                 placeholder="Add a destination link"
-                                maxLength={225}
+                            // maxLength={225}
                             />
-                            {errors.destinationLink ? <p>{errors.destinationLink}</p> : null}
+                            {errors.destinationLink ? <p className="create-pin-errors">{errors.destinationLink}</p> : null}
                         </label>
                     </div>
                 </div>

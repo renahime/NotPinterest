@@ -255,3 +255,11 @@ input[type="file"] {
     align-items: center;
     box-sizing: border-box;
 }
+
+.create-pin-errors {
+    color: #E60023;
+}
+
+.hidden {
+    display: none;
+}
