@@ -3,8 +3,7 @@ const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
-const GET_FOLLOWERS = "session/GET_FOLLOWERS"
-const GET_FOLLOWING = "session/GET_FOLLOWING"
+const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
 
 
 const setUser = (user) => ({
@@ -26,22 +25,22 @@ const newFollow = (user) => ({
 	user
 })
 
-const getFollowers = (users) => ({
-	type: GET_FOLLOWING,
+const getFollowersAndFollowing = (users) => ({
+	type: GET_FOLLOWING_AND_FOLLOWERS,
 	users
 })
 
-const getFollowing = (users) => ({
-	type: GET_FOLLOWERS,
-	users
-})
+// const getFollowing = (users) => ({
+// 	type: GET_FOLLOWERS,
+// 	users
+// })
 
-export const findFollowers = (username) => async (dispatch) => {
-	let res = await fetch(`/api/users/${username}/followers`)
+export const findFollowersAndFollowing = (username) => async (dispatch) => {
+	let res = await fetch(`/api/users/${username}/followers_and_following`)
 	if (res.ok) {
-		let followers = await res.json()
-		dispatch(getFollowers(followers))
-		return followers
+		let followRel = await res.json()
+		dispatch(getFollowersAndFollowing(followRel))
+		return followRel
 	}
 	else {
 		let errors = await res.json()
@@ -49,18 +48,18 @@ export const findFollowers = (username) => async (dispatch) => {
 	}
 }
 
-export const findFollowing = (username) => async (dispatch) => {
-	let res = await fetch(`/api/users/${username}/following`)
-	if (res.ok) {
-		let following = await res.json()
-		dispatch(getFollowing(following))
-		return following
-	}
-	else {
-		let errors = await res.json()
-		return errors
-	}
-}
+// export const findFollowing = (username) => async (dispatch) => {
+// 	let res = await fetch(`/api/users/${username}/following`)
+// 	if (res.ok) {
+// 		let following = await res.json()
+// 		dispatch(getFollowing(following))
+// 		return following
+// 	}
+// 	else {
+// 		let errors = await res.json()
+// 		return errors
+// 	}
+// }
 
 
 export const followUser = (username) => async (dispatch) => {
@@ -81,7 +80,6 @@ export const unfollowUser = (username) => async (dispatch) => {
 	const res = await fetch(`/api/users/unfollow/${username}`,  {
 		method: "DELETE"
 	})
-	// const res = await fetch(`/api/users/unfollow/${username}`)
 	if (res.ok) {
 		dispatch(removeFollowing(username))
 		let response = res.json()
@@ -177,16 +175,16 @@ const initialState = { user: null, following: {}, followers: {} };
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
-		case GET_FOLLOWERS:
-			return {...state, user: {...state.user}, following: {...state.following}, followers: {...action.users}}
-		case GET_FOLLOWING:
-			return {...state, user: {...state.user}, following: {...state.following}, followers: {...action.users}}
+		case GET_FOLLOWING_AND_FOLLOWERS:
+			return {...state, user: {...state.user}, following: {...action.users.following}, followers: {...action.users.followers}}
 		case FOLLOW_USER:
 			let newState = {...state}
-			let following = [...newState.user.following]
-			following.push(action.user)
-			newState.user.following = following
-			console.log()
+			console.log("state", state)
+			console.log(action.user)
+			// newState.following[action.user]
+			// following.push(action.user)
+			// newState.user.following = following
+			// console.log()
 			return newState
 		case SET_USER:
 			return { user: action.payload };

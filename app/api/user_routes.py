@@ -101,7 +101,7 @@ def follow(username):
     db.session.commit()
     return {"message":"You are now following {}!".format(username)}
 
-@user_routes.route('/<username>/followering')
+@user_routes.route('/<username>/followers_and_following')
 @login_required
 def getFollowing(username):
     user = User.query.filter_by(username=username).one_or_none()
@@ -110,20 +110,27 @@ def getFollowing(username):
          return {'errors': 'User was not found'}, 404
 
     # return "hello"
-    followingDict = {following.id: following.name for following in user.following}
-    return followingDict
+    print("user.following", user.following)
+    followingDict = {following.username:  following.id for following in user.following}
+    followersDict = {follower.username : follower.id for follower in user.followers}
+#     return followersDict
+    users_dict = {}
+    users_dict["following"] = followingDict
+    users_dict["followers"] = followersDict
 
-@user_routes.route('/<username>/followers')
-@login_required
-def getFollowers(username):
-    user = User.query.filter_by(username=username).one_or_none()
+    return users_dict
 
-    if not user:
-         return {'errors': 'User was not found'}, 404
+# @user_routes.route('/<username>/followers')
+# @login_required
+# def getFollowers(username):
+#     user = User.query.filter_by(username=username).one_or_none()
 
-    # return "hello"
-    followersDict = {follower.id: follower.name for follower in user.followers}
-    return followersDict
+#     if not user:
+#          return {'errors': 'User was not found'}, 404
+
+#     # return "hello"
+#     followersDict = {follower.id: follower.name for follower in user.followers}
+#     return followersDict
     # for follower in user.followers:
 
 
