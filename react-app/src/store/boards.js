@@ -3,9 +3,6 @@ const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_USER_BOARD = "boards/delete";
-<<<<<<< HEAD
-const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
-=======
 const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
@@ -13,7 +10,6 @@ const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
 
 
 
->>>>>>> dev
 
 
 const getUserBoards = (boards) => ({
