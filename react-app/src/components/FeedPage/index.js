@@ -21,7 +21,6 @@ function FeedPage() {
   const [hoverBoard, setHoverBoard] = useState(false)
   const [hoverBoardDiv, setHoverBoardDiv] = useState("")
 
-  console.log("HOVER PIN", hoverBoardDiv)
 
   function onHoverBoard(board) {
     setHoverBoard(true)
@@ -64,17 +63,13 @@ function FeedPage() {
 
 
   const username = sessionUser?.username
-  console.log("SESSION USER USERNAME", username)
 
-  console.log(sessionUser)
 
   const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
-  console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 
   const boards = Object.values(boardsSelector)
   // const boards = boardsArr[0]
-  console.log("GET ALL BOARDS DATA", boards)
 
 
 
@@ -88,7 +83,6 @@ function FeedPage() {
       const board = boards[i]
       if (board.pins.length > 0) {
         numberOfPinsStart += board.pins.length
-        console.log("NUMBER OF PINS", numberOfPins)
       }
     }
     numberOfPins = numberOfPinsStart

@@ -89,7 +89,6 @@ export const getPinsByCategory = () => async (dispatch) => {
     if (res.ok) {
         let pins = await res.json()
         dispatch(pinsByCategory(pins))
-        console.log("pins", pins)
         return pins
     } else {
         let errors = await res.json()
@@ -147,7 +146,6 @@ const initialState = { pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_PINS_BY_USERNAME:
-            console.log(action.pins)
             return { ...state, singlePin: { ...state.singlePin }, todayPins: { ...state.todayPins }, pins: { ...action.pins }, userPins: { ...action.pins } }
         case GET_PINS_BY_CATEGORY:
             return { ...state, singlePin: { ...state.singlePin }, pins: { ...action.pins }, todayPins: { ...state.todayPins } }

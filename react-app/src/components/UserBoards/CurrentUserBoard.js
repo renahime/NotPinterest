@@ -10,8 +10,6 @@ export default function CurrentUserBoard({ userBoardsArr }) {
     const [hover, setHover] = useState(false)
     const [hoverDiv, setHoverDiv] = useState("")
     const { setModalContent, closeModal } = useModal();
-    console.log("HOVER DIV", hoverDiv)
-    console.log("USER BOARDS ARR",userBoardsArr)
 
     const history = useHistory()
 
@@ -45,12 +43,12 @@ export default function CurrentUserBoard({ userBoardsArr }) {
     const openUpdateModal = (hoverDiv, username, event) => {
         event.stopPropagation();
         const modalContent = (
-          <div>
-           <UpdateBoardModal id = {hoverDiv} username={username} userBoardsArr ={userBoardsArr}/>
-          </div>
+            <div>
+                <UpdateBoardModal id={hoverDiv} username={username} userBoardsArr={userBoardsArr} />
+            </div>
         );
         setModalContent(modalContent);
-      };
+    };
 
 
     return (
@@ -88,7 +86,7 @@ export default function CurrentUserBoard({ userBoardsArr }) {
                         </div>
                         {hoverDiv === boards.id ?
                             <div className={editBoardClassName}>
-                                <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv,boards.user.username, event)}></i>
+                                <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv, boards.user.username, event)}></i>
                             </div> : null}
                     </div>
                     <div className="profile-board-info">

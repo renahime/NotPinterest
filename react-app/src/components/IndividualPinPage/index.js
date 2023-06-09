@@ -32,10 +32,27 @@ export default function IndividualPinPage() {
     const dispatch = useDispatch()
     const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
+    let grabBoardName = {}
+    const [board, setBoard] = useState(grabBoardName?.name)
+    const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
+    let [numFollowers, setNumFollowers] = useState(0);
+    let [numFollowing, setNumFollowing] = useState(0)
+    let [isfollowing, setIsFollowing] = useState(false);
+    let username = ""
+    let pinnedCheck = false
+    let options = [];
 
-
-
-    console.log("currentUserBoards", singlePin)
+    useEffect(() => {
+        const handler = () => setShowMenu(false)
+        window.addEventListener("click", handler);
+        return () => {
+            window.removeEventListener("click", handler)
+        }
+    })
+    const handleInputClick = (e) => {
+        e.stopPropagation()
+        setShowMenu(!showMenu)
+    }
     useEffect(() => {
         dispatch(getPinById(id))
         dispatch(getBoardsofCurrentUser())
@@ -46,40 +63,14 @@ export default function IndividualPinPage() {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
-    let grabBoardName = {}
-    let pinnedCheck = false
-    let options = [];
-    if (singlePin && currentUser) {
-        for (let userBoard of currentUser.boards) {
-            for (let pin of userBoard.pins) {
-                if (pin == singlePin.id) {
-                    pinnedCheck = true;
-                    grabBoardName.name = userBoard.name
-                }
-            }
-            options.push({ 'value': userBoard.name, 'label': userBoard.name })
-        }
-    }
-    const [board, setBoard] = useState(grabBoardName?.name)
-    const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
-    console.log(singlePin)
-    useEffect(() => {
-        const handler = () => setShowMenu(false)
-        window.addEventListener("click", handler);
-        return () => {
-            window.removeEventListener("click", handler)
-        }
-    })
+
 
     const changeBoardName = (newBoard) => {
         // Update the name in the component's state
         setPinBoard(newBoard)
     }
 
-    const handleInputClick = (e) => {
-        e.stopPropagation()
-        setShowMenu(!showMenu)
-    }
+
     const handlePin = async (e) => {
         e.preventDefault();
         let boardId
@@ -95,27 +86,27 @@ export default function IndividualPinPage() {
             return history.push(`/${currentUser.username}/${sendBoardName}`)
         }
     }
-    async function unfollow(username) {
-        let response = await dispatch(unfollowUser(username))
-        if (response.errors) {
-            console.log(response.errors)
-        } else {
-            console.log("i work")
-        }
-    }
 
-    async function follow(username) {
-        console.log("username", username)
+    const handleFollow = async (e) => {
+        e.preventDefault();
         let response = await dispatch(followUser(username))
         if (response.errors) {
             console.log(response.errors)
-        } else {
-            console.log("i work too")
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers + 1)
+            setIsFollowing(true);
         }
     }
-
-    if (!singlePin) return <h1>...Loading</h1>
-
+    const handleUnfollow = async (e) => {
+        e.preventDefault();
+        let response = await dispatch(unfollowUser(username))
+        if (response.errors) {
+            console.log(response.errors)
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers - 1)
+            setIsFollowing(false);
+        }
+    }
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
 
 
@@ -123,6 +114,25 @@ export default function IndividualPinPage() {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
+    if (Object.values(singlePin).length && Object.values(currentUser).length) {
+        for (let userBoard of currentUser.boards) {
+            for (let pin of userBoard.pins) {
+                if (pin == singlePin.id) {
+                    console.log("hi")
+                    pinnedCheck = true;
+                    grabBoardName.name = userBoard.name
+                }
+            }
+            options.push({ 'value': userBoard.name, 'label': userBoard.name })
+        }
+        username = singlePin.owner_info.username
+        if (currentUser.following.includes(username)) {
+            setIsFollowing(true)
+        }
+        // setNumFollowers(singlePin.owner_info.followers.length)
+        // setNumFollowing(singlePin.owner_info.following.length)
+    }
+    console.log(singlePin)
 
     if (!singlePin || !currentUser || !options.length) return <h1>...Loading</h1>
     return (
@@ -214,8 +224,8 @@ export default function IndividualPinPage() {
                             </div>
                         </div>
                         <div>
-                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={() => follow(singlePin.user.username)} className="single-pin-follow-button">Follow</button> : null}
-                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={() => unfollow(singlePin.user.username)} className="single-pin-following-button">Following</button> : null}
+                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={handleFollow} className="single-pin-follow-button">Follow</button> : null}
+                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={handleUnfollow} className="single-pin-following-button">Following</button> : null}
                         </div>
                     </div>
                 </div>

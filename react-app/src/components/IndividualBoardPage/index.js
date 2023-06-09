@@ -14,7 +14,6 @@ export default function IndividualBoardPage() {
     let singleBoard = useSelector(state => state.boards.singleBoard)
     const currentUser = useSelector(state => state.session.user)
 
-    console.log("SINGLE BOARD:", singleBoard)
 
     function pinDisplay(pins) {
         if (pins === 0 || pins > 1) {

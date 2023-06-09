@@ -22,20 +22,13 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   const { setModalContent, closeModal } = useModal();
 
   //Console.logs to check data is fetching
-  console.log("BOARD ID", id)
-  console.log("BOARD USERNAME", username)
-  console.log("newCoverIMAGE", newCoverImage)
   // const { id } = useParams();
   // const username = sessionUser?.username;
-  console.log("SESSION USERNAME", sessionUser?.username)
   const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards);
-  console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
 
   const oldBoardData = currentProfileBoards[id];
-  console.log("OLD BOARD DATA", oldBoardData)
 
   const pinImages = oldBoardData?.additional_images
-  console.log("PIN IMAGES", pinImages)
 
 
   //set form data

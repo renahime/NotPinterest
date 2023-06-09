@@ -23,15 +23,11 @@ export const deleteProfile = (user) => ({
 
 export const getUserInfo = (username) => async (dispatch) => {
     const res = await fetch(`/api/users/users/${username}`)
-    console.log(res.status)
-    console.log("USERNAME for getUserInfo thunk", username)
     if (res.status >= 400) {
-        console.log("umm no")
         const userDataErrors = await res.json()
-        return {errors : userDataErrors}
+        return { errors: userDataErrors }
     }
     else {
-        console.log("like whatttt")
         const userData = await res.json()
         if (userData.errors) {
             return userData.errors

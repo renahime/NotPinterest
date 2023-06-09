@@ -20,7 +20,6 @@ function Navigation({ isLoaded }) {
 	const currentProfile = useSelector(state => state.profile.currentProfile)
 	const currentUser = useSelector(state => state.session.user)
 
-	console.log("open Menu", openMenu)
 
 	return (
 		<>
@@ -60,20 +59,20 @@ function Navigation({ isLoaded }) {
 									Today
 								</NavLink>
 								<div className='nav-create-tab'>
-								{openMenu && <div className={menuClassName}>
-									{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
-									<NavLink to="/create" className="nav-profile-dropdown-create">Create Pin</NavLink>
-									<div className="nav-profile-dropdown-create" onClick={showMenu}>
-										<OpenModalButton
-											buttonText="Create Board"
-											modalComponent={<CreateBoardModal username={currentUser?.username} />}
-										/>
+									{openMenu && <div className={menuClassName}>
+										{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
+										<NavLink to="/create" className="nav-profile-dropdown-create">Create Pin</NavLink>
+										<div className="nav-profile-dropdown-create" onClick={showMenu}>
+											<OpenModalButton
+												buttonText="Create Board"
+												modalComponent={<CreateBoardModal username={currentUser?.username} />}
+											/>
+										</div>
+									</div>}
+									<div className='tab flex-row' onClick={showMenu}>
+										<div className='nav-create'>Create</div>
+										<i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
 									</div>
-								</div>}
-								<div className='tab flex-row' onClick={showMenu}>
-									<div className='nav-create'>Create</div>
-									<i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
-								</div>
 								</div>
 							</div>
 							<input type="text" className="search-bar" placeholder="Search" />

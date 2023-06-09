@@ -12,7 +12,7 @@ import './ChangeBoardCoverModal.css'
 
 
 
-function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
+function ChangeBoardCoverModal({ pinImages, updatedBoardData, id, username }) {
 
 
   const dispatch = useDispatch();
@@ -26,9 +26,6 @@ function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
   useEffect(() => {
 
   })
-  // console.log("PIN HOVER DIV", hoverDiv)
-  // console.log("updatedBoardData",  updatedBoardData)
-  // console.log("cover image", cover_image)
 
   let pinsTodayObj = useSelector(state => state.pins.todayPins)
   let stateTest = useSelector(state => state)
@@ -65,24 +62,23 @@ function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
     setHoverDiv("")
   }
 
-  const setBoardCoverImage= async(event) => {
+  const setBoardCoverImage = async (event) => {
     setCoverImage(hoverDiv)
-    console.log("NEW COVER IMAGE",cover_image)
     // console.log("UPDATED BOARD COVER IMAGe", updatedBoardData)
     // updatedBoardData.cover_image = cover_image
     const newCoverImage = cover_image
     // console.log("UPDATED BOARD COVER IMAGe NEW NEW", updatedBoardData)
     // console.log("UPDATED BOARD COVER IMAGe NEW NEW", newCoverImage)
     // await dispatch(updateBoardThunk(updatedBoardData, id));
-openUpdateModal(event, hoverDiv)
+    openUpdateModal(event, hoverDiv)
 
   }
 
-  const openUpdateModal = ( event,newCoverImage) => {
+  const openUpdateModal = (event, newCoverImage) => {
     event.stopPropagation();
     const modalContent = (
       <div>
-       <UpdateBoardModal id = {id} username={username}  newCoverImage ={newCoverImage}/>
+        <UpdateBoardModal id={id} username={username} newCoverImage={newCoverImage} />
       </div>
     );
     setModalContent(modalContent);

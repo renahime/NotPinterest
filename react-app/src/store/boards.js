@@ -67,12 +67,10 @@ const pinBoard = (pin, boardId) => ({
 export const getBoardsofCurrentUser = () => async (dispatch) => {
     const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
     if (res.status >= 400) {
-        console.log("in the get boards of current user reducer")
         return
     }
     if (res.ok) {
         let boards = await res.json()
-        console.log("boards", boards)
         dispatch(getCurrentUserBoard(boards))
         return
     }
@@ -82,7 +80,6 @@ export const getBoardsByUsername = (username) => async (dispatch) => {
     const res = await fetch(`/api/boards/users/${username}`)
     if (res.ok) {
         let boards = await res.json()
-        console.log("GET BOARDS BY USERNAME TEST", boards)
         dispatch(getUserBoards(boards))
     }
 }
@@ -204,7 +201,7 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
 
 
 
-const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
+const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
@@ -214,14 +211,11 @@ export default function boardsReducer(state = initialState, action) {
 
         case GET_BOARDS_OF_USER:
             newState = {}
-            console.log("ACTION", action)
-            console.log("action.boards", action.boards)
             if (Array.isArray(action.boards)) { // Check if action.boards is an array
                 for (let board of action.boards) {
                     newState[board.id] = board
                 }
             } else {
-                console.log("action.boards is not an array")
             }
 
 
@@ -234,7 +228,7 @@ export default function boardsReducer(state = initialState, action) {
                 }, currentProfileBoards: {
                     ...state.currentProfileBoards,
                     [action.board.id]: action.board
-                },currentUserBoards: {
+                }, currentUserBoards: {
                     ...state.currentUserBoards,
                     [action.board.id]: action.board
                 }
@@ -262,8 +256,6 @@ export default function boardsReducer(state = initialState, action) {
                 allBoards: newAllBoards,
                 currentProfileBoards: updatedCurrentProfileBoards,
             };
-
-
         case GET_BOARD_BY_NAME:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
         case UN_PIN:

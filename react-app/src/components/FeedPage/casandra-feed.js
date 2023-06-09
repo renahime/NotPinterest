@@ -31,9 +31,6 @@ export default function CaSandraFeed() {
     }, [dispatch])
 
     useEffect(() => {
-        console.log("useEffect second finished loading", finishedLoading)
-        console.log("useEffect second pins", pins)
-        console.log("useEffect second loading", loading)
         if (!finishedLoading && !pins[0] && !pins[0]?.id) {
             return
         }
@@ -61,10 +58,10 @@ export default function CaSandraFeed() {
                 //             {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
                 //         </div>
                 //     </div>
-                    /* <div className="individual-board-pin-owner-info" onClick={() => history.push(`/${pin.owner_info.username}`)}>
-                        {pin.owner_info.profile_image ? <img className="individual-board-individual-pin-profile-image" src={pin.owner_info.profile_image} /> : null}
-                        {pin.owner_info.username}
-                    </div> */
+                /* <div className="individual-board-pin-owner-info" onClick={() => history.push(`/${pin.owner_info.username}`)}>
+                    {pin.owner_info.profile_image ? <img className="individual-board-individual-pin-profile-image" src={pin.owner_info.profile_image} /> : null}
+                    {pin.owner_info.username}
+                </div> */
                 // </div>
             ))}
         </div>

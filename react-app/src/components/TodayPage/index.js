@@ -23,19 +23,25 @@ function TodayPage() {
   const dispatch = useDispatch()
   let pinsTodayObj = useSelector(state => state.pins.todayPins)
   let pinsToday
-  if (pinsTodayObj) {
-    pinsToday = shuffle(Object.values(pinsTodayObj))
-  }
+
   const date = new Date();
+
 
   const month = date.toLocaleString('default', { month: 'long' });
   let year = date.getFullYear();
   let day = date.getDate();
   useEffect(() => {
     dispatch(fetchPinsToday())
+
   }, [dispatch])
 
-  return (
+  if (pinsTodayObj) {
+    pinsToday = Object.values(pinsTodayObj)
+    pinsToday = shuffle(pinsToday)
+  }
+
+
+  return (!pinsToday.length ? <h1>Loading...</h1> :
     <div className="main-div">
       <div className="date-div">
         <h3 className="date">{month} {day}, {year}</h3>
@@ -45,14 +51,9 @@ function TodayPage() {
         {pinsToday.map((pin) => {
           return (
             <NavLink key={pin.id} to={`/boards/${pin.id}`}>
-              <div className="pin-today"
-                style={{
-                  backgroundImage: `url(${pin.image})`,
-
-                }}>
+              <div className="pin-today">
+                <img src={pin.image} className="pin-today-image"></img>
                 <div className="text-container">
-                  <h2 className="category-text">{pin.categories[0]}</h2>
-                  <h1 className="board-name-text">{pin.boards_pinned_in[0]}</h1>
                 </div>
               </div>
             </NavLink>
