@@ -1,20 +1,25 @@
-const GET_ALL_BOARDS = "boards/all"
+const GET_BOARDS_OF_USER = "boards/getUserBoards"
+const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_USER_BOARD = "boards/delete";
 const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
+const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
 
 
 
 
 
+const getUserBoards = (boards) => ({
+    type: GET_BOARDS_OF_USER,
+    boards: boards["User Boards"]
+})
 
-
-const getAllBoards = (boards) => ({
-    type: GET_ALL_BOARDS,
-    boards: boards
+const getOneBoardByName = (board) => ({
+    type: GET_BOARD_BY_NAME,
+    board: board["User Boards"]
 })
 
 
@@ -33,6 +38,10 @@ const deleteUserBoard = (id) => ({
     id,
 });
 
+const getCurrentUserBoard = (boards) => ({
+    type: GET_CURRENT_USER_BOARDS,
+    boards
+})
 
 const unPin = (pin, boardId) => ({
     type: UN_PIN,
@@ -53,27 +62,30 @@ const pinBoard = (pin, boardId) => ({
     boardId,
 })
 
-export const getAllBoardsThunk = () => async (dispatch) => {
-    const res = await fetch("/api/boards/").catch((e) => console.log("ALL BOARDS"))
+
+
+export const getBoardsofCurrentUser = () => async (dispatch) => {
+    const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
     if (res.status >= 400) {
-        console.log("in the get all boards of all boards reducer")
+        console.log("in the get boards of current user reducer")
         return
     }
     if (res.ok) {
         let boards = await res.json()
-        console.log("all boards", boards)
-        dispatch(getAllBoards(boards))
+        console.log("boards", boards)
+        dispatch(getCurrentUserBoard(boards))
         return
     }
 }
 
-
-
-
-
-
-
-
+export const getBoardsByUsername = (username) => async (dispatch) => {
+    const res = await fetch(`/api/boards/users/${username}`)
+    if (res.ok) {
+        let boards = await res.json()
+        console.log("GET BOARDS BY USERNAME TEST", boards)
+        dispatch(getUserBoards(boards))
+    }
+}
 
 export const createBoardThunk = (board) => async (dispatch) => {
     const res = await fetch('/api/boards/', {
@@ -175,67 +187,120 @@ export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
 
 
 
-const initialState = { allBoards: {} }
+export const getBoardByName = (username, boardname) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/boards/users/${username}/${boardname}`);
+        if (res.ok) {
+            let board = await res.json();
+            dispatch(getOneBoardByName(board));
+        } else {
+            throw new Error("Error occured getting board by name")
+        }
+    } catch (error) {
+        // Handle any error that occurred during the fetch request
+        console.error("Error fetching board:", error);
+    }
+};
 
 
 
+const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
+        case GET_CURRENT_USER_BOARDS:
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
 
-        case GET_ALL_BOARDS:
-            return { ...state, allBoards: { ...action.allBoards } }
+        case GET_BOARDS_OF_USER:
+            newState = {}
+            console.log("ACTION", action)
+            console.log("action.boards", action.boards)
+            if (Array.isArray(action.boards)) { // Check if action.boards is an array
+                for (let board of action.boards) {
+                    newState[board.id] = board
+                }
+            } else {
+                console.log("action.boards is not an array")
+            }
+
+
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: { ...state.currentUserBoards } }
 
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {
                     ...state.allBoards, [action.board.id]: action.board
+                }, currentProfileBoards: {
+                    ...state.currentProfileBoards,
+                    [action.board.id]: action.board
+                },currentUserBoards: {
+                    ...state.currentUserBoards,
+                    [action.board.id]: action.board
                 }
             };
-
-        case DELETE_USER_BOARD:
-            const newAllBoards = { ...state.allBoards };
-            delete newAllBoards[action.id];
-            return {
-                ...state,
-                allBoards: newAllBoards,
-            };
-
         case UPDATE_USER_BOARD:
             newState = {
                 ...state,
                 allBoards: {
                     ...state.allBoards,
                     [action.board.id]: action.board
+                },
+                currentProfileBoards: {
+                    ...state.currentProfileBoards,
+                    [action.board.id]: action.board
                 }
             };
             return newState;
+        case DELETE_USER_BOARD:
+            const newAllBoards = { ...state.allBoards };
+            const updatedCurrentProfileBoards = { ...state.currentProfileBoards };
+            delete newAllBoards[action.id];
+            delete updatedCurrentProfileBoards[action.id];
+            return {
+                ...state,
+                allBoards: newAllBoards,
+                currentProfileBoards: updatedCurrentProfileBoards,
+            };
 
 
+        case GET_BOARD_BY_NAME:
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
         case UN_PIN:
             const unPinAllBoards = { ...state.allBoards }
-            // if (typeof unPinSingle === 'object') {
-            //     if (action.pin.id.toString() in unPinSingle.pinInfo) {
-            //         delete unPinSingle.pinInfo[action.pin.id.toString()]
-            //     }
-            // }
-            return { ...state, allBoards: unPinAllBoards }
+            const unPinCurrent = { ...state.currentProfileBoards }
+            const unPinSingle = { ...state.singleBoard }
+            if (typeof unPinSingle === 'object') {
+                if (action.pin.id.toString() in unPinSingle.pinInfo) {
+                    delete unPinSingle.pinInfo[action.pin.id.toString()]
+                }
+            }
+            return { ...state, allBoards: unPinAllBoards, currentProfileBoards: unPinCurrent, singleBoard: unPinSingle }
 
         case PIN:
             const pinAllBoards = { ...state.allBoards }
-
-            // if (typeof pinSingle === 'object') {
-            //     if ("pinInfo" in pinSingle)
-            //         pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
-            // }
-            return { ...state, allBoards: pinAllBoards }
+            const pinCurrent = { ...state.currentProfileBoards }
+            const pinSingle = { ...state.singleBoard }
+            if (typeof pinSingle === 'object') {
+                if ("pinInfo" in pinSingle)
+                    pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
+            }
+            return { ...state, allBoards: pinAllBoards, currentProfileBoards: pinCurrent, singleBoard: pinSingle }
         case REPIN:
             const repinAllBoards = { ...state.allBoards }
-
-            return { ...state, allBoards: repinAllBoards }
-
-
+            const repinCurrent = { ...state.currentProfileBoards }
+            const repinSingle = { ...state.singleBoard }
+            if (typeof repinSingle === 'object') {
+                if ("pinInfo" in repinSingle) {
+                    if (action.oldBoardId.toString() in repinSingle.pinInfo) {
+                        delete repinSingle.pinInfo[action.pin.id.toString()]
+                    }
+                    if (action.newBoardId.toString() in repinSingle.pinInfo) {
+                        repinSingle.pinInfo[action.pin.id.toString()] = action.pin
+                    }
+                }
+            }
+            return { ...state, allBoards: repinAllBoards, currentProfileBoards: repinCurrent, singleBoard: repinSingle }
         default:
             return state
     }
