@@ -11,4 +11,4 @@ class EditPinForm(FlaskForm):
   description = StringField('Description Text', validators=[Length(max=255, message="Name must be less than 255 chars!")])
   alt_text = StringField('Alternative Text', validators=[Length(max=255, message="Name must be less than 255 chars!")])
   destination = StringField('Destination Link', validators=[Length(max=255, message="Name must be less than 255 chars!")])
-  board = StringField('Board Name')
+  boardName = StringField('Board Name')

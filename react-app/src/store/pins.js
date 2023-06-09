@@ -4,6 +4,7 @@ const GET_PINS_MADE_TODAY = "pins/getPinsToday"
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
 
+
 const createPin = (pin) => ({
     type: CREATE_PIN,
     pin
@@ -23,7 +24,6 @@ const deletePin = (pinId) => ({
     type: DELETE_PIN,
     pinId
 })
-
 
 
 const updateUserPin = (pin) => ({
@@ -104,6 +104,8 @@ export const updatePinThunk = (pin) => async (dispatch) => {
         return null; // or handle the error in an appropriate way
     }
 };
+
+
 
 const initialState = { pins: {}, singlePin: {}, todayPins: {} }
 

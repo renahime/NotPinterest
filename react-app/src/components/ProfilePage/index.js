@@ -5,6 +5,7 @@ import { getUserInfo, clearProfile } from "../../store/profile"
 import { getBoardsByUsername } from "../../store/boards"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
 import "./ProfilePage.css"
 
 
@@ -66,7 +67,7 @@ export default function ProfilePage() {
                         </div>
                     </h5>
                     {checkUser() ?
-                        <button className="profile-button edit-profile">Edit Profile</button> : null}
+                        <NavLink exact to="/settings"><button className="profile-button edit-profile">Edit Profile</button></NavLink> : null}
                     {
                         <button className="profile-button" id="follow-button">Follow</button>
                     }

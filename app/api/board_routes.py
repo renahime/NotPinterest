@@ -29,7 +29,7 @@ def get_one_user_board(username, board_name):
 
     if user_board:
         board = user_board.to_dict()
-        board["pin info"] = pin_info
+        board["pinInfo"] = pin_info
         return {"User Boards" : board}
 
     else:
@@ -216,7 +216,7 @@ def pin(boardId,pinId):
             return {"errors": "You already have {} pinned!".format(_pin.title)}
     board.pins_tagged.append(_pin)
     db.session.commit()
-    return {"message":"You have now pinned {}!".format(_pin.title)}
+    return _pin.to_dict()
 
 #Route to unpin a pin to a board
 @board_routes.route('/<int:boardId>/unpin/<int:pinId>', methods = ["DELETE"])
@@ -236,7 +236,7 @@ def unpin(boardId,pinId):
                 board.pin_cover_image.pop()
             board.pins_tagged.remove(_pin)
             db.session.commit()
-            return {"message": "You are no longer pinning {}!".format(_pin.title)}
+            return _pin.to_dict()
     return {"error": "You do not have {} pinned!".format(_pin.title)}
 
 #Reoute to edit the pin the board is on
@@ -265,5 +265,5 @@ def change_board_to_pin(current_board_id, pin_id, new_board_id):
             db.session.commit()
             pin_new_board.board_tagged.append(new_board)
             db.session.commit()
-            return {"message":"Pin is now attached to {}".format(new_board.name)}
+            return pin_new_board.to_dict()
     return {"errors": "Could not find pin inside of {}!".format(current_board.name)}

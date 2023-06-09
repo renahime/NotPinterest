@@ -3,6 +3,9 @@ from flask_login import login_required, current_user
 from app.models import User, db
 from app.forms import ProfileForm
 from app.routes.AWS_helpers import get_unique_filename, upload_file_to_s3
+from .auth_routes import validation_errors_to_error_messages
+from wtforms.validators import ValidationError, URL, Length
+
 
 user_routes = Blueprint('users', __name__)
 
@@ -43,10 +46,13 @@ def edit_profile(id):
     """
         Edit user profile
     """
+
+
+
     user = User.query.get(id)
     form = ProfileForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    if form.validated_on_submit():
+    if form.validate_on_submit():
         if form.data['profile_picture']:
             profile_picture = form.data['profile_picture']
             profile_picture.filename=get_unique_filename(profile_picture.filename)
@@ -66,11 +72,16 @@ def edit_profile(id):
         if form.data['website']:
             user.website = form.data['website']
         if form.data['username']:
+            if(current_user.username != form.data["username"]):
+                user = User.query.filter(User.username == form.data["username"]).first()
+                if user:
+                    raise ValidationError('Username is already in use.')
             user.username = form.data['username']
         db.session.commit()
         return user.to_dict()
-    else:
-        return jsonify({"message":"Error editing profile, please try again"})
+    elif form.errors:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
 
 @user_routes.route('/<int:id>', methods=['DELETE'])
 @login_required

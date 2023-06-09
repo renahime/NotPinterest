@@ -16,9 +16,8 @@ export default function CreatePin() {
         // let pin_info = {
         //     image: image
         // }
-        let new_pin  = await dispatch(createNewPin(pinData))
+        let new_pin = await dispatch(createNewPin(pinData))
 
-        console.log(new_pin)
     }
 
     return (

@@ -44,7 +44,6 @@ function CreateBoardModal() {
       description: "this is a test"
     }
     //log formData
-    console.log("FORM DATA:", formData)
 
     await dispatch(createBoardThunk(formData))
 

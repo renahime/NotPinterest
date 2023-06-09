@@ -12,3 +12,13 @@
   justify-content: space-between;
   user-select: none;
 }
+
+.search-box{
+  display:flex;
+  flex-direction: column;
+}
+.search-function{
+  display:flex;
+  flex-direction: row;
+  gap:5px
+}

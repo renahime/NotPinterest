@@ -83,9 +83,7 @@ def create_pin():
     if not user:
         return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
-    print("pin route errors part1")
     form['csrf_token'].data = request.cookies['csrf_token']
-    print("pin route errors part2")
 
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
@@ -135,6 +133,14 @@ def edit_pin(id):
 
     user = User.query.get(current_user.id)
 
+    oldBoard = None
+    for board in user.boards:
+        for pin_in_board in board.pins_tagged:
+            if pin.id == pin_in_board.id:
+                oldBoard = board
+
+    print("*********************************************************************************************************************",oldBoard.name)
+
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
     # if the form doesn't have any issues make change the pins details in the database to the details in the form
@@ -148,13 +154,12 @@ def edit_pin(id):
             pin.alt_text = data["alt_text"]
         if data["destination"]:
             pin.destination = data["destination"]
-        if data["board"]:
+        if data["boardName"]:
+            print("************************************************************************************* check 1")
             for board in user.boards:
-                if board.name == data["board"]:
-                    for board in user.boards:
-                        for pinId in board.pins:
-                            if pin.id == pinId:
-                                pin.boards_tagged.remove(board)
+                if board.name == data["boardName"]:
+                    print("************************************************************************************* check 2")
+                    pin.board_tagged.remove(oldBoard)
                     new_board = board
                     pin.board_tagged.append(new_board)
         db.session.commit()

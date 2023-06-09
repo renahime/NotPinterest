@@ -10,6 +10,7 @@ import ComingSoon from "./ComingSoonModal";
 import Dropdown from "./Dropdown";
 import { pinThunk } from "../../store/boards";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useModal } from "../../context/Modal";
 
 const Icon = () => {
     return (
@@ -21,7 +22,9 @@ export default function IndividualPinPage() {
     const [showMenu, setShowMenu] = useState(false)
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
+    const singlePinWithBoardState = useSelector(state => state)
     const dispatch = useDispatch()
+    const { closeModal } = useModal();
     const history = useHistory()
     const { id } = useParams()
     let grabBoardName = {}
@@ -58,23 +61,19 @@ export default function IndividualPinPage() {
         e.stopPropagation()
         setShowMenu(!showMenu)
     }
-
     const handlePin = async (e) => {
         e.preventDefault();
         let boardId
+        let sendBoardName
         for (let board of currentUser.boards) {
             if (board.name == pinBoard) {
                 boardId = board.id
+                sendBoardName = board.name.split(' ').join('_').toLowerCase()
             }
         }
-
-        console.log(boardId)
-
-        const pinId = await dispatch(pinThunk(singlePin.id, boardId)).then(history.push(`/pin/${singlePin.id}`))
-            .catch(history.push(`/pin/${singlePin.id}`)
-            );
-        if (pinId) {
-            return history.push(`/pin/${singlePin.id}`)
+        const pin = await dispatch(pinThunk(singlePin, boardId)).then(closeModal())
+        if (pin) {
+            return history.push(`/${currentUser.username}/${sendBoardName}`)
         }
     }
 

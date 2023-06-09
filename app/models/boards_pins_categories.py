@@ -90,12 +90,6 @@ class Board(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
-    def pin(self, pin):
-        self.pins_tagged.append(pin)
-
-    def unpin(self, pin):
-        self.pins_tagged.remove(pin)
-
     def findOtherImages(self):
         additonal_images = []
         cover = ""

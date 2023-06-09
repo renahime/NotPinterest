@@ -68,16 +68,13 @@ const updateBoardImage = (image) => {
 
 export const getAllBoardThunks = () => async (dispatch) => {
   const response = await fetch('/api/boards')
-  console.log("STATUS OF GET ALL BOARDS THUNK RESPONSE", response.status)
 
   if (response.ok) {
     const boards = await response.json()
-    console.log("GET ALL BOARDS THUNK AFTER RESPONSE", boards)
     dispatch(getBoards(boards))
     return boards
   }
   else {
-    console.log("ERROR RESPONSE", response)
   }
 }
 
@@ -98,11 +95,9 @@ const boardReducer = (state = initialState, action) => {
     case GET_ALL_BOARDS:
       newState = { ...state, allBoards: {}, singleBoard: {} }
       newState.allBoards = action.list
-      console.log("CHECKING DATA in REDUCER action.list.Boards", action.list)
-      console.log("CHECKING DATA in REDUCER action.list.Boards", newState)
       return newState
 
-    
+
 
 
     default:

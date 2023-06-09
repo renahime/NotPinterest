@@ -1,13 +1,18 @@
 import React from 'react'
 import { useEffect } from "react"
 import { useParams } from "react-router-dom"
+import { NavLink } from 'react-router-dom/cjs/react-router-dom.min'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
+import { editProfileThunk } from '../../../store/profile'
 import Dropdown from './Dropdown'
+import { useModal } from '../../../context/Modal'
+import OpenModalButton from '../../OpenModalButton'
 import './Settings.css'
+import DeleteUserModal from './DeleteUserModal'
 function Settings() {
-  const user = useSelector(state => state.session.user)
+  let user = useSelector(state => state.session.user)
   const history = useHistory();
   const dispatch = useDispatch();
   const hiddenFileInput = React.useRef(null);
@@ -26,7 +31,8 @@ function Settings() {
     { value: "she/her", label: "she/her" },
     { value: "ve/ver", label: "ve/ver" },
     { value: "xe/xem", label: "xe/xem" },
-    { value: "ze/zir", label: "ze/zir" }]
+    { value: "ze/zir", label: "ze/zir" }
+  ]
 
 
   const optionsArr = ["Personal information", "Account management", "Tune your home feed",
@@ -38,11 +44,14 @@ function Settings() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    user = { ...user, firstName, lastName, about, pronouns, website, username }
-    // const editedUser = dispatch(updateProfile(user)).then(editedUser => { history.push(`/settings`) }).catch(async (res) => {
-    //   const data = await res.json();
-    //   setErrors(data.errors);
-    // });
+    const sendEditUser = { ...user, firstName, lastName, about, pronouns, website, username }
+    const editedUser = dispatch(editProfileThunk(sendEditUser)).catch(async (res) => {
+      const data = await res;
+      setErrors(data.errors);
+    });
+    if (editedUser) {
+      history.push(`/`)
+    }
   }
 
   return (
@@ -61,7 +70,7 @@ function Settings() {
               <h6>Photo</h6>
               <div className='photo-and-button'>
                 <img id='profile-picture-display' src='https://64.media.tumblr.com/441fc6012f18fbf1817e1f7511465ab8/tumblr_p8y5hkOypW1v30v1fo2_400.png'></img>
-                <button className='file-input-actual-button' onClick={handleClick}>Change</button>
+                <button id='file-input-actual-button' onClick={handleClick}>Change</button>
                 <input className='file-input-button' type="file" ref={hiddenFileInput} style={{ display: 'none' }} />
               </div>
               <div className='name-info'>
@@ -97,17 +106,21 @@ function Settings() {
                 <input type="text" className='username-input' value={username} placeholder='Choose wisely so others can find you' onChange={(e) => setUsername(e.target.value)} />
               </div>
             </div>
+            <div className='footer-div'>
+              <button className='reset-button'>
+                <OpenModalButton
+                  buttonText="Delete Account"
+                  className="dropdown-item"
+                  modalComponent={<DeleteUserModal user={user} />}
+                />
+              </button>
+              <button type="submit" className='save-button'>Save</button>
+              <NavLink exact to={`/${user.username}`}>
+                <button className='delete-button'>Cancel</button>
+              </NavLink>
+            </div>
           </form>
-          <div className='footer-for-buttons'>
-          </div>
         </div >
-      </div>
-      <div className='footer-div'>
-        <footer>
-          <button className='reset-button'></button>
-          <button className='save-button'></button>
-          <button className='delete-button'></button>
-        </footer>
       </div>
     </div>
   )
