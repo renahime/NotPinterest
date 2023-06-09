@@ -42,7 +42,7 @@ const getFollowersAndFollowing = (users) => ({
 // })
 
 export const createUserCategories = (categories) => async (dispatch) => {
-	console.log("categories", categories)
+	console.log("categories in thunk", categories)
 	let res = await fetch("/api/users/categories", {
 		method: "POST",
 		headers: {
@@ -202,6 +202,7 @@ export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
+			console.log("action.categories", action.categories)
 			let user = {...state.user}
 			user.categories = action.categories
 			return {...state, user: {...user}, following: {}, followers: {}}

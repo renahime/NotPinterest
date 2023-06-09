@@ -263,3 +263,18 @@ input[type="file"] {
 .hidden {
     display: none;
 }
+
+.create-pin-no-boards {
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    width: 200px;
+    cursor: pointer;
+}
+
+.create-pin-no-boards > i {
+    color: red;
+    font-size: 20px;
+}

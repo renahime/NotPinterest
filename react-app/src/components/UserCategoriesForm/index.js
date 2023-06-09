@@ -28,21 +28,21 @@ export default function UserCategoriesForm() {
             return setErrors({ errors: "Must select at least one category." })
         }
 
+
         let interests = {
-            boho: bohoImage,
-            athleisure: athleisureImage,
-            dark: darkImage,
-            formalwear: formalImage,
-            old_money: oldMoneyImage,
-            streetware: streetWearImage
+            boho: bohoImage ? 1: 0,
+            athleisure: athleisureImage ? 1: 0,
+            dark: darkImage ? 1: 0,
+            formalwear: formalImage ? 1: 0,
+            old_money: oldMoneyImage ? 1: 0,
+            streetware: streetWearImage ? 1: 0
         }
 
+        // console.log("boho", bohoImage)
+        // console.log("interests", interests)
         let categories = await dispatch(createUserCategories(interests))
-        // console.log("categories", categories)
-        // .then((res) => <Redirect to="/feed" pins={res} /> )
-        // if (pins.errors){
-        //     return setErrors(pins.errors)
-        // }
+        if (categories.errors) setErrors(categories)
+        // else history.push("/feed")
     }
 
     return (
@@ -61,7 +61,7 @@ export default function UserCategoriesForm() {
                         <label className="user-category-input-wrapper">
                             <input
                                 className="user-category-input"
-                                value={bohoImage}
+                                checked={bohoImage}
                                 type="checkbox"
                                 onChange={() => setBohoImage(!bohoImage)}
                             />
@@ -73,7 +73,7 @@ export default function UserCategoriesForm() {
                         <label className="user-category-input-wrapper">
                             <input
                                 className="user-category-input"
-                                value={athleisureImage}
+                                checked={athleisureImage}
                                 type="checkbox"
                                 onChange={() => setAthleisureImage(!athleisureImage)}
                             />
@@ -85,7 +85,7 @@ export default function UserCategoriesForm() {
                         <label className="user-category-input-wrapper">
                             <input
                                 className="user-category-input"
-                                value={darkImage}
+                                checked={darkImage}
                                 type="checkbox"
                                 onChange={() => setDarkImage(!darkImage)}
                             />
@@ -97,7 +97,7 @@ export default function UserCategoriesForm() {
                         <label className="user-category-input-wrapper">
                             <input
                                 className="user-category-input"
-                                value={formalImage}
+                                checked={formalImage}
                                 type="checkbox"
                                 onChange={() => setFormalImage(!formalImage)}
                             />
@@ -109,7 +109,7 @@ export default function UserCategoriesForm() {
                         <label className="user-category-input-wrapper">
                             <input
                                 className="user-category-input"
-                                value={oldMoneyImage}
+                                checked={oldMoneyImage}
                                 type="checkbox"
                                 onChange={() => setOldMneyImage(!oldMoneyImage)}
                             />
@@ -121,7 +121,7 @@ export default function UserCategoriesForm() {
                         <label className="user-category-input-wrapper">
                             <input
                                 className="user-category-input"
-                                value={streetWearImage}
+                                checked={streetWearImage}
                                 type="checkbox"
                                 onChange={() => setStreetwearImage(!streetWearImage)}
                             />

@@ -4,6 +4,8 @@ import { createNewPin } from "../../store/pins";
 import { getBoardsofCurrentUser } from "../../store/boards"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import "./CreatePin.css"
+import OpenModalButton from "../OpenModalButton";
+import CreateBoardModal from "../CreateBoardModal";
 
 export default function CreatePin() {
     const history = useHistory()
@@ -120,7 +122,7 @@ export default function CreatePin() {
             }
         }
     }, [image])
-    
+
 
     return (
         <div className="new-pin-wrapper">
@@ -155,23 +157,37 @@ export default function CreatePin() {
                     {loadingImage && <h3>Wait while your image is uploaded</h3>}
                 </div>
                 <div className="new-pin-info-side">
-                    <div className="new-pin-save-and-board">
-                        <label>
-                            <select
-                                value={board}
-                                onChange={(e) => setBoard(e.target.value)}
-                            >
-                                {currentUserBoardsArr.map(boardValue => (
-                                    <option
-                                        key={boardValue.id}>
-                                        {boardValue.name}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.board ? <p className="create-pin-errors">{errors.board}</p> : null}
-                        </label>
-                        <button>Save</button>
-                    </div>
+                    {currentUserBoardsArr.length ?
+                        <div className="new-pin-save-and-board">
+                            <label>
+                                <select
+                                    value={board}
+                                    onChange={(e) => setBoard(e.target.value)}
+                                >
+                                    {currentUserBoardsArr.map(boardValue => (
+                                        <option
+                                            key={boardValue.id}>
+                                            {boardValue.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.board ? <p className="create-pin-errors">{errors.board}</p> : null}
+                            </label>
+                            <button>Save</button>
+                        </div>
+                        :
+                        <div className="new-pin-save-and-board">
+                            <div className="create-pin-no-boards">
+                                <i class="fa-solid fa-circle-plus"></i>
+                                <OpenModalButton
+                                
+                                type="button"
+                                buttonText="Create Board"
+                                modalComponent={<CreateBoardModal username={currentUser.username}/>}
+                                />
+                            </div>
+                        </div>
+                    }
                     <div className="new-pin-title-input-wraper">
                         <label>
                             <input
@@ -193,7 +209,7 @@ export default function CreatePin() {
                                     <p className="create-pin-errors">{100 - title.length}</p>
                                 </div>
                                 :
-                                <div className={`new-pin-active-caption ${activeTitleClassName}` }>
+                                <div className={`new-pin-active-caption ${activeTitleClassName}`}>
                                     <p>Your first 40 characters are what usually show up in feeds</p>
                                     <p>{100 - title.length}</p>
                                 </div>

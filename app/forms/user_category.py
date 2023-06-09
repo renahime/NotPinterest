@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField
+from wtforms import IntegerField
 
 
 class UserCategoryForm(FlaskForm):
-    streetware = BooleanField("Streetware")
-    formalwear = BooleanField("Formal Ware")
-    dark = BooleanField("Dark")
-    boho = BooleanField("Boho")
-    old_money = BooleanField("Old Money")
-    athleisure = BooleanField("Athleisure")
+    streetware = IntegerField("Streetware")
+    formalwear = IntegerField("Formal Ware")
+    dark = IntegerField("Dark")
+    boho = IntegerField("Boho")
+    old_money = IntegerField("Old Money")
+    athleisure = IntegerField("Athleisure")
