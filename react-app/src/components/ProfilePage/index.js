@@ -8,6 +8,7 @@ import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
+import LoadingButton from "../LoadingButton"
 import "./ProfilePage.css"
 
 import OpenModalButton from "../OpenModalButton"
@@ -104,7 +105,14 @@ export default function ProfilePage() {
 
     // console.log("hiiiiiiiiiiiii")
     // console.log("currentProfileId", currentProfile.id)
-    if (!loading) return <h1>Loading...</h1>
+    if (!loading){
+        return (
+          <LoadingButton
+            isLoading={!loading}
+          disabled={!loading}
+          />
+        )
+      }
     else if (!currentProfile.id) return <PageNotFound />
 
     console.log("hello", loading)

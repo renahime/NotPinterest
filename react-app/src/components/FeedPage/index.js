@@ -79,6 +79,24 @@ function FeedPage() {
 
 
 
+  // Checking for the number of pins in BOARD STATE
+  let numberOfPins;
+
+  if (boards) {
+    let numberOfPinsStart = 0
+    for (let i = 0; i < boards.length; i++) {
+      const board = boards[i]
+      if (board.pins.length > 0) {
+        numberOfPinsStart += board.pins.length
+        console.log("NUMBER OF PINS", numberOfPins)
+      }
+    }
+    numberOfPins = numberOfPinsStart
+  }
+
+
+
+
   // our boards container will loop through this array and keep assigning board backgrounds dynamically
 
   const [boardColors] = useState([
@@ -129,14 +147,14 @@ function FeedPage() {
     <>
       <div className="feed-container">
 
-        {boards.length > 0 && (
+        {boards.length > 0 ? (
 
           <>
             <div className="board-container-top-text">
               <div>Hey {sessionUser.first_name}, you have</div>
               <NavLink to={`/${username}`}> {boards.length} boards</NavLink>
               <div>and</div>
-              <NavLink to={`/${username}/_created`}>{sessionUser.pins.length} pins</NavLink>
+              <NavLink to={`/${username}/_created`}>{numberOfPins} pins</NavLink>
               <div>Check them out!</div>
             </div>
 
@@ -166,6 +184,20 @@ function FeedPage() {
                 ))}
 
               </div>
+            </div>
+          </>
+
+        ) : (
+          <>
+            <div className="board-container-top-text">
+              <div>Oh no, you have</div>
+              <NavLink to={`/${username}`}> {boards.length} boards.</NavLink>
+              <div>Let's change that!</div>
+              <OpenModalButton
+                buttonText="Create Board"
+                className="feed-page-create-board"
+                modalComponent={<CreateBoardModal username={sessionUser?.username} />}
+              />
             </div>
           </>
 
@@ -485,7 +517,7 @@ function FeedPage() {
 
 
 
-      </div>
+      </div >
     </>
   )
 }

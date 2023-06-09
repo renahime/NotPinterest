@@ -29,6 +29,10 @@
   /* background-color: red; */
 }
 
+.feed-page-create-board{
+cursor: pointer;
+
+}
 .board-container-top-text{
   display: flex;
   align-items: center;

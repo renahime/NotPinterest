@@ -113,7 +113,7 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
     await dispatch(updateBoardThunk(updatedBoardData, id))
     const boardName = updatedBoardData.name.split(' ').join('_').toLowerCase()
     // const boardName = currentProfileBoards[id]?.name;
-    history.push(`/${username}/${boardName}`);
+    // history.push(`/${username}/${boardName}`);
     closeModal()
   };
 

@@ -19,9 +19,10 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
 
   const [hover, setHover] = useState(false)
   const [hoverDiv, setHoverDiv] = useState("")
+  const { setModalContent, closeModal } = useModal();
   const history = useHistory()
 
-  console.log("HOVER DIV INFO - PIN ID", hoverDiv)
+  console.log("HOVER DIV INFO - PIN", hoverDiv)
   console.log("Pins TODAY", pinsToday)
   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
 
@@ -39,7 +40,7 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
 
   function onHover(pin) {
     setHover(true)
-    setHoverDiv(pin.id)
+    setHoverDiv(pin)
   }
 
   function offHover() {
@@ -63,15 +64,19 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
   //   }
   // };
 
-  async function addPinToBoard(pin) {
+  async function addPinToBoard() {
     console.log("BEFORE- CHECK STATE", currentBoardState)
     console.log("CURRENT STATE", currentState)
+    console.log("HOVER DIV IN ADD TO PIN FUNCTION", hoverDiv)
+    console.log("CURRENT BOARD", currentBoard.id)
     // await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
-    await dispatch(pinThunk(pin.id, currentBoard.id))
+    await dispatch(pinThunk(hoverDiv, currentBoard.id))
     console.log("SUCCESS- CHECK STATE", currentBoardState)
     console.log("CURRENT STATE", currentState)
 
   }
+
+
 
 
   return (
@@ -94,7 +99,7 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
                   }
                 >
                   <div className="save-pins-to-board-save-button"
-                    onClick={() => addPinToBoard(pin)}
+                    onClick={() => addPinToBoard()}
 
                   >Save</div>
                   <div className="save-pins-to-board-modal-text-container">
@@ -111,7 +116,7 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
         </div>
 
         <div className="bottom-done">
-          <div className="bottom-done-text">Done</div>
+          <div className="bottom-done-text" onClick={() => closeModal()}>Done</div>
         </div>
 
 
