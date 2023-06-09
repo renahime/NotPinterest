@@ -40,9 +40,9 @@ cursor: pointer;
   /* font-weight: bold; */
 }
 
-.board-container-top-text > * + * {
-  margin-left: 10px; /* Adjust the value as needed */
-}
+/* .board-container-top-text > * + * {
+  margin-left: 10px;
+} */
 
 .board-top {
   display: flex;
