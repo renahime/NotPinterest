@@ -10,6 +10,9 @@ import PageNotFound from "../PageNotFound"
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
 import "./ProfilePage.css"
 
+import OpenModalButton from "../OpenModalButton"
+import CreateBoardModal from "../CreateBoardModal"
+
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -134,7 +137,12 @@ export default function ProfilePage() {
                         {openMenu && <div className={menuClassName}>
                             <div className="profile-dropdown-create-label">Create</div>
                             <div className="profile-dropdown-create">Pin</div>
-                            <div className="profile-dropdown-create">Board</div>
+                            <div className="profile-dropdown-create" onClick={showMenu}>
+                                <OpenModalButton
+                                    buttonText="Board"
+                                    modalComponent={<CreateBoardModal username={currentUser?.username} />}
+                                />
+                            </div>
                         </div>}
                     </div>
                     <CurrentUserBoard userBoardsArr={userBoardsArr} />

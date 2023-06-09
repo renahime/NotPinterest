@@ -20,15 +20,37 @@ function FeedPage() {
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
+  const [hoverBoard, setHoverBoard] = useState(false)
+  const [hoverBoardDiv, setHoverBoardDiv] = useState("")
 
+  console.log("HOVER PIN", hoverBoardDiv)
+
+  function onHoverBoard(board) {
+    setHoverBoard(true)
+    setHoverBoardDiv(board.id)
+  }
+
+  function offHoverBoard() {
+    setHoverBoard(false)
+    setHoverBoardDiv("")
+  }
+
+  function viewIndividualBoard (username, name) {
+    let nameArr = name.toLowerCase().split(" ")
+    let formattedName = nameArr.join("_")
+    history.push(`/${username}/${formattedName}`)
+}
 
 
   useEffect(() => {
     setTimeout(() => {
       // Assuming you're fetching the boards data here
-      dispatch(getBoardsByUsername(username))
+      if (username) {
+        dispatch(getBoardsByUsername(username))
+      }
+
       setIsLoading(false);
-    }, 2000);
+    }, 200);
 
   }, [dispatch])
 
@@ -40,15 +62,19 @@ function FeedPage() {
   //GET STATE DATA
   const sessionUser = useSelector(state => state.session.user)
 
+  const currentState = useSelector(state => state)
 
-  const username = sessionUser.username
+
+  const username = sessionUser?.username
+  console.log("SESSION USER USERNAME", username)
 
   const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
 
-  const boardsArr = Object.values(boardsSelector)
-  const boards = boardsArr[0]
+  const boards = Object.values(boardsSelector)
+  // const boards = boardsArr[0]
+  console.log("GET ALL BOARDS DATA", boards)
 
 
 
@@ -85,9 +111,8 @@ function FeedPage() {
     //Loading screen
     if (isLoading) {
       return <h1>Loading</h1>;
-    } else {
-      return <h1>No boards found</h1>;
     }
+
   }
 
 
@@ -98,21 +123,22 @@ function FeedPage() {
         {boards.length > 0 && (
           <div className="board-container" ref={scrollContainerRef}>
             <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-              &lt;
+              <i className="fa-solid fa-angle-left"></i>
             </div>
             {boards.map((board, index) => (
 
-              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => setSelectedBoardId(board.id)}>
-                <OpenModalButton
+              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                {/* <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"
-                  modalComponent={<UpdateBoardModal id={selectedBoardId} />}
-                  style={{ fontSize: '20px' }}
-                />
+                  modalComponent={<UpdateBoardModal id={board.id} />}
+                  onClick={() => history.push(`/boards/${board.id}`)}
+                /> */}
+                {board.name}
               </div>
             ))}
             <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-              &gt;
+              <i clasName="fa-solid fa-angle-left fa-rotate-180"></i>
             </div>
           </div>
         )
@@ -120,16 +146,12 @@ function FeedPage() {
         }
 
 
-
-
-
-
-        <OpenModalButton
-          buttonText="&#43;"
+        {/* <OpenModalButton
+          buttonText=<i class="fa-solid fa-plus"></i>
           className="test-open-create-board-modal"
           modalComponent={<CreateBoardModal />}
           style={{ fontSize: '20px' }}
-        />
+        /> */}
 
 
 
