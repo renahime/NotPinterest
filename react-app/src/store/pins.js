@@ -1,13 +1,10 @@
 const CREATE_PIN = "pins/createNewPin"
 const GET_PIN = "pins/getById"
 const GET_PINS_MADE_TODAY = "pins/getPinsToday"
-<<<<<<< HEAD
 const GET_PINS_BY_CATEGORY = "pins/getPinsByCategory"
 const GET_PINS_BY_USERNAME = "pins/getPinsByUsername"
-=======
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
->>>>>>> dev
 
 
 const createPin = (pin) => ({
@@ -25,7 +22,6 @@ const getPinsToday = (pins) => ({
     pins
 })
 
-<<<<<<< HEAD
 const pinsByCategory = (pins) => ({
     type: GET_PINS_BY_CATEGORY,
     pins
@@ -36,6 +32,10 @@ const getUserPins = (pins) => ({
     pins
 })
 
+const deletePin = (pinId) => ({
+    type: DELETE_PIN,
+    pinId
+})
 
 
 export const getPinsByUsername = (username) => async (dispatch) => {
@@ -49,13 +49,6 @@ export const getPinsByUsername = (username) => async (dispatch) => {
     }
 }
 
-export const createNewPin = (pinData) => async (dispatch) => {
-=======
-const deletePin = (pinId) => ({
-    type: DELETE_PIN,
-    pinId
-})
-
 
 const updateUserPin = (pin) => ({
     type: UPDATE_USER_PIN,
@@ -63,10 +56,9 @@ const updateUserPin = (pin) => ({
 })
 
 export const createNewPin = (pin_info) => async (dispatch) => {
->>>>>>> dev
     const res = await fetch("/api/pins/new", {
         method: "POST",
-        body: pinData
+        body: pin_info
     })
 
     if (res.ok) {
@@ -92,7 +84,6 @@ export const fetchPinsToday = () => async (dispatch) => {
     }
 }
 
-<<<<<<< HEAD
 export const getPinsByCategory = (categories) => async (dispatch) => {
     console.log("inside of the category thunk", categories)
     const res = await fetch(`/api/pins/categories`, {
@@ -109,18 +100,6 @@ export const getPinsByCategory = (categories) => async (dispatch) => {
     }
 }
 
-const initialState = {pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
-
-export default function pinsReducer(state = initialState, action) {
-    switch (action.type) {
-        case GET_PINS_BY_USERNAME:
-            console.log(action.pins)
-            return {...state, singlePin: {...state.singlePin}, todayPins: {...state.todayPins}, pins: {...action.pins}, userPins: {...action.pins}}
-        case GET_PINS_BY_CATEGORY:
-            return {...state, singlePin: {... state.singlePin}, pins: {...state.pins}, todayPins : {...state.todayPins}, categories: {...action.pins}}
-        case GET_PINS_MADE_TODAY:
-            return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
-=======
 export const deletePinThunk = (pinId) => async (dispatch) => {
     const res = await fetch(`/api/pins/${pinId}/delete`, {
         method: "DELETE",
@@ -133,7 +112,7 @@ export const deletePinThunk = (pinId) => async (dispatch) => {
         return errors;
     }
 };
-
+const initialState = { pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
 
 export const getPinById = (pin_id) => async (dispatch) => {
     const res = await fetch(`/api/pins/${pin_id}`)
@@ -168,11 +147,15 @@ export const updatePinThunk = (pin) => async (dispatch) => {
 
 
 
-const initialState = { pins: {}, singlePin: {}, todayPins: {} }
-
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
->>>>>>> dev
+        case GET_PINS_BY_USERNAME:
+            console.log(action.pins)
+            return { ...state, singlePin: { ...state.singlePin }, todayPins: { ...state.todayPins }, pins: { ...action.pins }, userPins: { ...action.pins } }
+        case GET_PINS_BY_CATEGORY:
+            return { ...state, singlePin: { ...state.singlePin }, pins: { ...state.pins }, todayPins: { ...state.todayPins }, categories: { ...action.pins } }
+        case GET_PINS_MADE_TODAY:
+            return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
         case GET_PIN:
             return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin } }
         case CREATE_PIN:

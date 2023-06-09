@@ -6,11 +6,8 @@ import { getBoardsByUsername } from "../../store/boards"
 import { findFollowersAndFollowing, unfollowUser, followUser } from "../../store/session"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
-<<<<<<< HEAD
 import PageNotFound from "../PageNotFound"
-=======
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
->>>>>>> dev
 import "./ProfilePage.css"
 
 
@@ -24,7 +21,6 @@ export default function ProfilePage() {
     const currentUser = useSelector(state => state.session.user)
     let userBoards = useSelector(state => state.boards.currentProfileBoards)
     let userBoardsArr = Object.values(userBoards)
-<<<<<<< HEAD
     const followers = useSelector(state => state.session.followers)
     const following = useSelector(state => state.session.following)
     let [followingInt, setFollowing] = useState("")
@@ -37,8 +33,6 @@ export default function ProfilePage() {
     //     followersArr = Object.values(followers)
     // }
 
-=======
->>>>>>> dev
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
@@ -140,18 +134,16 @@ export default function ProfilePage() {
                             {following ? Object.values(following).length : null} following
                         </div>
                     </h5>
-<<<<<<< HEAD
                     {checkUser() ? 
                     <button className="profile-button edit-profile">Edit Profile</button> : 
                     !currentUser.followers.includes(currentProfile.owner_info.username) ?
                         <button onClick={() => followUser(currentProfile.owner_info.username)} className="profile-button" id="follow-button">Follow</button> :
                         <button onClick={() => unfollowUser(currentProfile.owner_info.username)}>Unfollow</button>
-=======
+                    }
                     {checkUser() ?
                         <NavLink exact to="/settings"><button className="profile-button edit-profile">Edit Profile</button></NavLink> : null}
                     {
                         <button className="profile-button" id="follow-button">Follow</button>
->>>>>>> dev
                     }
                     {/* <div>
                         <button onClick={() => history.push(`/${username}/_created`)} className="profile-button">Created</button>

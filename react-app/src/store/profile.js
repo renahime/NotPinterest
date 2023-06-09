@@ -23,7 +23,6 @@ export const deleteProfile = (user) => ({
 
 export const getUserInfo = (username) => async (dispatch) => {
     const res = await fetch(`/api/users/users/${username}`)
-<<<<<<< HEAD
     console.log(res.status)
     if (res.status >= 400) {
         console.log("umm no")
@@ -32,9 +31,6 @@ export const getUserInfo = (username) => async (dispatch) => {
     }
     else {
         console.log("like whatttt")
-=======
-    if (res.ok) {
->>>>>>> dev
         const userData = await res.json()
         if (userData.errors) {
             return userData.errors

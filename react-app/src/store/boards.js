@@ -38,16 +38,15 @@ const deleteUserBoard = (id) => ({
     id,
 });
 
-<<<<<<< HEAD
 const getCurrentUserBoard = (boards) => ({
     type: GET_CURRENT_USER_BOARDS,
     boards
-=======
+})
+
 const unPin = (pin, boardId) => ({
     type: UN_PIN,
     pin,
     boardId,
->>>>>>> dev
 })
 
 const rePin = (pin, oldBoardId, newBoardId) => ({
@@ -62,25 +61,8 @@ const pinBoard = (pin, boardId) => ({
     pin,
     boardId,
 })
-const getCurrentUserBoard = (boards) => ({
-    type: GET_CURRENT_USER_BOARDS,
-    boards
-})
 
 
-export const getBoardsofCurrentUser = () => async (dispatch) => {
-    const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
-    if (res.status >= 400) {
-        console.log("in the get boards of current user reducer")
-        return
-    }
-    if (res.ok) {
-        let boards = await res.json()
-        console.log("boards", boards)
-        dispatch(getCurrentUserBoard(boards))
-        return
-    }
-}
 
 export const getBoardsofCurrentUser = () => async (dispatch) => {
     const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
@@ -209,30 +191,14 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
         dispatch(getOneBoardByName(board))
     }
 }
-<<<<<<< HEAD
 
 
 const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
-=======
-const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {} }
->>>>>>> dev
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
         case GET_CURRENT_USER_BOARDS:
-<<<<<<< HEAD
-            return {...state, allBoards: {...state.allBoards}, currentProfileBoards: {...state.currentProfileBoards}, singleBoard: {...state.singleBoard}, currentUserBoards: {...action.boards}}
-
-        case GET_BOARDS_OF_USER:
-            console.log("action", action.boards)
-            for (let board of action.boards) {
-                newState[board.id] = board
-            }
-
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: {...state.currentUserBoards} }
-
-=======
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
         case GET_BOARDS_OF_USER:
             let newState = {}
@@ -240,7 +206,6 @@ export default function boardsReducer(state = initialState, action) {
                 newState[board.id] = board
             }
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {} }
->>>>>>> dev
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {
@@ -250,11 +215,6 @@ export default function boardsReducer(state = initialState, action) {
                     [action.board.id]: action.board
                 }
             };
-<<<<<<< HEAD
-
-
-=======
->>>>>>> dev
         case UPDATE_USER_BOARD:
             newState = {
                 ...state,
@@ -279,9 +239,6 @@ export default function boardsReducer(state = initialState, action) {
                 currentProfileBoards: updatedCurrentProfileBoards,
             };
         case GET_BOARD_BY_NAME:
-<<<<<<< HEAD
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board }, currentUserBoards: {...state.currentUserBoards} }
-=======
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
         case UN_PIN:
             const unPinAllBoards = { ...state.allBoards }
@@ -317,7 +274,6 @@ export default function boardsReducer(state = initialState, action) {
                 }
             }
             return { ...state, allBoards: repinAllBoards, currentProfileBoards: repinCurrent, singleBoard: repinSingle }
->>>>>>> dev
         default:
             return state
     }

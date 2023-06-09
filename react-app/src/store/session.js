@@ -77,11 +77,7 @@ export const followUser = (username) => async (dispatch) => {
 }
 
 export const unfollowUser = (username) => async (dispatch) => {
-<<<<<<< HEAD
-	const res = await fetch(`/api/users/unfollow/${username}`,  {
-=======
 	const res = await fetch(`/api/users/unfollow/${username}`, {
->>>>>>> dev
 		method: "DELETE"
 	})
 	if (res.ok) {
@@ -180,15 +176,9 @@ const initialState = { user: null, following: {}, followers: {} };
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case GET_FOLLOWING_AND_FOLLOWERS:
-<<<<<<< HEAD
 			return {...state, user: {...state.user}, following: {...action.users.following}, followers: {...action.users.followers}}
 		case FOLLOW_USER:
 			let newState = {...state}
-=======
-			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
-		case FOLLOW_USER:
-			let newState = { ...state }
->>>>>>> dev
 			console.log("state", state)
 			console.log(action.user)
 			// newState.following[action.user]
@@ -206,11 +196,7 @@ export default function reducer(state = initialState, action) {
 			console.log("state.user.following", state.user.following)
 			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
-<<<<<<< HEAD
-			return  {user: {...state.user}}
-=======
 			return { user: { ...state.user } }
->>>>>>> dev
 		default:
 			return state;
 	}
