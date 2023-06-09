@@ -51,7 +51,7 @@ function LoginFormModal() {
             </path>
           </svg>
         </div>
-        <h1 className="login-page-welcome">Welcome to Pinterest</h1>
+        <h1 className="login-page-welcome">Welcome to threadterest</h1>
         <form onSubmit={handleSubmit}>
           <ul>
             {errors.map((error, idx) => (
@@ -80,7 +80,7 @@ function LoginFormModal() {
           <p className="form-or">OR</p>
           <button className="login-form-demo-user-button" type="submit" onClick={handleDemoLogin} >Continue with Demo User</button>
 
-          <p className="login-form-member">Already a member?<span className="login-form-login-text"> Not on Pinterest yet? Sign up</span>
+          <p className="login-form-member">Already a member?<span className="login-form-login-text"> Not on threadterest yet? Sign up</span>
           </p>
         </form>
       </div>

@@ -15,7 +15,7 @@ function SignupFormPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  
+
   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
@@ -27,7 +27,7 @@ function SignupFormPage() {
       } else {
         history.push("/setCategories")
       }
-      
+
     } else {
       setErrors(['Confirm Password field must be the same as the Password field']);
     }
@@ -43,7 +43,7 @@ function SignupFormPage() {
             </path>
           </svg>
         </div>
-        <h1 className="signup-page-welcome">Welcome to Pinterest</h1>
+        <h1 className="signup-page-welcome">Welcome to threadterest</h1>
         <p className="signup-page-ideas">Find new ideas to try</p>
         <form onSubmit={handleSubmit}>
           <ul>

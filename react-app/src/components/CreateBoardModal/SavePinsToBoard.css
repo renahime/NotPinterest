@@ -1,6 +1,6 @@
 .save-pins-to-board-modal-container {
   width: 900px;
-  height: 600px;
+  /* height: 600px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,10 +10,10 @@
 
 }
 
-.save-pin-list-container{
+.save-pin-list-container {
   overflow-y: scroll;
   /* padding: 0px 30px; */
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,6 +32,25 @@
 .save-pins-to-board-modal-container::-webkit-scrollbar {
   width: 10px;
 }
+
+
+.save-pins-to-board-save-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(235, 4, 4);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 20px;
+}
+
+.save-pins-to-board-save-button:hover {
+  cursor: pointer;
+  background-color: rgb(203, 3, 3);
+}
+
 
 /* .save-pins-to-board-modal-container::-webkit-scrollbar-track {
   background: transparent;
@@ -56,7 +75,7 @@
 
 .save-pins-board-list {
   display: grid;
-  height: 300px;
+  height: 450px;
   width: 100%;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
@@ -69,11 +88,16 @@
 }
 
 .save-pins-to-board-modal-pins {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+
   width: 200px;
   /* flex:0 0 0; */
   height: 275px;
   border-radius: 5%;
   color: white;
+  object-fit: contain;
 
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 }
@@ -88,7 +112,7 @@
 
 
 .bottom-done {
-  width: 100%;
+  width: 9%;
   height: 100px;
   background-color: white;
   position: sticky;
@@ -96,6 +120,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-right: 20px;
 }
 
 .bottom-done-text {
@@ -107,4 +132,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
+}
+
+.bottom-done-text:hover {
+  cursor: pointer;
+  background-color: rgb(203, 3, 3);
 }

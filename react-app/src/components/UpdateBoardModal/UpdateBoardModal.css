@@ -166,6 +166,9 @@
 
 }
 
+.edit-board-modal-create-button:hover {
+  background-color: rgb(126, 4, 4);
+}
 
 
 
@@ -197,20 +200,18 @@
 
 
 .edit-board-delete-text {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   margin-top: 0px;
   font-weight: 500;
   font-size: 16px;
 }
 
 
-.edit-board-delete-warning {
-  margin-bottom: 0px;
-  margin-top: 0px;
-  font-size: 11px;
-  width: auto;
-}
+.edit-board-delete-text:hover {
+  text-decoration: underline;
+  color: red;
 
+}
 
 
 .edit-board-cover-image-container {

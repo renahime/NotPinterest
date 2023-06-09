@@ -4,10 +4,12 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import { NavLink, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const history = useHistory()
   const ulRef = useRef();
 
   const openMenu = () => {
@@ -15,6 +17,7 @@ function ProfileButton({ user }) {
     setShowMenu(true);
   };
 
+  console.log("USER", user)
   useEffect(() => {
     if (!showMenu) return;
 
@@ -32,6 +35,7 @@ function ProfileButton({ user }) {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    history.push("/")
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -39,17 +43,33 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button className = "nav-icon-button" onClick={openMenu}>
-      <i className="fa-regular fa-user nav-icon"></i>
+      <button className="nav-icon-button" onClick={openMenu}>
+        <i className="fa-regular fa-user nav-icon"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.email}</li>
-            <li>
+            <div className="nav-dropdown-top-text">
+              <li>Hi, {user.username}</li>
+              <li>{user.email}</li>
+            </div>
+
+            <div className="nav-dropdown-middle-text">
+              <li>
+                <NavLink to={`${user.username}`} onClick={closeMenu}>My Boards</NavLink>
+              </li>
+              <li>
+                <NavLink to={`/${user.username}/_created`}>My Pins</NavLink>
+              </li>
+              <li>
+                <NavLink to="/settings" onClick={closeMenu} >Settings</NavLink>
+              </li>
+            </div>
+
+            <li className="nav-dropdown-middle-text">
               <button onClick={handleLogout}>Log Out</button>
             </li>
+
           </>
         ) : (
           <>

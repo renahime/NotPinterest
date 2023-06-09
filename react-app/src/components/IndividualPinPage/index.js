@@ -124,26 +124,26 @@ export default function IndividualPinPage() {
         else return `${num} followers`
     }
 
-    if (!singlePin && !currentUser && !options.length) return <h1>...Loading</h1>
+    if (!singlePin || !currentUser || !options.length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
             <div className="single-pin">
                 <div className="single-pin-image-wrapper" onMouseEnter={() => setShowDetails(!showDetails)} onMouseLeave={() => setShowDetails(!showDetails)}>
                     <img className="single-pin-image" src={singlePin.image} alt={singlePin.alt_text ? singlePin.alt_text : ""} />
                     {singlePin.destination ?
-                    <a target="_blank" href={singlePin.destination}>
-                        <button className={singlePinImageClassName}>
-                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                            {singlePin.destination}
-                        </button>
-                    </a>
-                    :
-                    <a target="_blank" href={singlePin.image}>
-                        <button className={singlePinImageClassName}>
-                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                            View image
-                        </button>
-                    </a>
+                        <a target="_blank" href={singlePin.destination}>
+                            <button className={singlePinImageClassName}>
+                                <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                                {singlePin.destination}
+                            </button>
+                        </a>
+                        :
+                        <a target="_blank" href={singlePin.image}>
+                            <button className={singlePinImageClassName}>
+                                <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                                View image
+                            </button>
+                        </a>
                     }
                 </div>
                 <div className="single-pin-details">

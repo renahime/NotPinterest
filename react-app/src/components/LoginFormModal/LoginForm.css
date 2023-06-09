@@ -6,13 +6,14 @@
 
 .login-form-modal-container {
   width: 400px;
-  height: 500px;
+  max-height: 500px;
   display: flex;
   flex-direction: column;
   background-color: rgb(243, 242, 242);
   align-items: center;
   background-color: white;
   border-radius: 50px;
+  padding-bottom: 30px;
 
 }
 

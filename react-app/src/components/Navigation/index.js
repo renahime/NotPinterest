@@ -37,7 +37,7 @@ function Navigation({ isLoaded }) {
 						</NavLink>
 						<div className="pinterest-logo">
 							<NavLink exact to="/" className="pinterest-logo">
-								Pinterest
+								threadterest
 							</NavLink>
 						</div>
 					</div>
@@ -56,13 +56,13 @@ function Navigation({ isLoaded }) {
 								<NavLink exact to="/feed" className="tab" activeClassName="active">
 									Home
 								</NavLink>
-								<NavLink to="/today" className="tab" activeClassName="active">
+								<NavLink to="/today" className="tab" activeClassName="active" >
 									Today
 								</NavLink>
 								<div className='nav-create-tab'>
 								{openMenu && <div className={menuClassName}>
 									{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
-									<div className="nav-profile-dropdown-create">Create idea Pin</div>
+									<NavLink to="/create" className="nav-profile-dropdown-create">Create Pin</NavLink>
 									<div className="nav-profile-dropdown-create" onClick={showMenu}>
 										<OpenModalButton
 											buttonText="Create Board"

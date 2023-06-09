@@ -4,7 +4,7 @@ import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
 import { useHistory, useParams } from 'react-router-dom'
 import { createBoardThunk, getBoardsByUsername, updateBoardThunk } from "../../store/boards";
-import DeleteBoardModal from "../DeleteBoardModal";
+import UpdateDeleteBoardModal from "./DeleteBoardModal";
 import { deleteBoardThunk } from "../../store/boards";
 import SavePinsToBoardModal from "../CreateBoardModal/SavePinsToBoard";
 import ChangeBoardCoverModal from "./ChangeBoardCoverModal";
@@ -90,6 +90,13 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
     closeModal()
   };
 
+  // const onDelete = () => {
+
+  //   return (
+  //     <DeleteBoardModal />
+  //   )
+
+  // };
 
   //updated data that we will send to the thunk
   const updatedBoardData = {
@@ -106,10 +113,13 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
     await dispatch(updateBoardThunk(updatedBoardData, id))
     const boardName = updatedBoardData.name.split(' ').join('_').toLowerCase()
     // const boardName = currentProfileBoards[id]?.name;
-    history.push(`/${username}/${boardName}`);
+    // history.push(`/${username}/${boardName}`);
     closeModal()
   };
 
+  const closeTheModal = () => {
+    closeModal()
+  }
 
 
   if (!currentProfileBoards || !username) {
@@ -167,13 +177,19 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
               </div>
             </label>
 
-            <button className="edit-board-modal-create-button" disabled={disabledButton}>
+            <button className="edit-board-modal-create-button" disabled={disabledButton} >
               Done
             </button>
 
-            <div className="edit-board-delete-text-bottom-container" onClick={onDelete}>
+            <div className="edit-board-delete-text-bottom-container" >
               <p className="edit-board-action">Action</p>
-              <h3 className="edit-board-delete-text">Delete board</h3>
+              <h2 className="edit-board-delete-text" onClick={onDelete}>Delete Board
+                {/* <OpenModalButton
+                  buttonText="Delete Board"
+                  className="dropdown-item"
+                  modalComponent={<DeleteBoardModal id={id} user={sessionUser} />}
+                /> */}
+              </h2>
               <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>
               <br></br>
               <p className="edit-board-delete-warning">You can't undo this!</p>

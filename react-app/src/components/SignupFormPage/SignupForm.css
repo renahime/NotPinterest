@@ -5,8 +5,10 @@
   background-color: rgb(255, 255, 255);
   border-radius: 33px;
   width: 55%;
-  height: 70%;
+  /* max-height: 1300px; */
+  /* height: 100%; */
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+  padding-bottom:30px;
 }
 
 

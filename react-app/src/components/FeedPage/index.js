@@ -3,13 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
 import { getAllBoardThunks } from "../../store/boards-mikey";
 import { getBoardsByUsername } from "../../store/boards";
-
-
+import LoadingButton from "../LoadingButton";
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import CreateBoardModal from "../CreateBoardModal";
 import UpdateBoardModal from "../UpdateBoardModal";
-
 import './FeedPage.css'
 
 
@@ -35,11 +33,11 @@ function FeedPage() {
     setHoverBoardDiv("")
   }
 
-  function viewIndividualBoard (username, name) {
+  function viewIndividualBoard(username, name) {
     let nameArr = name.toLowerCase().split(" ")
     let formattedName = nameArr.join("_")
     history.push(`/${username}/${formattedName}`)
-}
+  }
 
 
   useEffect(() => {
@@ -50,7 +48,7 @@ function FeedPage() {
       }
 
       setIsLoading(false);
-    }, 200);
+    }, 1500);
 
   }, [dispatch])
 
@@ -68,6 +66,8 @@ function FeedPage() {
   const username = sessionUser?.username
   console.log("SESSION USER USERNAME", username)
 
+  console.log(sessionUser)
+
   const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
@@ -75,6 +75,24 @@ function FeedPage() {
   const boards = Object.values(boardsSelector)
   // const boards = boardsArr[0]
   console.log("GET ALL BOARDS DATA", boards)
+
+
+
+
+  // Checking for the number of pins in BOARD STATE
+  let numberOfPins;
+
+  if (boards) {
+    let numberOfPinsStart = 0
+    for (let i = 0; i < boards.length; i++) {
+      const board = boards[i]
+      if (board.pins.length > 0) {
+        numberOfPinsStart += board.pins.length
+        console.log("NUMBER OF PINS", numberOfPins)
+      }
+    }
+    numberOfPins = numberOfPinsStart
+  }
 
 
 
@@ -95,14 +113,19 @@ function FeedPage() {
 
   const handleScrollLeft = () => {
     const scrollContainer = scrollContainerRef.current;
-    scrollContainer.scrollLeft -= 200;
+    scrollContainer.scrollTo({
+      left: scrollContainer.scrollLeft - 200,
+      behavior: 'smooth' // You can remove this line if you prefer an instant scroll
+    });
   };
 
   const handleScrollRight = () => {
     const scrollContainer = scrollContainerRef.current;
-    scrollContainer.scrollLeft += 200;
+    scrollContainer.scrollTo({
+      left: scrollContainer.scrollLeft + 200,
+      behavior: 'smooth' // You can remove this line if you prefer an instant scroll
+    });
   };
-
 
 
   //check if we have any boards in our database or state. If not, we will load the page or not render it at all
@@ -110,9 +133,13 @@ function FeedPage() {
 
     //Loading screen
     if (isLoading) {
-      return <h1>Loading</h1>;
+      return (
+        <LoadingButton
+          isLoading={isLoading}
+        // disabled={isLoading}
+        />
+      )
     }
-
   }
 
 
@@ -120,27 +147,60 @@ function FeedPage() {
     <>
       <div className="feed-container">
 
-        {boards.length > 0 && (
-          <div className="board-container" ref={scrollContainerRef}>
-            <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-              <i className="fa-solid fa-angle-left"></i>
-            </div>
-            {boards.map((board, index) => (
+        {boards.length > 0 ? (
 
-              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
-                {/* <OpenModalButton
+          <>
+            <div className="board-container-top-text">
+              <div>Hey {sessionUser.first_name}, you have</div>
+              <NavLink to={`/${username}`}> {boards.length} boards</NavLink>
+              <div>and</div>
+              <NavLink to={`/${username}/_created`}>{numberOfPins} pins</NavLink>
+              <div>Check them out!</div>
+            </div>
+
+            <div className="full-board-container">
+
+              <div className="board-container" ref={scrollContainerRef}>
+                <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
+                  <i className="fa-solid fa-angle-left"></i>
+                </div>
+                <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
+                  <i className="fa-solid fa-angle-left fa-rotate-180"></i>
+                </div>
+
+                {boards.map((board, index) => (
+
+                  <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                    {/* <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"
                   modalComponent={<UpdateBoardModal id={board.id} />}
                   onClick={() => history.push(`/boards/${board.id}`)}
                 /> */}
-                {board.name}
+                    <div>
+                      {board.name}
+                    </div>
+                  </div>
+                ))}
+
               </div>
-            ))}
-            <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-              <i clasName="fa-solid fa-angle-left fa-rotate-180"></i>
             </div>
-          </div>
+          </>
+
+        ) : (
+          <>
+            <div className="board-container-top-text">
+              <div>Oh no, you have</div>
+              <NavLink to={`/${username}`}> {boards.length} boards.</NavLink>
+              <div>Let's change that!</div>
+              <OpenModalButton
+                buttonText="Create Board"
+                className="feed-page-create-board"
+                modalComponent={<CreateBoardModal username={sessionUser?.username} />}
+              />
+            </div>
+          </>
+
         )
 
         }
@@ -457,7 +517,7 @@ function FeedPage() {
 
 
 
-      </div>
+      </div >
     </>
   )
 }
