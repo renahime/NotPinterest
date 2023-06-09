@@ -95,15 +95,48 @@ textarea {
   gap:25px;
 }
 
-/* img {
+#profile-picture-display {
   border-radius: 50%;
   width:95px;
   height:95px;
 } */
 
-.file-input-actual-button{
+#file-input-actual-button{
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
   height:25%;
   width: 25%;
+}
+
+.footer-div{
+  display:flex;
+  justify-content: center;
+}
+
+.reset-button{
+  border:none;
+  height:50px;
+  width: 80px;
+  color:black;
+  font-weight: bold;
+  border-radius: 40%;
+}
+
+.save-button{
+  border:none;
+  height:50px;
+  width: 80px;
+  color:black;
+  font-weight: bold;
+  border-radius: 40%;
+}
+
+.delete-button{
+  border:none;
+  height:50px;
+  width: 80px;
+  background-color:red;
+  color:white;
+  font-weight: bold;
+  border-radius: 40%;
 }

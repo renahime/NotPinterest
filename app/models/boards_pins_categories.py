@@ -107,12 +107,6 @@ class Board(db.Model):
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
-    def pin(self, pin):
-        self.pins_tagged.append(pin)
-
-    def unpin(self, pin):
-        self.pins_tagged.remove(pin)
-
     def findOtherImages(self):
         additonal_images = []
         cover = ""
@@ -175,6 +169,13 @@ class Pin(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
 
+    def boards_pinned_to_dict(self):
+        returnList = []
+        for board in self.board_tagged:
+            returnList.append({"id":board.id,"name": board.name, "pins":[pin.id for pin in board.pins_tagged]})
+        return returnList
+
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -185,9 +186,10 @@ class Pin(db.Model):
             'alt_text': self.alt_text,
             'destination': self.destination,
             'categories': [category.name for category in self.categories],
-            'boards_pinned_in': [board.name for board in self.board_tagged],
+            'boards_pinned_in': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at,
+            'user': self.user.to_dict()
         }
 
 

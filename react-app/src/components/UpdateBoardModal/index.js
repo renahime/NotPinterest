@@ -28,11 +28,6 @@ function UpdateBoardModal({ sessionUser }) {
   let { id } = params;
   id = parseInt(id)
 
-  console.log("CURRENT BOARD ID", id)
-
-
-  console.log("UPDATE BOARD SESSION USER", sessionUser)
-  console.log("UPDATE BOARD SESSION USER USERNAME", sessionUser.username)
   const username = sessionUser.username
 
 
@@ -43,19 +38,15 @@ function UpdateBoardModal({ sessionUser }) {
 
 
   const currentState = useSelector(state => state.boards)
-  console.log("CURRENT STATE", currentState)
 
 
   const currentProfileBoards = useSelector((state) => state.boards.currentProfileBoards)
-  console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
 
   // const currentBoard = useSelector((state) => state.boards.currentProfileBoards["User Boards"][id -1])
-  // console.log("CURRENT BOARD", currentBoard)
 
 
   // if (currentProfileBoards.values().length > 0) {
   //   const currentBoard = useSelector((state) => state.boards.currentProfileBoards["User Boards"][id])
-  //   console.log("CURRENT BOARD", currentBoard)
   // }
 
 
@@ -108,7 +99,6 @@ function UpdateBoardModal({ sessionUser }) {
       description: description
     }
     //log formData
-    console.log("UPDATED BOARD DATA:", updatedBoardData)
 
     await dispatch(updateBoardThunk(updatedBoardData, 1))
 

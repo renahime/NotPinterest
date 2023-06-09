@@ -26,8 +26,6 @@ function App() {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  console.log("SESSION USER IS...", sessionUser)
-
   return (
     <>
       <Navigation isLoaded={isLoaded} />
@@ -36,7 +34,7 @@ function App() {
           <Route exact path="/setCategories">
             <UserCategoriesForm />
           </Route>
-          <Route exact path="/settings">
+          <Route exact exact path="/settings">
             <Settings />
           </Route>
           <Route exact path="/today">

@@ -13,7 +13,7 @@ def get_one_user_board(username, board_name):
     name = board_name.split("_")
     print("name", name)
     user_board = Board.query.join(User).filter(User.username == username, Board.name.ilike(board_name)).one_or_none()
-    
+
 
     pin_info = {}
     pins = user_board.pins_tagged
@@ -29,7 +29,7 @@ def get_one_user_board(username, board_name):
 
     if user_board:
         board = user_board.to_dict()
-        board["pin info"] = pin_info
+        board["pinInfo"] = pin_info
         return {"User Boards" : board}
 
     else:
@@ -154,8 +154,6 @@ def edit_board(id):
             image_found = False
             for pin in board_to_edit.pins_tagged:
                 if pin.image == form.data["cover_image"]:
-                    if form.data["cover_image"] == pin.image:
-                        return {"error": "image is already a cover image"}
                     board_to_edit.pin_cover_image.pop()
                     board_to_edit.pin_cover_image.append(pin)
                     image_found = True
@@ -218,7 +216,7 @@ def pin(boardId,pinId):
             return {"errors": "You already have {} pinned!".format(_pin.title)}
     board.pins_tagged.append(_pin)
     db.session.commit()
-    return {"message":"You have now pinned {}!".format(_pin.title)}
+    return _pin.to_dict()
 
 #Route to unpin a pin to a board
 @board_routes.route('/<int:boardId>/unpin/<int:pinId>', methods = ["DELETE"])
@@ -232,14 +230,13 @@ def unpin(boardId,pinId):
         return {"errors": "Pin not found"}, 404
     if current_user.id != board.owner_id:
         return {"errors":"you do not own this board"}
-
     for pin in board.pins_tagged:
         if pin.id == pinId:
-            if pin.id == board.pin_cover_image[0].id:
+            if len(board.pin_cover_image) and pin.id == board.pin_cover_image[0].id:
                 board.pin_cover_image.pop()
             board.pins_tagged.remove(_pin)
             db.session.commit()
-            return {"message": "You are no longer pinning {}!".format(_pin.title)}
+            return _pin.to_dict()
     return {"error": "You do not have {} pinned!".format(_pin.title)}
 
 #Reoute to edit the pin the board is on
@@ -268,5 +265,5 @@ def change_board_to_pin(current_board_id, pin_id, new_board_id):
             db.session.commit()
             pin_new_board.board_tagged.append(new_board)
             db.session.commit()
-            return {"message":"Pin is now attached to {}".format(new_board.name)}
+            return pin_new_board.to_dict()
     return {"errors": "Could not find pin inside of {}!".format(current_board.name)}

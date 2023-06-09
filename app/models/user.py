@@ -74,6 +74,13 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    def boards_pinned_to_dict(self):
+        returnList = []
+        for board in self.boards:
+            returnList.append({"id":board.id,"name": board.name, "pins":[pin.id for pin in board.pins_tagged]})
+        return returnList
+
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -89,8 +96,8 @@ class User(db.Model, UserMixin):
             'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
-            'pins': [pin.id for pin in self.pins],
-            'boards': [board.id for board in self.boards],
+            'pins': [pin.image for pin in self.pins],
+            'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }

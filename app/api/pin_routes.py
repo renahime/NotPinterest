@@ -2,6 +2,8 @@ from flask import Blueprint, request
 from flask_login import login_required, current_user
 from ..models import Pin, db, User, Board, Category, user_categories
 from ..forms import PinForm, UserCategoryForm
+from ..models import Pin, db, User, Board, Category
+from ..forms import PinForm, EditPinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 from .auth_routes import validation_errors_to_error_messages
 from datetime import datetime, date
@@ -141,7 +143,7 @@ def get_pin_by_id(id):
 
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
-    
+
     found_pin = pin.to_dict()
     found_pin["owner_info"] = owner_info
     return found_pin
@@ -164,9 +166,7 @@ def create_pin():
     if not user:
         return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
-    print("pin route errors part1")
     form['csrf_token'].data = request.cookies['csrf_token']
-    print("pin route errors part2")
 
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
@@ -205,7 +205,7 @@ def create_pin():
 @pin_routes.route("/<int:id>", methods=["GET","PUT"])
 @login_required
 def edit_pin(id):
-    form = PinForm()
+    form = EditPinForm()
     # gets the pin that the user wants to edit from the database by searching for the pin with it's id
     pin = Pin.query.get(id)
     # sends back an error message if the pin id isn't valid
@@ -214,12 +214,15 @@ def edit_pin(id):
     if current_user.id != pin.owner_id:
         return {"errors":"you do not own this pin"}
 
-    user_boards = User.boards.all()
-    if user_boards:
-        form.board.choices = [board.name for board in user_boards]
+    user = User.query.get(current_user.id)
 
-    if not user_boards:
-        form.board.choices = []
+    oldBoard = None
+    for board in user.boards:
+        for pin_in_board in board.pins_tagged:
+            if pin.id == pin_in_board.id:
+                oldBoard = board
+
+    print("*********************************************************************************************************************",oldBoard.name)
 
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -228,27 +231,20 @@ def edit_pin(id):
         data = form.data
         if data["title"]:
             pin.title = data["title"]
-        if data["image"]:
-            pin_image = data["image"]
-            pin_image.filename=get_unique_filename(pin_image.filename)
-            remove_file_from_s3(pin.image)
-            upload = upload_file_to_s3(pin_image)
-            if 'url' not in upload:
-                return upload['errors']
-            aws_url = upload['url']
-            pin.image = aws_url
         if data["description"]:
             pin.description = data["description"]
         if data["alt_text"]:
             pin.alt_text = data["alt_text"]
         if data["destination"]:
             pin.destination = data["destination"]
-        if data["board"]:
-            for board in user_boards:
-                if board.name == data["board"]:
+        if data["boardName"]:
+            print("************************************************************************************* check 1")
+            for board in user.boards:
+                if board.name == data["boardName"]:
+                    print("************************************************************************************* check 2")
+                    pin.board_tagged.remove(oldBoard)
                     new_board = board
                     pin.board_tagged.append(new_board)
-
         db.session.commit()
         return pin.to_dict()
     # if the form has issues send the error messages back to the user

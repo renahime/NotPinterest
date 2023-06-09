@@ -39,11 +39,9 @@ function FeedPage() {
 
   //GET STATE DATA
   const sessionUser = useSelector(state => state.session.user)
-  console.log(sessionUser)
 
 
   const username = sessionUser.username
-  console.log("SESSION USER USERNAME", username)
 
   const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
@@ -51,7 +49,6 @@ function FeedPage() {
 
   const boardsArr = Object.values(boardsSelector)
   const boards = boardsArr[0]
-  console.log("GET ALL BOARDS DATA", boards)
 
 
 

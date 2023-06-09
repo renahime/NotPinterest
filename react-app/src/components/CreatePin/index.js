@@ -80,6 +80,9 @@ export default function CreatePin() {
         } else {
             history.push(`/pin/${new_pin.pin.id}`)
         }
+        // let pin_info = {
+        //     image: image
+        // }
 
     }
 

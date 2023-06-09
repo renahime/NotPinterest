@@ -1,0 +1,134 @@
+.pin-edit-title-input {
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+
+.board-dropdown{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+.board-options{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+.pin-edit-website-input{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+.pin-edit-description-input{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 50px;
+}
+.pin-edit-alt-text-input{
+  border-radius: 15px;
+  border: 2px solid #ccc;
+  padding: 20px;
+  width: 200px;
+  height: 1px;
+}
+
+.pin-title-container{
+  display:flex;
+  flex-direction: row;
+  gap:100px
+}
+
+.board-title-container{
+  display:flex;
+  flex-direction: row;
+  gap:100px
+}
+
+.pin-description-container{
+  display:flex;
+  flex-direction: row;
+  gap:100px
+}
+
+.pin-website-container{
+  display:flex;
+  flex-direction: row;
+  gap:100px
+}
+
+.pin-alt-text-container{
+  display:flex;
+  flex-direction: row;
+  gap:100px
+}
+
+.title{
+  text-align: center;
+}
+
+.edt-pin-delete-button{
+  float:left;
+  background-color: #efefef;
+  border:0;
+  width: 65px;
+  height: 40px;
+  border-radius: 40%;
+  color:#151515;
+}
+
+.edit-pin-cancel-button{
+  float:right;
+  background-color: #efefef;
+  border:0;
+  width: 65px;
+  height: 40px;
+  border-radius: 40%;
+  color:#151515
+}
+
+.edit-pin-submit-button{
+  float:right;
+  background-color: #e60023;
+  border:0;
+  width: 65px;
+  height: 40px;
+  border-radius: 40%;
+  color:white
+}
+.edt-pin-delete-button-non-owner{
+  float:left;
+  background-color: #efefef;
+  border:0;
+  width: 65px;
+  height: 40px;
+  border-radius: 40%;
+  color:#151515;
+}
+.edit-pin-submit-button-non-owner{
+  float:right;
+  background-color: #e60023;
+  border:0;
+  width: 65px;
+  height: 40px;
+  border-radius: 40%;
+  color:white
+}
+.edit-pin-cancel-button-non-owner{
+  float:right;
+  background-color: #efefef;
+  border:0;
+  width: 65px;
+  height: 40px;
+  border-radius: 40%;
+  color:#151515
+}
