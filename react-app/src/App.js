@@ -14,7 +14,7 @@ import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
 import UserPins from "./components/UserPins";
 import UserCategoriesForm from "./components/UserCategoriesForm";
-
+import CaSandraFeed from "./components/FeedPage/casandra-feed"
 import Settings from "./components/Forms/SettingsForm";
 import TodayPage from "./components/TodayPage";
 function App() {
@@ -34,7 +34,7 @@ function App() {
           <Route exact path="/setCategories">
             <UserCategoriesForm />
           </Route>
-          <Route exact exact path="/settings">
+          <Route exact path="/settings">
             <Settings />
           </Route>
           <Route exact path="/today">
@@ -50,7 +50,8 @@ function App() {
             <CreatePin />
           </Route>
           <Route exact path="/feed">
-            <FeedPage />
+            {/* <FeedPage /> */}
+            <CaSandraFeed />
           </Route>
           <Route exact path="/">
             <LandingPage />

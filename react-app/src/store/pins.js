@@ -84,11 +84,8 @@ export const fetchPinsToday = () => async (dispatch) => {
     }
 }
 
-export const getPinsByCategory = (categories) => async (dispatch) => {
-    console.log("inside of the category thunk", categories)
-    const res = await fetch(`/api/pins/categories`, {
-        body: categories
-    })
+export const getPinsByCategory = () => async (dispatch) => {
+    const res = await fetch(`/api/pins/categories`)
     if (res.ok) {
         let pins = await res.json()
         dispatch(pinsByCategory(pins))
@@ -112,7 +109,6 @@ export const deletePinThunk = (pinId) => async (dispatch) => {
         return errors;
     }
 };
-const initialState = { pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
 
 export const getPinById = (pin_id) => async (dispatch) => {
     const res = await fetch(`/api/pins/${pin_id}`)
@@ -146,6 +142,7 @@ export const updatePinThunk = (pin) => async (dispatch) => {
 };
 
 
+const initialState = { pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
@@ -153,7 +150,7 @@ export default function pinsReducer(state = initialState, action) {
             console.log(action.pins)
             return { ...state, singlePin: { ...state.singlePin }, todayPins: { ...state.todayPins }, pins: { ...action.pins }, userPins: { ...action.pins } }
         case GET_PINS_BY_CATEGORY:
-            return { ...state, singlePin: { ...state.singlePin }, pins: { ...state.pins }, todayPins: { ...state.todayPins }, categories: { ...action.pins } }
+            return { ...state, singlePin: { ...state.singlePin }, pins: { ...action.pins }, todayPins: { ...state.todayPins } }
         case GET_PINS_MADE_TODAY:
             return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
         case GET_PIN:

@@ -52,7 +52,7 @@ export const createUserCategories = (categories) => async (dispatch) => {
 	})
 	console.log("res", res)
 	if (res.ok){
-		let categories = res.json()
+		let categories = await res.json()
 		dispatch(setCategories(categories))
 		return categories
 	} else {

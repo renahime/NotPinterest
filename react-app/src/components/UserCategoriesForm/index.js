@@ -52,7 +52,7 @@ export default function UserCategoriesForm() {
         }
 
         let categories = await dispatch(createUserCategories(interests))
-        console.log("categories", categories)
+        // console.log("categories", categories)
         // .then((res) => <Redirect to="/feed" pins={res} /> )
         // if (pins.errors){
         //     return setErrors(pins.errors)

@@ -26,12 +26,19 @@ def get_users_pins_by_username(username):
 #Route to get a pins by category
 @pin_routes.route('/categories')
 def get_all_user_selected_categories():
-    for category in categories:
-        catList = []
-        catList.append(Category.query.filter.get(category).pins.to_dict())
-        if not catList:
-            return {"errors": "No categories could be found at that name"}
-        return catList
+    user = User.query.get(current_user.id)
+    pins = {}
+    if not user or len(user.categories) == 0:
+        all_pins = Pin.query.all()
+        for n in range(29):
+            random_pin = random.choice(all_pins)
+        return {pin.id: pin.to_dict() for pin in all_pins}
+    for category in user.categories:
+        for pin in category.pins:
+            pins[pin.id] = pin.to_dict()
+    if not len(pins):
+        return {"errors": "No pins could be found of that category"}
+    return pins
 
 
     # pins = Pin.query.all()
