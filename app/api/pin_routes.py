@@ -248,6 +248,8 @@ def get_latest_pins():
                 all_pins[pin.id] = pin.to_dict()
     return all_pins
 
+
+
 # route to get all pins
 @pin_routes.route("/")
 def get_all_pins():
