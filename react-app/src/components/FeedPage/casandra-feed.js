@@ -8,7 +8,7 @@ export default function CaSandraFeed() {
     const history = useHistory()
     let [loading, setLoading] = useState(false)
     let [finishedLoading, setFinished] = useState(false)
-    let pins = useSelector(state => state.pins.pins ? state.pins.pins : null)
+    let pins = useSelector(state => state.pins.pins)
     let pinsArr = []
     if (pins && Object.values(pins) != null) {
         pinsArr = shufflePins(Object.values(pins))
@@ -16,10 +16,9 @@ export default function CaSandraFeed() {
 
     function shufflePins(pins) {
         let newPinOrder = []
-        // let currentIndices = Set()
         let copy = [...pins]
         while (copy.length) {
-            let i = Math.random(copy.length)
+            let i = Math.floor(Math.random() * copy.length)
             newPinOrder.push(copy[i])
             copy.splice(i, 1)
         }
@@ -31,10 +30,7 @@ export default function CaSandraFeed() {
     }, [dispatch])
 
     useEffect(() => {
-        console.log("useEffect second finished loading", finishedLoading)
-        console.log("useEffect second pins", pins)
-        console.log("useEffect second loading", loading)
-        if (!finishedLoading && !pins[0] && !pins[0]?.id) {
+        if (!loading && !pins[0] && !pins[0]?.id) {
             return
         }
         if (!Object.values(pins).length) {
@@ -42,30 +38,29 @@ export default function CaSandraFeed() {
         }
         else {
             setTimeout(() => {
+                console.log("Inside the set time out", pins)
                 setFinished(true)
             }, 1000)
         }
     }, [loading, pins])
 
     if (!pinsArr[0]?.id || !finishedLoading) return <h1>...Loading</h1>
-
+    console.log(pinsArr)
     return (
-        // <h1>Hello</h1>
         <div className="pins-feed-wrapper">
             {pinsArr.map(pin => (
-                <h1>{pin.id}</h1>
-                // <div>
-                //     <div onClick={() => history.push(`/pin/${pin.id}`)}>
-                //         <img src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
-                //         <div>
-                //             {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
-                //         </div>
-                //     </div>
-                    /* <div className="individual-board-pin-owner-info" onClick={() => history.push(`/${pin.owner_info.username}`)}>
-                        {pin.owner_info.profile_image ? <img className="individual-board-individual-pin-profile-image" src={pin.owner_info.profile_image} /> : null}
-                        {pin.owner_info.username}
-                    </div> */
-                // </div>
+                <div>
+                    <div onClick={() => history.push(`/pin/${pin.id}`)}>
+                        <img src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
+                        <div>
+                            {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
+                        </div>
+                    </div>
+                    <div className="individual-board-pin-owner-info" onClick={() => history.push(`/${pin.user.username}`)}>
+                        {pin.user.profile_image ? <img src={pin.user.profile_image} /> : null}
+                        {pin.user.username}
+                    </div>
+                </div>
             ))}
         </div>
     )
