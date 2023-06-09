@@ -4,7 +4,7 @@ import TodayPage from "../TodayPage";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
-import { fetchPinsToday, getPinById } from "../../store/pins";
+// import { fetchPinsToday, getPinById } from "../../store/pins";
 import { useModal } from "../../context/Modal";
 import { updateBoardThunk } from "../../store/boards";
 import UpdateBoardModal from ".";
@@ -51,7 +51,7 @@ function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
   let year = date.getFullYear();
   let day = date.getDate();
   useEffect(() => {
-    dispatch(fetchPinsToday())
+    // dispatch(fetchPinsToday())
   }, [dispatch])
 
 

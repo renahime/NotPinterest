@@ -22,7 +22,7 @@ def set_categories():
     if form.validate_on_submit():
         data = form.data
         print("data inside validator", data)
-        print("form.data streetware", data["streetware"])
+        print("form.data streetware", data["athleisure"])
         # if data["streetware"]:
         #     streetwear = Category.query.filter(Category.name == "Streetware").one()
         #     new_rel1 = user_categories(
@@ -60,16 +60,9 @@ def set_categories():
         #     db.session.add(new_rel5)
         if form.data["athleisure"] == 1:
             athleisure = Category.query.filter(Category.name == "Athleisure").one()
-            new_rel6 = user_categories(
-                user_id=user_id,
-                board_id=athleisure["id"]
-            )
-            db.session.add(new_rel6)
-        db.session.commit()
-        user = User.query.get(current_user.id)
-        print("i actually do work")
-
-        return [category.to_dict() for category in user.categories]
+            user = User.query.get(user_id)
+            user.categories.append(athleisure)
+            return [category.to_dict() for category in user.categories]
     print("i actuall don't work")
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
     
