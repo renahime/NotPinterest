@@ -21,25 +21,13 @@ export default function ProfilePage() {
     const currentUser = useSelector(state => state.session.user)
     let userBoards = useSelector(state => state.boards.currentProfileBoards)
     let userBoardsArr = Object.values(userBoards)
-    const followers = useSelector(state => state.session.followers)
-    const following = useSelector(state => state.session.following)
-    let [followingInt, setFollowing] = useState("")
+    let [numFollowers, setNumFollowers] = useState(0);
+    let [numFollowing, setNumFollowing] = useState(0)
+    let [isfollowing, setIsFollowing] = useState(false);
 
-    // let followingArr
-    // let followersArr
-
-    // if (following || followers) {
-    //     followingArr = Object.values(following)
-    //     followersArr = Object.values(followers)
-    // }
 
     let showMenu = () => {
         setOpenMenu(!openMenu)
-    }
-
-    function formatFollowers(num) {
-        if (num === 1) return "1 follower"
-        else return `${num} followers`
     }
 
     let checkUser = () => {
@@ -47,65 +35,58 @@ export default function ProfilePage() {
         else return false
     }
 
-    // async function unfollow(username) {
-    //     // console.log("username", username)
-    //     let response = await dispatch(unfollowUser(username))
-    //     if (response.errors) {
-    //         console.log(response.errors)
-    //     } else {
-    //         // console.log("i work")
-    //         setFollowing(followingInt--)
-    //     }
-    // }
 
-    // async function follow(username) {
-    //     // console.log("username", username)
-    //     let response = await dispatch(followUser(username))
-    //     if (response.errors) {
-    //         console.log(response.errors)
-    //     } else {
-    //         // console.log("i work too")
-    //         setFollowing(followingInt++)
-    //     }
-    // }
 
+    const handleFollow = async (e) => {
+        e.preventDefault();
+        let response = await dispatch(followUser(username))
+        if (response.errors) {
+            console.log(response.errors)
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers + 1)
+            setIsFollowing(true);
+        }
+    }
+    const handleUnfollow = async (e) => {
+        e.preventDefault();
+        let response = await dispatch(unfollowUser(username))
+        if (response.errors) {
+            console.log(response.errors)
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers - 1)
+            setIsFollowing(false);
+        }
+    }
 
     useEffect(() => {
-        setTimeout(async () => {
-            console.log("is this working")
-            await dispatch(getUserInfo(username)).then(() => setLoading(true))
-        }, 1000)
-        return (() => dispatch(clearProfile()))
+        dispatch(getUserInfo(username)).then(() => setLoading(true))
+        dispatch(clearProfile())
     }, [dispatch])
 
     useEffect(() => {
         if (!loading && !currentProfile.id) {
-            console.log("we stopped you")
-            return}
+            return
+        }
         if (!Object.values(currentProfile).length) return
         else {
-            setTimeout(() => {
-                console.log("we up in here")
-                dispatch(getBoardsByUsername(username))
-                dispatch(findFollowersAndFollowing(username))
-
-            }, 2000)
-            console.log("currentuser in useeffect", currentUser)
+            setNumFollowers(currentProfile.followers.length)
+            setNumFollowing(currentProfile.following.length)
+            dispatch(getBoardsByUsername(username))
+            dispatch(findFollowersAndFollowing(username))
+        }
+        if (Object.values(currentProfile).length && Object.values(currentUser).length) {
+            if (currentProfile.followers.includes(currentUser.username)) {
+                setIsFollowing(true);
+            }
         }
     }, [loading, currentProfile])
-    // console.log("howdy yalllll")
-    // console.log("currentuser outside useeffect", currentProfile.owner_info)
-    
-    
+
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
-    // console.log("hiiiiiiiiiiiii")
-    // console.log("currentProfileId", currentProfile.id)
     if (!loading) return <h1>Loading...</h1>
     else if (!currentProfile.id) return <PageNotFound />
 
-    console.log("hello", loading)
-    return (
+    return (!Object.values(currentProfile).length || !Object.values(currentUser).length ? <h1>Loading...</h1> :
         <div>
             {currentProfile.id &&
                 <div className="profile-page-base">
@@ -127,28 +108,23 @@ export default function ProfilePage() {
                     {currentProfile.about ? <h5 className="profile-about-section">{currentProfile.about}</h5> : null}
                     <h5 className="profile-followers-and-following">
                         <div>
-                            {followers ? formatFollowers(Object.values(followers).length) : null}
+                            {numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}
                         </div>
                         <i className="fa-solid fa-circle profile-followers-and-following-dot"></i>
                         <div>
-                            {following ? Object.values(following).length : null} following
+                            {numFollowing} following
                         </div>
                     </h5>
-                    {checkUser() ? 
-                    <button className="profile-button edit-profile">Edit Profile</button> : 
-                    !currentUser.followers.includes(currentProfile.owner_info.username) ?
-                        <button onClick={() => followUser(currentProfile.owner_info.username)} className="profile-button" id="follow-button">Follow</button> :
-                        <button onClick={() => unfollowUser(currentProfile.owner_info.username)}>Unfollow</button>
-                    }
                     {checkUser() ?
-                        <NavLink exact to="/settings"><button className="profile-button edit-profile">Edit Profile</button></NavLink> : null}
-                    {
-                        <button className="profile-button" id="follow-button">Follow</button>
+                        <NavLink exact to="/settings"><button className="profile-button edit-profile">Edit Profile</button></NavLink> :
+                        !isfollowing ?
+                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
+                            <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
                     }
-                    {/* <div>
+                    <div>
                         <button onClick={() => history.push(`/${username}/_created`)} className="profile-button">Created</button>
                         <button onClick={() => history.push(`/${username}/_saved`)} className="profile-button">Saved</button>
-                    </div> */}
+                    </div>
                 </div>
             }
             {checkUser() ?
