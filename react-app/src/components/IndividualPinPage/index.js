@@ -4,9 +4,6 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import "./PinDropdown.css";
 import "./IndividualPinPage.css"
-import { Link } from "react-router-dom"
-import { getBoardsofCurrentUser } from "../../store/boards"
-import { unfollowUser, followUser } from "../../store/session"
 import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
@@ -26,14 +23,14 @@ const Icon = () => {
 };
 
 export default function IndividualPinPage() {
-    const dispatch = useDispatch()
-    const { id } = useParams()
-    const history=useHistory()
-    // const [board, setBoard] = useState("")
+    const [showMenu, setShowMenu] = useState(false)
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
     const singlePinWithBoardState = useSelector(state => state)
     const { closeModal } = useModal();
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
 
 
@@ -52,7 +49,7 @@ export default function IndividualPinPage() {
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
-    if (singlePin && currentUser && isLoaded == true) {
+    if (singlePin && currentUser) {
         for (let userBoard of currentUser.boards) {
             for (let pin of userBoard.pins) {
                 if (pin == singlePin.id) {
@@ -117,8 +114,9 @@ export default function IndividualPinPage() {
         }
     }
 
+    if (!singlePin) return <h1>...Loading</h1>
 
-    if (!singlePin && !currentUser && !options.length && isLoaded == false) return <h1>...Loading</h1>
+    let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
 
 
     function formatFollowers(num) {
@@ -128,12 +126,25 @@ export default function IndividualPinPage() {
 
     if (!singlePin && !currentUser && !options.length) return <h1>...Loading</h1>
     return (
-        <>
-        {isLoaded && (
         <div className="single-pin-wrapper">
             <div className="single-pin">
-                <div>
+                <div className="single-pin-image-wrapper" onMouseEnter={() => setShowDetails(!showDetails)} onMouseLeave={() => setShowDetails(!showDetails)}>
                     <img className="single-pin-image" src={singlePin.image} alt={singlePin.alt_text ? singlePin.alt_text : ""} />
+                    {singlePin.destination ?
+                    <a target="_blank" href={singlePin.destination}>
+                        <button className={singlePinImageClassName}>
+                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                            {singlePin.destination}
+                        </button>
+                    </a>
+                    :
+                    <a target="_blank" href={singlePin.image}>
+                        <button className={singlePinImageClassName}>
+                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                            View image
+                        </button>
+                    </a>
+                    }
                 </div>
                 <div className="single-pin-details">
                     <div className="single-pin-edit-board">
@@ -210,29 +221,5 @@ export default function IndividualPinPage() {
                 </div>
             </div>
         </div>
-        )}
-        </>
     )
 }
-
-
-
-// {currentUser.id === singlePin.owner_id ? <button className="single-pin-ellipsis"><i className="fa-solid fa-ellipsis"></i></button> : null}
-// <form className="single-pin-edit-board-form" onSubmit={e => handleSubmit(e)}>
-//     <label>
-//         <select
-//             className="single-pin-edit-board-form-select"
-//             value={board}
-//             onChange={(e) => setBoard(e.target.value)}
-//         >
-//             {currentUserBoardsArr.map(boardValue => (
-//                 <option
-//                 className="blue"
-//                 value={boardValue.id}>
-//                     {boardValue.name}
-//                 </option>
-//             ))}
-//         </select>
-//     </label>
-//     <button className="single-pin-edit-board-button">Save</button>
-// </form>
