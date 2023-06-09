@@ -49,16 +49,24 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.email}</li>
-            <li>
-              <NavLink to={`${user.username}`} onClick={closeMenu}>My Boards</NavLink>
-            </li>
-            <li>
-              <NavLink to="/settings" onClick={closeMenu} >Settings</NavLink>
-            </li>
+            <div className="nav-dropdown-top-text">
+              <li>Hi, {user.username}</li>
+              <li>{user.email}</li>
+            </div>
 
-            <li>
+            <div className="nav-dropdown-middle-text">
+              <li>
+                <NavLink to={`${user.username}`} onClick={closeMenu}>My Boards</NavLink>
+              </li>
+              <li>
+                <NavLink to={`/${user.username}/_created`}>My Pins</NavLink>
+              </li>
+              <li>
+                <NavLink to="/settings" onClick={closeMenu} >Settings</NavLink>
+              </li>
+            </div>
+
+            <li className="nav-dropdown-middle-text">
               <button onClick={handleLogout}>Log Out</button>
             </li>
 
