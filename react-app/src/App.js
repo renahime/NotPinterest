@@ -12,6 +12,7 @@ import CreatePin from "./components/CreatePin"
 import UpdateBoardModal from "./components/UpdateBoardModal";
 import IndividualBoardPage from "./components/IndividualBoardPage";
 import IndividualPinPage from "./components/IndividualPinPage";
+import SavePinsToBoardModal from "./components/CreateBoardModal/SavePinsToBoard";
 import UserPins from "./components/UserPins";
 import UserCategoriesForm from "./components/UserCategoriesForm";
 import CaSandraFeed from "./components/FeedPage/casandra-feed"
@@ -37,6 +38,9 @@ function App() {
           <Route exact path="/settings">
             <Settings />
           </Route>
+          <Route path="/test/update">
+            <SavePinsToBoardModal />
+          </Route>
           <Route exact path="/today">
             <TodayPage />
           </Route>
@@ -50,15 +54,15 @@ function App() {
             <CreatePin />
           </Route>
           <Route exact path="/feed">
-            {/* <FeedPage /> */}
-            <CaSandraFeed />
+            <FeedPage />
+            {/* <CaSandraFeed /> */}
           </Route>
           <Route exact path="/">
             <LandingPage />
           </Route>
-          <Route exact path="/boards/:id">
+          {/* <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
-          </Route>
+          </Route> */}
           <Route exact path="/pin/:id">
             <IndividualPinPage />
           </Route>

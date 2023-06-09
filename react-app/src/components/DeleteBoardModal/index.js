@@ -36,16 +36,9 @@ function DeleteBoardModal() {
           Once you delete a board and all its Pins, you can't undo it!
         </div>
 
-
           <button className="create-board-modal-create-button" >
             Delete
           </button>
-
-
-
-
-
-
 
       </div>
     </>

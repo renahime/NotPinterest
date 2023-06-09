@@ -130,14 +130,14 @@ export default function IndividualPinPage() {
             <div className="single-pin">
                 <div className="single-pin-image-wrapper" onMouseEnter={() => setShowDetails(!showDetails)} onMouseLeave={() => setShowDetails(!showDetails)}>
                     <img className="single-pin-image" src={singlePin.image} alt={singlePin.alt_text ? singlePin.alt_text : ""} />
-                    {singlePin.destination ? 
+                    {singlePin.destination ?
                     <a target="_blank" href={singlePin.destination}>
                         <button className={singlePinImageClassName}>
                             <i className="fa-solid fa-arrow-up-right-from-square"></i>
                             {singlePin.destination}
                         </button>
-                    </a> 
-                    : 
+                    </a>
+                    :
                     <a target="_blank" href={singlePin.image}>
                         <button className={singlePinImageClassName}>
                             <i className="fa-solid fa-arrow-up-right-from-square"></i>

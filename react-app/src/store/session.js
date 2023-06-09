@@ -142,7 +142,7 @@ export const login = (email, password) => async (dispatch) => {
 			password,
 		}),
 	});
-	
+
 	if (response.ok) {
 		const data = await response.json();
 		dispatch(setUser(data));
@@ -163,7 +163,7 @@ export const logout = () => async (dispatch) => {
 			"Content-Type": "application/json",
 		},
 	});
-	
+
 	if (response.ok) {
 		dispatch(removeUser());
 	}
@@ -181,7 +181,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 			password,
 		}),
 	});
-	
+
 	if (response.ok) {
 		const data = await response.json();
 		dispatch(setUser(data));
@@ -199,6 +199,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 const initialState = { user: null, following: {}, followers: {} };
 
 export default function reducer(state = initialState, action) {
+	let newState = {}
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
 			let user = {...state.user}

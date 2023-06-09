@@ -82,6 +82,7 @@ export const getBoardsByUsername = (username) => async (dispatch) => {
     const res = await fetch(`/api/boards/users/${username}`)
     if (res.ok) {
         let boards = await res.json()
+        console.log("GET BOARDS BY USERNAME TEST", boards)
         dispatch(getUserBoards(boards))
     }
 }
@@ -184,13 +185,23 @@ export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
     }
 }
 
+
+
 export const getBoardByName = (username, boardname) => async (dispatch) => {
-    const res = await fetch(`/api/boards/users/${username}/${boardname}`)
-    if (res.ok) {
-        let board = await res.json()
-        dispatch(getOneBoardByName(board))
+    try {
+        const res = await fetch(`/api/boards/users/${username}/${boardname}`);
+        if (res.ok) {
+            let board = await res.json();
+            dispatch(getOneBoardByName(board));
+        } else {
+            throw new Error("Error occured getting board by name")
+        }
+    } catch (error) {
+        // Handle any error that occurred during the fetch request
+        console.error("Error fetching board:", error);
     }
-}
+};
+
 
 
 const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
@@ -200,18 +211,31 @@ export default function boardsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_CURRENT_USER_BOARDS:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
+
         case GET_BOARDS_OF_USER:
-            let newState = {}
-            for (let board of action.boards) {
-                newState[board.id] = board
+            newState = {}
+            console.log("ACTION", action)
+            console.log("action.boards", action.boards)
+            if (Array.isArray(action.boards)) { // Check if action.boards is an array
+                for (let board of action.boards) {
+                    newState[board.id] = board
+                }
+            } else {
+                console.log("action.boards is not an array")
             }
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {} }
+
+
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: { ...state.currentUserBoards } }
+
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {
                     ...state.allBoards, [action.board.id]: action.board
                 }, currentProfileBoards: {
                     ...state.currentProfileBoards,
+                    [action.board.id]: action.board
+                },currentUserBoards: {
+                    ...state.currentUserBoards,
                     [action.board.id]: action.board
                 }
             };
@@ -238,6 +262,8 @@ export default function boardsReducer(state = initialState, action) {
                 allBoards: newAllBoards,
                 currentProfileBoards: updatedCurrentProfileBoards,
             };
+
+
         case GET_BOARD_BY_NAME:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
         case UN_PIN:
@@ -250,6 +276,7 @@ export default function boardsReducer(state = initialState, action) {
                 }
             }
             return { ...state, allBoards: unPinAllBoards, currentProfileBoards: unPinCurrent, singleBoard: unPinSingle }
+
         case PIN:
             const pinAllBoards = { ...state.allBoards }
             const pinCurrent = { ...state.currentProfileBoards }

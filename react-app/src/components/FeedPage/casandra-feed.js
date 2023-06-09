@@ -27,22 +27,27 @@ export default function CaSandraFeed() {
     }
 
     useEffect(() => {
-        dispatch(getPinsByCategory()).then(() => setFinished(true))
+        dispatch(getPinsByCategory()).then(() => setLoading(true))
     }, [dispatch])
 
     useEffect(() => {
         console.log("useEffect second finished loading", finishedLoading)
         console.log("useEffect second pins", pins)
         console.log("useEffect second loading", loading)
-        if (!finishedLoading) {
+        if (!finishedLoading && !pins[0] && !pins[0]?.id) {
             return
         }
-        if (Object.values(pins).length) {
-            setLoading(true)
+        if (!Object.values(pins).length) {
+            return
         }
-    }, [finishedLoading])
+        else {
+            setTimeout(() => {
+                setFinished(true)
+            }, 1000)
+        }
+    }, [loading, pins])
 
-    if (!pins || !pinsArr.length || !loading) return <h1>...Loading</h1>
+    if (!pinsArr[0]?.id || !finishedLoading) return <h1>...Loading</h1>
 
     return (
         // <h1>Hello</h1>

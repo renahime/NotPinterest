@@ -18,14 +18,6 @@ export default function UserCategoriesForm() {
     let [oldMoneyImage, setOldMneyImage] = useState(false)
     let [streetWearImage, setStreetwearImage] = useState(false)
 
-    // let bohoImageClassName = bohoImage ? "selected" : "notSelected"
-    // let athleisureImageClassName = athleisureImage ? "selected" : "notSelected"
-    // let darkImageClassName = darkImage ? "selected" : "notSelected"
-    // let formalImageClassName = formalImage ? "selected" : "notSelected"
-    // let oldMoneyImageClassName = oldMoneyImage ? "selected" : "notSelected"
-    // let streetwearImageClassName = streetWearImage ? "selected" : "notSelected"
-
-    if (currentUser === null) history.push("/")
     // if (currentUser.categories != null) history.push("/feed")
 
     let handleSubmit = async (e) => {
@@ -35,12 +27,6 @@ export default function UserCategoriesForm() {
         if (!bohoImage && !athleisureImage && !darkImage && !formalImage && !oldMoneyImage && !streetWearImage) {
             return setErrors({ errors: "Must select at least one category." })
         }
-        // if (bohoImage) interests.push("Boho")
-        // if (athleisureImage) interests.push("Athleisure")
-        // if (darkImage) interests.push("Dark")
-        // if (formalImage) interests.push("Formal Ware")
-        // if (oldMoneyImage) interests.push("Old Money")
-        // if (streetWearImage) interests.push("Streetware")
 
         let interests = {
             boho: bohoImage,

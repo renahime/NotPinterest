@@ -10,6 +10,9 @@ import PageNotFound from "../PageNotFound"
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
 import "./ProfilePage.css"
 
+import OpenModalButton from "../OpenModalButton"
+import CreateBoardModal from "../CreateBoardModal"
+
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -72,7 +75,6 @@ export default function ProfilePage() {
 
     useEffect(() => {
         setTimeout(async () => {
-            console.log("is this working")
             await dispatch(getUserInfo(username)).then(() => setLoading(true))
         }, 1000)
         return (() => dispatch(clearProfile()))
@@ -80,12 +82,10 @@ export default function ProfilePage() {
 
     useEffect(() => {
         if (!loading && !currentProfile.id) {
-            console.log("we stopped you")
             return}
         if (!Object.values(currentProfile).length) return
         else {
             setTimeout(() => {
-                console.log("we up in here")
                 dispatch(getBoardsByUsername(username))
                 dispatch(findFollowersAndFollowing(username))
 
@@ -93,13 +93,11 @@ export default function ProfilePage() {
             console.log("currentuser in useeffect", currentUser)
         }
     }, [loading, currentProfile])
-    // console.log("howdy yalllll")
     // console.log("currentuser outside useeffect", currentProfile.owner_info)
-    
-    
+
+
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
-    // console.log("hiiiiiiiiiiiii")
     // console.log("currentProfileId", currentProfile.id)
     if (!loading) return <h1>Loading...</h1>
     else if (!currentProfile.id) return <PageNotFound />
@@ -134,40 +132,45 @@ export default function ProfilePage() {
                             {following ? Object.values(following).length : null} following
                         </div>
                     </h5>
-                    {checkUser() ? 
-                    <button className="profile-button edit-profile">Edit Profile</button> : 
+                    {checkUser() ?
+                    <button className="profile-button edit-profile">Edit Profile</button> :
                     !currentUser.followers.includes(currentProfile.owner_info.username) ?
                         <button onClick={() => followUser(currentProfile.owner_info.username)} className="profile-button" id="follow-button">Follow</button> :
                         <button onClick={() => unfollowUser(currentProfile.owner_info.username)}>Unfollow</button>
                     }
-                    {checkUser() ?
+                    {/* {checkUser() ?
                         <NavLink exact to="/settings"><button className="profile-button edit-profile">Edit Profile</button></NavLink> : null}
                     {
                         <button className="profile-button" id="follow-button">Follow</button>
-                    }
+                    } */}
                     {/* <div>
                         <button onClick={() => history.push(`/${username}/_created`)} className="profile-button">Created</button>
                         <button onClick={() => history.push(`/${username}/_saved`)} className="profile-button">Saved</button>
                     </div> */}
                 </div>
             }
-            {checkUser() ?
-                <div>
-                    <div className="profile-plus-icon-wrapper">
-                        <button onClick={showMenu} className="profile-plus-button">
-                            <i className="fa-solid fa-plus"></i>
-                        </button>
-                        {openMenu && <div className={menuClassName}>
-                            <div className="profile-dropdown-create-label">Create</div>
-                            <div className="profile-dropdown-create">Pin</div>
-                            <div className="profile-dropdown-create">Board</div>
-                        </div>}
-                    </div>
-                    <CurrentUserBoard userBoardsArr={userBoardsArr} />
+            { checkUser() ?
+            <div>
+                <div className="profile-plus-icon-wrapper">
+                    <button onClick={showMenu} className="profile-plus-button">
+                        <i className="fa-solid fa-plus"></i>
+                    </button>
+                    {openMenu && <div className={menuClassName}>
+                        <div className="profile-dropdown-create-label">Create</div>
+                        <div className="profile-dropdown-create">Pin</div>
+                        <div className="profile-dropdown-create" onClick={showMenu}>
+                            <OpenModalButton
+										buttonText="Board"
+										modalComponent={<CreateBoardModal username={currentUser?.username} />}
+									/>
+                        </div>
+                    </div>}
                 </div>
-                :
-                <NotUSerProfile userBoardsArr={userBoardsArr} />
-            }
+                <CurrentUserBoard userBoardsArr={userBoardsArr}/>
+            </div>
+            :
+            <NotUSerProfile userBoardsArr={userBoardsArr} />
+        }
 
         </div>
     )
