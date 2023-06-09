@@ -67,7 +67,7 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
     console.log("BEFORE- CHECK STATE", currentBoardState)
     console.log("CURRENT STATE", currentState)
     // await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
-    await dispatch(pinThunk(pin.id,currentBoard.id))
+    await dispatch(pinThunk(pin.id, currentBoard.id))
     console.log("SUCCESS- CHECK STATE", currentBoardState)
     console.log("CURRENT STATE", currentState)
 
@@ -93,13 +93,14 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
                   style={{ backgroundImage: `url(${pin.image})`, }
                   }
                 >
+                  <div className="save-pins-to-board-save-button"
+                    onClick={() => addPinToBoard(pin)}
+
+                  >Save</div>
                   <div className="save-pins-to-board-modal-text-container">
                     {pin.description}
                   </div>
-                  <div className="save-pins-to-board-save-button"
-                    onClick={()=> addPinToBoard(pin)}
 
-                  >Save</div>
                 </div>
 
 

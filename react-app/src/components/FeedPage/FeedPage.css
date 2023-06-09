@@ -29,6 +29,16 @@
   /* background-color: red; */
 }
 
+.board-container-top-text{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* font-weight: bold; */
+}
+
+.board-container-top-text > * + * {
+  margin-left: 10px; /* Adjust the value as needed */
+}
 
 .board-top {
   display: flex;

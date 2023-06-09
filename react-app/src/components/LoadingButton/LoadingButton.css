@@ -3,6 +3,7 @@
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+  fill: rgb(246, 246, 246);
 
 }
 
@@ -15,7 +16,7 @@
   }
 }
 
-.submit-btn:disabled {
+/* .submit-btn:disabled {
   background: #e7e8e9;
   color: #9fa3a9;
   cursor: not-allowed;
@@ -34,7 +35,7 @@
   min-height: 36px;
   cursor: pointer;
   outline: none;
-}
+} */
 
 
 .centered-container {

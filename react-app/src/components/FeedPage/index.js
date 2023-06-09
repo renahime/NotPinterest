@@ -66,6 +66,8 @@ function FeedPage() {
   const username = sessionUser?.username
   console.log("SESSION USER USERNAME", username)
 
+  console.log(sessionUser)
+
   const boardsSelector = useSelector((state) => state.boards.currentProfileBoards)
   console.log("GET ALL BOARDS STATE TEST", boardsSelector)
 
@@ -114,10 +116,10 @@ function FeedPage() {
     //Loading screen
     if (isLoading) {
       return (
-          <LoadingButton
-            isLoading={isLoading}
-            // disabled={isLoading}
-          />
+        <LoadingButton
+          isLoading={isLoading}
+        // disabled={isLoading}
+        />
       )
     }
   }
@@ -128,32 +130,45 @@ function FeedPage() {
       <div className="feed-container">
 
         {boards.length > 0 && (
-          <div className="full-board-container">
-          <div className="board-container" ref={scrollContainerRef}>
-            <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-              <i className="fa-solid fa-angle-left"></i>
-            </div>
-            <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-              <i className="fa-solid fa-angle-left fa-rotate-180"></i>
+
+          <>
+            <div className="board-container-top-text">
+              <div>Hey {sessionUser.first_name}, you have</div>
+              <NavLink to={`/${username}`}> {boards.length} boards</NavLink>
+              <div>and</div>
+              <NavLink to={`/${username}/_created`}>{sessionUser.pins.length} pins</NavLink>
+              <div>Check them out!</div>
             </div>
 
-            {boards.map((board, index) => (
+            <div className="full-board-container">
 
-              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
-                {/* <OpenModalButton
+              <div className="board-container" ref={scrollContainerRef}>
+                <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
+                  <i className="fa-solid fa-angle-left"></i>
+                </div>
+                <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
+                  <i className="fa-solid fa-angle-left fa-rotate-180"></i>
+                </div>
+
+                {boards.map((board, index) => (
+
+                  <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                    {/* <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"
                   modalComponent={<UpdateBoardModal id={board.id} />}
                   onClick={() => history.push(`/boards/${board.id}`)}
                 /> */}
-                <div>
-                {board.name}
-                </div>
-              </div>
-            ))}
+                    <div>
+                      {board.name}
+                    </div>
+                  </div>
+                ))}
 
-          </div>
-          </div>
+              </div>
+            </div>
+          </>
+
         )
 
         }

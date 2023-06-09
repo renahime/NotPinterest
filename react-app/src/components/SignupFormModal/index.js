@@ -42,7 +42,7 @@ function SignupFormModal() {
 						</path>
 					</svg>
 				</div >
-				<h1 className="signup-page-welcome">Welcome to Pinterest</h1>
+				<h1 className="signup-page-welcome">Welcome to threadterest</h1>
 				<p className="signup-page-ideas">Find new ideas to try</p>
 				<form onSubmit={handleSubmit}>
 					<ul>
