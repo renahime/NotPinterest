@@ -13,6 +13,7 @@ export const clearProfile = () => ({
 export const getUserInfo = (username) => async (dispatch) => {
     const res = await fetch(`/api/users/users/${username}`)
     console.log(res.status)
+    console.log("USERNAME for getUserInfo thunk", username)
     if (res.status >= 400) {
         console.log("umm no")
         const userDataErrors = await res.json()
@@ -21,6 +22,7 @@ export const getUserInfo = (username) => async (dispatch) => {
     else {
         console.log("like whatttt")
         const userData = await res.json()
+        console.log("USER DATA - getUserInfo thunk",userData)
         if (userData.errors){
             return userData.errors
         }
@@ -33,9 +35,9 @@ const initialState = {currentProfile: {}}
 export default function profileReducer(state = initialState, action){
     switch (action.type) {
         case GET_PROFILE:
-            return {currentProfile: action.user}
+            return {...state, currentProfile: {...action.user}}
         case CLEAR_PROFILE:
-            return {currentProfile: {}}
+            return {...state, currentProfile: {}}
         default:
             return state
     }

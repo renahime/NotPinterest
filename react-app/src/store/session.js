@@ -78,7 +78,7 @@ export const followUser = (username) => async (dispatch) => {
 }
 
 export const unfollowUser = (username) => async (dispatch) => {
-	const res = await fetch(`/api/users/unfollow/${username}`,  {
+	const res = await fetch(`/api/users/unfollow/${username}`, {
 		method: "DELETE"
 	})
 	// const res = await fetch(`/api/users/unfollow/${username}`)
@@ -119,7 +119,7 @@ export const login = (email, password) => async (dispatch) => {
 			password,
 		}),
 	});
-	
+
 	if (response.ok) {
 		const data = await response.json();
 		dispatch(setUser(data));
@@ -140,7 +140,7 @@ export const logout = () => async (dispatch) => {
 			"Content-Type": "application/json",
 		},
 	});
-	
+
 	if (response.ok) {
 		dispatch(removeUser());
 	}
@@ -158,7 +158,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 			password,
 		}),
 	});
-	
+
 	if (response.ok) {
 		const data = await response.json();
 		dispatch(setUser(data));
@@ -176,18 +176,26 @@ export const signUp = (username, email, password) => async (dispatch) => {
 const initialState = { user: null, following: {}, followers: {} };
 
 export default function reducer(state = initialState, action) {
+	let newState = {}
 	switch (action.type) {
 		case GET_FOLLOWERS:
-			return {...state, user: {...state.user}, following: {...state.following}, followers: {...action.users}}
+			return { ...state, user: { ...state.user }, following: { ...state.following }, followers: { ...action.users } }
 		case GET_FOLLOWING:
-			return {...state, user: {...state.user}, following: {...state.following}, followers: {...action.users}}
+			return { ...state, user: { ...state.user }, following: { ...state.following }, followers: { ...action.users } }
 		case FOLLOW_USER:
-			let newState = {...state}
-			let following = [...newState.user.following]
-			following.push(action.user)
-			newState.user.following = following
-			console.log()
-			return newState
+			return {
+				...state,
+				user: {
+					...state.user,
+					following: [...state.user.following, action.user]
+				}
+			};
+		// let newState = {...state}
+		// let following = [...newState.user.following]
+		// following.push(action.user)
+		// newState.user.following = following
+		// console.log()
+		// return newState
 		case SET_USER:
 			return { user: action.payload };
 		case REMOVE_USER:
@@ -198,7 +206,7 @@ export default function reducer(state = initialState, action) {
 			console.log("state.user.following", state.user.following)
 			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
-			return  {user: {...state.user}}
+			return { user: { ...state.user } }
 		default:
 			return state;
 	}

@@ -8,6 +8,7 @@ import { fetchPinsToday, getPinById } from "../../store/pins";
 import { useModal } from "../../context/Modal";
 import './SavePinsToBoard.css'
 import { addPinToBoardThunk, getBoardByName } from "../../store/boards";
+import { pinThunk } from "../../store/boards";
 
 
 
@@ -21,16 +22,18 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
   const history = useHistory()
 
   console.log("HOVER DIV INFO - PIN ID", hoverDiv)
+  console.log("Pins TODAY", pinsToday)
   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
 
 
   useEffect(() => {
     dispatch(getBoardByName(username, boardName))
-  }, [])
+  }, [username])
 
   // dispatch(fetchPinsToday())
   const currentBoard = useSelector(state => state.boards.singleBoard)
   const currentBoardState = useSelector(state => state.boards.singleBoard)
+  const currentState = useSelector(state => state)
   console.log("BOARD NAME AND ID", currentBoard)
 
 
@@ -62,8 +65,11 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
 
   async function addPinToBoard(pin) {
     console.log("BEFORE- CHECK STATE", currentBoardState)
-    await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
+    console.log("CURRENT STATE", currentState)
+    // await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
+    await dispatch(pinThunk(pin.id,currentBoard.id))
     console.log("SUCCESS- CHECK STATE", currentBoardState)
+    console.log("CURRENT STATE", currentState)
 
   }
 

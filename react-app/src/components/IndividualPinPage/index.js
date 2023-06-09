@@ -27,13 +27,15 @@ export default function IndividualPinPage() {
     // const [board, setBoard] = useState("")
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
+    const [isLoaded, setIsLoaded] = useState(false);
     const [showMenu, setShowMenu] = useState(false)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
+    console.log("CURERNT USER BOARDS - individual pin page", currentUserBoards)
     const currentUserBoardsArr = Object.values(currentUserBoards)
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
-    if (singlePin && currentUser) {
+    if (singlePin && currentUser && isLoaded == true) {
         for (let userBoard of currentUser.boards) {
             for (let pin of userBoard.pins) {
                 if (pin == singlePin.id) {
@@ -86,8 +88,8 @@ export default function IndividualPinPage() {
     console.log("currentUserBoards", singlePin)
     useEffect(() => {
         dispatch(getPinById(id))
-        dispatch(getBoardsofCurrentUser())
-    }, [dispatch, id])
+        dispatch(getBoardsofCurrentUser()).then(() => setIsLoaded(true))
+    }, [dispatch, id, isLoaded,currentUser])
 
 
     function formatFollowers(num) {
@@ -121,9 +123,11 @@ export default function IndividualPinPage() {
     }
 
 
-    if (!singlePin && !currentUser && !options.length) return <h1>...Loading</h1>
+    if (!singlePin && !currentUser && !options.length && isLoaded == false) return <h1>...Loading</h1>
 
     return (
+        <>
+        {isLoaded && (
         <div className="single-pin-wrapper">
             <div className="single-pin">
                 <div>
@@ -208,6 +212,8 @@ export default function IndividualPinPage() {
                 </div>
             </div>
         </div>
+        )}
+        </>
     )
 }
 

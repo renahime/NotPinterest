@@ -17,6 +17,8 @@ const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, use
   const [searchValue, setSearchValue] = useState("");
   const searchRef = useRef();
 
+  console.log("OPTIONS IN DROPDWON", options)
+
   useEffect(() => {
     setSearchValue("");
     if (showMenu && searchRef.current) {

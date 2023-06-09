@@ -32,6 +32,13 @@ function CreateBoardModal({ username }) {
   }, [name, isPrivate])
 
   let pinsTodayObj = useSelector(state => state.pins.todayPins)
+  let testUsername = useSelector(state => state.session.user)
+  console.log("THIS IS THE USER FOR CREATE BOARD", testUsername)
+
+
+
+
+
   let pinsToday
   if (pinsTodayObj) {
     pinsToday = shuffle(Object.values(pinsTodayObj))

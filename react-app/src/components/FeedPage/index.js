@@ -20,18 +20,19 @@ function FeedPage() {
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(true);
   const [selectedBoardId, setSelectedBoardId] = useState(null);
-  const [hover, setHover] = useState(false)
-  const [hoverDiv, setHoverDiv] = useState("")
+  const [hoverBoard, setHoverBoard] = useState(false)
+  const [hoverBoardDiv, setHoverBoardDiv] = useState("")
 
+  console.log("HOVER PIN", hoverBoardDiv)
 
-  function onHover(board) {
-    setHover(true)
-    setHoverDiv(board.id)
+  function onHoverBoard(board) {
+    setHoverBoard(true)
+    setHoverBoardDiv(board.id)
   }
 
-  function offHover() {
-    setHover(false)
-    setHoverDiv("")
+  function offHoverBoard() {
+    setHoverBoard(false)
+    setHoverBoardDiv("")
   }
 
   function viewIndividualBoard (username, name) {
@@ -127,7 +128,7 @@ function FeedPage() {
             </div>
             {boards.map((board, index) => (
 
-              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHover(board)} onMouseLeave={() => offHover()}>
+              <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
                 {/* <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"

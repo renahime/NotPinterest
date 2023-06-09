@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
@@ -8,8 +8,19 @@ import SignupFormModal from '../SignupFormModal';
 import CreateBoardModal from '../CreateBoardModal';
 import './Navigation.css';
 
+
 function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
+	const [openMenu, setOpenMenu] = useState(false)
+	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
+	let showMenu = () => {
+		setOpenMenu(!openMenu)
+	}
+
+	const currentProfile = useSelector(state => state.profile.currentProfile)
+	const currentUser = useSelector(state => state.session.user)
+
+	console.log("open Menu", openMenu)
 
 	return (
 		<>
@@ -48,8 +59,22 @@ function Navigation({ isLoaded }) {
 								<NavLink to="/today" className="tab" activeClassName="active">
 									Today
 								</NavLink>
-								<div className='tab'>Create</div>
-								<i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
+								<div className='nav-create-tab'>
+								{openMenu && <div className={menuClassName}>
+									{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
+									<div className="nav-profile-dropdown-create">Create idea Pin</div>
+									<div className="nav-profile-dropdown-create" onClick={showMenu}>
+										<OpenModalButton
+											buttonText="Create Board"
+											modalComponent={<CreateBoardModal username={currentUser?.username} />}
+										/>
+									</div>
+								</div>}
+								<div className='tab flex-row' onClick={showMenu}>
+									<div className='nav-create'>Create</div>
+									<i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow"></i>
+								</div>
+								</div>
 							</div>
 							<input type="text" className="search-bar" placeholder="Search" />
 

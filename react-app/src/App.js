@@ -55,9 +55,9 @@ function App() {
           <Route exact path="/">
             <LandingPage />
           </Route>
-          <Route exact path="/boards/:id">
+          {/* <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
-          </Route>
+          </Route> */}
           <Route exact path="/pin/:id">
             <IndividualPinPage />
           </Route>
