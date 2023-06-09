@@ -50,9 +50,11 @@ function Settings() {
       setErrors(data.errors);
     });
     if (editedUser) {
-      history.push(`/`)
+      history.push(`/feed`)
     }
   }
+
+
 
   return (
     <div className='settings-with-footer'>

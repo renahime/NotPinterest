@@ -171,7 +171,8 @@ class Pin(db.Model):
             'categories': [category.name for category in self.categories],
             'boards_pinned_in': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at,
+            'user': self.user.to_dict()
         }
 
 

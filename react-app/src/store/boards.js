@@ -6,6 +6,7 @@ const DELETE_USER_BOARD = "boards/delete";
 const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
+const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
 
 
 
@@ -55,8 +56,25 @@ const pinBoard = (pin, boardId) => ({
     pin,
     boardId,
 })
+const getCurrentUserBoard = (boards) => ({
+    type: GET_CURRENT_USER_BOARDS,
+    boards
+})
 
 
+export const getBoardsofCurrentUser = () => async (dispatch) => {
+    const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
+    if (res.status >= 400) {
+        console.log("in the get boards of current user reducer")
+        return
+    }
+    if (res.ok) {
+        let boards = await res.json()
+        console.log("boards", boards)
+        dispatch(getCurrentUserBoard(boards))
+        return
+    }
+}
 
 export const getBoardsByUsername = (username) => async (dispatch) => {
     const res = await fetch(`/api/boards/users/${username}`)
@@ -176,8 +194,9 @@ const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {} 
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
-
     switch (action.type) {
+        case GET_CURRENT_USER_BOARDS:
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
         case GET_BOARDS_OF_USER:
             let newState = {}
             for (let board of action.boards) {
