@@ -1,5 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
+from ..models import Pin, db, User, Board, Category, user_categories
+from ..forms import PinForm, UserCategoryForm
 from ..models import Pin, db, User, Board, Category
 from ..forms import PinForm, EditPinForm
 from ..routes.AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
@@ -20,6 +22,86 @@ def get_users_pins_by_username(username):
     for pin in pins:
         all_pins[pin.id] = pin.to_dict()
     return all_pins
+
+#Route to get a pins by category
+@pin_routes.route('/categories', methods=["POST"])
+def get_all_user_selected_categories():
+
+    form = UserCategoryForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        data = form.data
+        categories = []
+
+        if form["streetware"]:
+            streetwear = Category.query.filter(Category.name == form["streetware"]).one()
+            new_rel1 = user_categories(
+                user_id=current_user["id"],
+                board_id=streetwear["id"]
+            )
+            db.session.add(new_rel1)
+            categories.append(streetwear.id)
+        if form["formalwear"]:
+            formalwear = Category.query.filter(Category.name == form["formalwear"]).one()
+            new_rel2 = user_categories(
+                user_id=current_user["id"],
+                board_id=formalwear["id"]
+            )
+            db.session.add(new_rel2)
+            categories.append(formalwear.id)
+        if form["dark"]:
+            dark = Category.query.filter(Category.name == form["dark"]).one()
+            new_rel3 = user_categories(
+                user_id=current_user["id"],
+                board_id=dark["id"]
+            )
+            db.session.add(new_rel3)
+            categories.append(dark.id)
+        if form["boho"]:
+            boho = Category.query.filter(Category.name == form["boho"]).one()
+            new_rel4 = user_categories(
+                user_id=current_user["id"],
+                board_id=boho["id"]
+            )
+            db.session.add(new_rel4)
+            categories.append(boho.id)
+        if form["old_money"]:
+            old_money = Category.query.filter(Category.name == form["old_money"]).one()
+            new_rel5 = user_categories(
+                user_id=current_user["id"],
+                board_id=old_money["id"]
+            )
+            db.session.add(new_rel5)
+            categories.append(old_money.id)
+        if form["athleisure"]:
+            athleisure = Category.query.filter(Category.name == form["athleisure"]).one()
+            new_rel6 = user_categories(
+                user_id=current_user["id"],
+                board_id=athleisure["id"]
+            )
+            db.session.add(new_rel6)
+            categories.append(athleisure.id)
+        db.session.commit()
+        for category in categories:
+            catList = []
+            catList.append(Category.query.filter.get(category).pins.to_dict())
+            if not catList:
+                return {"errors": "No categories could be found at that name"}
+            return catList
+
+
+    # pins = Pin.query.all()
+    # all_pins = {}
+
+    # for pin in pins:
+    #     for category in pin.categories:
+    #         if category.name == category_name:
+    #             all_pins[pin.id] = pin.to_dict()
+
+    # return all_pins
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 #Route to get a pins by category
 @pin_routes.route('/<category_name>')
@@ -84,9 +166,7 @@ def create_pin():
     if not user:
         return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
-    print("pin route errors part1")
     form['csrf_token'].data = request.cookies['csrf_token']
-    print("pin route errors part2")
 
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
@@ -136,6 +216,14 @@ def edit_pin(id):
 
     user = User.query.get(current_user.id)
 
+    oldBoard = None
+    for board in user.boards:
+        for pin_in_board in board.pins_tagged:
+            if pin.id == pin_in_board.id:
+                oldBoard = board
+
+    print("*********************************************************************************************************************",oldBoard.name)
+
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
     # if the form doesn't have any issues make change the pins details in the database to the details in the form
@@ -149,13 +237,12 @@ def edit_pin(id):
             pin.alt_text = data["alt_text"]
         if data["destination"]:
             pin.destination = data["destination"]
-        if data["board"]:
+        if data["boardName"]:
+            print("************************************************************************************* check 1")
             for board in user.boards:
-                if board.name == data["board"]:
-                    for board in user.boards:
-                        for pinId in board.pins:
-                            if pin.id == pinId:
-                                pin.boards_tagged.remove(board)
+                if board.name == data["boardName"]:
+                    print("************************************************************************************* check 2")
+                    pin.board_tagged.remove(oldBoard)
                     new_board = board
                     pin.board_tagged.append(new_board)
         db.session.commit()

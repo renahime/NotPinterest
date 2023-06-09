@@ -61,7 +61,6 @@ function FeedPage() {
 
   //GET STATE DATA
   const sessionUser = useSelector(state => state.session.user)
-  console.log(sessionUser)
 
   const currentState = useSelector(state => state)
 

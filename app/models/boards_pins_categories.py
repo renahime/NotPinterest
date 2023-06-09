@@ -72,6 +72,23 @@ board_cover_images = db.Table(
 if environment == "production":
     board_cover_images.schema = SCHEMA
 
+user_categories = db.Table(
+    "user_categories",
+    db.Column(
+        "user_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("users.id"), ondelete='CASCADE')
+    ),
+    db.Column(
+        "category_id",
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("categories.id"), ondelete='CASCADE')
+    )
+)
+
+if environment == "production":
+    user_categories.schema = SCHEMA
+
 class Board(db.Model):
     __tablename__ = 'boards'
     id = db.Column(db.Integer, primary_key=True)
@@ -89,12 +106,6 @@ class Board(db.Model):
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
-
-    def pin(self, pin):
-        self.pins_tagged.append(pin)
-
-    def unpin(self, pin):
-        self.pins_tagged.remove(pin)
 
     def findOtherImages(self):
         additonal_images = []
@@ -177,7 +188,8 @@ class Pin(db.Model):
             'categories': [category.name for category in self.categories],
             'boards_pinned_in': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at,
+            'user': self.user.to_dict()
         }
 
 
@@ -189,6 +201,7 @@ class Category(db.Model):
 
     boards = db.relationship('Board', secondary='board_categories', back_populates='categories', passive_deletes=True)
     pins = db.relationship('Pin', secondary='pin_categories', back_populates='categories', passive_deletes=True)
+    users = db.relationship('User', secondary=user_categories, back_populates='categories', passive_deletes=True)
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -198,3 +211,4 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
+    

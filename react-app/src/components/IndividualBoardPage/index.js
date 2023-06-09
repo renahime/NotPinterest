@@ -69,11 +69,9 @@ export default function IndividualBoardPage() {
                                 </div>
                             </div>}
                     </div>
-                    {singleBoard.user.id === currentUser.id &&
-                        <div className="singleboard-pins-length">
-                            {pinDisplay(singleBoard.pins.length)}
-                        </div>}
-                    <PinsForBoardPage pins={singleBoard["pin info"]} />
+                    <div>
+                        <PinsForBoardPage pins={singleBoard["pinInfo"]} />
+                    </div>
                 </div>}
         </div>
     )

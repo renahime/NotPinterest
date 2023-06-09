@@ -99,7 +99,69 @@
     justify-content: flex-start;
     align-items: center;
     width: 80%;
+    flex-wrap: wrap;
+    column-gap: 5px;
 }
+
+.single-pin-owner-name-followers {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.single-pin-owner-name-followers > p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+.single-pin-owner-link  {
+    font-weight: 600;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.single-pin-follow-button, .single-pin-following-button, .single-pin-image-button {
+    border-radius: 30px;
+    border-color: transparent;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.single-pin-follow-button {
+    background-color: #F0F0F0;
+    color: black;
+}
+
+.single-pin-following-button {
+    background-color: black;
+    color: white;
+}
+
+.single-pin-image-wrapper {
+    position: relative;
+}
+
+.single-pin-image-button {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    background-color: rgb(255 255 255 / 0.75);
+    cursor: pointer;
+}
+
+.single-pin-image-button > * {
+    padding-right: 5px;
+}
+
+.single-pin-edit-board-form-select {
+    border: 1px solid white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
 .dropdown {
     position: absolute;
     top: 100%;
@@ -123,3 +185,54 @@
     background-color: rgba(0, 0, 0, 0.14);
     cursor: pointer;
 }
+.dropdown-container {
+    text-align: left;
+    border: 1px solid #ccc;
+    position: relative;
+    border-radius: 5px;
+  }
+
+  .dropdown-input {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+
+  .dropdown-menu{
+    position:absolute;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width:100%;
+    transform: translateY(4px);
+    overflow: auto;
+    max-height: 150px;
+  }
+
+  .dropdown-item{
+    padding:5px;
+    cursor:pointer;
+  }
+
+  .dropdown-item:hover{
+    background-color: #9fc3f870
+  }
+
+  .dropdown-item.selected {
+    background-color: #5A5A5A;
+    color: #fff;
+  }
+
+  .search-box {
+      padding: 5px;
+      background-color: #eee;
+  }
+  .search-box input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+  }

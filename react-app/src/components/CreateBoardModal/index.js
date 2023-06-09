@@ -80,7 +80,6 @@ function CreateBoardModal({ username }) {
       description: description
     }
     //log formData
-    console.log("FORM DATA:", formData)
     await dispatch(createBoardThunk(formData))
     history.push(`/${username}/${formData.name}`)
     closeModal()

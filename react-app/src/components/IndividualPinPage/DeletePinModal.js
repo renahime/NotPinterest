@@ -7,7 +7,7 @@ import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import { deletePinThunk } from "../../store/pins";
 
-function DeletePinModal({ pin, user }) {
+function DeletePinModal({ pin, user, boardState }) {
   const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -24,8 +24,6 @@ function DeletePinModal({ pin, user }) {
   const handleDelete = async (e) => {
     e.preventDefault();
     const pinId = await dispatch(deletePinThunk(pin.id)).then(closeModal)
-      .catch(history.push(`/${user.username}/${boardName}`)
-      );
     if (pinId) {
       return history.push(`/${user.username}/${boardName}`)
     }

@@ -83,7 +83,6 @@ const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, use
       {showMenu && <div className="dropdown-menu">
         {isSearchable && (
           <div className="search-box">
-            <h6 style={{ textAlign: 'center' }}>Save</h6>
             <div className="search-function">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input onChange={onSearch} value={searchValue} ref={searchRef} />
@@ -95,7 +94,7 @@ const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, use
             {option.label}
           </div>
         ))}
-        <div className="create-board-selection">
+        {/* <div className="create-board-selection">
           <button>
             <OpenModalButton
               buttonText="Create Board"
@@ -103,7 +102,7 @@ const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, use
               modalComponent={<CreateBoardFromPinModal pin={pin} user={user} />}
             />
           </button>
-        </div>
+        </div> */}
       </div>}
     </div>
   );

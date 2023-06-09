@@ -35,7 +35,6 @@ function TodayPage() {
     dispatch(fetchPinsToday())
   }, [dispatch])
 
-  console.log(pinsToday)
   return (
     <div className="main-div">
       <div className="date-div">

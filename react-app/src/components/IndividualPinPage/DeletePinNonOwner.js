@@ -12,6 +12,7 @@ function DeletePinNonOwner({ pin, user }) {
   const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
+  const singlePinWithBoardState = useSelector(state => state)
   let boardName = null
   let boardId = null
   if (user) {
@@ -26,10 +27,8 @@ function DeletePinNonOwner({ pin, user }) {
   }
   const handleDelete = async (e) => {
     e.preventDefault();
-    const pinId = await dispatch(unpinThunk(pin.id, boardId)).then(closeModal)
-      .catch(history.push(`/${user.username}/${boardName}`)
-      );
-    if (pinId) {
+    const unpinAction = await dispatch(unpinThunk(pin, boardId)).then(closeModal())
+    if (unpinAction) {
       return history.push(`/${user.username}/${boardName}`)
     }
   }

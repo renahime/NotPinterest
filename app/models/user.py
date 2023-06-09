@@ -2,6 +2,8 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from .boards_pins_categories import user_categories
+
 
 #Make Table
 follows = db.Table(
@@ -53,6 +55,7 @@ class User(db.Model, UserMixin):
         backref='following',
         lazy='dynamic'
     )
+    categories = db.relationship('Category', secondary=user_categories, back_populates='users', passive_deletes=True)
 
     @property
     def password(self):
