@@ -10,7 +10,7 @@ from wtforms.validators import ValidationError, URL, Length
 user_routes = Blueprint('users', __name__)
 
 
-@user_routes.route('/categories', methods=['POST'])
+@user_routes.route('/categories', methods=['GET','POST'])
 @login_required
 def set_categories():
     form = UserCategoryForm()

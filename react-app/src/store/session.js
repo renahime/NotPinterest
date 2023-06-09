@@ -42,6 +42,7 @@ const getFollowersAndFollowing = (users) => ({
 // })
 
 export const createUserCategories = (categories) => async (dispatch) => {
+	console.log("categories", categories)
 	let res = await fetch("/api/users/categories", {
 		method: "POST",
 		headers: {
