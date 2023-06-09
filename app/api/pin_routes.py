@@ -24,72 +24,14 @@ def get_users_pins_by_username(username):
     return all_pins
 
 #Route to get a pins by category
-@pin_routes.route('/categories', methods=["POST"])
+@pin_routes.route('/categories')
 def get_all_user_selected_categories():
-
-    form = UserCategoryForm()
-
-    form['csrf_token'].data = request.cookies['csrf_token']
-
-    if form.validate_on_submit():
-        data = form.data
-        categories = []
-
-        if form["streetware"]:
-            streetwear = Category.query.filter(Category.name == form["streetware"]).one()
-            new_rel1 = user_categories(
-                user_id=current_user["id"],
-                board_id=streetwear["id"]
-            )
-            db.session.add(new_rel1)
-            categories.append(streetwear.id)
-        if form["formalwear"]:
-            formalwear = Category.query.filter(Category.name == form["formalwear"]).one()
-            new_rel2 = user_categories(
-                user_id=current_user["id"],
-                board_id=formalwear["id"]
-            )
-            db.session.add(new_rel2)
-            categories.append(formalwear.id)
-        if form["dark"]:
-            dark = Category.query.filter(Category.name == form["dark"]).one()
-            new_rel3 = user_categories(
-                user_id=current_user["id"],
-                board_id=dark["id"]
-            )
-            db.session.add(new_rel3)
-            categories.append(dark.id)
-        if form["boho"]:
-            boho = Category.query.filter(Category.name == form["boho"]).one()
-            new_rel4 = user_categories(
-                user_id=current_user["id"],
-                board_id=boho["id"]
-            )
-            db.session.add(new_rel4)
-            categories.append(boho.id)
-        if form["old_money"]:
-            old_money = Category.query.filter(Category.name == form["old_money"]).one()
-            new_rel5 = user_categories(
-                user_id=current_user["id"],
-                board_id=old_money["id"]
-            )
-            db.session.add(new_rel5)
-            categories.append(old_money.id)
-        if form["athleisure"]:
-            athleisure = Category.query.filter(Category.name == form["athleisure"]).one()
-            new_rel6 = user_categories(
-                user_id=current_user["id"],
-                board_id=athleisure["id"]
-            )
-            db.session.add(new_rel6)
-            categories.append(athleisure.id)
-        db.session.commit()
-        for category in categories:
-            catList = []
-            catList.append(Category.query.filter.get(category).pins.to_dict())
-            if not catList:
-                return {"errors": "No categories could be found at that name"}
-            return catList
+    for category in categories:
+        catList = []
+        catList.append(Category.query.filter.get(category).pins.to_dict())
+        if not catList:
+            return {"errors": "No categories could be found at that name"}
+        return catList
 
 
     # pins = Pin.query.all()
@@ -101,7 +43,7 @@ def get_all_user_selected_categories():
     #             all_pins[pin.id] = pin.to_dict()
 
     # return all_pins
-    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
+    # return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 #Route to get a pins by category
 @pin_routes.route('/<category_name>')

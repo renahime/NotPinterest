@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, redirect, request
 from flask_login import login_required, current_user
-from app.models import User, db
-from app.forms import ProfileForm
+from app.models import User, db, user_categories, Category
+from app.forms import ProfileForm, UserCategoryForm
 from app.routes.AWS_helpers import get_unique_filename, upload_file_to_s3
 from .auth_routes import validation_errors_to_error_messages
 from wtforms.validators import ValidationError, URL, Length
@@ -9,6 +9,65 @@ from wtforms.validators import ValidationError, URL, Length
 
 user_routes = Blueprint('users', __name__)
 
+
+@user_routes.route('/categories', methods=['POST'])
+@login_required
+def set_categories():
+    form = UserCategoryForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+    print("trying my best tbh", form.data)
+    if form.validate_on_submit():
+        data = form.data
+        print("INSIDE OF THE VALIDATEEEEEE", data)
+
+        if data["streetware"]:
+            streetwear = Category.query.filter(Category.name == "Streetware").one()
+            new_rel1 = user_categories(
+                user_id=current_user["id"],
+                board_id=streetwear["id"]
+            )
+            db.session.add(new_rel1)
+        if data["formalwear"]:
+            formalwear = Category.query.filter(Category.name == "Formal Ware").one()
+            new_rel2 = user_categories(
+                user_id=current_user["id"],
+                board_id=formalwear["id"]
+            )
+            db.session.add(new_rel2)
+        if data["dark"]:
+            dark = Category.query.filter(Category.name == "Dark").one()
+            new_rel3 = user_categories(
+                user_id=current_user["id"],
+                board_id=dark["id"]
+            )
+            db.session.add(new_rel3)
+        if data["boho"]:
+            boho = Category.query.filter(Category.name == "Boho").one()
+            new_rel4 = user_categories(
+                user_id=current_user["id"],
+                board_id=boho["id"]
+            )
+            db.session.add(new_rel4)
+        if data["old_money"]:
+            old_money = Category.query.filter(Category.name == "Old Money").one()
+            new_rel5 = user_categories(
+                user_id=current_user["id"],
+                board_id=old_money["id"]
+            )
+            db.session.add(new_rel5)
+        if data["athleisure"]:
+            athleisure = Category.query.filter(Category.name == "Athleisure").one()
+            new_rel6 = user_categories(
+                user_id=current_user["id"],
+                board_id=athleisure["id"]
+            )
+            db.session.add(new_rel6)
+        db.session.commit()
+        user = User.query.get(current_user.id)
+        return [category.to_dict() for category in user.categories]
+    return {"errors": validation_errors_to_error_messages(form.errors)}, 401
+    
 
 @user_routes.route('/')
 @login_required

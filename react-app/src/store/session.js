@@ -4,7 +4,13 @@ const REMOVE_USER = "session/REMOVE_USER";
 const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
 const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
+const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 
+
+const setCategories = (categories) => ({
+	type: SET_USER_CATEGORIES,
+	categories
+})
 
 const setUser = (user) => ({
 	type: SET_USER,
@@ -34,6 +40,24 @@ const getFollowersAndFollowing = (users) => ({
 // 	type: GET_FOLLOWERS,
 // 	users
 // })
+
+export const createUserCategories = (categories) => async (dispatch) => {
+	let res = await fetch("/api/users/categories", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({categories: categories})
+	})
+	console.log("res", res)
+	if (res.ok){
+		let categories = res.json()
+		dispatch(setCategories(categories))
+		return categories
+	} else {
+		 return {errors: "Could not set category"}
+	}
+}
 
 export const findFollowersAndFollowing = (username) => async (dispatch) => {
 	let res = await fetch(`/api/users/${username}/followers_and_following`)
@@ -175,6 +199,10 @@ const initialState = { user: null, following: {}, followers: {} };
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
+		case SET_USER_CATEGORIES:
+			let user = {...state.user}
+			user.categories = action.categories
+			return {...state, user: {...user}, following: {}, followers: {}}
 		case GET_FOLLOWING_AND_FOLLOWERS:
 			return {...state, user: {...state.user}, following: {...action.users.following}, followers: {...action.users.followers}}
 		case FOLLOW_USER:

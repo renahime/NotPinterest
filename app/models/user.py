@@ -88,6 +88,7 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
+            'categories': [category.name for category in self.categories],
             'about': self.about,
             'pronouns': self.pronouns,
             'website': self.website,
