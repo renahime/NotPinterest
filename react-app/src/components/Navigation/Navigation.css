@@ -36,6 +36,11 @@
   padding-top: 30px;
 }
 
+.tab-disabled{
+  pointer-events: none;
+  color: #ccc;
+  cursor: not-allowed;
+}
 
 .nav-dropdown-middle-text {
   display: flex;
