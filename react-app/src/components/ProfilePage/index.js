@@ -35,8 +35,6 @@ export default function ProfilePage() {
         else return false
     }
 
-
-
     const handleFollow = async (e) => {
         e.preventDefault();
         let response = await dispatch(followUser(username))
