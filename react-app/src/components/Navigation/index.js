@@ -37,7 +37,7 @@ function Navigation({ isLoaded }) {
 						</NavLink>
 						<div className="pinterest-logo">
 							<NavLink exact to="/" className="pinterest-logo">
-								Pinterest
+								threadterest
 							</NavLink>
 						</div>
 					</div>

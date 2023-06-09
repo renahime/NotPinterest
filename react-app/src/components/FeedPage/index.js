@@ -3,13 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
 import { getAllBoardThunks } from "../../store/boards-mikey";
 import { getBoardsByUsername } from "../../store/boards";
-
-
+import LoadingButton from "../LoadingButton";
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import CreateBoardModal from "../CreateBoardModal";
 import UpdateBoardModal from "../UpdateBoardModal";
-
 import './FeedPage.css'
 
 
@@ -35,11 +33,11 @@ function FeedPage() {
     setHoverBoardDiv("")
   }
 
-  function viewIndividualBoard (username, name) {
+  function viewIndividualBoard(username, name) {
     let nameArr = name.toLowerCase().split(" ")
     let formattedName = nameArr.join("_")
     history.push(`/${username}/${formattedName}`)
-}
+  }
 
 
   useEffect(() => {
@@ -50,7 +48,7 @@ function FeedPage() {
       }
 
       setIsLoading(false);
-    }, 200);
+    }, 1500);
 
   }, [dispatch])
 
@@ -95,14 +93,19 @@ function FeedPage() {
 
   const handleScrollLeft = () => {
     const scrollContainer = scrollContainerRef.current;
-    scrollContainer.scrollLeft -= 200;
+    scrollContainer.scrollTo({
+      left: scrollContainer.scrollLeft - 200,
+      behavior: 'smooth' // You can remove this line if you prefer an instant scroll
+    });
   };
 
   const handleScrollRight = () => {
     const scrollContainer = scrollContainerRef.current;
-    scrollContainer.scrollLeft += 200;
+    scrollContainer.scrollTo({
+      left: scrollContainer.scrollLeft + 200,
+      behavior: 'smooth' // You can remove this line if you prefer an instant scroll
+    });
   };
-
 
 
   //check if we have any boards in our database or state. If not, we will load the page or not render it at all
@@ -110,9 +113,13 @@ function FeedPage() {
 
     //Loading screen
     if (isLoading) {
-      return <h1>Loading</h1>;
+      return (
+          <LoadingButton
+            isLoading={isLoading}
+            // disabled={isLoading}
+          />
+      )
     }
-
   }
 
 
@@ -121,10 +128,15 @@ function FeedPage() {
       <div className="feed-container">
 
         {boards.length > 0 && (
+          <div className="full-board-container">
           <div className="board-container" ref={scrollContainerRef}>
             <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
               <i className="fa-solid fa-angle-left"></i>
             </div>
+            <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
+              <i className="fa-solid fa-angle-left fa-rotate-180"></i>
+            </div>
+
             {boards.map((board, index) => (
 
               <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
@@ -134,12 +146,13 @@ function FeedPage() {
                   modalComponent={<UpdateBoardModal id={board.id} />}
                   onClick={() => history.push(`/boards/${board.id}`)}
                 /> */}
+                <div>
                 {board.name}
+                </div>
               </div>
             ))}
-            <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-              <i clasName="fa-solid fa-angle-left fa-rotate-180"></i>
-            </div>
+
+          </div>
           </div>
         )
 
