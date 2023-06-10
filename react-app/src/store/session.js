@@ -42,10 +42,7 @@ const getFollowersAndFollowing = (users) => ({
 // })
 
 export const createUserCategories = (categories) => async (dispatch) => {
-<<<<<<< HEAD
-=======
 	console.log("categories", categories)
->>>>>>> dev
 	let res = await fetch("/api/users/categories", {
 		method: "POST",
 		headers: {
@@ -204,11 +201,7 @@ export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
-<<<<<<< HEAD
 			let user = { ...state.user }
-=======
-			let user = {...state.user}
->>>>>>> dev
 			user.categories = action.categories
 			return { ...state, user: { ...user }, following: {}, followers: {} }
 		case GET_FOLLOWING_AND_FOLLOWERS:
