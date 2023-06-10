@@ -205,7 +205,7 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
 
 
 
-const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
+const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
@@ -226,7 +226,8 @@ export default function boardsReducer(state = initialState, action) {
             }
 
 
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: { ...state.currentUserBoards } }
+            // return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: { ...state.currentUserBoards } }
+            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: {}, currentUserBoards: { ...newState } }
 
         case CREATE_USER_BOARD:
             return {
@@ -235,7 +236,7 @@ export default function boardsReducer(state = initialState, action) {
                 }, currentProfileBoards: {
                     ...state.currentProfileBoards,
                     [action.board.id]: action.board
-                },currentUserBoards: {
+                }, currentUserBoards: {
                     ...state.currentUserBoards,
                     [action.board.id]: action.board
                 }

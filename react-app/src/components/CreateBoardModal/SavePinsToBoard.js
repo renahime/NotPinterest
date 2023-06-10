@@ -25,18 +25,25 @@ function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, chang
   const { setModalContent, closeModal } = useModal();
   const history = useHistory()
 
-  useEffect(() => {
-    setTimeout(() => {
-      // Assuming you're fetching the boards data here
-      setChange(true)
-      if (setChange) {
-        dispatch(getAllPinsThunk)
-      }
 
-      setIsLoading(false);
-    }, 2000);
 
-  }, [dispatch])
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     // Assuming you're fetching the boards data here
+  //     setChange(true)
+  //     if (setChange) {
+  //       dispatch(getAllPinsThunk)
+  //     }
+
+  //     setIsLoading(false);
+  //   }, 2000);
+
+  // }, [dispatch])
+
+
+
+
 
   console.log("HOVER DIV INFO - PIN", hoverDiv)
   console.log("Pins TODAY", pinsToday)

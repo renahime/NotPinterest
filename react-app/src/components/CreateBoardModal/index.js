@@ -24,6 +24,7 @@ function CreateBoardModal({ username }) {
   const { setModalContent, closeModal } = useModal();
   const [change, setChange] = useState(false)
 
+
   console.log("USER NAME", username)
 
   const stateCheck = useSelector((state) => state)
@@ -38,6 +39,8 @@ function CreateBoardModal({ username }) {
   console.log("THIS IS THE USER FOR CREATE BOARD", testUsername)
 
 
+
+
   console.log("PINS", pinsTodayObj)
 
   let pinsToday
@@ -48,9 +51,7 @@ function CreateBoardModal({ username }) {
   const date = new Date();
 
   console.log("PINS TODAY CREATE BOARD MODAL", pinsToday)
-  useEffect(() => {
-    // dispatch(fetchPinsToday())
-  }, [])
+
 
   const month = date.toLocaleString('default', { month: 'long' });
   let year = date.getFullYear();
@@ -72,7 +73,18 @@ function CreateBoardModal({ username }) {
 
     //VALIDATIONS
 
-
+    //check if board name is already taken
+    if (Object.values(testUsername)) {
+      const userBoards = testUsername.boards
+      console.log("USERBOARDS", testUsername.boards)
+      for (const board of testUsername.boards) {
+        console.log("BOARDS", board)
+        if (board.name === name) {
+          setErrors(["This board name is already taken, please choose another name."])
+          return
+        }
+      }
+    }
 
     //create form data
     const formData = {
@@ -94,7 +106,7 @@ function CreateBoardModal({ username }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <SavePinsToBoardModal pinsToday={pinsToday} username={username} setChange={setChange} change = {change} boardName={name} />
+        <SavePinsToBoardModal pinsToday={pinsToday} username={username} setChange={setChange} change={change} boardName={name} />
       </div>
     );
     setModalContent(modalContent);
@@ -102,16 +114,13 @@ function CreateBoardModal({ username }) {
 
   function shuffle(array) {
     let currentIndex = array.length, randomIndex;
-
     while (currentIndex != 0) {
-
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }
-
     return array;
   }
 
@@ -150,6 +159,11 @@ function CreateBoardModal({ username }) {
 
             </div>
           </label>
+          <ul>
+            {errors.map((error, idx) => (
+              <li className="login-form-errors" key={idx}>{error}</li>
+            ))}
+          </ul>
 
           {/* <button type="submit" className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}> */}
           <button type="submit" className="create-board-modal-create-button" disabled={disabledButton}>

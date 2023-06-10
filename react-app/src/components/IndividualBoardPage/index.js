@@ -15,6 +15,7 @@ export default function IndividualBoardPage() {
     const currentUser = useSelector(state => state.session.user)
 
     console.log("SINGLE BOARD:", singleBoard)
+    console.log("BOARD:", singleBoard)
 
     function pinDisplay(pins) {
         if (pins === 0 || pins > 1) {
@@ -26,7 +27,7 @@ export default function IndividualBoardPage() {
 
     useEffect(() => {
         dispatch(getBoardByName(username, boardName)).then(setLoading(true)).catch((e) => console.log("e", e))
-    }, [dispatch])
+    }, [dispatch,boardName,username])
 
     if (!Object.values(singleBoard).length) return <h1>..Loading</h1>
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"

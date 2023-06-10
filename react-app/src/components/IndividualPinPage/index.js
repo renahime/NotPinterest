@@ -49,27 +49,49 @@ export default function IndividualPinPage() {
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
+
+
+console.log("SINGLE PIN OUTSIDE IF STATEMENT", singlePin)
+console.log("CURRENT USER OUTSIDE IF STATEMENT", currentUser)
+
     if (singlePin && currentUser) {
+
         for (let userBoard of currentUser.boards) {
+
             for (let pin of userBoard.pins) {
+                console.log("pin", pin)
+                console.log("SinglePin", singlePin)
                 if (pin == singlePin.id) {
                     pinnedCheck = true;
+                    console.log("UserBoard", userBoard.name)
+                    console.log("GrabBoardName", grabBoardName)
                     grabBoardName.name = userBoard.name
+                    console.log("GrabBoardName", grabBoardName)
                 }
+                console.log("We didnt get grabBoardName", grabBoardName)
             }
             options.push({ 'value': userBoard.name, 'label': userBoard.name })
         }
     }
+
+    useEffect(() => {
+        setBoard(grabBoardName?.name);
+        setPinBoard(grabBoardName?.name)
+      }, [grabBoardName]);
+
     const [board, setBoard] = useState(grabBoardName?.name)
+
+    console.log("board:" , board)
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
     console.log(singlePin)
+
     useEffect(() => {
         const handler = () => setShowMenu(false)
         window.addEventListener("click", handler);
         return () => {
             window.removeEventListener("click", handler)
         }
-    })
+    },[])
 
     const changeBoardName = (newBoard) => {
         // Update the name in the component's state
@@ -84,16 +106,25 @@ export default function IndividualPinPage() {
         e.preventDefault();
         let boardId
         let sendBoardName
+        console.log("WE ARE CHECKING BOARD handlePin in individaual pin page", sendBoardName)
         for (let board of currentUser.boards) {
+            console.log("WE ARE CHECKING BOARD handlePin for loop in individaual pin page", board)
+            console.log("WE ARE CHECKING PINBOARD handlePin for loop in individaual pin page", pinBoard)
             if (board.name == pinBoard) {
+                console.log("WE ARE CHECKING BOARD ID in individaual pin page", boardId)
                 boardId = board.id
                 sendBoardName = board.name.split(' ').join('_').toLowerCase()
             }
         }
-        const pin = await dispatch(pinThunk(singlePin, boardId)).then(closeModal())
-        if (pin) {
-            return history.push(`/${currentUser.username}/${sendBoardName}`)
-        }
+        try {
+            await dispatch(pinThunk(singlePin, boardId));
+            closeModal();
+            history.push(`/${currentUser.username}/${sendBoardName}`);
+          } catch (error) {
+            // Handle any errors that occur during pin dispatch
+            console.log(error);
+          }
+
     }
     async function unfollow(username) {
         let response = await dispatch(unfollowUser(username))

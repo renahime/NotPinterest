@@ -23,7 +23,8 @@ export default function ProfilePage() {
     const [loading, setLoading] = useState(false)
     const currentProfile = useSelector(state => state.profile.currentProfile)
     const currentUser = useSelector(state => state.session.user)
-    let userBoards = useSelector(state => state.boards.currentProfileBoards)
+    // let userBoards = useSelector(state => state.boards.currentProfileBoards)
+    let userBoards = useSelector(state => state.boards.currentUserBoards)
     let userBoardsArr = Object.values(userBoards)
     let [numFollowers, setNumFollowers] = useState(0);
     let [numFollowing, setNumFollowing] = useState(0)
