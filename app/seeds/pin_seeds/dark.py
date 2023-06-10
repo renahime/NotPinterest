@@ -8,48 +8,11 @@ def seed_dark_pins():
     dark = Category.query.filter(Category.name == "Dark").one()
     board = Board.query.get(7)
 
-    pin1 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/1d376ba447fbc72ec935f8b0016a2246.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin2 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/2b10a0a3a46efb9bee324cc5866f2db0.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
 
     pin3 = Pin(
         image="https://threadterest.s3.us-east-2.amazonaws.com/1f6251d4e9ab99d8bd84a4548a6f902e.jpg",
         user=user,
         categories=[dark],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-
-    pin4 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/9c1fa4a68ee4b27099da9aaccbca82eb.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-
-    pin5 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/13d10c0696436a5e9e74c8178abed2c7.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -66,33 +29,6 @@ def seed_dark_pins():
         image="https://threadterest.s3.us-east-2.amazonaws.com/23d0bfd5f83034e8e0caeee02e1fca28.jpg",
         user=user,
         categories=[dark],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin8 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/912fc79bd6c2e7378d948ff367a12ef3.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin9 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/76d851c566e91d427f08b88393e3d643.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin10 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/51a4690766a0936a16470181d163973c.jpg",
-        user=user,
-        categories=[dark],
-        board_tagged=[board],
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
@@ -270,7 +206,7 @@ def seed_dark_pins():
         updated_at=datetime.now()
     )
 
-    dark_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin21, pin22, pin23, pin24, pin25, pin26, pin27, pin28, pin29, pin30, pin31]
+    dark_pins = [pin3, pin6, pin7, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin21, pin22, pin23, pin24, pin25, pin26, pin27, pin28, pin29, pin30, pin31]
 
     dark_pins_list = [db.session.add(pin) for pin in dark_pins]
 

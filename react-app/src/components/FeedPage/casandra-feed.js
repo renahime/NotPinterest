@@ -14,21 +14,19 @@ export default function CaSandraFeed() {
     let [loading, setLoading] = useState(false)
     let [finishedLoading, setFinished] = useState(false)
     let pins = useSelector(state => state.pins.pins)
-    let boards = useSelector(state => state.boards.allBoards)
     let sessionUser = useSelector(state => state.session.user)
     console.log("pins", Object.values(pins))
 
     let pinsArr = []
     if (pins && Object.values(pins) != null) {
-        console.log(pins, "pins")
         pinsArr = filterPins(Object.values(pins))
+        console.log("pinsArr", pinsArr)
     }
 
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
             let randomPins = shufflePins(pins)
-            randomPins = randomPins.slice(30)
-            return randomPins
+            return randomPins.splice(0, 30)
         } else {
             let filteredPins = []
             let categories = sessionUser.categories
@@ -39,7 +37,7 @@ export default function CaSandraFeed() {
                 }
             }
             let randomPins = shufflePins(filteredPins)
-            return randomPins
+            return randomPins.splice(0, 30)
         }
     }
 
@@ -56,9 +54,7 @@ export default function CaSandraFeed() {
 
 
     useEffect(() => {
-        dispatch(getAllPinsThunk()).then(() => dispatch(getAllBoardsThunk())).then(() => setLoading(true))
-        
-        // dispatch(getPinsByCategory()).then(() => setLoading(true))
+        dispatch(getAllPinsThunk()).then(() => setLoading(true))
     }, [dispatch])
 
     useEffect(() => {

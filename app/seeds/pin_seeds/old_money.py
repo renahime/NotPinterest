@@ -251,15 +251,6 @@ def seed_old_money_pins():
         updated_at=datetime.now()
     )
 
-    pin29 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/f28eb0e1c985a1991cd2b54cb4f55b23.jpg",
-        user=user,
-        board_tagged=[board8, board4],
-        categories=[old_money],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
     pin30 = Pin(
         image="https://threadterest.s3.us-east-2.amazonaws.com/f0a5b3e97cfb1af3bdb1e3a7b6d22d84.jpg",
         user=user,
@@ -284,7 +275,7 @@ def seed_old_money_pins():
         updated_at=datetime.now()
     )
 
-    old_money_pin_instances = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin21, pin22, pin23, pin24, pin25, pin26, pin27, pin28, pin29, pin30, pin31, pin32]
+    old_money_pin_instances = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin21, pin22, pin23, pin24, pin25, pin26, pin27, pin28, pin30, pin31, pin32]
 
     old_money_pins = [db.session.add(pin) for pin in old_money_pin_instances]
 

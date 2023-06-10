@@ -255,6 +255,7 @@ def get_latest_pins():
 def get_all_pins():
     # querires Pin database for all pins
     pins = Pin.query.all()
+    
     all_pins = {}
     # standardizes the output that is returned to user
     for pin in pins:

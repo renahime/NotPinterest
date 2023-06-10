@@ -229,7 +229,7 @@ export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
         case GET_ALL_BOARDS:
-            return { ...state, allBoards: { ...action.allBoards } }
+            return { ...state, allBoards: { ...action.boards } }
         case GET_CURRENT_USER_BOARDS:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
 

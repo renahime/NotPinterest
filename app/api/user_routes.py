@@ -23,6 +23,8 @@ def set_categories():
         data = form.data
         print("data inside validator", data)
         print("form.data streetware", data["athleisure"])
+        athleisure = request.form.get("athleisure")
+        print("PLEASEEEEEEEEEEEEEEEEEEEEEEEEE", athleisure)
         # if data["streetware"]:
         #     streetwear = Category.query.filter(Category.name == "Streetware").one()
         #     new_rel1 = user_categories(
@@ -58,11 +60,13 @@ def set_categories():
         #         board_id=old_money["id"]
         #     )
         #     db.session.add(new_rel5)
-        if form.data["athleisure"] == 1:
-            athleisure = Category.query.filter(Category.name == "Athleisure").one()
-            user = User.query.get(user_id)
-            user.categories.append(athleisure)
-            return [category.to_dict() for category in user.categories]
+        print("TETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+        return
+        # if form.data["athleisure"] == 1:
+        #     athleisure = Category.query.filter(Category.name == "Athleisure").one()
+        #     user = User.query.get(user_id)
+        #     user.categories.append(athleisure)
+        #     return [category.to_dict() for category in user.categories]
     print("i actuall don't work")
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
     

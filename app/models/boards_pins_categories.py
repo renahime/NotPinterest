@@ -115,7 +115,8 @@ class Board(db.Model):
             cover = self.pin_cover_image[0].image
         n = 0
         # continue this loop while there are less than three items in the loop
-        while len(additonal_images) < 3:
+        while len(additonal_images) < 3 and n < len(self.pins_tagged):
+            print(n)
             current_image = ""
             # if there are no pins, quiet the loop
             if not len(self.pins_tagged):

@@ -9,7 +9,6 @@ import CreateBoardModal from "../CreateBoardModal";
 
 export default function CreatePin() {
     const history = useHistory()
-    let currentUserBoards = useSelector(state => state.boards.allBoards)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [errors, setErrors] = useState("")
@@ -27,11 +26,14 @@ export default function CreatePin() {
     const [previewImage, setPreviewImage] = useState("")
     const [submit, setSubmit] = useState(false)
     const dispatch = useDispatch()
-    let [currentUserBoardsArr, setCurrentUserBoardsArr] = useState([])
-    if (currentUserBoards && Object.values(currentUserBoards).length !== 0) {
-        currentUserBoardsArr = filterBoards(Object.values(currentUserBoards))
+    let userBoards = Object.values(currentUser.boards)
 
+    if (userBoards.length) {
+        // setBoard(userBoards[0].id)
+        console.log(userBoards)
     }
+
+
 
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
@@ -40,58 +42,53 @@ export default function CreatePin() {
 
     let handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(board)
+        // setErrors({})
 
-        setErrors({})
+        // let validationErrors = {}
 
-        let validationErrors = {}
+        // if (!image) {
+        //     validationErrors["image"] = "Image is required"
+        // }
+        // if (title.length > 100) {
+        //     validationErrors.title = "Ooops! This title is getting long. Try trimming it down."
+        // }
+        // if (description.length > 225) {
+        //     validationErrors.description = "Ooops! This description is getting long. Try trimming it down."
+        // }
+        // if (altText.length > 225) {
+        //     validationErrors.altText = "Ooops! This alt text is getting long. Try trimming it down."
+        // }
+        // if (destinationLink.length > 225) {
+        //     validationErrors.destinationLink = "Ooops! This link is getting long. Try trimming it down."
+        // }
+        // if (!board) {
+        //     validationErrors.board = "Ooops! This pin must be added to a board!"
+        // }
+        // if (Object.values(validationErrors).length) {
+        //     setErrors(validationErrors)
+        //     return
+        // }
+        // setSubmit(true)
+        // setImage(previewImage)
 
-        if (!image) {
-            validationErrors["image"] = "Image is required"
-        }
-        if (title.length > 100) {
-            validationErrors.title = "Ooops! This title is getting long. Try trimming it down."
-        }
-        if (description.length > 225) {
-            validationErrors.description = "Ooops! This description is getting long. Try trimming it down."
-        }
-        if (altText.length > 225) {
-            validationErrors.altText = "Ooops! This alt text is getting long. Try trimming it down."
-        }
-        if (destinationLink.length > 225) {
-            validationErrors.destinationLink = "Ooops! This link is getting long. Try trimming it down."
-        }
-        if (!board) {
-            validationErrors.board = "Ooops! This pin must be added to a board!"
-        }
-        if (Object.values(validationErrors).length) {
-            setErrors(validationErrors)
-            return
-        }
-        setSubmit(true)
-        setImage(previewImage)
+        // const pinData = new FormData()
+        // pinData.append("image", image)
+        // pinData.append("board", board)
+        // pinData.append("title", title)
+        // pinData.append("description", description)
+        // pinData.append("alt_text", altText)
+        // pinData.append("destination", destinationLink)
+        // setLoadingImage(true)
 
-        const pinData = new FormData()
-        pinData.append("image", image)
-        pinData.append("board", board)
-        pinData.append("title", title)
-        pinData.append("description", description)
-        pinData.append("alt_text", altText)
-        pinData.append("destination", destinationLink)
-        setLoadingImage(true)
+        // let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
+        // if (new_pin.errors) {
+        //     setErrors(new_pin.errors)
+        //     return
+        // } else {
+        //     history.push(`/pin/${new_pin.pin.id}`)
+        // }
 
-        let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
-        if (new_pin.errors) {
-            setErrors(new_pin.errors)
-            return
-        } else {
-            history.push(`/pin/${new_pin.pin.id}`)
-        }
-
-    }
-
-    function formatFollowers(num) {
-        if (num === 1) return "1 follower"
-        else return `${num} followers`
     }
 
     function filterBoards(boards) {
@@ -112,17 +109,6 @@ export default function CreatePin() {
     let activeAltClassName = altActive ? "" : "hidden"
 
     useEffect(() => {
-        dispatch(getAllBoardsThunk()).then(console.log("currentUserBoards", currentUserBoards) )
-    }, [dispatch])
-
-    useEffect(() => {
-        console.log("current", currentUserBoards)
-        if (Object.values(currentUserBoards).length) {
-            setBoard(Object.values(currentUserBoards)[0].id)
-        }
-    }, [currentUserBoards])
-
-    useEffect(() => {
         if (submit) {
             return
         }
@@ -134,6 +120,13 @@ export default function CreatePin() {
             }
         }
     }, [image])
+
+    useEffect(() => {
+        if (userBoards.length) {
+            setBoard(userBoards[0].id)
+            console.log(userBoards)
+        }
+    }, [])
 
 
     return (
@@ -169,14 +162,14 @@ export default function CreatePin() {
                     {loadingImage && <h3>Wait while your image is uploaded</h3>}
                 </div>
                 <div className="new-pin-info-side">
-                    {currentUserBoardsArr.length ?
+                    {userBoards.length ?
                         <div className="new-pin-save-and-board">
                             <label>
                                 <select
                                     value={board}
                                     onChange={(e) => setBoard(e.target.value)}
                                 >
-                                    {currentUserBoardsArr.map(boardValue => (
+                                    {userBoards.map(boardValue => (
                                         <option
                                             key={boardValue.id}>
                                             {boardValue.name}
