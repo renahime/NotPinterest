@@ -29,7 +29,6 @@ export default function IndividualBoardPage() {
     }, [dispatch])
 
     if (!Object.values(singleBoard).length) return <h1>..Loading</h1>
-
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
 
     return (

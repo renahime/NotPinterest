@@ -9,22 +9,45 @@ import { useModal } from "../../context/Modal";
 import './SavePinsToBoard.css'
 import { addPinToBoardThunk, getBoardByName } from "../../store/boards";
 import { pinThunk } from "../../store/boards";
+import { getAllPinsThunk } from "../../store/pins";
+import LoadingButton from "../LoadingButton";
 
 
 
-function SavePinsToBoardModal({ pinsToday, username, boardName }) {
+function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, change }) {
 
 
   const dispatch = useDispatch();
 
   const [hover, setHover] = useState(false)
   const [hoverDiv, setHoverDiv] = useState("")
+  const [isLoading, setIsLoading] = useState(true);
   const { setModalContent, closeModal } = useModal();
   const history = useHistory()
+
+  useEffect(() => {
+    setTimeout(() => {
+      // Assuming you're fetching the boards data here
+      setChange(true)
+      if (setChange) {
+        dispatch(getAllPinsThunk)
+      }
+
+      setIsLoading(false);
+    }, 2000);
+
+  }, [dispatch])
 
   console.log("HOVER DIV INFO - PIN", hoverDiv)
   console.log("Pins TODAY", pinsToday)
   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
+
+  useEffect(() => {
+    console.log("Before dispatch");
+    dispatch(getAllPinsThunk())
+      .then(() => console.log("ALL PINS FETCHED", pinsToday))
+      .catch((error) => console.log("Error fetching pins:", error));
+  }, [dispatch, change]);
 
 
   useEffect(() => {
@@ -35,7 +58,11 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
   const currentBoard = useSelector(state => state.boards.singleBoard)
   const currentBoardState = useSelector(state => state.boards.singleBoard)
   const currentState = useSelector(state => state)
+  const allPins = useSelector(state => state.pins.pins)
   console.log("BOARD NAME AND ID", currentBoard)
+  console.log("ALL PINS SELECTOR", allPins)
+  let allPinsArr = Object.values(allPins)
+  console.log("PINS ARRAY", allPinsArr)
 
 
   function onHover(pin) {
@@ -76,7 +103,17 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
 
   }
 
-
+  if (Object.keys(allPins).length === 0) {
+    console.log("WE ARE IN LOADING STATE")
+    if (isLoading) {
+      return (
+        <LoadingButton
+          isLoading={isLoading}
+        // disabled={isLoading}
+        />
+      )
+    }
+  }
 
 
   return (
@@ -88,7 +125,7 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
         <div className="save-pin-list-container">
           {/* <div className="save-pins-board-list" onMouseEnter={handlePinHover} onMouseLeave={handlePinHover}> */}
           <div className="save-pins-board-list" >
-            {pinsToday.map((pin) => {
+            {allPinsArr.map((pin) => {
               return (
 
 

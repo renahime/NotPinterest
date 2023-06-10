@@ -54,8 +54,8 @@ function App() {
             <CreatePin />
           </Route>
           <Route exact path="/feed">
-            {/* <FeedPage /> */}
-            <CaSandraFeed />
+            <FeedPage />
+            {/* <CaSandraFeed /> */}
           </Route>
           <Route exact path="/">
             <LandingPage />
