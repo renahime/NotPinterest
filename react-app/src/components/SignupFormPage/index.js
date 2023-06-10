@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
+import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
+import LoginFormModal from "../LoginFormModal";
 import './SignupForm.css';
 
 
@@ -14,7 +16,7 @@ function SignupFormPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
-
+  const { setModalContent } = useModal();
 
   if (sessionUser) return <Redirect to="/" />;
 
@@ -52,7 +54,7 @@ function SignupFormPage() {
           <label>
             Email
             <input
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -86,7 +88,7 @@ function SignupFormPage() {
             />
           </label>
           <button type="submit" className="login-form-signup-button">Continue</button>
-          <p className="signup-form-member">Already a member? <span className="login-form-login-text">Log in</span></p>
+          <p className="signup-form-member">Already a member? <span onClick={() => setModalContent(<LoginFormModal />)} className="login-form-login-text">Log in</span></p>
         </form>
       </div>
     </>

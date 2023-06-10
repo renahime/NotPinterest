@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
+import LoginFormModal from "../LoginFormModal";
 import "./SignupForm.css";
 import { useHistory } from "react-router-dom";
 
@@ -13,7 +14,7 @@ function SignupFormModal() {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState([]);
-	const { closeModal } = useModal();
+	const { closeModal, setModalContent } = useModal();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -51,7 +52,7 @@ function SignupFormModal() {
 					<label>
 						Email
 						<input
-							type="text"
+							type="email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
@@ -85,7 +86,7 @@ function SignupFormModal() {
 						/>
 					</label>
 					<button type="submit" className="login-form-signup-button">Continue</button>
-					<p className="signup-form-member">Already a member? <span className="login-form-login-text">Log in</span></p>
+					<p className="signup-form-member">Already a member? <span onClick={() => setModalContent(<LoginFormModal />)} className="login-form-login-text">Log in</span></p>
 				</form>
 			</div >
 		</>
