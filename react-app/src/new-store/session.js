@@ -3,7 +3,6 @@ const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
-const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
 const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 
 
@@ -31,21 +30,10 @@ const newFollow = (user) => ({
 	user
 })
 
-const getFollowersAndFollowing = (users) => ({
-	type: GET_FOLLOWING_AND_FOLLOWERS,
-	users
-})
 
-// const getFollowing = (users) => ({
-// 	type: GET_FOLLOWERS,
-// 	users
-// })
 
 export const createUserCategories = (categories) => async (dispatch) => {
-<<<<<<< HEAD
-=======
-	console.log("categories", categories)
->>>>>>> dev
+	console.log("categories in thunk", categories)
 	let res = await fetch("/api/users/categories", {
 		method: "POST",
 		headers: {
@@ -53,6 +41,7 @@ export const createUserCategories = (categories) => async (dispatch) => {
 		},
 		body: JSON.stringify({ categories: categories })
 	})
+	console.log("res", res)
 	if (res.ok) {
 		let categories = await res.json()
 		dispatch(setCategories(categories))
@@ -62,31 +51,6 @@ export const createUserCategories = (categories) => async (dispatch) => {
 	}
 }
 
-export const findFollowersAndFollowing = (username) => async (dispatch) => {
-	let res = await fetch(`/api/users/${username}/followers_and_following`)
-	if (res.ok) {
-		let followRel = await res.json()
-		dispatch(getFollowersAndFollowing(followRel))
-		return followRel
-	}
-	else {
-		let errors = await res.json()
-		return errors
-	}
-}
-
-// export const findFollowing = (username) => async (dispatch) => {
-// 	let res = await fetch(`/api/users/${username}/following`)
-// 	if (res.ok) {
-// 		let following = await res.json()
-// 		dispatch(getFollowing(following))
-// 		return following
-// 	}
-// 	else {
-// 		let errors = await res.json()
-// 		return errors
-// 	}
-// }
 
 
 export const followUser = (username) => async (dispatch) => {
@@ -198,23 +162,26 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
-const initialState = { user: null, following: {}, followers: {} };
+const initialState = { user: null };
 
 export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
-<<<<<<< HEAD
-			let user = { ...state.user }
-=======
+			console.log("action.categories", action.categories)
 			let user = {...state.user}
->>>>>>> dev
 			user.categories = action.categories
-			return { ...state, user: { ...user }, following: {}, followers: {} }
-		case GET_FOLLOWING_AND_FOLLOWERS:
-			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
+			return { ...state, user: { ...user } }
+
 		case FOLLOW_USER:
 			let newState = { ...state }
+			console.log("state", state)
+			console.log(action.user)
+			// newState.following[action.user]
+			// following.push(action.user)
+			// newState.user.following = following
+
+			console.log("FOLLOWING USER REDUCER")
 			return newState
 		case SET_USER:
 			return { user: action.payload };
@@ -223,7 +190,9 @@ export default function reducer(state = initialState, action) {
 		case UNFOLLOW_USER:
 			let unfollowed = action.user
 			let i = state.user.following.indexOf(unfollowed)
-			state.user.following.slice(i, 1)
+			console.log("state.user.following", state.user.following)
+			console.log("state.user", state.user)
+			state.user.following.splice(i, 1)
 			return { user: { ...state.user } }
 		default:
 			return state;

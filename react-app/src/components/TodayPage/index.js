@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
-import { fetchPinsToday } from "../../store/pins";
+// import { fetchPinsToday } from "../../store/pins";
 import './Today.css'
 
 function shuffle(array) {
@@ -32,7 +32,7 @@ function TodayPage() {
   let year = date.getFullYear();
   let day = date.getDate();
   useEffect(() => {
-    dispatch(fetchPinsToday())
+    // dispatch(fetchPinsToday())
   }, [dispatch])
 
   return (
