@@ -1,7 +1,9 @@
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
-export default function NotUSerProfile({ userBoardsArr }) {
+export default function NotUSerProfile({ userBoardsArr, username }) {
     const history = useHistory()
+    const allPins = useSelector(state => state.pins.allPin)
 
     function pinDisplay(pins) {
         if (pins === 0 || pins > 1) {
@@ -20,7 +22,7 @@ export default function NotUSerProfile({ userBoardsArr }) {
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
-                <div onClick={() => viewIndividualBoard(boards.user.username, boards.name)} className="profile-boards-wrapper">
+                <Link to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }}>
                     <div className="profile-board-images-wrapper">
                         <div>
                             {
@@ -51,11 +53,11 @@ export default function NotUSerProfile({ userBoardsArr }) {
                         </div>
                         <div>
                             <p className="profile-pins-on-board">
-                                {pinDisplay(boards.pins.length)}
+                                {pinDisplay(boards.pin_count)}
                             </p>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
     )

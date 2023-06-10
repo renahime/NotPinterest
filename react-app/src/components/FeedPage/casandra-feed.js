@@ -38,14 +38,12 @@ export default function CaSandraFeed() {
         }
         else {
             setTimeout(() => {
-                console.log("Inside the set time out", pins)
                 setFinished(true)
             }, 1000)
         }
     }, [loading, pins])
 
     if (!pinsArr[0]?.id || !finishedLoading) return <h1>...Loading</h1>
-    console.log(pinsArr)
     return (
         <div className="pins-feed-wrapper">
             {pinsArr.map(pin => (

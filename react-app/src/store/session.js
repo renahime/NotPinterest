@@ -48,15 +48,15 @@ export const createUserCategories = (categories) => async (dispatch) => {
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({categories: categories})
+		body: JSON.stringify({ categories: categories })
 	})
 	console.log("res", res)
-	if (res.ok){
+	if (res.ok) {
 		let categories = await res.json()
 		dispatch(setCategories(categories))
 		return categories
 	} else {
-		 return {errors: "Could not set category"}
+		return { errors: "Could not set category" }
 	}
 }
 
@@ -202,19 +202,13 @@ export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
-			let user = {...state.user}
+			let user = { ...state.user }
 			user.categories = action.categories
-			return {...state, user: {...user}, following: {}, followers: {}}
+			return { ...state, user: { ...user }, following: {}, followers: {} }
 		case GET_FOLLOWING_AND_FOLLOWERS:
-			return {...state, user: {...state.user}, following: {...action.users.following}, followers: {...action.users.followers}}
+			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
 		case FOLLOW_USER:
-			let newState = {...state}
-			console.log("state", state)
-			console.log(action.user)
-			// newState.following[action.user]
-			// following.push(action.user)
-			// newState.user.following = following
-			// console.log()
+			let newState = { ...state }
 			return newState
 		case SET_USER:
 			return { user: action.payload };

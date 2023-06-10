@@ -70,7 +70,7 @@ function App() {
             <UserPins />
           </Route>
           <Route path="/:username/_saved">
-            <ProfilePage session={sessionUser}/>
+            <ProfilePage session={sessionUser} />
           </Route>
           <Route exact path="/:username/:boardName">
             <IndividualBoardPage />

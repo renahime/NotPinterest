@@ -2,18 +2,16 @@ import { useEffect, useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo, clearProfile } from "../../store/profile"
-import { getBoardsByUsername } from "../../store/boards"
-import { findFollowersAndFollowing, unfollowUser, followUser } from "../../store/session"
+import { unfollowUser, followUser } from "../../store/session"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
+import { Link } from "react-router-dom/cjs/react-router-dom.min"
 import LoadingButton from "../LoadingButton"
 import "./ProfilePage.css"
-
+import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardModal from "../CreateBoardModal"
-
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -23,13 +21,13 @@ export default function ProfilePage() {
     const [loading, setLoading] = useState(false)
     const currentProfile = useSelector(state => state.profile.currentProfile)
     const currentUser = useSelector(state => state.session.user)
-    let userBoards = useSelector(state => state.boards.currentProfileBoards)
-    let userBoardsArr = Object.values(userBoards)
     let [numFollowers, setNumFollowers] = useState(0);
     let [numFollowing, setNumFollowing] = useState(0)
     let [isfollowing, setIsFollowing] = useState(false);
-
-
+    let [showBoards, setShowBoards] = useState(true)
+    useEffect(() => {
+        dispatch(getUserInfo(username)).then(() => setLoading(true))
+    }, [dispatch])
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
@@ -61,11 +59,6 @@ export default function ProfilePage() {
     }
 
     useEffect(() => {
-        dispatch(getUserInfo(username)).then(() => setLoading(true))
-        dispatch(clearProfile())
-    }, [dispatch])
-
-    useEffect(() => {
         if (!loading && !currentProfile.id) {
             return
         }
@@ -73,15 +66,28 @@ export default function ProfilePage() {
         else {
             setNumFollowers(currentProfile.followers.length)
             setNumFollowing(currentProfile.following.length)
-            dispatch(getBoardsByUsername(username))
-            dispatch(findFollowersAndFollowing(username))
         }
-        if (Object.values(currentProfile).length && Object.values(currentUser).length) {
-            if (currentProfile.followers.includes(currentUser.username)) {
-                setIsFollowing(true);
+        if (currentUser) {
+            if (Object.values(currentProfile).length && Object.values(currentUser).length) {
+                if (currentProfile.followers.includes(currentUser.username)) {
+                    setIsFollowing(true);
+                }
             }
         }
-    }, [loading, currentProfile])
+    }, [loading, currentProfile, currentUser])
+
+    const handleShowBoards = (e) => {
+        e.stopPropagation();
+        setShowBoards(true);
+    };
+
+    const handleShowPins = (e) => {
+        e.stopPropagation();
+        setShowBoards(false);
+    };
+
+    console.log(currentProfile)
+
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
@@ -118,14 +124,14 @@ export default function ProfilePage() {
                         </div>
                     </h5>
                     {checkUser() ?
-                        <NavLink exact to="/settings"><button className="profile-button edit-profile">Edit Profile</button></NavLink> :
+                        <Link to={{ pathname: "/settings", state: { currentUser } }}  ><button className="profile-button edit-profile">Edit Profile</button></Link> :
                         !isfollowing ?
                             <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
                             <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
                     }
                     <div>
-                        <button onClick={() => history.push(`/${username}/_created`)} className="profile-button">Created</button>
-                        <button onClick={() => history.push(`/${username}/_saved`)} className="profile-button">Saved</button>
+                        <button onClick={handleShowBoards} className="profile-button">Created</button>
+                        <button onClick={handleShowPins} className="profile-button">Saved</button>
                     </div>
                 </div>
             }
@@ -145,13 +151,13 @@ export default function ProfilePage() {
                                 />
                             </div>
                         </div>}
-                    </div>
-                    <CurrentUserBoard userBoardsArr={userBoardsArr} />
+                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={currentProfile.boards} username={currentProfile.username} profilePicture={currentProfile.profile_image} /> : <><UserPins pins={currentProfile.pins}> </UserPins></>}
                 </div>
                 :
-                <NotUSerProfile userBoardsArr={userBoardsArr} />
+                <div>
+                    {!showBoards ? <NotUSerProfile userBoardsArr={currentProfile.boards} username={currentProfile.username} profilePicture={currentProfile.profile_image} /> : <><UserPins pins={currentProfile.pins}> </UserPins></>}
+                </div>
             }
-
         </div>
     )
 }

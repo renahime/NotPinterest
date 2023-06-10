@@ -28,3 +28,9 @@
   margin: 0 auto;
   text-align: center;
 }
+
+.pin-today-image{
+  width: 440px;
+  height: 330px;
+  object-fit: fill;
+}

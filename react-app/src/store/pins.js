@@ -5,6 +5,8 @@ const GET_PINS_BY_CATEGORY = "pins/getPinsByCategory"
 const GET_PINS_BY_USERNAME = "pins/getPinsByUsername"
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
+const GET_ALL_PINS = "pins/all"
+
 
 
 const createPin = (pin) => ({
@@ -16,6 +18,12 @@ const getPin = (pin) => ({
     type: GET_PIN,
     pin
 })
+
+const getAllPins = (pins) => ({
+    type: GET_ALL_PINS,
+    pins
+})
+
 
 const getPinsToday = (pins) => ({
     type: GET_PINS_MADE_TODAY,
@@ -84,6 +92,18 @@ export const fetchPinsToday = () => async (dispatch) => {
     }
 }
 
+export const getAllPinsThunk = () => async (dispatch) => {
+    let res = await fetch(`/api/pins/`)
+    if (res.ok) {
+        let pins = await res.json()
+        dispatch(getAllPins(pins))
+    } else {
+        let errors = res.json()
+        return errors
+    }
+}
+
+
 export const getPinsByCategory = () => async (dispatch) => {
     const res = await fetch(`/api/pins/categories`)
     if (res.ok) {
@@ -141,43 +161,29 @@ export const updatePinThunk = (pin) => async (dispatch) => {
     }
 };
 
-
-const initialState = { pins: {}, singlePin: {}, todayPins: {}, userPins: {} }
+const initialState = { allPins: {}, singlePin: {} }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_PINS_BY_USERNAME:
-            console.log(action.pins)
-            return { ...state, singlePin: { ...state.singlePin }, todayPins: { ...state.todayPins }, pins: { ...action.pins }, userPins: { ...action.pins } }
-        case GET_PINS_BY_CATEGORY:
-            return { ...state, singlePin: { ...state.singlePin }, pins: { ...action.pins }, todayPins: { ...state.todayPins } }
-        case GET_PINS_MADE_TODAY:
-            return { ...state, allBoards: { ...state.allPins }, todayPins: { ...action.pins } }
         case GET_PIN:
             return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin } }
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, ...action.pin } }
-        case GET_PINS_MADE_TODAY:
-            return { ...state, pins: { ...state.pins }, todayPins: { ...action.pins } }
+        case GET_ALL_PINS:
+            return { ...state, allPins: { ...action.pins } }
         case DELETE_PIN:
             const newPins = { ...state.pins };
-            const updatedTodayPins = { ...state.todayPins };
             delete newPins[action.id];
-            if (updatedTodayPins[action.id]) {
-                delete updatedTodayPins[action.id]
+            if (state.singlePin.id == action.id) {
+                state.singlePin = {}
             }
             return {
                 ...state,
                 pins: newPins,
-                todayPins: updatedTodayPins,
             };
         case UPDATE_USER_PIN:
             const updatedPins = { ...state.pins, [action.pin.id]: action.pin };
-            const checkTodayPins = { ...state.todayPins };
-            if (checkTodayPins[action.id]) {
-                checkTodayPins[action.id] = action.pin
-            }
-            return { ...state, pins: updatedPins, todayPins: checkTodayPins }
+            return { ...state, pins: updatedPins }
         default:
             return state
     }

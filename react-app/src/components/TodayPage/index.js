@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
-// import { fetchPinsToday } from "../../store/pins";
+import { getAllPinsThunk } from "../../store/pins";
 import './Today.css'
 
 function shuffle(array) {
@@ -21,21 +21,32 @@ function shuffle(array) {
 
 function TodayPage() {
   const dispatch = useDispatch()
-  let pinsTodayObj = useSelector(state => state.pins.todayPins)
+  let pinsTodayObj = useSelector(state => state.pins.allPins)
   let pinsToday
-  if (pinsTodayObj) {
-    pinsToday = shuffle(Object.values(pinsTodayObj))
-  }
+
   const date = new Date();
+
+  let stringDate = date.toDateString().slice(4);
+  let monthString = stringDate.slice(0, 3);
+  let dayString = stringDate.slice(4, 6);
+  let yearString = stringDate.slice(7);
+
+  stringDate = dayString + " " + monthString + " " + yearString
+  console.log("personal", stringDate);
 
   const month = date.toLocaleString('default', { month: 'long' });
   let year = date.getFullYear();
   let day = date.getDate();
   useEffect(() => {
-    // dispatch(fetchPinsToday())
+    dispatch(getAllPinsThunk())
   }, [dispatch])
 
-  return (
+  if (pinsTodayObj) {
+    pinsToday = Object.values(pinsTodayObj)
+    pinsToday = shuffle(pinsToday)
+    pinsToday = pinsToday.filter(pin => pin.created_at.slice(5, 16) == stringDate);
+  }
+  return (!pinsToday.length ? <h1>Loading...</h1> :
     <div className="main-div">
       <div className="date-div">
         <h3 className="date">{month} {day}, {year}</h3>
@@ -45,14 +56,9 @@ function TodayPage() {
         {pinsToday.map((pin) => {
           return (
             <NavLink key={pin.id} to={`/boards/${pin.id}`}>
-              <div className="pin-today"
-                style={{
-                  backgroundImage: `url(${pin.image})`,
-
-                }}>
+              <div className="pin-today">
+                <img src={pin.image} className="pin-today-image"></img>
                 <div className="text-container">
-                  <h2 className="category-text">{pin.categories[0]}</h2>
-                  <h1 className="board-name-text">{pin.boards_pinned_in[0]}</h1>
                 </div>
               </div>
             </NavLink>

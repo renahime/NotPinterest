@@ -168,32 +168,23 @@ export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
-			console.log("action.categories", action.categories)
-			let user = {...state.user}
+			let user = { ...state.user }
 			user.categories = action.categories
 			return { ...state, user: { ...user } }
-
 		case FOLLOW_USER:
 			let newState = { ...state }
-			console.log("state", state)
-			console.log(action.user)
-			// newState.following[action.user]
-			// following.push(action.user)
-			// newState.user.following = following
-
-			console.log("FOLLOWING USER REDUCER")
 			return newState
 		case SET_USER:
-			return { user: action.payload };
+			return { ...state, user: action.payload };
 		case REMOVE_USER:
-			return { user: null };
+			return { ...state, user: null };
 		case UNFOLLOW_USER:
 			let unfollowed = action.user
 			let i = state.user.following.indexOf(unfollowed)
 			console.log("state.user.following", state.user.following)
 			console.log("state.user", state.user)
 			state.user.following.splice(i, 1)
-			return { user: { ...state.user } }
+			return { ...state, user: { ...state.user } }
 		default:
 			return state;
 	}

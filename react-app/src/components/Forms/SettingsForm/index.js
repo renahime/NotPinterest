@@ -11,18 +11,23 @@ import { useModal } from '../../../context/Modal'
 import OpenModalButton from '../../OpenModalButton'
 import './Settings.css'
 import DeleteUserModal from './DeleteUserModal'
+import { useLocation } from "react-router-dom";
+
 function Settings() {
   let user = useSelector(state => state.session.user)
+  const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const hiddenFileInput = React.useRef(null);
-  const [firstName, setFirstName] = useState(user?.first_name)
-  const [lastName, setLastName] = useState(user?.last_name)
-  const [about, setAbout] = useState(user?.about)
-  const [pronouns, setPronouns] = useState(user?.pronouns)
-  const [website, setWebsite] = useState(user?.website)
-  const [username, setUsername] = useState(user?.username)
+  const data = location.state.currentUser;
+  const [firstName, setFirstName] = useState(data?.first_name)
+  const [lastName, setLastName] = useState(data?.last_name)
+  const [about, setAbout] = useState(data?.about)
+  const [pronouns, setPronouns] = useState(data?.pronouns)
+  const [website, setWebsite] = useState(data?.website)
+  const [username, setUsername] = useState(data?.username)
   const [errors, setErrors] = useState()
+  const [profilePic, setProfilePic] = useState(data?.profile_image);
 
   const options = [
     { value: "ey/em", label: "ey/em" },
@@ -53,9 +58,6 @@ function Settings() {
       history.push(`/feed`)
     }
   }
-
-
-
   return (
     <div className='settings-with-footer'>
       <div className='main-settings-div'>
@@ -71,7 +73,7 @@ function Settings() {
             <div className='profile-picture-setting'>
               <h6>Photo</h6>
               <div className='photo-and-button'>
-                <img id='profile-picture-display' src='https://64.media.tumblr.com/441fc6012f18fbf1817e1f7511465ab8/tumblr_p8y5hkOypW1v30v1fo2_400.png'></img>
+                <img id='profile-picture-display' src={profilePic}></img>
                 <button id='file-input-actual-button' onClick={handleClick}>Change</button>
                 <input className='file-input-button' type="file" ref={hiddenFileInput} style={{ display: 'none' }} />
               </div>
