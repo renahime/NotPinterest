@@ -55,7 +55,7 @@ export default function UserCategoriesForm() {
                 <h5>...but first, let us know what type of threads you favor so we can curate your feed!</h5>
                 {Object.values(errors).length ? <p style={{ color: "red" }}>{errors.errors}</p> : null}
             </div>
-            <form onSubmit={(e) => handleSubmit(e)} >
+            <form onSubmit={handleSubmit} >
                 <div className="all-user-category-images-wrapper">
                     <div className="individual-categories">
                         <label className="user-category-input-wrapper">

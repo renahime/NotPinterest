@@ -127,6 +127,12 @@ const GET_PINS_BY_CATEGORY = "pins/getPinsByCategory"
 const GET_PINS_BY_USERNAME = "pins/getPinsByUsername"
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
+const GET_ALL_PINS = "pins/all"
+
+const getAllPins = (pins) => ({
+    type: GET_ALL_PINS,
+    pins
+})
 
 
 const createPin = (pin) => ({
@@ -300,6 +306,9 @@ export default function pinsReducer(state = initialState, action) {
                 checkTodayPins[action.id] = action.pin
             }
             return { ...state, pins: updatedPins, todayPins: checkTodayPins }
+        case GET_ALL_PINS:
+            console.log("pins in thunk", action.pins)
+            return { ...state, pins: { ...action.pins } }
         default:
             return state
     }
