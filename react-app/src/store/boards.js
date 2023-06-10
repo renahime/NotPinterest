@@ -1,4 +1,3 @@
-
 const GET_BOARDS_OF_USER = "boards/getUserBoards"
 const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'

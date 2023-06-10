@@ -24,21 +24,30 @@ function FeedPage() {
   const [randomizedArrays, setRandomizedArrays] = useState([]);
 
   let singleBoard = useSelector(state => state.boards.singleBoard)
+  let state = useSelector(state => state)
   console.log("SINGLE BOARD INFO on feed page", singleBoard)
+  console.log("CURRENT STATE", state)
+  console.log("BOARDS", state.boards)
+
+
 
   console.log("HOVER PIN", hoverBoardDiv)
 
 
+
+  //for BOARD HOVER
   function onHoverBoard(board) {
     setHoverBoard(true)
     setHoverBoardDiv(board.id)
   }
-
   function offHoverBoard() {
     setHoverBoard(false)
     setHoverBoardDiv("")
   }
 
+
+
+  // if user clicks on board
   function viewIndividualBoard(username, name) {
     let nameArr = name.toLowerCase().split(" ")
     let formattedName = nameArr.join("_")
@@ -46,19 +55,22 @@ function FeedPage() {
   }
 
 
+
+  //FETCH BOARD DATA
   useEffect(() => {
     setTimeout(() => {
-      // Assuming you're fetching the boards data here
+
       if (username) {
         dispatch(getBoardsByUsername(username))
       }
-
       setIsLoading(false);
     }, 1500);
-
   }, [dispatch])
 
 
+
+
+  //GET ALL PINS DATA FOR ARRAY
   const allPins = useSelector(state => state.pins.pins)
   let allPinsArr = Object.values(allPins)
 
@@ -70,29 +82,27 @@ function FeedPage() {
       .catch((error) => console.log("Error fetching pins:", error));
   }, [dispatch]);
 
+
+
+
   //GET STATE DATA
   const sessionUser = useSelector(state => state.session.user)
-
   const currentState = useSelector(state => state)
-
-
   const username = sessionUser?.username
-  console.log("SESSION USER USERNAME", username)
-
-  console.log(sessionUser)
-
-  const boardsSelector = useSelector((state) => state.boards.currentUserBoards)
-  console.log("GET ALL BOARDS STATE TEST", boardsSelector)
-
-
+  const boardsSelector = useSelector((state) => state.boards.currentUserBoards)  
   const boards = Object.values(boardsSelector)
-  // const boards = boardsArr[0]
+  const [selectedBoard, setSelectedBoard] = useState(boards[0]?.id || "")
+  const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(boards[0]?.name || "")
+
+  console.log("SELECETED BOARD DROPDOWN", selectedBoardDropdown)
+  console.log("SESSION USER USERNAME", username)
+  console.log(sessionUser)
+  console.log("GET ALL BOARDS STATE TEST", boardsSelector)
   console.log("GET ALL BOARDS DATA", boards)
 
 
-  const [selectedBoard, setSelectedBoard] = useState(boards[0]?.id || "")
-  console.log("SELECETED BOARD", selectedBoard)
 
+  // Randomize Array function
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -100,27 +110,21 @@ function FeedPage() {
     }
     return array;
   }
-
   // let randomizedArrays;
   const dividedArrays = [];
 
 
+  //FOR PIN FEED, sepereate all pins into 7 sections
   useEffect(() => {
-
     if (allPinsArr.length > 0) {
       const dividedBy7 = Math.ceil(allPinsArr.length / 7);
-
-
       for (let i = 0; i < allPinsArr.length; i += dividedBy7) {
         const individualSection = allPinsArr.slice(i, i + dividedBy7);
         dividedArrays.push(individualSection);
       }
-
       if (dividedArrays.length > 0) {
-
         setRandomizedArrays(shuffleArray(dividedArrays));
       }
-
       console.log("DIVIDED ARRAYS", dividedArrays);
       console.log("Randomized arrays", randomizedArrays)
     }
@@ -137,11 +141,12 @@ function FeedPage() {
   // Checking for the number of pins in BOARD STATE
   let numberOfPins;
 
-  if (boards) {
+  if (boards.length > 0) {
     let numberOfPinsStart = 0
     for (let i = 0; i < boards.length; i++) {
       const board = boards[i]
-      if (board.pins.length > 0) {
+      console.log("BOARDS PINS LENGTH", board)
+      if (board.pins?.length > 0) {
         numberOfPinsStart += board.pins.length
         console.log("NUMBER OF PINS", numberOfPins)
       }
@@ -184,9 +189,10 @@ function FeedPage() {
 
 
 
+  // this is for the select a board dropdown
   const handleBoardChange = (event) => {
     const selectedValue = event.target.value;
-    setSelectedBoard(selectedValue);
+    setSelectedBoardDropdown(selectedValue);
   };
 
 
@@ -253,7 +259,7 @@ function FeedPage() {
 
             <div>
               <label htmlFor="boardSelect">Select a board:</label>
-              <select id="boardSelect" onChange={handleBoardChange} value={selectedBoard}>
+              <select id="boardSelect" onChange={handleBoardChange} value={selectedBoardDropdown}>
                 {boards.map((board) => (
                   <option key={board.id} value={board.name}>
                     {board.name}

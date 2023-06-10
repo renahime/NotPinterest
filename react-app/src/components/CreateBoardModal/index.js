@@ -25,6 +25,8 @@ function CreateBoardModal({ username }) {
   const [change, setChange] = useState(false)
 
 
+
+
   console.log("USER NAME", username)
 
   const stateCheck = useSelector((state) => state)
@@ -38,6 +40,17 @@ function CreateBoardModal({ username }) {
   let testUsername = useSelector(state => state.session.user)
   console.log("THIS IS THE USER FOR CREATE BOARD", testUsername)
 
+
+  useEffect(() => {
+    const referrer = document.referrer;
+    if (referrer.includes('/create')) {
+      // Do something if the page is coming from example.com/profile
+      console.log("WE ARE COMING FROM /CREATE", referrer)
+
+    } else {
+      // Do something else if the page is coming from somewhere else or without /profile
+    }
+  }, []);
 
 
 
@@ -73,13 +86,13 @@ function CreateBoardModal({ username }) {
 
     //VALIDATIONS
 
-    //check if board name is already taken
+    // check if board name is already taken
     if (Object.values(testUsername)) {
       const userBoards = testUsername.boards
       console.log("USERBOARDS", testUsername.boards)
       for (const board of testUsername.boards) {
         console.log("BOARDS", board)
-        if (board.name === name) {
+        if (board.name.toLowerCase() === name.toLowerCase()) {
           setErrors(["This board name is already taken, please choose another name."])
           return
         }
@@ -93,8 +106,18 @@ function CreateBoardModal({ username }) {
       description: description
     }
     //log formData
-    await dispatch(createBoardThunk(formData))
-    history.push(`/${username}/${formData.name}`)
+
+    await dispatch(createBoardThunk(formData)).then(() => history.push(`/${username}/${formData.name}`))
+
+    // if (response && response.errors) {
+    //   setErrors(response.errors);
+    //   console.log("ERRORS",errors)
+    // } else {
+    //   history.push(`/${username}/${formData.name}`);
+    //   closeModal();
+    //   openModal();
+    // }
+
     closeModal()
     openModal()
 

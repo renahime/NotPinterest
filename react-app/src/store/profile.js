@@ -158,6 +158,7 @@ export const deleteProfileThunk = (user) => async (dispatch) => {
     }
 }
 
+
 const initialState = { currentProfile: {} }
 
 export default function profileReducer(state = initialState, action) {
