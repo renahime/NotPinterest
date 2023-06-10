@@ -9,6 +9,7 @@ const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
 const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
 const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
+const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 
 
 const setCategories = (categories) => ({
@@ -40,10 +41,32 @@ const getFollowersAndFollowing = (users) => ({
 	users
 })
 
+const createUserBoard = (board) => ({
+    type: CREATE_USER_BOARD_FROM_PIN,
+    board
+})
+
 // const getFollowing = (users) => ({
 // 	type: GET_FOLLOWERS,
 // 	users
 // })
+
+export const createBoardFromPinPage = (board) => async (dispatch) => {
+    const res = await fetch('/api/boards/', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(board)
+    })
+
+    if (res.ok) {
+        const new_board = await res.json()
+        dispatch(createUserBoard(new_board))
+        return new_board
+    }
+    else {
+        return ("Error response:", res)
+    }
+}
 
 export const createUserCategories = (categories) => async (dispatch) => {
 	console.log("categories", categories)
@@ -205,6 +228,10 @@ const initialState = { user: null, following: {}, followers: {} };
 export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
+		case CREATE_USER_BOARD_FROM_PIN:
+			let newSate2 = {...state, user: {...state.user, ...state.user.boards.push(action.board)}}
+			console.log("newSate2", newSate2)
+			return newSate2
 		case SET_USER_CATEGORIES:
 			let user = {...state.user}
 			console.log("action", action.categories)

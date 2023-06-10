@@ -10,6 +10,8 @@ import "./CreatePin.css"
 
 export default function CreatePin() {
     const history = useHistory()
+    const currentUser = useSelector(state => state.session.user)
+    const currentUserBoards = useSelector(state => state.session.user.boards)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [errors, setErrors] = useState("")
@@ -18,8 +20,6 @@ export default function CreatePin() {
     const [destinationLink, setDestinationLink] = useState("")
     const [loadingImage, setLoadingImage] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
-    const currentUser = useSelector(state => state.session.user)
-    const [currentUserBoards, setCurrentUserBoards] = useState(currentUser.boards)
     const [board, setBoard] = useState("")
     const [titleActive, setTitleActive] = useState(false)
     const [descActive, setDescActive] = useState(false)
@@ -89,7 +89,7 @@ export default function CreatePin() {
 
     function openModal (e) {
         e.preventDefault()
-        setModalContent(<CreateNewBoardOnPin setter={setCurrentUserBoards}/>)
+        setModalContent(<CreateNewBoardOnPin />)
     }
 
     let altTextButtonClassName = viewAltText ? "hidden" : "create-pin-alt-text-button"
@@ -117,7 +117,7 @@ export default function CreatePin() {
             setBoard(userBoards[0].id)
             console.log(userBoards)
         }
-    }, [currentUserBoards])
+    }, [userBoards])
 
 
     return (

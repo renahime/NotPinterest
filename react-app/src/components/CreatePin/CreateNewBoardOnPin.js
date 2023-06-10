@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { createBoardThunk } from "../../store/boards";
+import { createBoardFromPinPage } from "../../store/session";
 import { useState } from "react";
 import { useModal } from "../../context/Modal";
 
@@ -24,13 +24,12 @@ export default function CreateNewBoardOnPin({setter}) {
             description: description
         }
 
-        let res = await dispatch(createBoardThunk(formData))
+        let res = await dispatch(createBoardFromPinPage(formData)).then(closeModal())
 
         if (res.errors) {
             setErrors(res)
         } else {
             console.log("res", res)
-            setter(res)
             closeModal()
         }
     }

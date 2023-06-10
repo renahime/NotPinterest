@@ -63,7 +63,7 @@ export const getAllBoardsThunk = () => async (dispatch) => {
         let boards = await res.json()
         console.log("all boards", boards)
         dispatch(getAllBoards(boards))
-        return
+        return boards
     }
 }
 
