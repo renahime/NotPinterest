@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNewPin } from "../../store/pins";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { getAllBoardsThunk } from "../../store/boards";
+import { useModal } from "../../context/Modal";
+import CreateNewBoardOnPin from "./CreateNewBoardOnPin";
 import "./CreatePin.css"
-import OpenModalButton from "../OpenModalButton";
-import CreateBoardModal from "../CreateBoardModal";
+
 
 export default function CreatePin() {
     const history = useHistory()
@@ -18,6 +19,7 @@ export default function CreatePin() {
     const [loadingImage, setLoadingImage] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const currentUser = useSelector(state => state.session.user)
+    const [currentUserBoards, setCurrentUserBoards] = useState(currentUser.boards)
     const [board, setBoard] = useState("")
     const [titleActive, setTitleActive] = useState(false)
     const [descActive, setDescActive] = useState(false)
@@ -25,15 +27,9 @@ export default function CreatePin() {
     const [image, setImage] = useState("")
     const [previewImage, setPreviewImage] = useState("")
     const [submit, setSubmit] = useState(false)
+    const { setModalContent, setOnModalClose } = useModal();
     const dispatch = useDispatch()
     let userBoards = Object.values(currentUser.boards)
-
-    if (userBoards.length) {
-        // setBoard(userBoards[0].id)
-        console.log(userBoards)
-    }
-
-
 
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
@@ -91,14 +87,10 @@ export default function CreatePin() {
 
     }
 
-    function filterBoards(boards) {
-        console.log("inside filter", boards)
-        let userBoards = []
-        for (let board of boards) {
-            if (board.owner_id === currentUser.id) {
-                userBoards.push(board)
-            }
-        }
+    function openModal (e) {
+        e.preventDefault()
+
+        setModalContent(<CreateNewBoardOnPin setter={setCurrentUserBoards}/>)
     }
 
     let altTextButtonClassName = viewAltText ? "hidden" : "create-pin-alt-text-button"
@@ -126,7 +118,7 @@ export default function CreatePin() {
             setBoard(userBoards[0].id)
             console.log(userBoards)
         }
-    }, [])
+    }, [currentUserBoards])
 
 
     return (
@@ -162,14 +154,14 @@ export default function CreatePin() {
                     {loadingImage && <h3>Wait while your image is uploaded</h3>}
                 </div>
                 <div className="new-pin-info-side">
-                    {userBoards.length ?
+                    {currentUserBoards.length ?
                         <div className="new-pin-save-and-board">
                             <label>
                                 <select
                                     value={board}
                                     onChange={(e) => setBoard(e.target.value)}
                                 >
-                                    {userBoards.map(boardValue => (
+                                    {currentUserBoards.map(boardValue => (
                                         <option
                                             key={boardValue.id}>
                                             {boardValue.name}
@@ -181,18 +173,10 @@ export default function CreatePin() {
                             <button>Save</button>
                         </div>
                         :
-                        null
-                        // <div className="new-pin-save-and-board">
-                        //     <div className="create-pin-no-boards">
-                        //         <i class="fa-solid fa-circle-plus"></i>
-                        //         <OpenModalButton
-                                
-                        //         type="button"
-                        //         buttonText="Create Board"
-                        //         modalComponent={<CreateBoardModal username={currentUser.username}/>}
-                        //         />
-                        //     </div>
-                        // </div>
+                        <button onClick={openModal} className='open-modal-button'>
+                            Create a Board
+                            <i className="fa-solid fa-plus"></i>
+                        </button>
                     }
                     <div className="new-pin-title-input-wraper">
                         <label>
@@ -309,3 +293,5 @@ export default function CreatePin() {
         </div>
     )
 }
+
+
