@@ -42,9 +42,10 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
       const data = await res;
       setErrors(data.errors);
     });
-    pin = updatedPin
+    if (updatedPin) {
+      pin = updatedPin
+    }
   }
-
   function refreshPage() {
     window.location.reload(false);
   }
@@ -67,8 +68,6 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
       return history.push(`/${user.username}/${sendBoardName}`)
     }
   }
-
-
 
   return (user.id === pin.owner_id ?
     <div className="pin-edit-owner-container">

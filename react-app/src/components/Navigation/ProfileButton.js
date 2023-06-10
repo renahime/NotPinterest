@@ -17,7 +17,6 @@ function ProfileButton({ user }) {
     setShowMenu(true);
   };
 
-  console.log("USER", user)
   useEffect(() => {
     if (!showMenu) return;
 
@@ -56,10 +55,16 @@ function ProfileButton({ user }) {
 
             <div className="nav-dropdown-middle-text">
               <li>
-                <NavLink to={`${user.username}`} onClick={closeMenu}>My Boards</NavLink>
+                <NavLink to={{
+                  pathname: `/${user.username}`,
+                  state: { showBoards: true }
+                }} onClick={closeMenu}>My Boards</NavLink>
               </li>
               <li>
-                <NavLink to={`/${user.username}/_created`}>My Pins</NavLink>
+                <NavLink to={{
+                  pathname: `/${user.username}`,
+                  state: { showBoards: false }
+                }}>My Pins</NavLink>
               </li>
               <li>
                 <NavLink to="/settings" onClick={closeMenu} >Settings</NavLink>

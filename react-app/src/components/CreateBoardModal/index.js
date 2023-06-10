@@ -27,10 +27,8 @@ function CreateBoardModal({ username }) {
 
 
 
-  console.log("USER NAME", username)
 
   const stateCheck = useSelector((state) => state)
-  console.log("STATE CHECK FOR BOARD", stateCheck)
 
 
   useEffect(() => {
@@ -38,7 +36,6 @@ function CreateBoardModal({ username }) {
 
   let pinsTodayObj = useSelector(state => state)
   let testUsername = useSelector(state => state.session.user)
-  console.log("THIS IS THE USER FOR CREATE BOARD", testUsername)
 
 
   useEffect(() => {

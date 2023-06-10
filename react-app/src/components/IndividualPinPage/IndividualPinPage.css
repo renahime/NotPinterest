@@ -185,11 +185,12 @@
     background-color: rgba(0, 0, 0, 0.14);
     cursor: pointer;
 }
-.dropdown-container {
+.dropdown-container-edit-pin {
     text-align: left;
-    border: 1px solid #ccc;
+    border: none;
     position: relative;
     border-radius: 5px;
+    width:75px
   }
 
   .dropdown-input {
@@ -200,11 +201,10 @@
     user-select: none;
   }
 
-  .dropdown-menu{
+  .dropdown-menu-edit-pin{
     position:absolute;
     background-color: white;
     border-radius: 5px;
-    border: 1px solid #ccc;
     width:100%;
     transform: translateY(4px);
     overflow: auto;

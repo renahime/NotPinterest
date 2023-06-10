@@ -261,3 +261,17 @@ def get_latest_pins():
             if pin.created_at.date() == latest_date:
                 all_pins[pin.id] = pin.to_dict()
     return all_pins
+
+
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
+    return all_pins

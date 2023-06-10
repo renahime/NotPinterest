@@ -121,6 +121,8 @@ class Board(db.Model):
             if not len(self.pins_tagged):
                 break
             # there are additional pins, so set the current image to the image on the next pin
+            if n >= len(self.pins_tagged):
+                break
             current_image = self.pins_tagged[n].image
             # if there is a cover and and a current image make sure that the current image isn't same thing as the cover, if it isn't add it to our list
             if cover and current_image:
@@ -143,7 +145,7 @@ class Board(db.Model):
             'owner_id': self.owner_id,
             'user': self.user.to_dict(),
             'categories': [category.name for category in self.categories],
-            'pins': [pin.id for pin in self.pins_tagged],
+            'pins': [{"id":pin.id, "image":pin.image, "username":pin.user.username, "profile_picture":pin.user.profile_image} for pin in self.pins_tagged],
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
@@ -172,7 +174,7 @@ class Pin(db.Model):
     def boards_pinned_to_dict(self):
         returnList = []
         for board in self.board_tagged:
-            returnList.append({"id":board.id,"name": board.name, "pins":[pin.id for pin in board.pins_tagged]})
+            returnList.append({"id":board.id,"name": board.name})
         return returnList
 
 
@@ -189,7 +191,7 @@ class Pin(db.Model):
             'boards_pinned_in': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'user': self.user.to_dict()
+            'user': {"id": self.user.id, "profile_image":self.user.profile_image, "first_name": self.user.first_name, "last_name":self.user.last_name, "followers": [follower.username for follower in self.user.followers]}
         }
 
 
@@ -211,4 +213,3 @@ class Category(db.Model):
             'id': self.id,
             'name': self.name
         }
-    

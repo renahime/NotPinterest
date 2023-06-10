@@ -1,46 +1,55 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getBoardByName } from "../../store/boards"
+import { getBoardByName, getSingleBoardThunk } from "../../store/boards"
 import { useDispatch, useSelector } from "react-redux"
 import PinsForBoardPage from "./PinsForBoardPage"
 import './IndividualBoardPage.css'
-import { Link } from "react-router-dom"
+import { Link, useHistory, useLocation } from "react-router-dom"
 
 export default function IndividualBoardPage() {
-    let { username, boardName } = useParams()
-    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const history = useHistory()
+    let [ownerCheck, setOwnerCheck] = useState(false);
     const [menu, showMenu] = useState(false)
-    const dispatch = useDispatch()
-    let singleBoard = useSelector(state => state.boards.singleBoard)
+    let usernameBoardName = location.pathname.split('/')
+    let username = usernameBoardName[1]
+    let boardName = usernameBoardName[2]
+    console.log(boardName)
     const currentUser = useSelector(state => state.session.user)
-
-    console.log("SINGLE BOARD:", singleBoard)
-    console.log("BOARD:", singleBoard)
-
-    function pinDisplay(pins) {
-        if (pins === 0 || pins > 1) {
-            return `${pins} pins`
-        } else {
-            return "1 pin"
-        }
-    }
+    let boardPins = []
+    const individualBoard = useSelector(state => state.boards.singleBoard)
 
     useEffect(() => {
-        dispatch(getBoardByName(username, boardName)).then(setLoading(true)).catch((e) => console.log("e", e))
-    }, [dispatch,boardName,username])
+        dispatch(getSingleBoardThunk(username, boardName))
+        for (let board of currentUser.boards) {
+            if (board.id === individualBoard.id) {
+                setOwnerCheck(true);
+            }
+        }
+    }, [dispatch])
 
-    if (!Object.values(singleBoard).length) return <h1>..Loading</h1>
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
+    const handleBack = () => {
+        history.goBack()
+    }
+
+    if (individualBoard.pins) {
+        boardPins = Object.values(individualBoard.pinInfo);
+    }
+
+    console.log("check", individualBoard);
 
     return (
         <div >
-            {loading &&
+            {!Object.values(individualBoard).length ? <h1>Loading..</h1> :
                 <div className="individual-board-wrapper">
+                    <i onClick={handleBack} class="fa-solid fa-arrow-left"></i>
                     <div className="individual-board-info-wrapper">
-                        {currentUser.id === singleBoard.user.id ?
+                        {ownerCheck ?
                             <div className="individual-board-info">
                                 <div className="individual-board-info-owner">
-                                    <h1>{singleBoard.name}</h1>
+                                    <h1>{individualBoard.name}</h1>
                                     <button onClick={() => showMenu(!menu)} className="individual-board-ellipsis">
                                         <i className="fa-solid fa-ellipsis"></i>
                                     </button>
@@ -49,28 +58,26 @@ export default function IndividualBoardPage() {
                                         <p>Edit board</p>
                                     </div>
                                 </div>
-                                {singleBoard.user.profile_image ? <img className="individual-board-profile-image" src={singleBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
+                                {individualBoard.user.profile_image ? <img className="individual-board-profile-image" src={individualBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
                                 <div>
-                                    <div className="individual-board-description-owner">{singleBoard.description ? singleBoard.description : null}
+                                    <div className="individual-board-description-owner">{individualBoard.description ? individualBoard.description : null}
                                     </div>
                                 </div>
                             </div>
                             :
                             <div className="individual-board-info">
-                                <h1>{singleBoard.name}</h1>
-                                {singleBoard.user.profile_image ? <img className="individual-board-profile-image" src={singleBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
+                                <h1>{individualBoard.name}</h1>
+                                {individualBoard.user.profile_image ? <img className="individual-board-profile-image" src={individualBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}
                                 <div className="individual-board-description">
-                                    <Link className="individual-board-profile-link" to={`/${singleBoard.user.username}`}>{singleBoard.user.username}</Link>
-                                    <i className="fa-solid fa-circle board-dot"></i>
-                                    <div>{singleBoard.description ?
+                                    <div>{individualBoard.description ?
                                         <div>
-                                            {singleBoard.description}</div> : null}
+                                            {individualBoard.description}</div> : null}
                                     </div>
                                 </div>
                             </div>}
                     </div>
                     <div>
-                        <PinsForBoardPage pins={singleBoard["pinInfo"]} />
+                        <PinsForBoardPage pins={boardPins} />
                     </div>
                 </div>}
         </div>
