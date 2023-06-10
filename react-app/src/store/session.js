@@ -52,7 +52,7 @@ export const createUserCategories = (categories) => async (dispatch) => {
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({categories: categories})
+		body: JSON.stringify(categories)
 	})
 	console.log("res", res)
 	if (res.ok){

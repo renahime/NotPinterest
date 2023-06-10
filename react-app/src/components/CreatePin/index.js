@@ -39,57 +39,56 @@ export default function CreatePin() {
     let handleSubmit = async (e) => {
         e.preventDefault();
         console.log(board)
-        // setErrors({})
+        setErrors({})
 
-        // let validationErrors = {}
+        let validationErrors = {}
 
-        // if (!image) {
-        //     validationErrors["image"] = "Image is required"
-        // }
-        // if (title.length > 100) {
-        //     validationErrors.title = "Ooops! This title is getting long. Try trimming it down."
-        // }
-        // if (description.length > 225) {
-        //     validationErrors.description = "Ooops! This description is getting long. Try trimming it down."
-        // }
-        // if (altText.length > 225) {
-        //     validationErrors.altText = "Ooops! This alt text is getting long. Try trimming it down."
-        // }
-        // if (destinationLink.length > 225) {
-        //     validationErrors.destinationLink = "Ooops! This link is getting long. Try trimming it down."
-        // }
-        // if (!board) {
-        //     validationErrors.board = "Ooops! This pin must be added to a board!"
-        // }
-        // if (Object.values(validationErrors).length) {
-        //     setErrors(validationErrors)
-        //     return
-        // }
-        // setSubmit(true)
-        // setImage(previewImage)
+        if (!image) {
+            validationErrors["image"] = "Image is required"
+        }
+        if (title.length > 100) {
+            validationErrors.title = "Ooops! This title is getting long. Try trimming it down."
+        }
+        if (description.length > 225) {
+            validationErrors.description = "Ooops! This description is getting long. Try trimming it down."
+        }
+        if (altText.length > 225) {
+            validationErrors.altText = "Ooops! This alt text is getting long. Try trimming it down."
+        }
+        if (destinationLink.length > 225) {
+            validationErrors.destinationLink = "Ooops! This link is getting long. Try trimming it down."
+        }
+        if (!board) {
+            validationErrors.board = "Ooops! This pin must be added to a board!"
+        }
+        if (Object.values(validationErrors).length) {
+            setErrors(validationErrors)
+            return
+        }
+        setSubmit(true)
+        setImage(previewImage)
 
-        // const pinData = new FormData()
-        // pinData.append("image", image)
-        // pinData.append("board", board)
-        // pinData.append("title", title)
-        // pinData.append("description", description)
-        // pinData.append("alt_text", altText)
-        // pinData.append("destination", destinationLink)
-        // setLoadingImage(true)
+        const pinData = new FormData()
+        pinData.append("image", image)
+        pinData.append("board", board)
+        pinData.append("title", title)
+        pinData.append("description", description)
+        pinData.append("alt_text", altText)
+        pinData.append("destination", destinationLink)
+        setLoadingImage(true)
 
-        // let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
-        // if (new_pin.errors) {
-        //     setErrors(new_pin.errors)
-        //     return
-        // } else {
-        //     history.push(`/pin/${new_pin.pin.id}`)
-        // }
+        let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
+        if (new_pin.errors) {
+            setErrors(new_pin.errors)
+            return
+        } else {
+            history.push(`/pin/${new_pin.pin.id}`)
+        }
 
     }
 
     function openModal (e) {
         e.preventDefault()
-
         setModalContent(<CreateNewBoardOnPin setter={setCurrentUserBoards}/>)
     }
 
@@ -151,7 +150,7 @@ export default function CreatePin() {
                         </div>
                     </div>
                     {errors.image ? <p className="create-pin-errors">{errors.image}</p> : null}
-                    {loadingImage && <h3>Wait while your image is uploaded</h3>}
+                    {loadingImage ? <h3>Wait while your image is uploaded</h3> : null}
                 </div>
                 <div className="new-pin-info-side">
                     {currentUserBoards.length ?

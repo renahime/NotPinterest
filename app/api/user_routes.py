@@ -16,58 +16,30 @@ def set_categories():
     form = UserCategoryForm()
     print(form.data)
 
-    user_id = current_user.id
+    user = User.query.get(current_user.id)
     
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
-        print("data inside validator", data)
-        print("form.data streetware", data["athleisure"])
-        athleisure = request.form.get("athleisure")
-        print("PLEASEEEEEEEEEEEEEEEEEEEEEEEEE", athleisure)
-        # if data["streetware"]:
-        #     streetwear = Category.query.filter(Category.name == "Streetware").one()
-        #     new_rel1 = user_categories(
-        #         user_id=user_id,
-        #         board_id=streetwear["id"]
-        #     )
-        #     db.session.add(new_rel1)
-        # if data["formalwear"]:
-        #     formalwear = Category.query.filter(Category.name == "Formal Ware").one()
-        #     new_rel2 = user_categories(
-        #         user_id=user_id,
-        #         board_id=formalwear["id"]
-        #     )
-        #     db.session.add(new_rel2)
-        # if data["dark"]:
-        #     dark = Category.query.filter(Category.name == "Dark").one()
-        #     new_rel3 = user_categories(
-        #         user_id=user_id,
-        #         board_id=dark["id"]
-        #     )
-        #     db.session.add(new_rel3)
-        # if data["boho"]:
-        #     boho = Category.query.filter(Category.name == "Boho").one()
-        #     new_rel4 = user_categories(
-        #         user_id=user_id,
-        #         board_id=boho["id"]
-        #     )
-        #     db.session.add(new_rel4)
-        # if data["old_money"]:
-        #     old_money = Category.query.filter(Category.name == "Old Money").one()
-        #     new_rel5 = user_categories(
-        #         user_id=user_id,
-        #         board_id=old_money["id"]
-        #     )
-        #     db.session.add(new_rel5)
-        print("TETTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
-        return
-        # if form.data["athleisure"] == 1:
-        #     athleisure = Category.query.filter(Category.name == "Athleisure").one()
-        #     user = User.query.get(user_id)
-        #     user.categories.append(athleisure)
-        #     return [category.to_dict() for category in user.categories]
-    print("i actuall don't work")
+        if data["streetware"] == "yes":
+            streetwear = Category.query.filter(Category.name == "Streetware").one()
+            user.categories.append(streetwear)
+        if data["formalwear"] == "yes":
+            formalwear = Category.query.filter(Category.name == "Formal Ware").one()
+            user.categories.append(formalwear)
+        if data["dark"] == "yes":
+            dark = Category.query.filter(Category.name == "Dark").one()
+            user.categories.append(dark)
+        if data["boho"] == "yes":
+            boho = Category.query.filter(Category.name == "Boho").one()
+            user.categories.append(boho)
+        if data["old_money"] == "yes":
+            old_money = Category.query.filter(Category.name == "Old Money").one()
+            user.categories.append(old_money)
+        if form.data["athleisure"] == "yes":
+            athleisure = Category.query.filter(Category.name == "Athleisure").one()
+            user.categories.append(athleisure)
+        return [category.name for category in user.categories]
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
     
 

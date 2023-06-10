@@ -30,16 +30,16 @@ export default function UserCategoriesForm() {
 
 
         let interests = {
-            boho: bohoImage ? 1: 0,
-            athleisure: athleisureImage ? 1: 0,
-            dark: darkImage ? 1: 0,
-            formalwear: formalImage ? 1: 0,
-            old_money: oldMoneyImage ? 1: 0,
-            streetware: streetWearImage ? 1: 0
+            boho: bohoImage ? "yes": "no",
+            athleisure: athleisureImage ? "yes": "no",
+            dark: darkImage ? "yes": "no",
+            formalwear: formalImage ? "yes": "no",
+            old_money: oldMoneyImage ? "yes": "no",
+            streetware: streetWearImage ? "yes": "no"
         }
 
         // console.log("boho", bohoImage)
-        // console.log("interests", interests)
+        console.log("interests", interests)
         let categories = await dispatch(createUserCategories(interests))
         if (categories.errors) setErrors(categories)
         // else history.push("/feed")

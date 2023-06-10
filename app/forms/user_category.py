@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField
+from wtforms import StringField
 
 
 class UserCategoryForm(FlaskForm):
-    streetware = IntegerField("Streetware")
-    formalwear = IntegerField("Formal Ware")
-    dark = IntegerField("Dark")
-    boho = IntegerField("Boho")
-    old_money = IntegerField("Old Money")
-    athleisure = IntegerField("Athleisure")
+    streetware = StringField("Streetware")
+    formalwear = StringField("Formal Ware")
+    dark = StringField("Dark")
+    boho = StringField("Boho")
+    old_money = StringField("Old Money")
+    athleisure = StringField("Athleisure")
