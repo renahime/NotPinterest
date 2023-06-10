@@ -13,8 +13,6 @@ def get_one_user_board(username, board_name):
     name = board_name.split("_")
     print("name", name)
     user_board = Board.query.join(User).filter(User.username == username, Board.name.ilike(board_name)).one_or_none()
-
-
     pin_info = {}
     pins = user_board.pins_tagged
 
@@ -54,7 +52,7 @@ def get_boards():
 
 
 #Route to get a single board by id
-@board_routes.route('/<int:id>', methods = ["GET"])
+@board_routes.route('/:name', methods = ["GET"])
 def get_board_by_id(id):
     board = Board.query.get(id)
 
@@ -104,6 +102,9 @@ def create_board():
 
     if form.validate_on_submit():
         # Create a new board
+        for board in user.boards:
+            if form.data["name"] == board.name:
+                return {"error": "you already have a board named this"}
         new_board = Board(
             name=form.data["name"],
             private=form.data["private"],

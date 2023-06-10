@@ -20,14 +20,14 @@ function Settings() {
   const dispatch = useDispatch();
   const hiddenFileInput = React.useRef(null);
   const data = location.state.currentUser;
-  const [firstName, setFirstName] = useState(data?.first_name)
-  const [lastName, setLastName] = useState(data?.last_name)
-  const [about, setAbout] = useState(data?.about)
-  const [pronouns, setPronouns] = useState(data?.pronouns)
-  const [website, setWebsite] = useState(data?.website)
-  const [username, setUsername] = useState(data?.username)
+  const [firstName, setFirstName] = useState(user?.first_name)
+  const [lastName, setLastName] = useState(user?.last_name)
+  const [about, setAbout] = useState(user?.about)
+  const [pronouns, setPronouns] = useState(user?.pronouns)
+  const [website, setWebsite] = useState(user?.website)
+  const [username, setUsername] = useState(user?.username)
   const [errors, setErrors] = useState()
-  const [profilePic, setProfilePic] = useState(data?.profile_image);
+  const [profilePic, setProfilePic] = useState(user?.profile_image);
 
   const options = [
     { value: "ey/em", label: "ey/em" },

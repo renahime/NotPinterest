@@ -196,7 +196,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
-const initialState = { user: null, following: {}, followers: {} };
+const initialState = { user: null };
 
 export default function reducer(state = initialState, action) {
 	let newState = {}

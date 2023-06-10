@@ -20,7 +20,7 @@ const getUserBoards = (boards) => ({
 
 const getSingleBoard = (board) => ({
     type: GET_SINGLE_BOARD,
-    board
+    board: board["User Boards"]
 })
 
 const getOneBoardByName = (board) => ({
@@ -84,10 +84,8 @@ export const getBoardsofCurrentUser = () => async (dispatch) => {
     }
 }
 
-export const getSingleBoardThunk = (boardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${boardId}`, {
-        method: "GET",
-    });
+export const getSingleBoardThunk = (username, boardname) => async (dispatch) => {
+    const res = await fetch(`/api/boards/users/${username}/${boardname}`);
     if (res.ok) {
         let board = await res.json();
         dispatch(getSingleBoard(board));
@@ -228,9 +226,8 @@ export default function boardsReducer(state = initialState, action) {
             return {
                 ...state, allBoards: {
                     ...state.allBoards, [action.board.id]: action.board
-                }
+                },
             };
-
         case GET_SINGLE_BOARD:
             return { ...state, singleBoard: { ...action.board } };
 
@@ -261,27 +258,21 @@ export default function boardsReducer(state = initialState, action) {
                 singleBoard: { ...state.singleBoard }
             };
         case UN_PIN:
-            const unPinAllBoards = { ...state.allBoards }
-            const unPinCurrent = { ...state.currentProfileBoards }
             const unPinSingle = { ...state.singleBoard }
             if (typeof unPinSingle === 'object') {
                 if (action.pin.id.toString() in unPinSingle.pinInfo) {
                     delete unPinSingle.pinInfo[action.pin.id.toString()]
                 }
             }
-            return { ...state, allBoards: unPinAllBoards, currentProfileBoards: unPinCurrent, singleBoard: unPinSingle }
+            return { ...state, singleBoard: unPinSingle }
         case PIN:
-            const pinAllBoards = { ...state.allBoards }
-            const pinCurrent = { ...state.currentProfileBoards }
             const pinSingle = { ...state.singleBoard }
             if (typeof pinSingle === 'object') {
                 if ("pinInfo" in pinSingle)
                     pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
             }
-            return { ...state, allBoards: pinAllBoards, currentProfileBoards: pinCurrent, singleBoard: pinSingle }
+            return { ...state, singleBoard: pinSingle }
         case REPIN:
-            const repinAllBoards = { ...state.allBoards }
-            const repinCurrent = { ...state.currentProfileBoards }
             const repinSingle = { ...state.singleBoard }
             if (typeof repinSingle === 'object') {
                 if ("pinInfo" in repinSingle) {
@@ -293,7 +284,7 @@ export default function boardsReducer(state = initialState, action) {
                     }
                 }
             }
-            return { ...state, allBoards: repinAllBoards, currentProfileBoards: repinCurrent, singleBoard: repinSingle }
+            return { ...state, singleBoard: repinSingle }
         default:
             return state
     }

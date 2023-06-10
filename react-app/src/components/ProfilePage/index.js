@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { getUserInfo, clearProfile } from "../../store/profile"
+import { getUserInfo } from "../../store/profile"
 import { unfollowUser, followUser } from "../../store/session"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
@@ -11,7 +11,7 @@ import LoadingButton from "../LoadingButton"
 import "./ProfilePage.css"
 import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
-import CreateBoardModal from "../CreateBoardModal"
+import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -27,16 +27,14 @@ export default function ProfilePage() {
     let [showBoards, setShowBoards] = useState(true)
     useEffect(() => {
         dispatch(getUserInfo(username)).then(() => setLoading(true))
-    }, [dispatch])
+    }, [dispatch, username])
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
-
     let checkUser = () => {
-        if (currentUser.username === currentProfile.username) return true
+        if ((currentUser && currentUser.username) === currentProfile.username) return true
         else return false
     }
-
     const handleFollow = async (e) => {
         e.preventDefault();
         let response = await dispatch(followUser(username))
@@ -86,7 +84,6 @@ export default function ProfilePage() {
         setShowBoards(false);
     };
 
-    console.log(currentProfile)
 
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
@@ -94,7 +91,7 @@ export default function ProfilePage() {
     if (!loading) return <h1>Loading...</h1>
     else if (!currentProfile.id) return <PageNotFound />
 
-    return (!Object.values(currentProfile).length || !Object.values(currentUser).length ? <h1>Loading...</h1> :
+    return (!Object.values(currentProfile).length ? <h1>Loading...</h1> :
         <div>
             {currentProfile.id &&
                 <div className="profile-page-base">
@@ -130,8 +127,8 @@ export default function ProfilePage() {
                             <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
                     }
                     <div>
-                        <button onClick={handleShowBoards} className="profile-button">Created</button>
-                        <button onClick={handleShowPins} className="profile-button">Saved</button>
+                        <button onClick={handleShowBoards} className="profile-button">Pins</button>
+                        <button onClick={handleShowPins} className="profile-button">Boards</button>
                     </div>
                 </div>
             }
@@ -145,10 +142,12 @@ export default function ProfilePage() {
                             <div className="profile-dropdown-create-label">Create</div>
                             <div className="profile-dropdown-create">Pin</div>
                             <div className="profile-dropdown-create" onClick={showMenu}>
-                                <OpenModalButton
-                                    buttonText="Board"
-                                    modalComponent={<CreateBoardModal username={currentUser?.username} />}
-                                />
+                                <div>
+                                    <OpenModalButton
+                                        buttonText="Board"
+                                        modalComponent={<CreateBoardFromProfile username={currentProfile?.username} />} >
+                                    </OpenModalButton>
+                                </div>
                             </div>
                         </div>}
                     </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={currentProfile.boards} username={currentProfile.username} profilePicture={currentProfile.profile_image} /> : <><UserPins pins={currentProfile.pins}> </UserPins></>}

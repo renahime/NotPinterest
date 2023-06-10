@@ -16,7 +16,7 @@ function OpenModalButton({
   };
 
   return (
-    <button className='open-modal-button' onClick={onClick}>{buttonText}</button>
+    <button style={{ width: "100%", textAlign: 'left' }} className='open-modal-button' onClick={onClick}>{buttonText}</button>
   );
 }
 

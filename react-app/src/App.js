@@ -27,6 +27,7 @@ function App() {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
+
   return (
     <>
       <Navigation isLoaded={isLoaded} />

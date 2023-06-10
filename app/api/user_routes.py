@@ -17,7 +17,7 @@ def set_categories():
     print(form.data)
 
     user_id = current_user.id
-    
+
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
@@ -72,7 +72,7 @@ def set_categories():
         return [category.to_dict() for category in user.categories]
     print("i actuall don't work")
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
-    
+
 
 @user_routes.route('/')
 @login_required
@@ -91,8 +91,8 @@ def user_profile(username):
 
     if not user:
          return {"errors": "User couldn't be found"}, 404
-    
-    return user.to_dict()
+
+    return user.for_profile_display_dict()
 
 
 @user_routes.route('/<int:id>')
@@ -225,4 +225,3 @@ def unfollow(username):
             db.session.commit()
             return {"message": "You are no longer following {}!".format(username)}
     return {"message": "You are not following {}!".format(username)}
-
