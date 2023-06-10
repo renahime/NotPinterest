@@ -207,6 +207,7 @@ export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER_CATEGORIES:
 			let user = {...state.user}
+			console.log("action", action.categories)
 			user.categories = action.categories
 			return {...state, user: {...user}, following: {}, followers: {}}
 		case GET_FOLLOWING_AND_FOLLOWERS:

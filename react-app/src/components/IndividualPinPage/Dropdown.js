@@ -84,7 +84,7 @@ const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, use
         {isSearchable && (
           <div className="search-box">
             <div className="search-function">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <i className="fa-solid fa-magnifying-glass"></i>
               <input onChange={onSearch} value={searchValue} ref={searchRef} />
             </div>
           </div>

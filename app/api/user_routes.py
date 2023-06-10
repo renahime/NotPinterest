@@ -39,6 +39,7 @@ def set_categories():
         if form.data["athleisure"] == "yes":
             athleisure = Category.query.filter(Category.name == "Athleisure").one()
             user.categories.append(athleisure)
+        db.session.commit()
         return [category.name for category in user.categories]
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
     

@@ -26,10 +26,10 @@ function CreateBoardFromPinModal({ pin, user }) {
               <input type="text" name="name" />
             </div>
             <div className="create-board-from-pin-form-secret">
-              <label class="switch">
+              <label className="switch">
                 <h6>Secret</h6>
                 <input type="text" name="name" />
-                <span class="slider round"></span>
+                <span className="slider round"></span>
               </label>
             </div>
           </form>

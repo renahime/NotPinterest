@@ -18,7 +18,8 @@ export default function UserCategoriesForm() {
     let [oldMoneyImage, setOldMneyImage] = useState(false)
     let [streetWearImage, setStreetwearImage] = useState(false)
 
-    // if (currentUser.categories != null) history.push("/feed")
+    console.log(currentUser.categories)
+    if (currentUser.categories.length) history.push("/feed")
 
     let handleSubmit = async (e) => {
         e.preventDefault()
@@ -38,11 +39,9 @@ export default function UserCategoriesForm() {
             streetware: streetWearImage ? "yes": "no"
         }
 
-        // console.log("boho", bohoImage)
-        console.log("interests", interests)
         let categories = await dispatch(createUserCategories(interests))
         if (categories.errors) setErrors(categories)
-        // else history.push("/feed")
+        else history.push("/feed")
     }
 
     return (
@@ -132,7 +131,7 @@ export default function UserCategoriesForm() {
                 </div>
                 <div className="category-button-wrapper">
                     <button className="category-button" >
-                        <i class="fa-solid fa-arrow-right"></i>
+                        <i className="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </form>
