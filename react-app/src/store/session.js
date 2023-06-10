@@ -10,7 +10,20 @@ const FOLLOW_USER = "session/FOLLOW_USER"
 const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
 const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
+const EDIT_USER = "users/EDIT_USER"
+const DELETE_PROFILE = "users/DELETE_PROFILE"
 
+
+
+export const editUser = (user) => ({
+	type: EDIT_USER,
+	user
+})
+
+export const deleteProfile = (user) => ({
+	type: DELETE_PROFILE,
+	user
+})
 
 const setCategories = (categories) => ({
 	type: SET_USER_CATEGORIES,
@@ -42,8 +55,8 @@ const getFollowersAndFollowing = (users) => ({
 })
 
 const createUserBoard = (board) => ({
-    type: CREATE_USER_BOARD_FROM_PIN,
-    board
+	type: CREATE_USER_BOARD_FROM_PIN,
+	board
 })
 
 // const getFollowing = (users) => ({
@@ -51,21 +64,50 @@ const createUserBoard = (board) => ({
 // 	users
 // })
 
-export const createBoardFromPinPage = (board) => async (dispatch) => {
-    const res = await fetch('/api/boards/', {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(board)
-    })
+export const editProfileThunk = (user) => async (dispatch) => {
+	const res = await fetch(`/api/users/${user.id}`, {
+		method: "PUT",
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(user)
+	});
+	if (res.ok) {
+		const userData = await res.json()
+		if (userData.errors) {
+			return userData.errors
+		}
+		dispatch(editUser(userData))
+	}
+}
 
-    if (res.ok) {
-        const new_board = await res.json()
-        dispatch(createUserBoard(new_board))
-        return new_board
-    }
-    else {
-        return ("Error response:", res)
-    }
+export const deleteProfileThunk = (user) => async (dispatch) => {
+	const res = await fetch(`/api/users/${user.id}`, {
+		method: "DELETE",
+		headers: { 'Content-Type': 'application/json' }
+	});
+	if (res.ok) {
+		const userData = await res.json()
+		if (userData.errors) {
+			return userData.errors
+		}
+		dispatch(deleteProfile(userData))
+	}
+}
+
+export const createBoardFromPinPage = (board) => async (dispatch) => {
+	const res = await fetch('/api/boards/', {
+		method: "POST",
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(board)
+	})
+
+	if (res.ok) {
+		const new_board = await res.json()
+		dispatch(createUserBoard(new_board))
+		return new_board
+	}
+	else {
+		return ("Error response:", res)
+	}
 }
 
 export const createUserCategories = (categories) => async (dispatch) => {
@@ -78,12 +120,12 @@ export const createUserCategories = (categories) => async (dispatch) => {
 		body: JSON.stringify(categories)
 	})
 	console.log("res", res)
-	if (res.ok){
+	if (res.ok) {
 		let categories = await res.json()
 		dispatch(setCategories(categories))
 		return categories
 	} else {
-		 return {errors: "Could not set category"}
+		return { errors: "Could not set category" }
 	}
 }
 
@@ -229,18 +271,18 @@ export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
 		case CREATE_USER_BOARD_FROM_PIN:
-			let newSate2 = {...state, user: {...state.user, ...state.user.boards.push(action.board)}}
+			let newSate2 = { ...state, user: { ...state.user, ...state.user.boards.push(action.board) } }
 			console.log("newSate2", newSate2)
 			return newSate2
 		case SET_USER_CATEGORIES:
-			let user = {...state.user}
+			let user = { ...state.user }
 			console.log("action", action.categories)
 			user.categories = action.categories
-			return {...state, user: {...user}, following: {}, followers: {}}
+			return { ...state, user: { ...user }, following: {}, followers: {} }
 		case GET_FOLLOWING_AND_FOLLOWERS:
-			return {...state, user: {...state.user}, following: {...action.users.following}, followers: {...action.users.followers}}
+			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
 		case FOLLOW_USER:
-			let newState = {...state}
+			let newState = { ...state }
 			console.log("state", state)
 			console.log(action.user)
 			// newState.following[action.user]
@@ -259,6 +301,10 @@ export default function reducer(state = initialState, action) {
 			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
 			return { user: { ...state.user } }
+		case EDIT_USER:
+			return { currentProfile: action.user };
+		case DELETE_PROFILE:
+			return { currentProfile: {} }
 		default:
 			return state;
 	}

@@ -31,6 +31,7 @@ function Settings() {
     { value: "she/her", label: "she/her" },
     { value: "ve/ver", label: "ve/ver" },
     { value: "xe/xem", label: "xe/xem" },
+    { value: "they/them", label: "they/them" },
     { value: "ze/zir", label: "ze/zir" }
   ]
 
@@ -71,7 +72,8 @@ function Settings() {
             <div className='profile-picture-setting'>
               <h6>Photo</h6>
               <div className='photo-and-button'>
-                <img id='profile-picture-display' src='https://64.media.tumblr.com/441fc6012f18fbf1817e1f7511465ab8/tumblr_p8y5hkOypW1v30v1fo2_400.png'></img>
+                <img id='profile-picture-display' src={user.profile_image ? user.profile_image : "https://64.media.tumblr.com/441fc6012f18fbf1817e1f7511465ab8/tumblr_p8y5hkOypW1v30v1fo2_400.png" }>
+                </img>
                 <button id='file-input-actual-button' onClick={handleClick}>Change</button>
                 <input className='file-input-button' type="file" ref={hiddenFileInput} style={{ display: 'none' }} />
               </div>
@@ -118,7 +120,7 @@ function Settings() {
               </button>
               <button type="submit" className='save-button'>Save</button>
               <NavLink exact to={`/${user.username}`}>
-                <button className='delete-button'>Cancel</button>
+                <button type='button' className='delete-button'>Cancel</button>
               </NavLink>
             </div>
           </form>
