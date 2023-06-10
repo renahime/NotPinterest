@@ -25,12 +25,10 @@ function UpdateDeleteBoardModal({ id, user }) {
   // }
 
   const onDelete = () => {
-    console.log("WE ARE DELETING A BOARD")
     dispatch(deleteBoardThunk(id));
     closeModal()
   };
 
-  console.log("WE ARE IM DELETE PIN MODAL- BOARDS", user)
 
   // const handleDelete = async (e) => {
   //   e.preventDefault();

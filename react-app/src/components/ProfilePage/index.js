@@ -84,6 +84,8 @@ export default function ProfilePage() {
     }, [loading, currentProfile])
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
+    console.log(currentProfile)
+    console.log(currentUser)
 
     if (!loading) return <h1>Loading...</h1>
     else if (!currentProfile.id) return <PageNotFound />

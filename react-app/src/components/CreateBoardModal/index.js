@@ -19,13 +19,11 @@ function CreateBoardModal({ username }) {
   const [name, setName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [description,setDescription] = useState("")
+  const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
 
-  console.log("USER NAME", username)
 
   const stateCheck = useSelector((state) => state)
-  console.log("STATE CHECK FOR BOARD", stateCheck)
 
 
   useEffect(() => {
@@ -33,7 +31,6 @@ function CreateBoardModal({ username }) {
 
   let pinsTodayObj = useSelector(state => state.pins.todayPins)
   let testUsername = useSelector(state => state.session.user)
-  console.log("THIS IS THE USER FOR CREATE BOARD", testUsername)
 
 
 
@@ -46,7 +43,6 @@ function CreateBoardModal({ username }) {
   }
   const date = new Date();
 
-  console.log("PINS TODAY CREATE BOARD MODAL", pinsToday)
   useEffect(() => {
     dispatch(fetchPinsToday())
   }, [])

@@ -35,7 +35,6 @@ export default function IndividualPinPage() {
 
 
 
-    console.log("currentUserBoards", singlePin)
     useEffect(() => {
         dispatch(getPinById(id))
         dispatch(getBoardsofCurrentUser())
@@ -62,7 +61,6 @@ export default function IndividualPinPage() {
     }
     const [board, setBoard] = useState(grabBoardName?.name)
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
-    console.log(singlePin)
     useEffect(() => {
         const handler = () => setShowMenu(false)
         window.addEventListener("click", handler);
@@ -99,18 +97,12 @@ export default function IndividualPinPage() {
         let response = await dispatch(unfollowUser(username))
         if (response.errors) {
             console.log(response.errors)
-        } else {
-            console.log("i work")
         }
     }
 
     async function follow(username) {
-        console.log("username", username)
         let response = await dispatch(followUser(username))
         if (response.errors) {
-            console.log(response.errors)
-        } else {
-            console.log("i work too")
         }
     }
 

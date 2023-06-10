@@ -19,7 +19,6 @@ export default function UserPins() {
     const currentUser = useSelector(state => state.session.user)
     let userPins = useSelector(state => state.pins.userPins)
     let userPinsArr = Object.values(userPins)
-    console.log("userPinsArr", userPinsArr)
 
     let showMenu = () => {
         setOpenMenu(!openMenu)
@@ -47,7 +46,6 @@ export default function UserPins() {
         if (!Object.values(currentProfile).length) return
         else dispatch(getPinsByUsername(username))
     }, [loading, currentProfile])
-    console.log("loading", loading)
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
     if (!loading) return <h1>Loading...</h1>
@@ -92,20 +90,20 @@ export default function UserPins() {
                     </div>
                     <div className="individual-board-pins-wrapper">
                         {userPinsArr.length ?
-                            
-                                userPinsArr.map(pin => (
-                                    <div className="individual-board-individual-pins-wrapper">
-                                        <div className="individual-boards-link-to-pin" onClick={() => history.push(`/pin/${pin.id}`)}>
-                                            <img className="individual-board-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
-                                            <div>
-                                                {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
-                                            </div>
+
+                            userPinsArr.map(pin => (
+                                <div className="individual-board-individual-pins-wrapper">
+                                    <div className="individual-boards-link-to-pin" onClick={() => history.push(`/pin/${pin.id}`)}>
+                                        <img className="individual-board-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
+                                        <div>
+                                            {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
                                         </div>
                                     </div>
-                                ))
-                            
+                                </div>
+                            ))
+
                             : <h2>Share your threads with us today!</h2>
-                    }
+                        }
                     </div>
                 </div>
             }

@@ -22,9 +22,6 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
   const { setModalContent, closeModal } = useModal();
   const history = useHistory()
 
-  console.log("HOVER DIV INFO - PIN", hoverDiv)
-  console.log("Pins TODAY", pinsToday)
-  // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
 
 
   useEffect(() => {
@@ -35,7 +32,6 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
   const currentBoard = useSelector(state => state.boards.singleBoard)
   const currentBoardState = useSelector(state => state.boards.singleBoard)
   const currentState = useSelector(state => state)
-  console.log("BOARD NAME AND ID", currentBoard)
 
 
   function onHover(pin) {
@@ -65,14 +61,8 @@ function SavePinsToBoardModal({ pinsToday, username, boardName }) {
   // };
 
   async function addPinToBoard() {
-    console.log("BEFORE- CHECK STATE", currentBoardState)
-    console.log("CURRENT STATE", currentState)
-    console.log("HOVER DIV IN ADD TO PIN FUNCTION", hoverDiv)
-    console.log("CURRENT BOARD", currentBoard.id)
     // await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
     await dispatch(pinThunk(hoverDiv, currentBoard.id))
-    console.log("SUCCESS- CHECK STATE", currentBoardState)
-    console.log("CURRENT STATE", currentState)
 
   }
 
