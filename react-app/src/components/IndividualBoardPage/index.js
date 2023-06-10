@@ -69,9 +69,8 @@ export default function IndividualBoardPage() {
                                 </div>
                             </div>}
                     </div>
-                    <div>
-                        <PinsForBoardPage pins={singleBoard["pinInfo"]} />
-                    </div>
+                    <PinsForBoardPage pins={singleBoard["pinInfo"]} />
+
                 </div>}
         </div>
     )

@@ -8,9 +8,14 @@ const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
 const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
+const GET_ALL_BOARDS = "boards/all"
 
 
 
+const getAllBoards = (boards) => ({
+    type: GET_ALL_BOARDS,
+    boards: boards
+})
 
 
 const getUserBoards = (boards) => ({
@@ -105,6 +110,19 @@ export const createBoardThunk = (board) => async (dispatch) => {
     }
 }
 
+export const getAllBoardsThunk = () => async (dispatch) => {
+    const res = await fetch("/api/boards/").catch((e) => console.log("ALL BOARDS"))
+    if (res.status >= 400) {
+        console.log("in the get all boards of all boards reducer")
+        return
+    }
+    if (res.ok) {
+        let boards = await res.json()
+        console.log("all boards", boards)
+        dispatch(getAllBoards(boards))
+        return
+    }
+}
 
 export const updateBoardThunk = (board, id) => async (dispatch) => {
     try {
@@ -205,11 +223,13 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
 
 
 
-const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards:{} }
+const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
+        case GET_ALL_BOARDS:
+            return { ...state, allBoards: { ...action.allBoards } }
         case GET_CURRENT_USER_BOARDS:
             return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
 
@@ -235,7 +255,7 @@ export default function boardsReducer(state = initialState, action) {
                 }, currentProfileBoards: {
                     ...state.currentProfileBoards,
                     [action.board.id]: action.board
-                },currentUserBoards: {
+                }, currentUserBoards: {
                     ...state.currentUserBoards,
                     [action.board.id]: action.board
                 }
