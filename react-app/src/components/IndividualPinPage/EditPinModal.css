@@ -132,3 +132,8 @@
   border-radius: 40%;
   color:#151515
 }
+
+.edit-pin-title-with-errors{
+  display:flex;
+  flex-direction: column;
+}

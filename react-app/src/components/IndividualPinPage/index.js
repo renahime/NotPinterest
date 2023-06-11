@@ -30,6 +30,7 @@ export default function IndividualPinPage() {
     const dispatch = useDispatch()
     const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
+    const [pinErrorCheck, setPinErrorCheck] = useState(false);
 
     useEffect(() => {
         dispatch(getPinById(id))
@@ -83,6 +84,10 @@ export default function IndividualPinPage() {
                 sendBoardName = board.name.split(' ').join('_').toLowerCase()
             }
         }
+        if (!sendBoardName) {
+            setPinErrorCheck(true);
+            return
+        }
         const pin = await dispatch(pinThunk(singlePin, boardId)).then(closeModal())
         if (pin) {
             return history.push(`/${currentUser.username}/${sendBoardName}`)
@@ -98,7 +103,6 @@ export default function IndividualPinPage() {
     }
 
     async function follow(username) {
-        console.log("username", username)
         let response = await dispatch(followUser(username))
         if (response.errors) {
             console.log(response.errors)
@@ -111,12 +115,10 @@ export default function IndividualPinPage() {
 
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
 
-
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
-    console.log("pin data", singlePin);
     if (!singlePin || !currentUser || !options.length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
@@ -191,14 +193,17 @@ export default function IndividualPinPage() {
                         <button onClick={handlePin} className="single-pin-edit-board-button">Save</button>
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
+                    <div> {singlePin.description ? <h2 className="single-pin-title">{singlePin.description}</h2> : null} </div>
+                    <div> {singlePin.destination ? <h2 className="single-pin-title">{singlePin.destination}</h2> : null} </div>
+                    <div> {singlePin.alt_text ? <h2 className="single-pin-title">{singlePin.alt_text}</h2> : null} </div>
                     <div className="single-pin-owner-info">
                         <div className="single-pin-profile-info">
                             <div>
-                                {singlePin.profile_image ? <img className="single-pin-profile-image" src={singlePin.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
+                                {singlePin.user.profile_image ? <img className="single-pin-profile-image" src={singlePin.user.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
                             </div>
                             <div className="single-pin-owner-name-followers">
-                                <Link className="single-pin-owner-link" to={`/${singlePin.owner_info?.username}`}>{singlePin.owner_info?.first_name} {singlePin.owner_info?.last_name}</Link>
-                                <p>{formatFollowers(singlePin?.owner_info?.followers.length)}</p>
+                                <Link className="single-pin-owner-link" to={`/${singlePin.user?.username}`}>{singlePin.user?.first_name} {singlePin.user?.last_name}</Link>
+                                <p>{formatFollowers(singlePin?.user.followers.length)}</p>
                             </div>
                         </div>
                         <div>

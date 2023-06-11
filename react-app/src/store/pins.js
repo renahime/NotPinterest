@@ -167,6 +167,10 @@ const deletePin = (pinId) => ({
     pinId
 })
 
+const updateUserPin = (pin) => ({
+    type: UPDATE_USER_PIN,
+    pin
+})
 
 export const getPinsByUsername = (username) => async (dispatch) => {
     let res = await fetch(`/api/pins/users/${username}`)
@@ -179,11 +183,6 @@ export const getPinsByUsername = (username) => async (dispatch) => {
     }
 }
 
-
-const updateUserPin = (pin) => ({
-    type: UPDATE_USER_PIN,
-    pin
-})
 
 export const createNewPin = (pin_info) => async (dispatch) => {
     const res = await fetch("/api/pins/new", {
@@ -245,10 +244,10 @@ export const deletePinThunk = (pinId) => async (dispatch) => {
     });
     if (res.ok) {
         dispatch(deletePin(pinId));
-        return pinId
+        return res
     } else {
         const errors = await res.json();
-        return errors;
+        return false;
     }
 };
 
@@ -264,22 +263,17 @@ export const getPinById = (pin_id) => async (dispatch) => {
 
 
 export const updatePinThunk = (pin) => async (dispatch) => {
-    try {
-        const res = await fetch(`/api/pins/${pin.id}`, {
-            method: "PUT",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(pin)
-        });
-        if (res.ok) {
-            const updatedPin = await res.json();
-            dispatch(updateUserPin(updatedPin));
-            return updatedPin;
-        } else {
-            throw new Error("Update board request failed");
-        }
-    } catch (error) {
-        console.error("Error occurred during updateBoardThunk:", error);
-        return null; // or handle the error in an appropriate way
+    const res = await fetch(`/api/pins/${pin.id}`, {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pin)
+    });
+    if (res.ok) {
+        const new_pin = await res.json()
+        return dispatch(updateUserPin(new_pin))
+    } else {
+        const errors = await res.json()
+        return errors
     }
 };
 
@@ -294,18 +288,29 @@ export default function pinsReducer(state = initialState, action) {
         case GET_ALL_PINS:
             return { ...state, allPins: { ...action.pins } }
         case DELETE_PIN:
-            const newPins = { ...state.pins };
-            delete newPins[action.id];
-            if (state.singlePin.id == action.id) {
-                state.singlePin = {}
+            let deleteAll = { ...state.allPins };
+            console.log(deleteAll);
+            if (deleteAll[action.pinId]) {
+                console.log("in first if")
+                delete deleteAll[action.pinId]
+                console.log(deleteAll)
+            }
+            let deleteSinglePin = { ...state.singlePin }
+            if (deleteSinglePin.id == action.pinId) {
+                console.log("in second if")
+                console.log(deleteSinglePin)
+                deleteSinglePin = {};
+                console.log(deleteSinglePin)
             }
             return {
                 ...state,
-                pins: newPins,
+                allPins: { ...deleteAll },
+                singlePin: { ...deleteSinglePin }
             };
         case UPDATE_USER_PIN:
-            const updatedPins = { ...state.pins, [action.pin.id]: action.pin };
-            return { ...state, pins: updatedPins }
+            const updateAll = { ...state.allPins }
+            const updateSingle = { ...action.pin }
+            return { ...state, allPins: updateAll, singlePin: { ...updateSingle } }
         default:
             return state
     }
