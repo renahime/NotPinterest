@@ -62,12 +62,11 @@ function Navigation({ isLoaded }) {
 									{openMenu && <div className={menuClassName}>
 										{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
 										<NavLink to="/create" className="nav-profile-dropdown-create">Create Pin</NavLink>
-										<div className="nav-profile-dropdown-create" onClick={showMenu}>
-											<OpenModalButton
-												buttonText="Create Board"
-												modalComponent={<CreateBoardModal username={currentUser?.username} />}
-											/>
-										</div>
+										<NavLink to={{
+                  pathname: `/${sessionUser.username}`,
+
+                }} >My Boards</NavLink>
+
 									</div>}
 									<div className='tab flex-row' onClick={showMenu}>
 										<div className='nav-create'>Create</div>

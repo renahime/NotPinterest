@@ -29,8 +29,13 @@
   /* background-color: red; */
 }
 
+/* .board-container-top-text.disable-style {
+  width: initial !important;
+} */
+
 .feed-page-create-board{
 cursor: pointer;
+/* display: block; */
 
 }
 .board-container-top-text{
@@ -40,9 +45,15 @@ cursor: pointer;
   /* font-weight: bold; */
 }
 
-/* .board-container-top-text > * + * {
+.board-container-top-text > * + * {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
   margin-left: 10px;
-} */
+
+}
 
 .board-top {
   display: flex;
