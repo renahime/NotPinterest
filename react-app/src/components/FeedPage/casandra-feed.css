@@ -51,13 +51,36 @@
 .feed-individual-pin-wrapper {
     display: grid;
     padding-bottom: 10px;
+    position: relative;
 }
 
-.feed-individual-pin-info{
+.feed-save-button:hover {
+    opacity: 100%;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    color: white;
+    background-color: #f00505;
+    border-radius: 24px;
+    padding: 12px 13px;
+    transition: background-color 0.3s ease;
+    font-size: 13.5px;
+    margin-right: 5px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    z-index: 2;
+}
+
+.feed-save-button {
+    opacity: 0;
+}
+
+.feed-individual-pin-info {
     display: grid;
 }
 
-.feed-individual-pin-info > div > p {
+.feed-individual-pin-info>div>p {
     margin: 0;
     padding: 0;
 }

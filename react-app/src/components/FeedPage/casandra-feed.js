@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { getPinsByCategory } from "../../store/pins"
 import React, { useEffect, useState } from "react"
-import { useHistory, Link } from "react-router-dom"
+import { useHistory, NavLink } from "react-router-dom"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
 import { getAllPinsThunkOld } from "../../store/pins"
 import LoadingButton from "../LoadingButton";
@@ -17,18 +17,21 @@ export default function CaSandraFeed() {
     let [finishedLoading, setFinished] = useState(false)
     let pins = useSelector(state => state.pins.allPins)
     let sessionUser = useSelector(state => state.session.user)
-    const [hoverBoardDiv, setHoverBoardDiv] = useState("")
+  const [hoverBoard, setHoverBoard] = useState(false)
+  const [hoverBoardDiv, setHoverBoardDiv] = useState("")
     const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
+    const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
     // console.log("pins", pins)
+
     let pinsArr = []
     let numberOfPins = 0
     let boards = 0
     if (loading && Object.values(pins).length) {
         let [pinsArr1, userPins] = filterPins(Object.values(pins))
-        console.log("ran", pinsArr1)
+        
         pinsArr = pinsArr1
-        numberOfPins = userPins
         if (sessionUser) {
+            numberOfPins = userPins
             boards = sessionUser.boards.length
         }
     }
@@ -96,6 +99,16 @@ export default function CaSandraFeed() {
         });
     };
 
+    function onHoverBoard(board) {
+        setHoverBoard(true)
+        setHoverBoardDiv(board.id)
+      }
+      function offHoverBoard() {
+        setHoverBoard(false)
+        setHoverBoardDiv("")
+      }
+
+
     let formatBoards = (n) => {
         if (n === 1) {
             return "1 board"
@@ -120,8 +133,8 @@ export default function CaSandraFeed() {
             setFinished(true)
         }
     }, [loading, pins])
-
-
+    // console.log("!pinsArr[0]?.id", pinsArr[0])
+    // console.log("!pinsArr[0]?.id", !pinsArr[0]?.id)
     if (!pinsArr[0]?.id) {
         return (
             <LoadingButton
@@ -133,66 +146,74 @@ export default function CaSandraFeed() {
 
     return (
         <div>
-            {sessionUser == null ?
+            {/* {sessionUser == null ?
                 <h3 className="board-container-top-text">Sign up for Threadterest today and make some new threads!</h3> :
-                boards > 0 ?
-                    <div>
-                        <div>
-                            <div className="board-container-top-text">
-                                <h3>
-                                    Hey {sessionUser.first_name}, you have <span><Link to={`/${sessionUser.username}`}> {formatBoards(boards)}</Link> </span> and <span><Link to={`/${sessionUser.username}/_created`}> {numberOfPins} pins.</Link></span
-                                    > Check them out!
-                                </h3>
-                            </div>
-                        </div>
-                        <div className="full-board-container">
-                            <div className="board-container" ref={scrollContainerRef}>
-                                <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-                                    <i className="fa-solid fa-angle-left"></i>
-                                </div>
-                                <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-                                    <i className="fa-solid fa-angle-left fa-rotate-180"></i>
-                                </div>
-                                {sessionUser.boards.map((board, index) => (
-                                    <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(sessionUser.username, board.name)}
-                                    >
-                                        <div>
-                                            {board.name}
-                                        </div>
-                                    </div>
-                                ))}
+                boards > 0 ? */}
+                {(sessionUser && boards.length) ? (
 
+                    <>
+                      <div className="board-container-top-text">
+                        <div>Hey {sessionUser.first_name}, you have</div>
+                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards</NavLink>
+                        <div>and</div>
+                        <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
+                        <div>Check them out!</div>
+                      </div>
+          
+                      <div className="full-board-container">
+          
+                        <div className="board-container" ref={scrollContainerRef}>
+                          <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
+                            <i className="fa-solid fa-angle-left"></i>
+                          </div>
+                          <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
+                            <i className="fa-solid fa-angle-left fa-rotate-180"></i>
+                          </div>
+          
+                          {boards.map((board, index) => (
+          
+                            <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                              {/* <OpenModalButton
+                            buttonText={board.name}
+                            className="test-open-create-board-modal"
+                            modalComponent={<UpdateBoardModal id={board.id} />}
+                            onClick={() => history.push(`/boards/${board.id}`)}
+                          /> */}
+                              <div>
+                                {board.name}
+                              </div>
                             </div>
+                          ))}
+          
                         </div>
-                        <div>
-                            <label htmlFor="boardSelect">Select a board:</label>
-                            <select id="boardSelect" onChange={(e) => setSelectedBoardDropdown(e.target.value)} value={selectedBoardDropdown}>
-                                {sessionUser.boards.map((board) => (
-                                    <option key={board.id} value={board.name}>
-                                        {board.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    :
-                    <div className="board-container-top-text">
-                        <h3>
-                            Oh no, you have <span><Link to={`/${sessionUser.username}`}> {boards.length} boards.</Link></span> Let's change that!
-                            <OpenModalButton
-                                buttonText="Create Board"
-                                className="feed-page-create-board"
-                                modalComponent={<CreateBoardModal username={sessionUser?.username} />}
-                            />
-                        </h3>
-                    </div>
-                    }
+                      </div>
+                    </>
+          
+                  ) : ((!boards.length) ? (
+                    <>
+                      <div className="board-container-top-text">
+                        <div>Oh no, you have</div>
+                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
+                        <div>Let's change that!</div>
+                        <OpenModalButton
+                          buttonText="Create Board"
+                          className="feed-page-create-board"
+                          modalComponent={<CreateBoardModal username={sessionUser?.username} />}
+                        />
+                      </div>
+                    </>
+                  ) : (null)
+                  )
+                  }
             < div className="pins-feed-wrapper-wrapper">
                 <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
                     columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
                     <Masonry className="feed-pin-masonry" options={{ fitWidth: true }}>
                         {pinsArr.map(pin => (
-                            <div className="feed-individual-pin-wrapper">
+                            <div 
+                            // onHover={() =>} 
+                            className="feed-individual-pin-wrapper">
+                                <button className="feed-save-button">Save</button>
                                 <div onClick={() => history.push(`/pin/${pin.id}`)}>
                                     <img className="feed-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
                                 </div>

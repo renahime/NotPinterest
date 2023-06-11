@@ -9,7 +9,7 @@ function DeleteUserModal({ user }) {
   const dispatch = useDispatch()
   const handleClick = async (e) => {
     e.stopPropagation()
-    const deleteProfile = await dispatch(deleteProfileThunk(user.id)).then(closeModal)
+    const deleteProfile = await dispatch(deleteProfileThunk(user)).then(closeModal)
     if (deleteProfile) {
       return history.push(``)
     }

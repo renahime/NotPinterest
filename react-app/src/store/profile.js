@@ -129,8 +129,7 @@ export const getUserInfo = (username) => async (dispatch) => {
 
 export const deleteProfileThunk = (user) => async (dispatch) => {
     const res = await fetch(`/api/users/${user.id}`, {
-        method: "DELETE",
-        headers: { 'Content-Type': 'application/json' }
+        method: "DELETE"
     });
     console.log(res);
     if (res.ok) {
