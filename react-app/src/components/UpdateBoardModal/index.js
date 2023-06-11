@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
 import { useHistory, useParams } from 'react-router-dom'
-import { createBoardThunk, getBoardsByUsername, updateBoardThunk } from "../../store/boards";
+// import { createBoardThunk, getBoardsByUsername, updateBoardThunk } from "../../store/boards";
+import { updateBoardThunk } from "../../store/boards";
 import UpdateDeleteBoardModal from "./DeleteBoardModal";
 import { deleteBoardThunk } from "../../store/boards";
 import SavePinsToBoardModal from "../CreateBoardModal/SavePinsToBoard";
@@ -49,9 +50,9 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
 
 
   //fetch boards by username
-  useEffect(() => {
-    dispatch(getBoardsByUsername(username)).then(() => setIsLoaded(true));
-  }, [username]);
+  // useEffect(() => {
+  //   dispatch(getBoardsByUsername(username)).then(() => setIsLoaded(true));
+  // }, [username]);
 
 
   // on render, set the board data in fields

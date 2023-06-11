@@ -60,22 +60,25 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                     {
                                         boards.cover_image.length ?
                                             <img className="profile-board-cover-image" src={boards.cover_image[0]} />
-                                            :
-                                            <img className="profile-board-cover-image" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                                            : boards.additional_images[0] ?
+                                                <img className="profile-board-cover-image" src={boards.additional_images[0]} /> :
+                                                <img className="profile-board-cover-image" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
                                     }
                                 </div>
                                 <div className="profile-board-additional-image-wrapper">
                                     {
-                                        boards.additional_images[0] ?
+                                        boards.additional_images[0] && boards.cover_image.length ?
                                             <img className="profile-additonal-image profile-image1" src={boards.additional_images[0]} />
-                                            :
-                                            <img className="profile-additonal-image profile-image1" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                                            : boards.additional_images[1] ?
+                                                <img className="profile-additonal-image profile-image1" src={boards.additional_images[1]} />
+                                                : <img className="profile-additonal-image profile-image1" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
                                     }
                                     {
-                                        boards.additional_images[1] ?
+                                        boards.additional_images[1] && boards.cover_image.length ?
                                             <img className="profile-additonal-image profile-image2" src={boards.additional_images[1]} />
-                                            :
-                                            <img className="profile-additonal-image profile-image2" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
+                                            : boards.additional_images[2] ?
+                                                <img className="profile-additonal-image profile-image2" src={boards.additional_images[2]} />
+                                                : <img className="profile-additonal-image profile-image2" src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686021890/Untitled_design_1_xxxljj.png" />
                                     }
                                 </div>
                             </div>

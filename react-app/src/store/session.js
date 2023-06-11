@@ -7,11 +7,11 @@ const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
-const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
 const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
+const DELETE_USER_BOARD = "boards/delete";
 
 
 
@@ -49,26 +49,21 @@ const newFollow = (user) => ({
 	user
 })
 
-const getFollowersAndFollowing = (users) => ({
-	type: GET_FOLLOWING_AND_FOLLOWERS,
-	users
-})
-
 const createUserBoard = (board) => ({
 	type: CREATE_USER_BOARD_FROM_PIN,
 	board
 })
 
-// const getFollowing = (users) => ({
-// 	type: GET_FOLLOWERS,
-// 	users
-// })
+export const deleteBoard = (boardName) => ({
+	type: DELETE_USER_BOARD,
+    boardName
+})
 
-export const editProfileThunk = (user) => async (dispatch) => {
+
+export const editProfileThunk = (user, data) => async (dispatch) => {
 	const res = await fetch(`/api/users/${user.id}`, {
 		method: "PUT",
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(user)
+		body: data
 	});
 	if (res.ok) {
 		const userData = await res.json()
@@ -130,18 +125,18 @@ export const createUserCategories = (categories) => async (dispatch) => {
 	}
 }
 
-export const findFollowersAndFollowing = (username) => async (dispatch) => {
-	let res = await fetch(`/api/users/${username}/followers_and_following`)
-	if (res.ok) {
-		let followRel = await res.json()
-		dispatch(getFollowersAndFollowing(followRel))
-		return followRel
-	}
-	else {
-		let errors = await res.json()
-		return errors
-	}
-}
+// export const findFollowersAndFollowing = (username) => async (dispatch) => {
+// 	let res = await fetch(`/api/users/${username}/followers_and_following`)
+// 	if (res.ok) {
+// 		let followRel = await res.json()
+// 		dispatch(getFollowersAndFollowing(followRel))
+// 		return followRel
+// 	}
+// 	else {
+// 		let errors = await res.json()
+// 		return errors
+// 	}
+// }
 
 // export const findFollowing = (username) => async (dispatch) => {
 // 	let res = await fetch(`/api/users/${username}/following`)
@@ -279,13 +274,11 @@ export default function reducer(state = initialState, action) {
 			let user = { ...state.user }
 			user.categories = action.categories
 			return { ...state, user: { ...user }, following: {}, followers: {} }
-		case GET_FOLLOWING_AND_FOLLOWERS:
-			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
 		case FOLLOW_USER:
 			let newState = { ...state }
 			return newState
 		case SET_USER:
-			return { user: action.payload };
+			return { ...state, user: action.payload };
 		case REMOVE_USER:
 			return { user: null };
 		case UNFOLLOW_USER:
@@ -294,9 +287,16 @@ export default function reducer(state = initialState, action) {
 			console.log("state.user.following", state.user.following)
 			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
-			return { user: { ...state.user } }
+			return { ...state, user: { ...state.user } }
 		case EDIT_USER:
-			return { currentProfile: action.user };
+			let newState1 = {...state}
+			newState1.user = action.user
+			return newState1;
+		case DELETE_USER_BOARD:
+			let newState2 = {...state}
+			let boardIndex = state.user.boards.indexOf(action.boardName)
+			state.user.boards.splice(boardIndex, 1)
+			return newSate2
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
 		default:

@@ -113,9 +113,8 @@ export default function CreatePin() {
     }, [image])
 
     useEffect(() => {
-        if (userBoards.length) {
+        if (userBoards.length && !board) {
             setBoard(userBoards[0].id)
-            console.log(userBoards)
         }
     }, [userBoards])
 

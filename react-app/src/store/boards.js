@@ -1,38 +1,42 @@
+import { deleteBoard } from "./session"
 
 const GET_BOARDS_OF_USER = "boards/getUserBoards"
 const GET_SINGLE_BOARD = 'boards/single'
-const GET_BOARD_BY_NAME = "boards/getBoardByName"
+// const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_USER_BOARD = "boards/delete";
 const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
-const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
-const GET_ALL_BOARDS = "boards/all"
 
 
 
-const getAllBoards = (boards) => ({
-    type: GET_ALL_BOARDS,
-    boards: boards
-})
+// const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
+// const GET_ALL_BOARDS = "boards/all"
+// const GET_BOARDS_OF_USER = "boards/getUserBoards"
 
 
-const getUserBoards = (boards) => ({
-    type: GET_BOARDS_OF_USER,
-    boards: boards["User Boards"]
-})
+// const getAllBoards = (boards) => ({
+//     type: GET_ALL_BOARDS,
+//     boards: boards
+// })
+
+
+// const getUserBoards = (boards) => ({
+//     type: GET_BOARDS_OF_USER,
+//     boards: boards["User Boards"]
+// })
 
 const getSingleBoard = (board) => ({
     type: GET_SINGLE_BOARD,
     board: board["User Boards"]
 })
 
-const getOneBoardByName = (board) => ({
-    type: GET_BOARD_BY_NAME,
-    board: board["User Boards"]
-})
+// const getOneBoardByName = (board) => ({
+//     type: GET_BOARD_BY_NAME,
+//     board: board["User Boards"]
+// })
 
 
 const createUserBoard = (board) => ({
@@ -50,10 +54,6 @@ const deleteUserBoard = (id) => ({
     id,
 });
 
-const getCurrentUserBoard = (boards) => ({
-    type: GET_CURRENT_USER_BOARDS,
-    boards
-})
 
 const unPin = (pin, boardId) => ({
     type: UN_PIN,
@@ -76,19 +76,6 @@ const pinBoard = (pin, boardId) => ({
 
 
 
-export const getBoardsofCurrentUser = () => async (dispatch) => {
-    const res = await fetch("/api/boards/current_user").catch((e) => console.log("whatever"))
-    if (res.status >= 400) {
-        console.log("in the get boards of current user reducer")
-        return
-    }
-    if (res.ok) {
-        let boards = await res.json()
-        console.log("boards", boards)
-        dispatch(getCurrentUserBoard(boards))
-        return
-    }
-}
 
 export const getSingleBoardThunk = (username, boardname) => async (dispatch) => {
     const res = await fetch(`/api/boards/users/${username}/${boardname}`);
@@ -99,14 +86,14 @@ export const getSingleBoardThunk = (username, boardname) => async (dispatch) => 
     }
 }
 
-export const getBoardsByUsername = (username) => async (dispatch) => {
-    const res = await fetch(`/api/boards/users/${username}`)
-    if (res.ok) {
-        let boards = await res.json()
-        console.log("GET BOARDS BY USERNAME TEST", boards)
-        dispatch(getUserBoards(boards))
-    }
-}
+// export const getBoardsByUsername = (username) => async (dispatch) => {
+//     const res = await fetch(`/api/boards/users/${username}`)
+//     if (res.ok) {
+//         let boards = await res.json()
+//         console.log("GET BOARDS BY USERNAME TEST", boards)
+//         dispatch(getUserBoards(boards))
+//     }
+// }
 
 export const createBoardThunk = (board) => async (dispatch) => {
     const res = await fetch('/api/boards/', {
@@ -125,19 +112,19 @@ export const createBoardThunk = (board) => async (dispatch) => {
     }
 }
 
-export const getAllBoardsThunk = () => async (dispatch) => {
-    const res = await fetch("/api/boards/").catch((e) => console.log("ALL BOARDS"))
-    if (res.status >= 400) {
-        console.log("in the get all boards of all boards reducer")
-        return
-    }
-    if (res.ok) {
-        let boards = await res.json()
-        console.log("all boards", boards)
-        dispatch(getAllBoards(boards))
-        return boards
-    }
-}
+// export const getAllBoardsThunk = () => async (dispatch) => {
+//     const res = await fetch("/api/boards/").catch((e) => console.log("ALL BOARDS"))
+//     if (res.status >= 400) {
+//         console.log("in the get all boards of all boards reducer")
+//         return
+//     }
+//     if (res.ok) {
+//         let boards = await res.json()
+//         console.log("all boards", boards)
+//         dispatch(getAllBoards(boards))
+//         return boards
+//     }
+// }
 
 export const updateBoardThunk = (board, id) => async (dispatch) => {
     try {
@@ -169,6 +156,7 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
         if (res.ok) {
             const data = res.json()
             dispatch(deleteUserBoard(id));
+            dispatch(deleteBoard(data.name))
             return data;
         }
         else {
@@ -221,28 +209,26 @@ export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
 
 
 
-export const getBoardByName = (username, boardname) => async (dispatch) => {
-    try {
-        const res = await fetch(`/api/boards/users/${username}/${boardname}`);
-        if (res.ok) {
-            let board = await res.json();
-            dispatch(getOneBoardByName(board));
-        } else {
-            throw new Error("Error occured getting board by name")
-        }
-    } catch (error) {
-        // Handle any error that occurred during the fetch request
-        console.error("Error fetching board:", error);
-    }
-};
+// export const getBoardByName = (username, boardname) => async (dispatch) => {
+//     try {
+//         const res = await fetch(`/api/boards/users/${username}/${boardname}`);
+//         if (res.ok) {
+//             let board = await res.json();
+//             dispatch(getOneBoardByName(board));
+//         } else {
+//             throw new Error("Error occured getting board by name")
+//         }
+//     } catch (error) {
+//         // Handle any error that occurred during the fetch request
+//         console.error("Error fetching board:", error);
+//     }
+// };
 
 const initialState = { singleBoard: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
-        case GET_ALL_BOARDS:
-            return { ...state, allBoards: { ...action.boards } }
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {

@@ -93,7 +93,7 @@ def edit_profile(id):
             profile_picture.filename=get_unique_filename(profile_picture.filename)
             upload = upload_file_to_s3(profile_picture)
             if 'url' not in upload:
-                return upload['errors']
+                return {"errors": validation_errors_to_error_messages(upload)}
             aws_url = upload['url']
             user.profile_image = aws_url
         if form.data['first_name']:
@@ -107,12 +107,14 @@ def edit_profile(id):
         if form.data['website']:
             user.website = form.data['website']
         if form.data['username']:
+            print("WE MADEIT")
             if(current_user.username != form.data["username"]):
-                user = User.query.filter(User.username == form.data["username"]).first()
-                if user:
+                user_check = User.query.filter(User.username == form.data["username"]).first()
+                if user_check:
                     raise ValidationError('Username is already in use.')
             user.username = form.data['username']
         db.session.commit()
+        print("USERRRRRRRRRRRRRRRRRRRR", user.to_dict())
         return user.to_dict()
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401

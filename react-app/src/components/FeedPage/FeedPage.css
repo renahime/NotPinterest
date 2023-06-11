@@ -40,9 +40,9 @@ cursor: pointer;
   /* font-weight: bold; */
 }
 
-/* .board-container-top-text > * + * {
-  margin-left: 10px;
-} */
+.board-container-top-text > * + * {
+  margin-left: 10px; /* Adjust the value as needed */
+}
 
 .board-top {
   display: flex;
@@ -175,7 +175,6 @@ cursor: pointer;
 
 
 .gallery-photo-button {
-  opacity: 0;
   position: absolute;
   top: 20px;
   right: 10px;
