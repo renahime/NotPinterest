@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
-import { getAllPinsThunk } from "../../store/pins";
+import { getAllPinsThunkOld } from "../../store/pins";
 
 import './Today.css'
 
@@ -39,7 +39,7 @@ function TodayPage() {
   let year = date.getFullYear();
   let day = date.getDate();
   useEffect(() => {
-    dispatch(getAllPinsThunk())
+    dispatch(getAllPinsThunkOld())
   }, [dispatch])
 
   if (pinsTodayObj) {

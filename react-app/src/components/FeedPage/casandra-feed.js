@@ -3,7 +3,7 @@ import { getPinsByCategory } from "../../store/pins"
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { getAllPinsThunk } from "../../store/pins"
+import { getAllPinsThunkOld } from "../../store/pins"
 import "./casandra-feed.css"
 
 
@@ -52,7 +52,7 @@ export default function CaSandraFeed() {
 
 
     useEffect(() => {
-        dispatch(getAllPinsThunk()).then(() => setLoading(true))
+        dispatch(getAllPinsThunkOld()).then(() => setLoading(true))
     }, [dispatch])
 
     useEffect(() => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
-import { getAllBoardThunks } from "../../store/boards-mikey";
-import { getBoardsByUsername } from "../../store/boards";
+// import { getAllBoardThunks } from "../../store/boards-mikey";
+// import { getBoardsByUsername } from "../../store/boards";
 import LoadingButton from "../LoadingButton";
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
@@ -40,17 +40,17 @@ function FeedPage() {
   }
 
 
-  useEffect(() => {
-    setTimeout(() => {
-      // Assuming you're fetching the boards data here
-      if (username) {
-        dispatch(getBoardsByUsername(username))
-      }
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     // Assuming you're fetching the boards data here
+  //     if (username) {
+  //       dispatch(getBoardsByUsername(username))
+  //     }
 
-      setIsLoading(false);
-    }, 1500);
+  //     setIsLoading(false);
+  //   }, 1500);
 
-  }, [dispatch])
+  // }, [dispatch])
 
 
 
