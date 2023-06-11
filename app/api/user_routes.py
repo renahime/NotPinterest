@@ -85,19 +85,21 @@ def edit_profile(id):
 
 
     user = User.query.get(id)
+    print("USER BEFORE CHANGE", user.profile_image)
     form = ProfileForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
+        print("DATA IN VALIDATE", form.data)
         if form.data['profile_picture']:
             profile_picture = form.data['profile_picture']
             profile_picture.filename=get_unique_filename(profile_picture.filename)
             upload = upload_file_to_s3(profile_picture)
             if 'url' not in upload:
-                print("UPLOADDDDDD", upload)
                 return {"errors": validation_errors_to_error_messages(upload)}
             aws_url = upload['url']
-            print("AWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWS", aws_url)
+            print("AWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWS", user.profile_image)
             user.profile_image = aws_url
+            print("AWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWS", user.profile_image)
         if form.data['first_name']:
             user.first_name = form.data['first_name']
         if form.data['last_name']:

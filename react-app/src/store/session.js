@@ -64,11 +64,10 @@ const createUserBoard = (board) => ({
 // 	users
 // })
 
-export const editProfileThunk = (user) => async (dispatch) => {
+export const editProfileThunk = (user, data) => async (dispatch) => {
 	const res = await fetch(`/api/users/${user.id}`, {
 		method: "PUT",
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(user)
+		body: data
 	});
 	if (res.ok) {
 		const userData = await res.json()
@@ -285,7 +284,7 @@ export default function reducer(state = initialState, action) {
 			let newState = { ...state }
 			return newState
 		case SET_USER:
-			return { user: action.payload };
+			return { ...state, user: action.payload };
 		case REMOVE_USER:
 			return { user: null };
 		case UNFOLLOW_USER:
@@ -294,9 +293,11 @@ export default function reducer(state = initialState, action) {
 			console.log("state.user.following", state.user.following)
 			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
-			return { user: { ...state.user } }
+			return { ...state, user: { ...state.user } }
 		case EDIT_USER:
-			return { currentProfile: action.user };
+			let newState1 = {...state}
+			newState1.user = action.user
+			return newState1;
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
 		default:

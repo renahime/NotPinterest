@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom.min'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
-import { editProfileThunk } from '../../../store/profile'
+import { editProfileThunk } from '../../../store/session'
 import Dropdown from './Dropdown'
 import { useModal } from '../../../context/Modal'
 import OpenModalButton from '../../OpenModalButton'
@@ -80,7 +80,7 @@ function Settings() {
     }
 
     const profileData = new FormData()
-    if (profilePic) profileData.append("profile_picture", profilePic)
+    if (typeof profilePic === "object") profileData.append("profile_picture", profilePic)
     profileData.append("first_name", firstName)
     profileData.append("last_name", lastName)
     if (about) profileData.append("about", about)
@@ -99,7 +99,6 @@ function Settings() {
   }
 
   useEffect(() => {
-    console.log("prooooofile", profilePic)
     if (typeof profilePic === "object") {
         let prev = URL.createObjectURL(profilePic)
         setPreviewPic(prev)
@@ -121,7 +120,7 @@ function Settings() {
         <div className='pubic-profile-settings-main'>
           <h1>Public profile</h1>
           <h5>People visiting your profile will see the following info</h5>
-          <form className='settings-form' onSubmit={handleSubmit}>
+          <form encType="multipart/form-data" className='settings-form' onSubmit={handleSubmit}>
             <div className='profile-picture-setting'>
               <h6>Photo</h6>
               <div className='photo-and-button'>
