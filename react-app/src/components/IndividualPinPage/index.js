@@ -31,6 +31,10 @@ export default function IndividualPinPage() {
     const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
     const [pinErrorCheck, setPinErrorCheck] = useState(false);
+    let [numFollowers, setNumFollowers] = useState(0);
+    let [numFollowing, setNumFollowing] = useState(0)
+    let [isfollowing, setIsFollowing] = useState(false);
+
 
     useEffect(() => {
         dispatch(getPinById(id))
@@ -93,24 +97,26 @@ export default function IndividualPinPage() {
             return history.push(`/${currentUser.username}/${sendBoardName}`)
         }
     }
-    async function unfollow(username) {
-        let response = await dispatch(unfollowUser(username))
-        if (response.errors) {
-            console.log(response.errors)
-        } else {
-            console.log("i work")
-        }
-    }
-
-    async function follow(username) {
+    const handleFollow = async (e) => {
+        e.preventDefault();
         let response = await dispatch(followUser(username))
         if (response.errors) {
             console.log(response.errors)
-        } else {
-            console.log("i work too")
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers + 1)
+            setIsFollowing(true);
         }
     }
-
+    const handleUnfollow = async (e) => {
+        e.preventDefault();
+        let response = await dispatch(unfollowUser(username))
+        if (response.errors) {
+            console.log(response.errors)
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers - 1)
+            setIsFollowing(false);
+        }
+    }
     if (!singlePin) return <h1>...Loading</h1>
 
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
@@ -207,8 +213,8 @@ export default function IndividualPinPage() {
                             </div>
                         </div>
                         <div>
-                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={() => follow(singlePin.user.username)} className="single-pin-follow-button">Follow</button> : null}
-                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={() => unfollow(singlePin.user.username)} className="single-pin-following-button">Following</button> : null}
+                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={handleFollow} className="single-pin-follow-button">Follow</button> : null}
+                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={handleFollow} className="single-pin-following-button">Following</button> : null}
                         </div>
                     </div>
                 </div>

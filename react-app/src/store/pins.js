@@ -156,21 +156,8 @@ const updateUserPin = (pin) => ({
     pin
 })
 
-<<<<<<< HEAD
-export const getPinsByUsername = (username) => async (dispatch) => {
-    let res = await fetch(`/api/pins/users/${username}`)
-    if (res.ok) {
-        let pins = await res.json()
-        dispatch(getUserPins(pins))
-    } else {
-        let errors = res.json()
-        return errors
-    }
-}
-=======
 
 
->>>>>>> rena-forms
 
 
 export const createNewPin = (pin_info) => async (dispatch) => {
@@ -244,7 +231,7 @@ export const updatePinThunk = (pin) => async (dispatch) => {
     }
 };
 
-const initialState = { allPins: {}, singlePin: {} }
+const initialState = { pins: {}, singlePin: {} }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
@@ -253,21 +240,16 @@ export default function pinsReducer(state = initialState, action) {
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, ...action.pin } }
         case GET_ALL_PINS:
-            return { ...state, allPins: { ...action.pins } }
+            return { ...state, pins: { ...action.pins } }
         case DELETE_PIN:
-            let deleteAll = { ...state.allPins };
+            let deleteAll = { ...state.pins };
             console.log(deleteAll);
             if (deleteAll[action.pinId]) {
-                console.log("in first if")
                 delete deleteAll[action.pinId]
-                console.log(deleteAll)
             }
             let deleteSinglePin = { ...state.singlePin }
             if (deleteSinglePin.id == action.pinId) {
-                console.log("in second if")
-                console.log(deleteSinglePin)
                 deleteSinglePin = {};
-                console.log(deleteSinglePin)
             }
             return {
                 ...state,
