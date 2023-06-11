@@ -84,17 +84,18 @@ function Settings() {
     profileData.append("first_name", firstName)
     profileData.append("last_name", lastName)
     if (about) profileData.append("about", about)
-    if (pronouns) profileData.append("pronouns", pronouns)
+    if (pronouns) profileData.append("pronouns", pronouns.value || pronouns)
     if (website) profileData.append("website", website)
     profileData.append("username", username)
 
     const editedUser = await dispatch(editProfileThunk(user, profileData)).catch(async (res) => {
       const data = await res;
+      console.log("data", data)
       setErrors(data);
     });
     if (editedUser) {
       console.log("EDIT", editedUser)
-      // history.push(`/feed`)
+      history.push(`/${editedUser.id}`)
     }
   }
 
@@ -107,6 +108,10 @@ function Settings() {
         }
     }
   }, [profilePic])
+
+  // useEffect(() => {
+  //   console.log("pronouns in use effect", pronouns)
+  // }, [pronouns])
 
   
   return (
@@ -153,7 +158,7 @@ function Settings() {
               <div className='pronoun-info'>
                 <h6>Pronouns</h6>
                 <div className='pronoun-select-list'>
-                  <Dropdown isSearchable={true} value={pronouns} placeHolder="Add Your Pronouns" options={options} onChange={(e) => setPronouns(e.target.value)} />
+                  <Dropdown isSearchable={true} value={pronouns} placeHolder={pronouns ? pronouns : "Add Your Pronouns"} options={options} setter={(x) => setPronouns(x)}/>
                 </div>
                 <div className='pronoun-description'>
                   <h6>Choose a sets of pronouns to appear on your profile so others know how to refer to you. You can edit or remove these any time.</h6>
@@ -169,13 +174,13 @@ function Settings() {
               </div>
             </div>
             <div className='footer-div'>
-              <button className='reset-button'>
+              <div className='reset-button'>
                 <OpenModalButton
                   buttonText="Delete Account"
-                  className="dropdown-item"
+                  className="reset-button"
                   modalComponent={<DeleteUserModal user={user} />}
                 />
-              </button>
+              </div>
               <button type="submit" className='save-button'>Save</button>
               <NavLink exact to={`/${user?.username}`}>
                 <button type='button' className='delete-button'>Cancel</button>

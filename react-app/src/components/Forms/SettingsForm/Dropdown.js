@@ -11,7 +11,7 @@ const Icon = () => {
   );
 };
 
-const Dropdown = ({ placeHolder, options, value, isSearchable }) => {
+const Dropdown = ({ placeHolder, options, value, isSearchable, setter }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const [searchValue, setSearchValue] = useState("");
@@ -32,6 +32,7 @@ const Dropdown = ({ placeHolder, options, value, isSearchable }) => {
   });
   const handleInputClick = (e) => {
     e.stopPropagation();
+    // setter(selectedValue)
     setShowMenu(!showMenu);
   };
   const getDisplay = () => {
@@ -43,6 +44,7 @@ const Dropdown = ({ placeHolder, options, value, isSearchable }) => {
 
   const onItemClick = (option) => {
     setSelectedValue(option);
+    setter(option)
   }
 
   const isSelected = (option) => {
