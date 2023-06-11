@@ -8,7 +8,7 @@ import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
 // import { fetchPinsToday } from "../../store/pins";
 import SavePinsToBoardModal from "./SavePinsToBoard";
 import './CreateBoardModal.css'
-import { getAllPinsThunk } from "../../store/pins";
+import { getAllPinsThunkOld } from "../../store/pins";
 
 
 

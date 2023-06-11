@@ -8,7 +8,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import CreateBoardModal from "../CreateBoardModal";
 import UpdateBoardModal from "../UpdateBoardModal";
-import { getAllPinsThunk } from "../../store/pins";
+import { getAllPinsThunkOld } from "../../store/pins";
 import './FeedPage.css'
 
 
@@ -23,9 +23,11 @@ function FeedPage() {
   const [hoverBoardDiv, setHoverBoardDiv] = useState("")
   const [randomizedArrays, setRandomizedArrays] = useState([]);
 
-  let singleBoard = useSelector(state => state.boards.singleBoard)
+  // let singleBoard = useSelector(state => state.boards.singleBoard)
   let state = useSelector(state => state)
-  console.log("SINGLE BOARD INFO on feed page", singleBoard)
+  let session = useSelector(state => state.session)
+  console.log("SESSION", session)
+  // console.log("SINGLE BOARD INFO on feed page", singleBoard)
   console.log("CURRENT STATE", state)
   console.log("BOARDS", state.boards)
 
@@ -71,11 +73,13 @@ function FeedPage() {
 let allPinsArr;
 
   //GET ALL PINS DATA FOR ARRAY
-  console.log("WE ARE TRYING TO GET PINS" ,)
-  const allPins = useSelector(state => state)
+
+  const allPins = useSelector(state => state.pins.allPins)
+  console.log("WE ARE TRYING TO GET PINS" , allPins)
   if(allPins){
     console.log("WE ARE IN ALL PINS", allPins)
     allPinsArr = Object.values(allPins)
+    console.log("ALL PINS ARRAY", allPinsArr)
   }else {
     allPinsArr = []
   }
@@ -84,7 +88,7 @@ let allPinsArr;
 
   useEffect(() => {
     console.log("Before dispatch");
-    dispatch(getAllPinsThunk())
+    dispatch(getAllPinsThunkOld())
       .then(() => console.log("ALL PINS FETCHED", allPinsArr))
       .catch((error) => console.log("Error fetching pins:", error));
   }, [dispatch]);
@@ -96,15 +100,15 @@ let allPinsArr;
   const sessionUser = useSelector(state => state.session.user)
   const currentState = useSelector(state => state)
   const username = sessionUser?.username
-  const boardsSelector = useSelector((state) => state.boards.currentUserBoards)
-  const boards = Object.values(boardsSelector)
+  const boards = useSelector((state) => state.session.user.boards)
+  // const boards = Object.values(boardsSelector)
   const [selectedBoard, setSelectedBoard] = useState(boards[0]?.id || "")
   const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(boards[0]?.name || "")
 
   console.log("SELECETED BOARD DROPDOWN", selectedBoardDropdown)
   console.log("SESSION USER USERNAME", username)
   console.log(sessionUser)
-  console.log("GET ALL BOARDS STATE TEST", boardsSelector)
+  // console.log("GET ALL BOARDS STATE TEST", boardsSelector)
   console.log("GET ALL BOARDS DATA", boards)
 
 
@@ -247,7 +251,7 @@ let allPinsArr;
 
                 {boards.map((board, index) => (
 
-                  <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                  <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(session.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
                     {/* <OpenModalButton
                   buttonText={board.name}
                   className="test-open-create-board-modal"

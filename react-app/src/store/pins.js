@@ -214,7 +214,7 @@ export const fetchPinsToday = () => async (dispatch) => {
     }
 }
 
-export const getAllPinsThunk = () => async (dispatch) => {
+export const getAllPinsThunkOld = () => async (dispatch) => {
     let res = await fetch(`/api/pins/`)
     if (res.ok) {
         let pins = await res.json()
