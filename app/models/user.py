@@ -105,7 +105,8 @@ class User(db.Model, UserMixin):
             'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
-            'pins': self.get_ten_pints(),
+            'pins': self.pins,
+            # 'pins': self.get_ten_pints(),
             'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at
