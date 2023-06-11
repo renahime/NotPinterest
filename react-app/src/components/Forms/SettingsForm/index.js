@@ -19,15 +19,16 @@ function Settings() {
   const history = useHistory();
   const dispatch = useDispatch();
   const hiddenFileInput = React.useRef(null);
-  const data = location.state.currentUser;
-  const [firstName, setFirstName] = useState(user?.first_name)
-  const [lastName, setLastName] = useState(user?.last_name)
-  const [about, setAbout] = useState(user?.about)
-  const [pronouns, setPronouns] = useState(user?.pronouns)
-  const [website, setWebsite] = useState(user?.website)
-  const [username, setUsername] = useState(user?.username)
-  const [errors, setErrors] = useState()
-  const [profilePic, setProfilePic] = useState(user?.profile_image);
+  // const data = location.state.currentUser;
+  const [firstName, setFirstName] = useState(user?.first_name || "")
+  const [lastName, setLastName] = useState(user?.last_name || "")
+  const [about, setAbout] = useState(user?.about || "")
+  const [pronouns, setPronouns] = useState(user?.pronouns || "")
+  const [website, setWebsite] = useState(user?.website || "")
+  const [username, setUsername] = useState(user?.username || "")
+  const [errors, setErrors] = useState({})
+  const [profilePic, setProfilePic] = useState(user?.profile_image || "");
+  const [previewPic, setPreviewPic] = useState(user?.profile_image || "");
 
   const options = [
     { value: "ey/em", label: "ey/em" },
@@ -41,8 +42,8 @@ function Settings() {
   ]
 
 
-  const optionsArr = ["Personal information", "Account management", "Tune your home feed",
-    "Claimed accounts", "Social permissions", "Notifications", "Notifications", "Privacy and data", "Security and logins", "Branded Content"]
+  const optionsArr = ["Personal information", "Account management", "Tune your home feed",]
+
   const handleClick = event => {
     hiddenFileInput.current.click();
   };
@@ -50,22 +51,72 @@ function Settings() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    const sendEditUser = { ...user, firstName, lastName, about, pronouns, website, username }
-    const editedUser = dispatch(editProfileThunk(sendEditUser)).catch(async (res) => {
+    let validationErrors = {}
+    if (!firstName) {
+      validationErrors.firstName = "Your profile needs a first name"
+    }
+    if (firstName.length > 255) {
+      validationErrors.firstName = "Name must be less than 255 chars"
+    }
+    if (!lastName) {
+      validationErrors.lastName = "Your profile needs a last name"
+    }
+    if (lastName.length > 255) {
+      validationErrors.lastName = "Name must be less than 255 chars"
+    }
+    if (about.length > 255) {
+      validationErrors.about = "Please enter no more than 255 characters."
+    }
+    if (website.length > 255) {
+      validationErrors.about = "Please enter no more than 255 characters."
+    }
+    if (username.length > 40) {
+      validationErrors.about = "Username must be less than 40 characters."
+    }
+
+    if (Object.values(validationErrors).length) {
+      setErrors(validationErrors)
+      return
+    }
+
+    const profileData = new FormData()
+    if (profilePic) profileData.append("profile_picture", profilePic)
+    profileData.append("first_name", firstName)
+    profileData.append("last_name", lastName)
+    if (about) profileData.append("about", about)
+    if (pronouns) profileData.append("pronouns", pronouns)
+    if (website) profileData.append("website", website)
+    profileData.append("username", username)
+
+    const editedUser = await dispatch(editProfileThunk(user, profileData)).catch(async (res) => {
       const data = await res;
-      setErrors(data.errors);
+      setErrors(data);
     });
     if (editedUser) {
-      history.push(`/feed`)
+      console.log("EDIT", editedUser)
+      // history.push(`/feed`)
     }
   }
+
+  useEffect(() => {
+    console.log("prooooofile", profilePic)
+    if (typeof profilePic === "object") {
+        let prev = URL.createObjectURL(profilePic)
+        setPreviewPic(prev)
+        return () => {
+            URL.revokeObjectURL(prev)
+        }
+    }
+  }, [profilePic])
+
+  
   return (
     <div className='settings-with-footer'>
       <div className='main-settings-div'>
         <div className='settings-list'>
           <h4 className='only-one-that-works'>Public Profile</h4>
           {optionsArr.map((option) => {
-            return (<h4 className='settings-text'>{option}</h4>)
+            return (<h4 className='settings-text' onClick={() => alert("Feature coming soon!")}>{option}</h4>)
           })}</div>
         <div className='pubic-profile-settings-main'>
           <h1>Public profile</h1>
@@ -74,9 +125,16 @@ function Settings() {
             <div className='profile-picture-setting'>
               <h6>Photo</h6>
               <div className='photo-and-button'>
-                <img id='profile-picture-display' src={profilePic}></img>
-                <button id='file-input-actual-button' onClick={handleClick}>Change</button>
-                <input className='file-input-button' type="file" ref={hiddenFileInput} style={{ display: 'none' }} />
+                {profilePic ? <img id='profile-picture-display' src={previewPic}></img> : <img id='profile-picture-display' src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686473703/Untitled_design_4_jhphmw.png"></img>}
+                <button id='file-input-actual-button' type='button' onClick={handleClick}>Change</button>
+                <input 
+                  className='file-input-button'
+                  type="file"
+                  accept="image/*"
+                  ref={hiddenFileInput}
+                  onChange={(e) => setProfilePic(e.target.files[0])}
+                  style={{ display: 'none' }}
+                />
               </div>
               <div className='name-info'>
                 <div className='first-name-info'>
@@ -104,7 +162,7 @@ function Settings() {
               </div>
               <div className='website-info'>
                 <h6>Website</h6>
-                <input type="text" className='website-input' value={website} placeholder='Add a link to drive traffic to your site' onChange={(e) => setWebsite(e.target.value)} />
+                <input type="url" className='website-input' value={website} placeholder='Add a link to drive traffic to your site' onChange={(e) => setWebsite(e.target.value)} />
               </div>
               <div className='username-info'>
                 <h6>Username</h6>
@@ -120,7 +178,7 @@ function Settings() {
                 />
               </button>
               <button type="submit" className='save-button'>Save</button>
-              <NavLink exact to={`/${user.username}`}>
+              <NavLink exact to={`/${user?.username}`}>
                 <button type='button' className='delete-button'>Cancel</button>
               </NavLink>
             </div>

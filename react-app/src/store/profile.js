@@ -131,11 +131,10 @@ export const getUserInfo = (username) => async (dispatch) => {
     }
 }
 
-export const editProfileThunk = (user) => async (dispatch) => {
+export const editProfileThunk = (user, profileInfo) => async (dispatch) => {
     const res = await fetch(`/api/users/${user.id}`, {
         method: "PUT",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: profileInfo
     });
     if (res.ok) {
         const userData = await res.json()
