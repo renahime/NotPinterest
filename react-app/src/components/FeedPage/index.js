@@ -59,15 +59,15 @@ function FeedPage() {
 
 
   //FETCH BOARD DATA
-  useEffect(() => {
-    setTimeout(() => {
+  // useEffect(() => {
+  //   setTimeout(() => {
 
-      if (username) {
-        dispatch(getBoardsByUsername(username))
-      }
-      setIsLoading(false);
-    }, 1500);
-  }, [dispatch])
+  //     if (username) {
+  //       dispatch(getBoardsByUsername(username))
+  //     }
+  //     setIsLoading(false);
+  //   }, 1500);
+  // }, [dispatch])
 
 
 let allPinsArr;
@@ -166,7 +166,9 @@ let allPinsArr;
   }
 
 
-
+// function addPinToBoard{
+//   await dispatch(pinThunk(singlePin, boardId));
+// }
 
   // our boards container will loop through this array and keep assigning board backgrounds dynamically
 
@@ -318,7 +320,7 @@ let allPinsArr;
               {array.map((item, itemIndex) => (
                 <div key={itemIndex} className="feed-test-photo">
                   <img src={item.image} />
-                  <button className="gallery-photo-button">Save</button>
+                  <button className="gallery-photo-button" >Save</button>
                   <NavLink to="/" target="_blank" className="feed-test-link">
                     Test Link
                   </NavLink>

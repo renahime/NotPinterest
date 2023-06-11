@@ -7,7 +7,7 @@ import { NavLink, Redirect, useHistory } from "react-router-dom";
 // import { fetchPinsToday, getPinById } from "../../store/pins";
 import { useModal } from "../../context/Modal";
 import './SavePinsToBoard.css'
-import { addPinToBoardThunk, getBoardByName } from "../../store/boards";
+// import { addPinToBoardThunk, getBoardByName } from "../../store/boards";
 import { pinThunk } from "../../store/boards";
 import { getAllPinsThunkOld } from "../../store/pins";
 import LoadingButton from "../LoadingButton";
@@ -35,9 +35,9 @@ function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, chang
   }, [dispatch, change]);
 
 
-  useEffect(() => {
-    dispatch(getBoardByName(username, boardName))
-  }, [username])
+  // useEffect(() => {
+  //   dispatch(getBoardByName(username, boardName))
+  // }, [username])
 
   // dispatch(fetchPinsToday())
   const currentBoard = useSelector(state => state.boards.singleBoard)

@@ -7,11 +7,12 @@ const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
-const GET_FOLLOWING_AND_FOLLOWERS = "session/GET_FOLLOWING_AND_FOLLOWERS"
 const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
+
+
 
 
 
@@ -49,10 +50,6 @@ const newFollow = (user) => ({
 	user
 })
 
-const getFollowersAndFollowing = (users) => ({
-	type: GET_FOLLOWING_AND_FOLLOWERS,
-	users
-})
 
 const createUserBoard = (board) => ({
 	type: CREATE_USER_BOARD_FROM_PIN,
@@ -130,18 +127,18 @@ export const createUserCategories = (categories) => async (dispatch) => {
 	}
 }
 
-export const findFollowersAndFollowing = (username) => async (dispatch) => {
-	let res = await fetch(`/api/users/${username}/followers_and_following`)
-	if (res.ok) {
-		let followRel = await res.json()
-		dispatch(getFollowersAndFollowing(followRel))
-		return followRel
-	}
-	else {
-		let errors = await res.json()
-		return errors
-	}
-}
+// export const findFollowersAndFollowing = (username) => async (dispatch) => {
+// 	let res = await fetch(`/api/users/${username}/followers_and_following`)
+// 	if (res.ok) {
+// 		let followRel = await res.json()
+// 		dispatch(getFollowersAndFollowing(followRel))
+// 		return followRel
+// 	}
+// 	else {
+// 		let errors = await res.json()
+// 		return errors
+// 	}
+// }
 
 // export const findFollowing = (username) => async (dispatch) => {
 // 	let res = await fetch(`/api/users/${username}/following`)
@@ -279,8 +276,7 @@ export default function reducer(state = initialState, action) {
 			let user = { ...state.user }
 			user.categories = action.categories
 			return { ...state, user: { ...user }, following: {}, followers: {} }
-		case GET_FOLLOWING_AND_FOLLOWERS:
-			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
+	
 		case FOLLOW_USER:
 			let newState = { ...state }
 			return newState

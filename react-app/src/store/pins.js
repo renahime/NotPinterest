@@ -122,9 +122,6 @@
 
 const CREATE_PIN = "pins/createNewPin"
 const GET_PIN = "pins/getById"
-const GET_PINS_MADE_TODAY = "pins/getPinsToday"
-const GET_PINS_BY_CATEGORY = "pins/getPinsByCategory"
-const GET_PINS_BY_USERNAME = "pins/getPinsByUsername"
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
 const GET_ALL_PINS = "pins/all"
@@ -147,43 +144,21 @@ const getAllPins = (pins) => ({
 })
 
 
-const getPinsToday = (pins) => ({
-    type: GET_PINS_MADE_TODAY,
-    pins
-})
 
-const pinsByCategory = (pins) => ({
-    type: GET_PINS_BY_CATEGORY,
-    pins
-})
-
-const getUserPins = (pins) => ({
-    type: GET_PINS_BY_USERNAME,
-    pins
-})
 
 const deletePin = (pinId) => ({
     type: DELETE_PIN,
     pinId
 })
 
-
-export const getPinsByUsername = (username) => async (dispatch) => {
-    let res = await fetch(`/api/pins/users/${username}`)
-    if (res.ok) {
-        let pins = await res.json()
-        dispatch(getUserPins(pins))
-    } else {
-        let errors = res.json()
-        return errors
-    }
-}
-
-
 const updateUserPin = (pin) => ({
     type: UPDATE_USER_PIN,
     pin
 })
+
+
+
+
 
 export const createNewPin = (pin_info) => async (dispatch) => {
     const res = await fetch("/api/pins/new", {
@@ -201,18 +176,7 @@ export const createNewPin = (pin_info) => async (dispatch) => {
 }
 
 
-export const fetchPinsToday = () => async (dispatch) => {
-    const res = await fetch(`/api/pins/today`, {
-        method: 'GET'
-    })
-    if (res.ok) {
-        let pinsToday = await res.json()
-        dispatch(getPinsToday(pinsToday))
-    } else {
-        const errors = await res.json()
-        return errors
-    }
-}
+
 
 export const getAllPinsThunkOld = () => async (dispatch) => {
     let res = await fetch(`/api/pins/`)
@@ -226,18 +190,7 @@ export const getAllPinsThunkOld = () => async (dispatch) => {
 }
 
 
-export const getPinsByCategory = () => async (dispatch) => {
-    const res = await fetch(`/api/pins/categories`)
-    if (res.ok) {
-        let pins = await res.json()
-        dispatch(pinsByCategory(pins))
-        console.log("pins", pins)
-        return pins
-    } else {
-        let errors = await res.json()
-        return errors
-    }
-}
+
 
 export const deletePinThunk = (pinId) => async (dispatch) => {
     const res = await fetch(`/api/pins/${pinId}/delete`, {
