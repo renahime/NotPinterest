@@ -1,4 +1,4 @@
-// const GET_ALL_PINS = "pins/all"
+// const GET_ALL_PINS = "pins/getallpins"
 // const CREATE_PIN = "pins/createNewPin"
 // const DELETE_PIN = "pins/delete"
 // const UPDATE_USER_PIN = "pins/edit"

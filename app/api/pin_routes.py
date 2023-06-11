@@ -13,6 +13,20 @@ import random
 pin_routes = Blueprint('pins', __name__)
 
 
+
+# route to get all pins
+@pin_routes.route("/")
+def get_all_pins():
+    # querires Pin database for all pins
+    pins = Pin.query.all()
+    all_pins = {}
+    # standardizes the output that is returned to user
+    for pin in pins:
+        all_pins[pin.id] = pin.to_dict()
+    # return all_pins
+    return all_pins
+
+
 # gets all of the pins of a user
 @pin_routes.route("/users/<username>")
 def get_users_pins_by_username(username):
@@ -250,15 +264,3 @@ def get_latest_pins():
 
 
 
-# route to get all pins
-@pin_routes.route("/")
-def get_all_pins():
-    # querires Pin database for all pins
-    pins = Pin.query.all()
-    
-    all_pins = {}
-    # standardizes the output that is returned to user
-    for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
-    # return all_pins
-    return all_pins

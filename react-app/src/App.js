@@ -54,10 +54,10 @@ function App() {
           <Route exact path="/create">
             <CreatePin />
           </Route>
-          {/* <Route exact path="/feed"> */}
-            {/* <FeedPage /> */}
+          <Route exact path="/feed">
+            <FeedPage />
             {/* <CaSandraFeed /> */}
-          {/* </Route> */}
+          </Route>
           <Route exact path="/">
             <LandingPage />
           </Route>

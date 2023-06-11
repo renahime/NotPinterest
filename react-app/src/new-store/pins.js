@@ -1,4 +1,4 @@
-const GET_ALL_PINS = "pins/all"
+// const GET_ALL_PINS = "pins/all"
 const CREATE_PIN = "pins/createNewPin"
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
@@ -10,10 +10,10 @@ const createPin = (pin) => ({
     pin
 })
 
-const getAllPins = (pins) => ({
-    type: GET_ALL_PINS,
-    pins
-})
+// const getAllPins = (pins) => ({
+//     type: GET_ALL_PINS,
+//     pins
+// })
 
 
 const deletePin = (pinId) => ({
@@ -28,16 +28,16 @@ const updateUserPin = (pin) => ({
 
 
 
-export const getAllPinsThunk = (pins) => async (dispatch) => {
-    let res = await fetch(`/api/pins/`)
-    if (res.ok) {
-        let pins = await res.json()
-        dispatch(getAllPins(pins))
-    } else {
-        let errors = res.json()
-        return errors
-    }
-}
+// export const getAllPinsThunk = (pins) => async (dispatch) => {
+//     let res = await fetch(`/api/pins/`)
+//     if (res.ok) {
+//         let pins = await res.json()
+//         dispatch(getAllPins(pins))
+//     } else {
+//         let errors = res.json()
+//         return errors
+//     }
+// }
 
 
 export const createNewPin = (pin) => async (dispatch) => {
@@ -98,8 +98,8 @@ const initialState = { pins: {} }
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
 
-        case GET_ALL_PINS:
-            return { ...state, pins: { ...state.pins } }
+        // case GET_ALL_PINS:
+        //     return { ...state, pins: { ...state.pins } }
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, [action.pin.id]: action.pin } }
         case DELETE_PIN:
