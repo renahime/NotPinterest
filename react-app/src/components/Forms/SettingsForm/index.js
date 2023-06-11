@@ -58,9 +58,6 @@ function Settings() {
     if (firstName.length > 255) {
       validationErrors.firstName = "Name must be less than 255 chars"
     }
-    if (!lastName) {
-      validationErrors.lastName = "Your profile needs a last name"
-    }
     if (lastName.length > 255) {
       validationErrors.lastName = "Name must be less than 255 chars"
     }
@@ -68,12 +65,12 @@ function Settings() {
       validationErrors.about = "Please enter no more than 255 characters."
     }
     if (website.length > 255) {
-      validationErrors.about = "Please enter no more than 255 characters."
+      validationErrors.website = "Please enter no more than 255 characters."
     }
     if (username.length > 40) {
-      validationErrors.about = "Username must be less than 40 characters."
+      validationErrors.username = "Username must be less than 40 characters."
     }
-
+    console.log('about', validationErrors.about)
     if (Object.values(validationErrors).length) {
       setErrors(validationErrors)
       return
@@ -144,16 +141,19 @@ function Settings() {
                 <div className='first-name-info'>
                   <h6>First name</h6>
                   <input className='first-name-input' value={firstName} type="text" onChange={(e) => setFirstName(e.target.value)} />
+                {errors.firstName ? <p className='settings-form-errors'>{errors.firstName}</p> : null}
                 </div>
                 <div className='last-name-info'>
                   <h6>Last name</h6>
                   <input className='first-name-input' type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                {errors.lastName ? <p className='settings-form-errors'>{errors.lastName}</p> : null}
                 </div>
               </div>
               <div className='about-info'>
                 <h6>About</h6>
                 <textarea name="About" className='input-about' type="text" value={about} placeholder="Tell your story" onChange={(e) => setAbout(e.target.value)}>
                 </textarea>
+                {errors.about ? <p className='settings-form-errors'>{errors.about}</p> : null}
               </div>
               <div className='pronoun-info'>
                 <h6>Pronouns</h6>
@@ -167,10 +167,12 @@ function Settings() {
               <div className='website-info'>
                 <h6>Website</h6>
                 <input type="url" className='website-input' value={website} placeholder='Add a link to drive traffic to your site' onChange={(e) => setWebsite(e.target.value)} />
+                {errors.website ? <p className='settings-form-errors'>{errors.website}</p> : null}
               </div>
               <div className='username-info'>
                 <h6>Username</h6>
                 <input type="text" className='username-input' value={username} placeholder='Choose wisely so others can find you' onChange={(e) => setUsername(e.target.value)} />
+                {errors.username ? <p className='settings-form-errors'>{errors.username}</p> : null}
               </div>
             </div>
             <div className='footer-div'>

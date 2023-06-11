@@ -167,3 +167,8 @@ textarea {
   font-weight: bold;
   border-radius: 40px;
 }
+
+.settings-form-errors {
+  color: red;
+  font-size: 15px;
+}

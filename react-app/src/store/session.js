@@ -12,6 +12,7 @@ const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
+const DELETE_USER_BOARD = "boards/delete";
 
 
 
@@ -57,6 +58,11 @@ const getFollowersAndFollowing = (users) => ({
 const createUserBoard = (board) => ({
 	type: CREATE_USER_BOARD_FROM_PIN,
 	board
+})
+
+export const deleteBoard = (boardName) => ({
+	type: DELETE_USER_BOARD,
+    boardName
 })
 
 // const getFollowing = (users) => ({
@@ -298,6 +304,11 @@ export default function reducer(state = initialState, action) {
 			let newState1 = {...state}
 			newState1.user = action.user
 			return newState1;
+		case DELETE_USER_BOARD:
+			let newState2 = {...state}
+			let boardIndex = state.user.boards.indexOf(action.boardName)
+			state.user.boards.splice(boardIndex, 1)
+			return newSate2
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
 		default:
