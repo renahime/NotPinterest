@@ -21,7 +21,6 @@ export default function CaSandraFeed() {
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
     const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
     const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
-
     let pinsArr = []
     let numberOfPins = 0
     let boards = 0
@@ -34,6 +33,13 @@ export default function CaSandraFeed() {
         }
     }
 
+    useEffect(() => {
+        if (sessionUser) {
+            setCurrentUser(true)
+        } else {
+            setCurrentUser(false)
+        }
+    }, currentUser, sessionUser)
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
             console.log(pins)
@@ -138,7 +144,6 @@ export default function CaSandraFeed() {
             setFinished(true)
         }
     }, [loading, pins])
-    console.log("pinsArr", pinsArr)
     if (!Object.values(pins).length) {
         return (
             <LoadingButton
@@ -147,20 +152,22 @@ export default function CaSandraFeed() {
             />
         )
     }
+    console.log(currentUser)
 
     return (
         <div>
             {/* {sessionUser == null ?
                 <h3 className="board-container-top-text">Sign up for Threadterest today and make some new threads!</h3> :
                 boards > 0 ? */}
-            {(sessionUser && boards.length) ? (
+            {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
 
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} </NavLink>
                         <div>and</div>
-                        <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser && sessionUser.boards.length ? (sessionUser.boards.reduce(
+                            (total, board) => (board.pins.length ? total + board.pins.length : 0), 0)) : 0}pins</NavLink>
                         <div>Check them out!</div>
                     </div>
 
@@ -174,7 +181,7 @@ export default function CaSandraFeed() {
                                 <i className="fa-solid fa-angle-left fa-rotate-180"></i>
                             </div>
 
-                            {boards.map((board, index) => (
+                            {sessionUser.boards.map((board, index) => (
 
                                 <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
                                     {/* <OpenModalButton
@@ -193,7 +200,7 @@ export default function CaSandraFeed() {
                     </div>
                 </>
 
-            ) : ((sessionUser && !boards.length) ? (
+            ) : ((currentUser && (sessionUser && sessionUser.boards.length)) ? (
                 <>
                     <div className="board-container-top-text">
                         <div>Oh no, you have</div>
