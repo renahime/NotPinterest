@@ -43,9 +43,9 @@ function CreateBoardModal({ username }) {
 //   }
 //   const date = new Date();
 
-  useEffect(() => {
-    dispatch(fetchPinsToday())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(fetchPinsToday())
+  // }, [])
 
 //   const month = date.toLocaleString('default', { month: 'long' });
 //   let year = date.getFullYear();

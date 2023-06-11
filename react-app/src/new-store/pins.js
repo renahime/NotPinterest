@@ -98,7 +98,7 @@ const initialState = { pins: {} }
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
 
-        case GET_EVERY_PIN:
+        case GET_ALL_PINS:
             return { ...state, pins: { ...state.pins } }
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, [action.pin.id]: action.pin } }

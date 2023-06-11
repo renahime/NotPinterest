@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
 import { getAllPinsThunk } from "../../store/pins";
+
 import './Today.css'
 
 // function shuffle(array) {
@@ -43,7 +44,7 @@ function TodayPage() {
 
   if (pinsTodayObj) {
     pinsToday = Object.values(pinsTodayObj)
-    pinsToday = shuffle(pinsToday)
+    // pinsToday = shuffle(pinsToday)
     pinsToday = pinsToday.filter(pin => pin.created_at.slice(5, 16) == stringDate);
   }
   return (!pinsToday.length ? <h1>Loading...</h1> :
@@ -69,4 +70,4 @@ function TodayPage() {
   )
 }
 
-// export default TodayPage
+export default TodayPage

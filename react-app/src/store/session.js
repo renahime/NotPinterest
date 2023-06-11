@@ -1,5 +1,5 @@
 // constants
-// 
+//
 
 
 
@@ -118,7 +118,7 @@ export const createUserCategories = (categories) => async (dispatch) => {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(categories)
-		body: JSON.stringify({ categories: categories })
+
 	})
 	console.log("res", res)
 	if (res.ok) {
