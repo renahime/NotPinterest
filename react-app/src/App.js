@@ -55,8 +55,8 @@ function App() {
             <CreatePin />
           </Route>
           <Route exact path="/feed">
-            {/* <FeedPage /> */}
-            <CaSandraFeed />
+            <FeedPage sessionUser={sessionUser} />
+            {/* <CaSandraFeed /> */}
           </Route>
           <Route exact path="/">
             <LandingPage />
@@ -78,6 +78,10 @@ function App() {
           </Route>
           <Route path="/:username">
             <ProfilePage />
+          </Route>
+          <Route exact path="/oldfeed">
+            <FeedPage sessionUser={sessionUser} />
+            {/* <CaSandraFeed /> */}
           </Route>
         </Switch>
       )}
