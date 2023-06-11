@@ -104,6 +104,7 @@
   margin-left: auto;
   display: flex;
   align-items: center;
+  border: 2px red;
   /* flex-grow: 1; */
 }
 
@@ -181,6 +182,7 @@
   margin-left: auto;
 }
 
+.nav-explore-pins-button,
 .nav-log-in,
 .nav-sign-up {
   color: white;
@@ -199,6 +201,13 @@
 
 .nav-log-in:hover {
   background-color: darkred;
+}
+
+.nav-explore-pins-button {
+  background-color: black;
+  color: white;
+  border-color: transparent;
+
 }
 
 .nav-sign-up {
@@ -289,4 +298,8 @@
 
 .nav-create {
   margin-right: 7px
+}
+
+.open-modal-button {
+  cursor: pointer;
 }
