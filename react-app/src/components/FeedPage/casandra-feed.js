@@ -18,13 +18,15 @@ export default function CaSandraFeed() {
     let pins = useSelector(state => state.pins.allPins)
     let sessionUser = useSelector(state => state.session.user)
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
-    const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser.boards[0]?.name || "")
+    const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
 
     let pinsArr = []
     let numberOfPins = 0
     let boards = 0
-    if (pins && Object.values(pins) != null) {
-        [pinsArr, numberOfPins] = filterPins(Object.values(pins))
+    if (loading && Object.values(pins).length) {
+        let [pinsArr1, userPins] = filterPins(Object.values(pins))
+        pinsArr = pinsArr1
+        numberOfPins = userPins
         if (sessionUser) {
             boards = sessionUser.boards.length
         }
@@ -130,8 +132,8 @@ export default function CaSandraFeed() {
 
     return (
         <div>
-            {Object.values(sessionUser).length === 0 ?
-                <h3>Sign up for Threadterest today and make some new threads!</h3> :
+            {sessionUser == null ?
+                <h3 className="board-container-top-text">Sign up for Threadterest today and make some new threads!</h3> :
                 boards > 0 ?
                     <div>
                         <div>
