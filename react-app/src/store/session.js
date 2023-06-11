@@ -118,6 +118,7 @@ export const createUserCategories = (categories) => async (dispatch) => {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(categories)
+		body: JSON.stringify({ categories: categories })
 	})
 	console.log("res", res)
 	if (res.ok) {
@@ -265,7 +266,7 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
-const initialState = { user: null, following: {}, followers: {} };
+const initialState = { user: null };
 
 export default function reducer(state = initialState, action) {
 	let newState = {}
@@ -276,19 +277,12 @@ export default function reducer(state = initialState, action) {
 			return newSate2
 		case SET_USER_CATEGORIES:
 			let user = { ...state.user }
-			console.log("action", action.categories)
 			user.categories = action.categories
 			return { ...state, user: { ...user }, following: {}, followers: {} }
 		case GET_FOLLOWING_AND_FOLLOWERS:
 			return { ...state, user: { ...state.user }, following: { ...action.users.following }, followers: { ...action.users.followers } }
 		case FOLLOW_USER:
 			let newState = { ...state }
-			console.log("state", state)
-			console.log(action.user)
-			// newState.following[action.user]
-			// following.push(action.user)
-			// newState.user.following = following
-			// console.log()
 			return newState
 		case SET_USER:
 			return { user: action.payload };

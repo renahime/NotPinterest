@@ -77,8 +77,39 @@ class User(db.Model, UserMixin):
     def boards_pinned_to_dict(self):
         returnList = []
         for board in self.boards:
-            returnList.append({"id":board.id,"name": board.name, "pins":[pin.id for pin in board.pins_tagged]})
+            returnList.append({"id":board.id,"name": board.name, "additional_images":board.findOtherImages(), "cover_image":  [image.image for image in board.pin_cover_image], "pin_count":len([pin.id for pin in board.pins_tagged]), "pins":[pin.id for pin in board.pins_tagged]})
         return returnList
+
+    def get_ten_pints(self):
+         count = 0
+         pin_arr = []
+         while count < 7:
+              sorted_pins = sorted(self.pins, key=lambda x: x.created_at, reverse=True)
+              pin_arr.append({"id":sorted_pins[count].id, "image":sorted_pins[count].image})
+              count = count + 1
+         return pin_arr
+
+    def for_profile_display_dict(self):
+         return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'categories': [category.name for category in self.categories],
+            'about': self.about,
+            'pronouns': self.pronouns,
+            'website': self.website,
+            'profile_image': self.profile_image,
+            'follower_count': len([follower.username for follower in self.followers]),
+            'following_count': len([[follow.username for follow in self.following]]),
+            'followers': [follower.username for follower in self.followers],
+            'following': [follow.username for follow in self.following],
+            'pins': self.get_ten_pints(),
+            'boards': self.boards_pinned_to_dict(),
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+         }
 
 
     def to_dict(self):
@@ -97,7 +128,6 @@ class User(db.Model, UserMixin):
             'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
-            'pins': [pin.image for pin in self.pins],
             'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at

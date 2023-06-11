@@ -66,7 +66,6 @@ export default function CaSandraFeed() {
         }
         else {
             setTimeout(() => {
-                console.log("Inside the set time out", pins)
                 setFinished(true)
             }, 1000)
         }

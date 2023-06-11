@@ -3,16 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
-import { createBoardThunk } from "../../store/boards";
+import { createBoardFromProfileThunk } from "../../store/profile";
 import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
-// import { fetchPinsToday } from "../../store/pins";
+import { fetchPinsToday } from "../../store/pins";
 import SavePinsToBoardModal from "./SavePinsToBoard";
 import './CreateBoardModal.css'
-
-
-
-
-function CreateBoardModal({ username }) {
+function CreateBoardFromProfile({ username }) {
 
   const dispatch = useDispatch();
   const history = useHistory()
@@ -22,40 +18,10 @@ function CreateBoardModal({ username }) {
   const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
 
-
-  const stateCheck = useSelector((state) => state)
-
-
   useEffect(() => {
   }, [name, isPrivate])
 
-//   let pinsTodayObj = useSelector(state => state.pins.todayPins)
-  let testUsername = useSelector(state => state.session.user)
-
-
-
-
-
-//   let pinsToday
-//   if (pinsTodayObj) {
-//     pinsToday = shuffle(Object.values(pinsTodayObj))
-//     // dbLatestDate = pinsToday[0].created_at
-//   }
-//   const date = new Date();
-
-  useEffect(() => {
-    dispatch(fetchPinsToday())
-  }, [])
-
-//   const month = date.toLocaleString('default', { month: 'long' });
-//   let year = date.getFullYear();
-//   let day = date.getDate();
-
-
-
-
   const disabledButton = name === "";
-
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
   };
@@ -63,53 +29,18 @@ function CreateBoardModal({ username }) {
 
   const onSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-
-
     //VALIDATIONS
-
-
-
     //create form data
     const formData = {
       name,
       private: isPrivate,
       description: description
     }
-    //log formData
-    await dispatch(createBoardThunk(formData))
-    history.push(`/${username}/${formData.name}`)
-    closeModal()
-    openModal()
-
-    // openModal(<SavePinsToBoardModal />);
-
-    // history.push('/boards/1')
-  };
-
-  const openModal = () => {
-    const modalContent = (
-      <div>
-        {/* <SavePinsToBoardModal pinsToday={pinsToday} username={username} boardName={name} /> */}
-      </div>
-    );
-    setModalContent(modalContent);
-  };
-
-  function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-
-    while (currentIndex != 0) {
-
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+    let newBoardProfile = await dispatch(createBoardFromProfileThunk(formData))
+    if (newBoardProfile) {
+      closeModal()
     }
-
-    return array;
-  }
-
+  };
 
   return (
     <>
@@ -159,4 +90,4 @@ function CreateBoardModal({ username }) {
 }
 
 
-export default CreateBoardModal
+export default CreateBoardFromProfile

@@ -18,6 +18,7 @@ const getAllBoards = (boards) => ({
 })
 
 
+
 const createUserBoard = (board) => ({
     type: CREATE_USER_BOARD,
     board
@@ -65,15 +66,10 @@ export const getAllBoardsThunk = () => async (dispatch) => {
         dispatch(getAllBoards(boards))
         return boards
     }
+    else {
+        return ("Error response:", res)
+    }
 }
-
-
-
-
-
-
-
-
 
 export const createBoardThunk = (board) => async (dispatch) => {
     const res = await fetch('/api/boards/', {

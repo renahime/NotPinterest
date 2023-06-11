@@ -11,14 +11,11 @@ const Icon = () => {
   );
 };
 
-const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, user }) => {
+const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable }) => {
   const [showMenu, setShowMenu] = useState(false)
   const [selectedValue, setSelectedValue] = useState(null)
   const [searchValue, setSearchValue] = useState("");
   const searchRef = useRef();
-
-  console.log("OPTIONS IN DROPDWON", options)
-
   useEffect(() => {
     setSearchValue("");
     if (showMenu && searchRef.current) {
@@ -94,15 +91,6 @@ const Dropdown = ({ parentCallBack, placeHolder, options, isSearchable, pin, use
             {option.label}
           </div>
         ))}
-        {/* <div className="create-board-selection">
-          <button>
-            <OpenModalButton
-              buttonText="Create Board"
-              className="dropdown-item-board"
-              modalComponent={<CreateBoardFromPinModal pin={pin} user={user} />}
-            />
-          </button>
-        </div> */}
       </div>}
     </div>
   );

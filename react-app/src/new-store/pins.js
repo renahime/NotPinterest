@@ -98,9 +98,8 @@ const initialState = { pins: {} }
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
 
-        case GET_ALL_PINS:
-            console.log("pins in thunk", action.pins )
-            return { ...state, pins: { ...action.pins } }
+        case GET_EVERY_PIN:
+            return { ...state, pins: { ...state.pins } }
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, [action.pin.id]: action.pin } }
         case DELETE_PIN:

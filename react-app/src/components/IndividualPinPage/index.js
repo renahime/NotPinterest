@@ -11,7 +11,6 @@ import Dropdown from "./Dropdown";
 import { pinThunk } from "../../store/boards";
 import "./IndividualPinPage.css"
 import { Link } from "react-router-dom"
-import { getBoardsofCurrentUser } from "../../store/boards"
 import { unfollowUser, followUser } from "../../store/session"
 import { useModal } from "../../context/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -26,22 +25,15 @@ export default function IndividualPinPage() {
     const [showMenu, setShowMenu] = useState(false)
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
-    const singlePinWithBoardState = useSelector(state => state)
     const { closeModal } = useModal();
     const history = useHistory()
     const dispatch = useDispatch()
     const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
 
-
-
-    console.log("currentUserBoards", singlePin)
     useEffect(() => {
         dispatch(getPinById(id))
-        dispatch(getBoardsofCurrentUser())
     }, [dispatch, id])
-
-
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
         else return `${num} followers`
@@ -49,10 +41,13 @@ export default function IndividualPinPage() {
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
-    if (singlePin && currentUser) {
+    if (Object.values(singlePin).length && Object.values(currentUser).length) {
+        if (singlePin.owner_id == currentUser.id) {
+            pinnedCheck = true
+        }
         for (let userBoard of currentUser.boards) {
-            for (let pin of userBoard.pins) {
-                if (pin == singlePin.id) {
+            for (let board of singlePin.boards_pinned_in) {
+                if (board.id == userBoard.id) {
                     pinnedCheck = true;
                     grabBoardName.name = userBoard.name
                 }
@@ -60,9 +55,7 @@ export default function IndividualPinPage() {
             options.push({ 'value': userBoard.name, 'label': userBoard.name })
         }
     }
-    const [board, setBoard] = useState(grabBoardName?.name)
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
-    console.log(singlePin)
     useEffect(() => {
         const handler = () => setShowMenu(false)
         window.addEventListener("click", handler);
@@ -123,7 +116,7 @@ export default function IndividualPinPage() {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
-
+    console.log("pin data", singlePin);
     if (!singlePin || !currentUser || !options.length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
@@ -148,7 +141,7 @@ export default function IndividualPinPage() {
                 </div>
                 <div className="single-pin-details">
                     <div className="single-pin-edit-board">
-                        <div className="dropdown-container">
+                        <div className="dropdown-container-edit-pin">
                             <div onClick={handleInputClick} className="dropdown-input">
                                 <div className="dropdown-selected-value"></div>
                                 <div className="dropdown-tools">
@@ -157,7 +150,7 @@ export default function IndividualPinPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="dropdown-menu">
+                            <div className="dropdown-menu-edit-pin">
                                 {pinnedCheck ? showMenu &&
                                     <>
                                         <OpenModalButton
@@ -167,11 +160,6 @@ export default function IndividualPinPage() {
                                         />
                                         <OpenModalButton
                                             buttonText="Report Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />}
-                                        />
-                                        <OpenModalButton
-                                            buttonText="Get Pin embed code"
                                             className="dropdown-item"
                                             modalComponent={<ComingSoon />}
                                         />
@@ -199,7 +187,7 @@ export default function IndividualPinPage() {
                                 }
                             </div>
                         </div>
-                        <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} user={currentUser} pin={singlePin} />
+                        <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
                         <button onClick={handlePin} className="single-pin-edit-board-button">Save</button>
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>

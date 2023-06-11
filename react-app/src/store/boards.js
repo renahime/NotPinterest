@@ -1,5 +1,6 @@
 
 const GET_BOARDS_OF_USER = "boards/getUserBoards"
+const GET_SINGLE_BOARD = 'boards/single'
 const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
@@ -21,6 +22,11 @@ const getAllBoards = (boards) => ({
 const getUserBoards = (boards) => ({
     type: GET_BOARDS_OF_USER,
     boards: boards["User Boards"]
+})
+
+const getSingleBoard = (board) => ({
+    type: GET_SINGLE_BOARD,
+    board: board["User Boards"]
 })
 
 const getOneBoardByName = (board) => ({
@@ -81,6 +87,15 @@ export const getBoardsofCurrentUser = () => async (dispatch) => {
         console.log("boards", boards)
         dispatch(getCurrentUserBoard(boards))
         return
+    }
+}
+
+export const getSingleBoardThunk = (username, boardname) => async (dispatch) => {
+    const res = await fetch(`/api/boards/users/${username}/${boardname}`);
+    if (res.ok) {
+        let board = await res.json();
+        dispatch(getSingleBoard(board));
+        return;
     }
 }
 
@@ -221,95 +236,64 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
     }
 };
 
-
-
-const initialState = { allBoards: {}, currentProfileBoards: {}, singleBoard: {}, currentUserBoards: {} }
+const initialState = { allBoards: {}, singleBoard: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
         case GET_ALL_BOARDS:
             return { ...state, allBoards: { ...action.boards } }
-        case GET_CURRENT_USER_BOARDS:
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...state.singleBoard }, currentUserBoards: { ...action.boards } }
-
-        case GET_BOARDS_OF_USER:
-            newState = {}
-            console.log("ACTION", action)
-            console.log("action.boards", action.boards)
-            if (Array.isArray(action.boards)) { // Check if action.boards is an array
-                for (let board of action.boards) {
-                    newState[board.id] = board
-                }
-            } else {
-                console.log("action.boards is not an array")
-            }
-
-
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...newState }, singleBoard: {}, currentUserBoards: { ...state.currentUserBoards } }
-
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {
                     ...state.allBoards, [action.board.id]: action.board
-                }, currentProfileBoards: {
-                    ...state.currentProfileBoards,
-                    [action.board.id]: action.board
-                }, currentUserBoards: {
-                    ...state.currentUserBoards,
-                    [action.board.id]: action.board
-                }
+                },
             };
+        case GET_SINGLE_BOARD:
+            return { ...state, singleBoard: { ...action.board } };
+
         case UPDATE_USER_BOARD:
+            if (state.singleBoard.id === action.board.id) {
+                state.singleBoard = action.board;
+            }
             newState = {
                 ...state,
                 allBoards: {
                     ...state.allBoards,
                     [action.board.id]: action.board
                 },
-                currentProfileBoards: {
-                    ...state.currentProfileBoards,
-                    [action.board.id]: action.board
+                singleBoard: {
+                    ...state.singleBoard
                 }
             };
             return newState;
         case DELETE_USER_BOARD:
             const newAllBoards = { ...state.allBoards };
-            const updatedCurrentProfileBoards = { ...state.currentProfileBoards };
             delete newAllBoards[action.id];
-            delete updatedCurrentProfileBoards[action.id];
+            if (state.singleBoard.id === action.id) {
+                state.singleBoard = {}
+            }
             return {
                 ...state,
                 allBoards: newAllBoards,
-                currentProfileBoards: updatedCurrentProfileBoards,
+                singleBoard: { ...state.singleBoard }
             };
-
-
-        case GET_BOARD_BY_NAME:
-            return { ...state, allBoards: { ...state.allBoards }, currentProfileBoards: { ...state.currentProfileBoards }, singleBoard: { ...action.board } }
         case UN_PIN:
-            const unPinAllBoards = { ...state.allBoards }
-            const unPinCurrent = { ...state.currentProfileBoards }
             const unPinSingle = { ...state.singleBoard }
             if (typeof unPinSingle === 'object') {
                 if (action.pin.id.toString() in unPinSingle.pinInfo) {
                     delete unPinSingle.pinInfo[action.pin.id.toString()]
                 }
             }
-            return { ...state, allBoards: unPinAllBoards, currentProfileBoards: unPinCurrent, singleBoard: unPinSingle }
-
+            return { ...state, singleBoard: unPinSingle }
         case PIN:
-            const pinAllBoards = { ...state.allBoards }
-            const pinCurrent = { ...state.currentProfileBoards }
             const pinSingle = { ...state.singleBoard }
             if (typeof pinSingle === 'object') {
                 if ("pinInfo" in pinSingle)
                     pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
             }
-            return { ...state, allBoards: pinAllBoards, currentProfileBoards: pinCurrent, singleBoard: pinSingle }
+            return { ...state, singleBoard: pinSingle }
         case REPIN:
-            const repinAllBoards = { ...state.allBoards }
-            const repinCurrent = { ...state.currentProfileBoards }
             const repinSingle = { ...state.singleBoard }
             if (typeof repinSingle === 'object') {
                 if ("pinInfo" in repinSingle) {
@@ -321,7 +305,7 @@ export default function boardsReducer(state = initialState, action) {
                     }
                 }
             }
-            return { ...state, allBoards: repinAllBoards, currentProfileBoards: repinCurrent, singleBoard: repinSingle }
+            return { ...state, singleBoard: repinSingle }
         default:
             return state
     }
