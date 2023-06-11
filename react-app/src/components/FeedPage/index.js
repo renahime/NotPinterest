@@ -58,29 +58,16 @@ function FeedPage() {
 
 
 
-  //FETCH BOARD DATA
-  // useEffect(() => {
-  //   setTimeout(() => {
+  let allPinsArr;
 
-  //     if (username) {
-  //       dispatch(getBoardsByUsername(username))
-  //     }
-  //     setIsLoading(false);
-  //   }, 1500);
-  // }, [dispatch])
-
-
-let allPinsArr;
-
-  //GET ALL PINS DATA FOR ARRAY
 
   const allPins = useSelector(state => state.pins.allPins)
-  console.log("WE ARE TRYING TO GET PINS" , allPins)
-  if(allPins){
+  console.log("WE ARE TRYING TO GET PINS", allPins)
+  if (allPins) {
     console.log("WE ARE IN ALL PINS", allPins)
     allPinsArr = Object.values(allPins)
     console.log("ALL PINS ARRAY", allPinsArr)
-  }else {
+  } else {
     allPinsArr = []
   }
 
@@ -93,23 +80,14 @@ let allPinsArr;
       .catch((error) => console.log("Error fetching pins:", error));
   }, [dispatch]);
 
-
-
-
-  //GET STATE DATA
   const sessionUser = useSelector(state => state.session.user)
   const currentState = useSelector(state => state)
   const username = sessionUser?.username
   const boards = useSelector((state) => state.session.user.boards)
-  // const boards = Object.values(boardsSelector)
   const [selectedBoard, setSelectedBoard] = useState(boards[0]?.id || "")
   const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(boards[0]?.name || "")
 
-  console.log("SELECETED BOARD DROPDOWN", selectedBoardDropdown)
-  console.log("SESSION USER USERNAME", username)
-  console.log(sessionUser)
   // console.log("GET ALL BOARDS STATE TEST", boardsSelector)
-  console.log("GET ALL BOARDS DATA", boards)
 
 
 
@@ -142,13 +120,6 @@ let allPinsArr;
 
   }, [allPinsArr.length]);
 
-
-
-
-
-
-
-
   // Checking for the number of pins in BOARD STATE
   let numberOfPins;
 
@@ -166,9 +137,9 @@ let allPinsArr;
   }
 
 
-// function addPinToBoard{
-//   await dispatch(pinThunk(singlePin, boardId));
-// }
+  // function addPinToBoard{
+  //   await dispatch(pinThunk(singlePin, boardId));
+  // }
 
   // our boards container will loop through this array and keep assigning board backgrounds dynamically
 
