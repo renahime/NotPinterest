@@ -258,10 +258,12 @@
 
 .nav-profile-dropdown-create {
   font-size: 16px;
+  color:black;
   padding: 8px 5px;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+  text-decoration: none;
   cursor: pointer;
 }
 

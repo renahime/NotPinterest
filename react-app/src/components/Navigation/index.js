@@ -62,7 +62,7 @@ function Navigation({ isLoaded }) {
 									{openMenu && <div className={menuClassName}>
 										{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
 										<NavLink to="/create" className="nav-profile-dropdown-create">Create Pin</NavLink>
-										<NavLink to={{
+										<NavLink className="nav-profile-dropdown-create" to={{
                   pathname: `/${sessionUser.username}`,
 
                 }} >My Boards</NavLink>
