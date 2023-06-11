@@ -236,7 +236,7 @@ export const getBoardByName = (username, boardname) => async (dispatch) => {
     }
 };
 
-const initialState = { allBoards: {}, singleBoard: {} }
+const initialState = { singleBoard: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
