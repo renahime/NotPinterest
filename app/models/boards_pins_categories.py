@@ -192,7 +192,7 @@ class Pin(db.Model):
             'boards_pinned_in': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'user': {"id": self.user.id, "profile_image":self.user.profile_image, "first_name": self.user.first_name, "last_name":self.user.last_name, "followers": [follower.username for follower in self.user.followers]}
+            'user': {"id": self.user.id, "profile_image":self.user.profile_image, "first_name": self.user.first_name, "last_name":self.user.last_name, "username":self.user.username, "followers": [follower.username for follower in self.user.followers]}
         }
 
 

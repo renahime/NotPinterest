@@ -1,3 +1,6 @@
+import { deleteBoard } from "./session"
+
+const GET_BOARDS_OF_USER = "boards/getUserBoards"
 const GET_SINGLE_BOARD = 'boards/single'
 // const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
@@ -12,8 +15,6 @@ const REPIN = "boards/repin"
 // const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
 // const GET_ALL_BOARDS = "boards/all"
 // const GET_BOARDS_OF_USER = "boards/getUserBoards"
-
-
 
 
 // const getAllBoards = (boards) => ({
@@ -155,6 +156,7 @@ export const deleteBoardThunk = (id) => async (dispatch) => {
         if (res.ok) {
             const data = res.json()
             dispatch(deleteUserBoard(id));
+            dispatch(deleteBoard(data.name))
             return data;
         }
         else {

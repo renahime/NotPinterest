@@ -1,3 +1,14 @@
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.photo-and-button {
+  display: flex;
+  align-items: center;
+}
+
 .settings-list{
   padding-left:35px;
   cursor: pointer;
@@ -37,7 +48,9 @@
 .name-info{
   display:flex;
   flex-direction: row;
-  gap: 10px
+  gap: 10px;
+  width: 100%;
+
 }
 
 .first-name-input {
@@ -77,6 +90,10 @@ textarea {
   height: 1px;
 }
 
+.pronoun-select-list {
+  width: 490px;
+}
+
 .reset-button{
   margin: auto;
 }
@@ -99,36 +116,46 @@ textarea {
   border-radius: 50%;
   width:95px;
   height:95px;
+  object-fit: cover;
 }
 
 #file-input-actual-button{
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: bold;
-  height:25%;
-  width: 25%;
+  height: 25px;
+  width: 100px;
+  background-color: #5F5F5F;
+  border-radius: 20px;
+  border-color: transparent;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
 }
 
 .footer-div{
   display:flex;
   justify-content: center;
+  padding: 20px 0;
 }
 
-.reset-button{
+.reset-button > button{
   border:none;
   height:50px;
   width: 80px;
-  color:black;
+  background-color: #5F5F5F;
+  color: white;
   font-weight: bold;
-  border-radius: 40%;
+  border-radius: 40px;
 }
 
 .save-button{
   border:none;
   height:50px;
   width: 80px;
-  color:black;
+  background-color: #5F5F5F;
+  color: white;
   font-weight: bold;
-  border-radius: 40%;
+  border-radius: 40px;
 }
 
 .delete-button{
@@ -138,5 +165,10 @@ textarea {
   background-color:red;
   color:white;
   font-weight: bold;
-  border-radius: 40%;
+  border-radius: 40px;
+}
+
+.settings-form-errors {
+  color: red;
+  font-size: 15px;
 }

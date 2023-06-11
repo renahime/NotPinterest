@@ -196,8 +196,9 @@ def delete_board(id):
 
     db.session.delete(board)
     db.session.commit()
-
-    return {"message": "Board deleted"}
+    
+    return {"name": board.name}
+    # return {"message": "Board deleted"}
 
 # board_routes = BluePrint('boards', __name__)
 

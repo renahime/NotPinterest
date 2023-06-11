@@ -11,6 +11,7 @@ const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
 const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
+const DELETE_USER_BOARD = "boards/delete";
 
 
 
@@ -56,16 +57,20 @@ const createUserBoard = (board) => ({
 	board
 })
 
+export const deleteBoard = (boardName) => ({
+	type: DELETE_USER_BOARD,
+    boardName
+})
+
 // const getFollowing = (users) => ({
 // 	type: GET_FOLLOWERS,
 // 	users
 // })
 
-export const editProfileThunk = (user) => async (dispatch) => {
+export const editProfileThunk = (user, data) => async (dispatch) => {
 	const res = await fetch(`/api/users/${user.id}`, {
 		method: "PUT",
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(user)
+		body: data
 	});
 	if (res.ok) {
 		const userData = await res.json()
@@ -281,7 +286,7 @@ export default function reducer(state = initialState, action) {
 			let newState = { ...state }
 			return newState
 		case SET_USER:
-			return { user: action.payload };
+			return { ...state, user: action.payload };
 		case REMOVE_USER:
 			return { user: null };
 		case UNFOLLOW_USER:
@@ -290,9 +295,16 @@ export default function reducer(state = initialState, action) {
 			console.log("state.user.following", state.user.following)
 			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
-			return { user: { ...state.user } }
+			return { ...state, user: { ...state.user } }
 		case EDIT_USER:
-			return { currentProfile: action.user };
+			let newState1 = {...state}
+			newState1.user = action.user
+			return newState1;
+		case DELETE_USER_BOARD:
+			let newState2 = {...state}
+			let boardIndex = state.user.boards.indexOf(action.boardName)
+			state.user.boards.splice(boardIndex, 1)
+			return newSate2
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
 		default:

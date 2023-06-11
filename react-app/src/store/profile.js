@@ -90,7 +90,6 @@
 const GET_PROFILE = "users/GET_USER"
 const CLEAR_PROFILE = "users/CLEAR_PROFILE"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
-const EDIT_USER = "users/EDIT_USER"
 const CREATE_BOARD = "users/CREATE_BOARD"
 
 const getUser = (user) => ({
@@ -100,10 +99,6 @@ const getUser = (user) => ({
 
 export const clearProfile = () => ({
     type: CLEAR_PROFILE
-})
-export const editUser = (user) => ({
-    type: EDIT_USER,
-    user
 })
 
 export const deleteProfile = (user) => ({
@@ -131,20 +126,6 @@ export const getUserInfo = (username) => async (dispatch) => {
     }
 }
 
-export const editProfileThunk = (user) => async (dispatch) => {
-    const res = await fetch(`/api/users/${user.id}`, {
-        method: "PUT",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    });
-    if (res.ok) {
-        const userData = await res.json()
-        if (userData.errors) {
-            return userData.errors
-        }
-        dispatch(editUser(userData))
-    }
-}
 
 export const deleteProfileThunk = (user) => async (dispatch) => {
     const res = await fetch(`/api/users/${user.id}`, {
@@ -190,8 +171,6 @@ export default function profileReducer(state = initialState, action) {
             return { ...state, currentProfile: { ...newState.currentProfile } }
         case CLEAR_PROFILE:
             return { ...state, currentProfile: {} }
-        case EDIT_USER:
-            return { ...state, currentProfile: action.user };
         case DELETE_PROFILE:
             return { ...state, currentProfile: {} }
         default:
