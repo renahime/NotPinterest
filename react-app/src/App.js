@@ -56,7 +56,7 @@ function App() {
           </Route>
           {/* <Route exact path="/feed"> */}
             {/* <FeedPage /> */}
-            {/* <CaSandraFeed /> */}
+            <CaSandraFeed />
           {/* </Route> */}
           <Route exact path="/">
             <LandingPage />

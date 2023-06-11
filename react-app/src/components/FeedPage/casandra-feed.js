@@ -13,9 +13,8 @@ export default function CaSandraFeed() {
     const history = useHistory()
     let [loading, setLoading] = useState(false)
     let [finishedLoading, setFinished] = useState(false)
-    let pins = useSelector(state => state.pins.pins)
+    let pins = useSelector(state => state.pins.allPins)
     let sessionUser = useSelector(state => state.session.user)
-    console.log("pins", Object.values(pins))
 
     let pinsArr = []
     if (pins && Object.values(pins) != null) {
@@ -58,10 +57,12 @@ export default function CaSandraFeed() {
     }, [dispatch])
 
     useEffect(() => {
-        if (!loading && !pins[0] && !pins[0]?.id) {
+        console.log(loading, "loadingloadingloading")
+        console.log("pins", pins)
+        if (!loading && !pins) {
             return
         }
-        if (!Object.values(pins).length) {
+        if (!pins || !Object.values(pins).length) {
             return
         }
         else {
@@ -70,8 +71,6 @@ export default function CaSandraFeed() {
             }, 1000)
         }
     }, [loading, pins])
-
-
 
     if (!pinsArr[0]?.id || !finishedLoading) return <h1>...Loading</h1>
     
