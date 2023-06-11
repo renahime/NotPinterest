@@ -88,7 +88,6 @@ def edit_profile(id):
     form = ProfileForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        print("DATAAAAA", form.data)
         if form.data['profile_picture']:
             profile_picture = form.data['profile_picture']
             profile_picture.filename=get_unique_filename(profile_picture.filename)

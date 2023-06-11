@@ -3,8 +3,7 @@ import { getPinsByCategory } from "../../store/pins"
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { getAllPinsThunk } from "../../new-store/pins"
-import { getAllBoardsThunk } from "../../new-store/boards"
+import { getAllPinsThunk } from "../../store/pins"
 import "./casandra-feed.css"
 
 
