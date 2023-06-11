@@ -243,7 +243,7 @@ export default function pinsReducer(state = initialState, action) {
         case GET_PIN:
             return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin } }
         case CREATE_PIN:
-            return { ...state, pins: { ...state.pins, ...action.pin } }
+            return { ...state, pins: { ...state.pins, [action.pin.id]: action.pin } }
         case GET_ALL_PINS:
             return { ...state, allPins: { ...action.pins } }
         case DELETE_PIN:

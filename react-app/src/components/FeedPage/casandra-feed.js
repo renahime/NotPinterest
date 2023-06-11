@@ -17,19 +17,18 @@ export default function CaSandraFeed() {
     let [finishedLoading, setFinished] = useState(false)
     let pins = useSelector(state => state.pins.allPins)
     let sessionUser = useSelector(state => state.session.user)
-  const [hoverBoard, setHoverBoard] = useState(false)
-  const [hoverBoardDiv, setHoverBoardDiv] = useState("")
+    
+    const [hoverBoard, setHoverBoard] = useState(false)
+    const [hoverBoardDiv, setHoverBoardDiv] = useState("")
     const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
     const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
-    // console.log("pins", pins)
 
     let pinsArr = []
     let numberOfPins = 0
     let boards = 0
     if (loading && Object.values(pins).length) {
-        let [pinsArr1, userPins] = filterPins(Object.values(pins))
-        
-        pinsArr = pinsArr1
+        const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
+        pinsArr = filteredPinsArr
         if (sessionUser) {
             numberOfPins = userPins
             boards = sessionUser.boards.length
@@ -38,8 +37,13 @@ export default function CaSandraFeed() {
 
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
+            console.log(pins)
             let randomPins = shufflePins(pins)
-            return randomPins.splice(0, 30)
+            console.log(randomPins.splice(0, 30))
+            return {
+                filteredPinsArr: randomPins.splice(0, 30),
+                userPins: null
+            }
         } else {
             let filteredPins = []
             let userPins = 0
@@ -52,7 +56,11 @@ export default function CaSandraFeed() {
                 }
             }
             let randomPins = shufflePins(filteredPins)
-            return [randomPins.splice(0, 30), userPins]
+            console.log("random pins: ", randomPins)
+            return {
+                filteredPinsArr: randomPins.splice(0, 30),
+                userPins: userPins
+            }
         }
     }
 
@@ -102,13 +110,11 @@ export default function CaSandraFeed() {
     function onHoverBoard(board) {
         setHoverBoard(true)
         setHoverBoardDiv(board.id)
-      }
-      function offHoverBoard() {
+    }
+    function offHoverBoard() {
         setHoverBoard(false)
         setHoverBoardDiv("")
-      }
-
-
+    }
     let formatBoards = (n) => {
         if (n === 1) {
             return "1 board"
@@ -132,87 +138,83 @@ export default function CaSandraFeed() {
             console.log("pins in use", pins)
             setFinished(true)
         }
-    }, [loading, pins])
-    // console.log("!pinsArr[0]?.id", pinsArr[0])
-    // console.log("!pinsArr[0]?.id", !pinsArr[0]?.id)
-    if (!pinsArr[0]?.id) {
+    }, [loading, pins, currentUser])
+    console.log("pinsArr", pinsArr)
+    if (!Object.values(pins).length) {
         return (
             <LoadingButton
-            isLoading={loading}
+                isLoading={loading}
             // disabled={isLoading}
             />
-            )
-        }
-
+        )
+    }
+    console.log("session user", sessionUser)
     return (
         <div>
-            {/* {sessionUser == null ?
-                <h3 className="board-container-top-text">Sign up for Threadterest today and make some new threads!</h3> :
-                boards > 0 ? */}
-                {(sessionUser && boards.length) ? (
+            {(sessionUser && boards.length) ? (
 
-                    <>
-                      <div className="board-container-top-text">
+                <>
+                    <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser.boards.length} boards</NavLink>
                         <div>and</div>
                         <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
                         <div>Check them out!</div>
-                      </div>
-          
-                      <div className="full-board-container">
-          
+                    </div>
+
+                    <div className="full-board-container">
+
                         <div className="board-container" ref={scrollContainerRef}>
-                          <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
-                            <i className="fa-solid fa-angle-left"></i>
-                          </div>
-                          <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
-                            <i className="fa-solid fa-angle-left fa-rotate-180"></i>
-                          </div>
-          
-                          {boards.map((board, index) => (
-          
-                            <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
-                              {/* <OpenModalButton
+                            <div className="scroll-arrows left-arrow" onClick={handleScrollLeft}>
+                                <i className="fa-solid fa-angle-left"></i>
+                            </div>
+                            <div className="scroll-arrows right-arrow" onClick={handleScrollRight}>
+                                <i className="fa-solid fa-angle-left fa-rotate-180"></i>
+                            </div>
+
+                            {boards.map((board, index) => (
+
+                                <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                                    {/* <OpenModalButton
                             buttonText={board.name}
                             className="test-open-create-board-modal"
                             modalComponent={<UpdateBoardModal id={board.id} />}
                             onClick={() => history.push(`/boards/${board.id}`)}
                           /> */}
-                              <div>
-                                {board.name}
-                              </div>
-                            </div>
-                          ))}
-          
+                                    <div>
+                                        {board.name}
+                                    </div>
+                                </div>
+                            ))}
+
                         </div>
-                      </div>
-                    </>
-          
-                  ) : ((!boards.length) ? (
-                    <>
-                      <div className="board-container-top-text">
+                    </div>
+                </>
+
+            ) : ((sessionUser && !boards.length) ? (
+                <>
+                    <div className="board-container-top-text">
                         <div>Oh no, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser.boards.length} boards.</NavLink>
                         <div>Let's change that!</div>
                         <OpenModalButton
-                          buttonText="Create Board"
-                          className="feed-page-create-board"
-                          modalComponent={<CreateBoardModal username={sessionUser?.username} />}
+                            buttonText="Create Board"
+                            className="feed-page-create-board"
+                            modalComponent={<CreateBoardModal username={sessionUser?.username} />}
                         />
-                      </div>
-                    </>
-                  ) : (null)
-                  )
-                  }
+                    </div>
+                </>
+            ) : (null)
+            )
+            }
             < div className="pins-feed-wrapper-wrapper">
                 <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
                     columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
                     <Masonry className="feed-pin-masonry" options={{ fitWidth: true }}>
                         {pinsArr.map(pin => (
-                            <div 
-                            // onHover={() =>} 
-                            className="feed-individual-pin-wrapper">
+                            <div
+                                // onHover={() =>}
+                                className="feed-individual-pin-wrapper">
                                 <button className="feed-save-button">Save</button>
                                 <div onClick={() => history.push(`/pin/${pin.id}`)}>
                                     <img className="feed-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />

@@ -136,9 +136,10 @@ export const deleteProfileThunk = (user) => async (dispatch) => {
         const userData = await res.json()
         console.log("user data", userData)
         if (userData.errors) {
-            return userData.errors
+            return userData
         }
         dispatch(deleteProfile(userData))
+        return userData
     }
 }
 
