@@ -7,6 +7,7 @@ import { createBoardThunk } from "../../store/boards";
 import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
 // import { fetchPinsToday } from "../../store/pins";
 import SavePinsToBoardModal from "./SavePinsToBoard";
+import createBoardFromProfileThunk from "../IndividualPinPage/CreateBoardModal";
 import './CreateBoardModal.css'
 import { getAllPinsThunkOld } from "../../store/pins";
 
@@ -56,16 +57,16 @@ function CreateBoardModal({ username }) {
   // let testUsername = useSelector(state => state.session.user)
 
 
-  useEffect(() => {
-    const referrer = document.referrer;
-    if (referrer.includes('/create')) {
-      // Do something if the page is coming from example.com/profile
-      console.log("WE ARE COMING FROM /CREATE", referrer)
+  // useEffect(() => {
+  //   const referrer = document.referrer;
+  //   if (referrer.includes('/create')) {
+  //     // Do something if the page is coming from example.com/profile
+  //     console.log("WE ARE COMING FROM /CREATE", referrer)
 
-    } else {
-      // Do something else if the page is coming from somewhere else or without /profile
-    }
-  }, []);
+  //   } else {
+  //     // Do something else if the page is coming from somewhere else or without /profile
+  //   }
+  // }, []);
 
 
 
@@ -122,7 +123,10 @@ function CreateBoardModal({ username }) {
     }
     //log formData
 
-    await dispatch(createBoardThunk(formData)).then(() => history.push(`/${username}/${formData.name}`))
+    await dispatch(createBoardThunk(formData))
+    // then(() => history.push(`/${username}/${formData.name}`))
+
+    // await dispatch(createBoardFromProfileThunk(formData))
 
     // if (response && response.errors) {
     //   setErrors(response.errors);

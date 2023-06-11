@@ -27,17 +27,17 @@ function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, chang
 
   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
 
-  useEffect(() => {
-    console.log("Before dispatch");
-    dispatch(getAllPinsThunkOld())
-      .then(() => console.log("ALL PINS FETCHED", pinsToday))
-      .catch((error) => console.log("Error fetching pins:", error));
-  }, [dispatch, change]);
+  // useEffect(() => {
+  //   console.log("Before dispatch");
+  //   dispatch(getAllPinsThunkOld())
+  //     .then(() => console.log("ALL PINS FETCHED", pinsToday))
+  //     .catch((error) => console.log("Error fetching pins:", error));
+  // }, [dispatch, change]);
 
 
-  useEffect(() => {
-    dispatch(getBoardByName(username, boardName))
-  }, [username])
+  // useEffect(() => {
+  //   dispatch(getBoardByName(username, boardName))
+  // }, [username])
 
   // dispatch(fetchPinsToday())
   const currentBoard = useSelector(state => state.boards.singleBoard)

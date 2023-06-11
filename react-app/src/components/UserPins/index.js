@@ -14,7 +14,7 @@ export default function UserPins({ pins }) {
             <div className="individual-board-pins-wrapper">
                 {userPinsArr.length ?
                     userPinsArr.map(pin => (
-                        <div className="individual-board-individual-pins-wrapper">
+                        <div className="individual-board-individual-pins-wrapper" key={pin.id}>
                             <div className="individual-boards-link-to-pin" onClick={() => history.push(`/pin/${pin.id}`)}>
                                 <img className="individual-board-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
                                 <div>

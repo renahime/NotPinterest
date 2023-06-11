@@ -12,6 +12,7 @@ import "./ProfilePage.css"
 import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
+import CreateBoardModal from "../CreateBoardModal"
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -88,7 +89,7 @@ export default function ProfilePage() {
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
-    if (!loading) return <h1>Loading...</h1>
+    if (!loading || !username) return <h1>Loading...</h1>
     else if (!currentProfile.id) return <PageNotFound />
 
     return (!Object.values(currentProfile).length ? <h1>Loading...</h1> :
