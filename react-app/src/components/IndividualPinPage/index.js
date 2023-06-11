@@ -32,7 +32,6 @@ export default function IndividualPinPage() {
     const [showDetails, setShowDetails] = useState(false)
     const [pinErrorCheck, setPinErrorCheck] = useState(false);
     let [numFollowers, setNumFollowers] = useState(0);
-    let [numFollowing, setNumFollowing] = useState(0)
     let [isfollowing, setIsFollowing] = useState(false);
 
 
@@ -46,6 +45,7 @@ export default function IndividualPinPage() {
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
+
     if (Object.values(singlePin).length && Object.values(currentUser).length) {
         if (singlePin.owner_id == currentUser.id) {
             pinnedCheck = true
@@ -60,6 +60,16 @@ export default function IndividualPinPage() {
             options.push({ 'value': userBoard.name, 'label': userBoard.name })
         }
     }
+
+    useEffect(() => {
+        if (Object.values(singlePin).length && Object.values(currentUser).length) {
+            setNumFollowers(singlePin.user.followers.length)
+            if (singlePin.user.followers.includes(currentUser.username)) {
+                setIsFollowing(true);
+            }
+        }
+    }, [singlePin])
+
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
     useEffect(() => {
         const handler = () => setShowMenu(false)
@@ -70,7 +80,6 @@ export default function IndividualPinPage() {
     })
 
     const changeBoardName = (newBoard) => {
-        // Update the name in the component's state
         setPinBoard(newBoard)
     }
 
@@ -99,7 +108,7 @@ export default function IndividualPinPage() {
     }
     const handleFollow = async (e) => {
         e.preventDefault();
-        let response = await dispatch(followUser(username))
+        let response = await dispatch(followUser(singlePin.user.username))
         if (response.errors) {
             console.log(response.errors)
         } else if (response) {
@@ -109,7 +118,7 @@ export default function IndividualPinPage() {
     }
     const handleUnfollow = async (e) => {
         e.preventDefault();
-        let response = await dispatch(unfollowUser(username))
+        let response = await dispatch(unfollowUser(singlePin.user.username))
         if (response.errors) {
             console.log(response.errors)
         } else if (response) {
@@ -209,12 +218,13 @@ export default function IndividualPinPage() {
                             </div>
                             <div className="single-pin-owner-name-followers">
                                 <Link className="single-pin-owner-link" to={`/${singlePin.user?.username}`}>{singlePin.user?.first_name} {singlePin.user?.last_name}</Link>
-                                <p>{formatFollowers(singlePin?.user.followers.length)}</p>
+                                <p>{numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}</p>
                             </div>
                         </div>
                         <div>
-                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={handleFollow} className="single-pin-follow-button">Follow</button> : null}
-                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={handleFollow} className="single-pin-following-button">Following</button> : null}
+                            {!isfollowing ?
+                                <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
+                                <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>}
                         </div>
                     </div>
                 </div>
