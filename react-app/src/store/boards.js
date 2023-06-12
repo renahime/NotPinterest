@@ -12,33 +12,11 @@ const REPIN = "boards/repin"
 
 
 
-// const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
-// const GET_ALL_BOARDS = "boards/all"
-// const GET_BOARDS_OF_USER = "boards/getUserBoards"
-
-
-
-
-// const getAllBoards = (boards) => ({
-//     type: GET_ALL_BOARDS,
-//     boards: boards
-// })
-
-
-// const getUserBoards = (boards) => ({
-//     type: GET_BOARDS_OF_USER,
-//     boards: boards["User Boards"]
-// })
-
 const getSingleBoard = (board) => ({
     type: GET_SINGLE_BOARD,
     board: board["User Boards"]
 })
 
-// const getOneBoardByName = (board) => ({
-//     type: GET_BOARD_BY_NAME,
-//     board: board["User Boards"]
-// })
 
 
 const createUserBoard = (board) => ({

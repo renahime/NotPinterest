@@ -77,7 +77,7 @@ class User(db.Model, UserMixin):
     def boards_pinned_to_dict(self):
         returnList = []
         for board in self.boards:
-            returnList.append({"id":board.id,"name": board.name, "additional_images":board.findOtherImages(), "cover_image":  [image.image for image in board.pin_cover_image], "pin_count":len([pin.id for pin in board.pins_tagged]), "pins":[pin.id for pin in board.pins_tagged]})
+            returnList.append({"id":board.id,"name": board.name, "additional_images":board.findOtherImages(), "cover_image":  [image.image for image in board.pin_cover_image], "pin_count":len([pin.id for pin in board.pins_tagged]), "pins":[pin.id for pin in board.pins_tagged], "private": board.private, "description": board.description})
         return returnList
 
     def get_ten_pints(self):

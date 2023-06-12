@@ -38,10 +38,7 @@ export default function IndividualPinPage() {
     useEffect(() => {
         dispatch(getPinById(id))
     }, [dispatch, id])
-    function formatFollowers(num) {
-        if (num === 1) return "1 follower"
-        else return `${num} followers`
-    }
+
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
@@ -71,7 +68,7 @@ export default function IndividualPinPage() {
                 }
             }
         }
-    }, [singlePin])
+    }, [singlePin, currentUser])
 
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
     useEffect(() => {
@@ -137,6 +134,10 @@ export default function IndividualPinPage() {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
+
+    console.log(currentUser)
+    console.log(isfollowing)
+
     if (!Object.values(singlePin).length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
@@ -226,10 +227,10 @@ export default function IndividualPinPage() {
                             </div>
                         </div>
                         <div>
-                            {currentUser && !isfollowing ?
+                            {currentUser ?
                                 <>
-                                    <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>
-                                    <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button> </> : null
+                                    {!isfollowing ? (<button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>) : (<button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>)}
+                                </> : null
                             }
                         </div>
                     </div>

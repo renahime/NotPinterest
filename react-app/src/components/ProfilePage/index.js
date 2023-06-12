@@ -6,7 +6,7 @@ import { unfollowUser, followUser } from "../../store/session"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
-import { Link } from "react-router-dom/cjs/react-router-dom.min"
+import { Link, NavLink } from "react-router-dom/cjs/react-router-dom.min"
 import LoadingButton from "../LoadingButton"
 import "./ProfilePage.css"
 import UserPins from '../UserPins'
@@ -154,6 +154,7 @@ export default function ProfilePage() {
                             <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
                     }
                     <div>
+
                         <button onClick={handleShowBoards} className="profile-button">Pins</button>
                         <button onClick={handleShowPins} className="profile-button">Boards</button>
                     </div>
@@ -167,7 +168,7 @@ export default function ProfilePage() {
                         </button>
                         {openMenu && <div className={menuClassName}>
                             <div className="profile-dropdown-create-label">Create</div>
-                            <div className="profile-dropdown-create">Pin</div>
+                            <NavLink style={{ textDecoration: 'none', width: "100%", textAlign: 'left', color: 'black' }} to="/create"> <div className="profile-dropdown-create">Pin</div> </NavLink>
                             <div className="profile-dropdown-create" onClick={showMenu}>
                                 <div>
                                     <OpenModalButton
