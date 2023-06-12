@@ -33,7 +33,7 @@ export default function IndividualPinPage() {
     const [pinErrorCheck, setPinErrorCheck] = useState(false);
     let [numFollowers, setNumFollowers] = useState(0);
     let [isfollowing, setIsFollowing] = useState(false);
-    const {setModalContent} = useModal()
+    const { setModalContent } = useModal()
 
 
     useEffect(() => {

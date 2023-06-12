@@ -91,7 +91,7 @@ export default function CreatePin() {
 
     }
 
-    function openModal (e) {
+    function openModal(e) {
         e.preventDefault()
         setModalContent(<CreateNewBoardOnPin />)
     }
@@ -301,5 +301,3 @@ export default function CreatePin() {
         </div>
     )
 }
-
-
