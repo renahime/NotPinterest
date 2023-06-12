@@ -45,31 +45,30 @@ export default function IndividualPinPage() {
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
-
-    if (Object.values(singlePin).length && Object.values(currentUser).length) {
-        if (singlePin.owner_id == currentUser.id) {
-            pinnedCheck = true
-        }
-        for (let userBoard of currentUser.boards) {
-            for (let board of singlePin.boards_pinned_in) {
-                if (board.id == userBoard.id) {
-                    pinnedCheck = true;
-                    console.log("UserBoard", userBoard.name)
-                    console.log("GrabBoardName", grabBoardName)
-                    grabBoardName.name = userBoard.name
-                    console.log("GrabBoardName", grabBoardName)
-                }
-                console.log("We didnt get grabBoardName", grabBoardName)
+    if (currentUser) {
+        if (Object.values(singlePin).length && Object.values(currentUser).length) {
+            if (singlePin.owner_id == currentUser.id) {
+                pinnedCheck = true
             }
-            options.push({ 'value': userBoard.name, 'label': userBoard.name })
+            for (let userBoard of currentUser.boards) {
+                for (let board of singlePin.boards_pinned_in) {
+                    if (board.id == userBoard.id) {
+                        pinnedCheck = true;
+                        grabBoardName.name = userBoard.name
+                    }
+                }
+                options.push({ 'value': userBoard.name, 'label': userBoard.name })
+            }
         }
     }
 
     useEffect(() => {
-        if (Object.values(singlePin).length && Object.values(currentUser).length) {
-            setNumFollowers(singlePin.user.followers.length)
-            if (singlePin.user.followers.includes(currentUser.username)) {
-                setIsFollowing(true);
+        if (currentUser) {
+            if (Object.values(singlePin).length && Object.values(currentUser).length) {
+                setNumFollowers(singlePin.user.followers.length)
+                if (singlePin.user.followers.includes(currentUser.username)) {
+                    setIsFollowing(true);
+                }
             }
         }
     }, [singlePin])
@@ -81,7 +80,7 @@ export default function IndividualPinPage() {
         return () => {
             window.removeEventListener("click", handler)
         }
-    }, [])
+    })
 
     const changeBoardName = (newBoard) => {
         setPinBoard(newBoard)
@@ -95,12 +94,8 @@ export default function IndividualPinPage() {
         e.preventDefault();
         let boardId
         let sendBoardName
-        console.log("WE ARE CHECKING BOARD handlePin in individaual pin page", sendBoardName)
         for (let board of currentUser.boards) {
-            console.log("WE ARE CHECKING BOARD handlePin for loop in individaual pin page", board)
-            console.log("WE ARE CHECKING PINBOARD handlePin for loop in individaual pin page", pinBoard)
             if (board.name == pinBoard) {
-                console.log("WE ARE CHECKING BOARD ID in individaual pin page", boardId)
                 boardId = board.id
                 sendBoardName = board.name.split(' ').join('_').toLowerCase()
             }
@@ -142,7 +137,7 @@ export default function IndividualPinPage() {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
-    if (!singlePin || !currentUser || !options.length) return <h1>...Loading</h1>
+    if (!singlePin) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
             <div className="single-pin">
@@ -212,8 +207,9 @@ export default function IndividualPinPage() {
                                 }
                             </div>
                         </div>
-                        <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
-                        <button onClick={handlePin} className="single-pin-edit-board-button">Save</button>
+
+                        {!currentUser ? null : <> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
+                            <button onClick={handlePin} className="single-pin-edit-board-button">Save</button> </>}
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
                     <div> {singlePin.description ? <h2 className="single-pin-title">{singlePin.description}</h2> : null} </div>
