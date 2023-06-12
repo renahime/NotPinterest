@@ -78,7 +78,7 @@ export default function IndividualBoardPage() {
                                 </div>
                             </div>}
                     </div>
-                    <div>
+                    <div className="pins-for-board-page-wrapper">
                         <PinsForBoardPage pins={boardPins} />
                     </div>
                 </div>}

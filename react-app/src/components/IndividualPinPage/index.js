@@ -218,7 +218,7 @@ export default function IndividualPinPage() {
                     <div className="single-pin-owner-info">
                         <div className="single-pin-profile-info">
                             <div>
-                                {singlePin.user.profile_image ? <img className="single-pin-profile-image" src={singlePin.user.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
+                                {singlePin.user?.profile_image ? <img className="single-pin-profile-image" src={singlePin.user.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
                             </div>
                             <div className="single-pin-owner-name-followers">
                                 <Link className="single-pin-owner-link" to={`/${singlePin.user?.username}`}>{singlePin.user?.first_name} {singlePin.user?.last_name}</Link>

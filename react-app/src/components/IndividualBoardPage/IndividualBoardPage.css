@@ -87,13 +87,16 @@
     justify-items: center;
 }
 
+.pins-for-board-page-wrapper{
+    width: 100%;
+    padding-left: 20px;
+}
 .individual-board-pins-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
 }
-
 
 .individual-board-pin-image {
     width: 250px;
