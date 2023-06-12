@@ -100,3 +100,8 @@
 .profile-edit-board-icon:hover {
     background-color: #F0F0F0;
 }
+
+.profile-board-link {
+    text-decoration: none;
+    color: black;
+}

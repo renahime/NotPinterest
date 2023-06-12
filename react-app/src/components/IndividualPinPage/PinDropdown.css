@@ -19,7 +19,19 @@
 
 .edit-pin-options {
   /* border: 2px solid red; */
-  border: 2px solid red;
-
+  /* border: 2px solid red; */
+  z-index: 4;
   width: 400px;
+}
+
+#dropdown-menu-wrapper {
+  /* border: 2px solid purple; */
+  width: 200px;
+  overflow: hidden;
+}
+
+.single-pin-edit-board {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

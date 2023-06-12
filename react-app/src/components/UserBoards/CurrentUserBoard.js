@@ -55,7 +55,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
                 <>
-                    <Link to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }} >
+                    <Link className="profile-board-link" to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description }}} >
                         <div className="profile-boards-wrapper" onMouseEnter={() => onHover(boards)} onMouseLeave={() => offHover()}>
                             <div className="profile-board-pics">
                                 {boards.private ? <div className="profile-board-lock-icon-wrapper">

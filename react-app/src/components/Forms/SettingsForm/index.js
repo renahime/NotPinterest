@@ -175,11 +175,6 @@ function Settings() {
               </div>
             </div>
             <div className='footer-div'>
-              <div className='reset-button'>
-                <button className='reset-button' type='button' onClick={() => setModalContent(<DeleteUserModal user={user} />)} >
-                  Delete Account
-                </button>
-              </div>
               <button type="submit" className='save-button'>Save</button>
               <NavLink exact to={`/${user?.username}`}>
                 <button type='button' className='delete-button'>Cancel</button>

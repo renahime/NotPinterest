@@ -3,6 +3,7 @@
   border: 1px solid #ccc;
   position: relative;
   border-radius: 5px;
+  width: 300px;
 }
 
 .dropdown-input {
@@ -11,6 +12,7 @@
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  padding-right: 10px;
 }
 
 .search-box{

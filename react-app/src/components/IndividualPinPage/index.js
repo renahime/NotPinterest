@@ -171,20 +171,15 @@ export default function IndividualPinPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="dropdown-menu-edit-pin">
+                            <div id="dropdown-menu-wrapper" className="dropdown-menu-edit-pin">
                                 {pinnedCheck ? showMenu &&
                                     <div className="edit-pin-options">
-                                        <OpenModalButton
-                                            id="edit-pin-button"
-                                            buttonText="Edit Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />}
-                                        />
-                                        <OpenModalButton
-                                            buttonText="Report Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />}
-                                        />
+                                        <div onClick={() => setModalContent(<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />)} id="edit-pin-button" className="dropdown-item">
+                                        Edit Pin
+                                        </div>
+                                        <div onClick={() => setModalContent(<ComingSoon />)} className="dropdown-item">
+                                        Report Pin
+                                        </div>
                                     </div>
                                     : showMenu &&
                                     <div>
@@ -209,9 +204,10 @@ export default function IndividualPinPage() {
                                 }
                             </div>
                         </div>
-
+                    
                         {!currentUser ? null : (<> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
                             <button onClick={handlePin} className="single-pin-edit-board-button">Save</button> </>)}
+                    
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
                     <div> {singlePin.description ? <h2 className="single-pin-title">{singlePin.description}</h2> : null} </div>

@@ -50,12 +50,14 @@
 .pin-title-container{
   display:flex;
   flex-direction: row;
+  justify-content: space-between;
   gap:100px
 }
 
 .board-title-container{
   display:flex;
   flex-direction: row;
+  justify-content: space-between;
   gap:100px
 }
 
@@ -68,12 +70,14 @@
 .pin-website-container{
   display:flex;
   flex-direction: row;
+  justify-content: space-between;
   gap:100px
 }
 
 .pin-alt-text-container{
   display:flex;
   flex-direction: row;
+  justify-content: space-between;
   gap:100px
 }
 
@@ -99,6 +103,14 @@
   height: 40px;
   border-radius: 40%;
   color:#151515
+}
+
+.submit-and-cancel-buttons > button {
+  padding: 10px;
+}
+
+.submit-and-cancel-buttons {
+  padding-bottom: 20px;
 }
 
 .edit-pin-submit-button{
