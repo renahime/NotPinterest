@@ -24,14 +24,6 @@ export default function CaSandraFeed() {
     let [pinsArr, setPinsArr] = useState([])
     let numberOfPins = 0
     let boards = 0
-    if (pins && loading && Object.values(pins).length) {
-        const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
-        pinsArr = filteredPinsArr
-        if (sessionUser) {
-            numberOfPins = userPins
-            boards = sessionUser.boards.length
-        }
-    }
 
     useEffect(() => {
         if (sessionUser) {
@@ -143,7 +135,6 @@ export default function CaSandraFeed() {
         }
         else {
             if (pins && loading && Object.values(pins).length) {
-                console.log('a')
                 const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
                 setPinsArr(filteredPinsArr);
                 if (sessionUser) {
@@ -155,6 +146,7 @@ export default function CaSandraFeed() {
             setFinished(true)
         }
     }, [loading, pins])
+
     if (pins && !Object.values(pins).length) {
         return (
             <LoadingButton
@@ -162,6 +154,7 @@ export default function CaSandraFeed() {
             />
         )
     }
+
     return (
         <div>
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
