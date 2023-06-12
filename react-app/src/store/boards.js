@@ -5,7 +5,7 @@ const GET_SINGLE_BOARD = 'boards/single'
 // const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
-const DELETE_USER_BOARD = "boards/delete";
+const DELETE_BOARD = "boards/delete";
 const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
@@ -52,7 +52,7 @@ const updateUserBoard = (board) => ({
 })
 
 const deleteUserBoard = (id) => ({
-    type: DELETE_USER_BOARD,
+    type: DELETE_BOARD,
     id,
 });
 
@@ -226,7 +226,7 @@ export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
 //     }
 // };
 
-const initialState = { allBoards: {}, singleBoard: {} }
+const initialState = { singleBoard: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
@@ -255,15 +255,12 @@ export default function boardsReducer(state = initialState, action) {
                 }
             };
             return newState;
-        case DELETE_USER_BOARD:
-            const newAllBoards = { ...state.allBoards };
-            delete newAllBoards[action.id];
+        case DELETE_BOARD:
             if (state.singleBoard.id === action.id) {
                 state.singleBoard = {}
             }
             return {
                 ...state,
-                allBoards: newAllBoards,
                 singleBoard: { ...state.singleBoard }
             };
         case UN_PIN:

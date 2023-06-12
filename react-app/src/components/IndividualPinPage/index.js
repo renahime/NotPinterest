@@ -30,6 +30,10 @@ export default function IndividualPinPage() {
     const dispatch = useDispatch()
     const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
+    const [pinErrorCheck, setPinErrorCheck] = useState(false);
+    let [numFollowers, setNumFollowers] = useState(0);
+    let [isfollowing, setIsFollowing] = useState(false);
+
 
     useEffect(() => {
         dispatch(getPinById(id))
@@ -41,24 +45,34 @@ export default function IndividualPinPage() {
     let grabBoardName = {}
     let pinnedCheck = false
     let options = [];
-    if (Object.values(singlePin).length && Object.values(currentUser).length) {
-        if (singlePin.owner_id == currentUser.id) {
-            pinnedCheck = true
-        }
-        for (let userBoard of currentUser.boards) {
-            for (let board of singlePin.boards_pinned_in) {
-                if (board.id == userBoard.id) {
-                    pinnedCheck = true;
-                    console.log("UserBoard", userBoard.name)
-                    console.log("GrabBoardName", grabBoardName)
-                    grabBoardName.name = userBoard.name
-                    console.log("GrabBoardName", grabBoardName)
-                }
-                console.log("We didnt get grabBoardName", grabBoardName)
+    if (currentUser) {
+        if (Object.values(singlePin).length && Object.values(currentUser).length) {
+            if (singlePin.owner_id == currentUser.id) {
+                pinnedCheck = true
             }
-            options.push({ 'value': userBoard.name, 'label': userBoard.name })
+            for (let userBoard of currentUser.boards) {
+                for (let board of singlePin.boards_pinned_in) {
+                    if (board.id == userBoard.id) {
+                        pinnedCheck = true;
+                        grabBoardName.name = userBoard.name
+                    }
+                }
+                options.push({ 'value': userBoard.name, 'label': userBoard.name })
+            }
         }
     }
+
+    useEffect(() => {
+        if (currentUser) {
+            if (Object.values(singlePin).length && Object.values(currentUser).length) {
+                setNumFollowers(singlePin.user.followers.length)
+                if (singlePin.user.followers.includes(currentUser.username)) {
+                    setIsFollowing(true);
+                }
+            }
+        }
+    }, [singlePin])
+
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
     useEffect(() => {
         const handler = () => setShowMenu(false)
@@ -66,10 +80,9 @@ export default function IndividualPinPage() {
         return () => {
             window.removeEventListener("click", handler)
         }
-    },[])
+    })
 
     const changeBoardName = (newBoard) => {
-        // Update the name in the component's state
         setPinBoard(newBoard)
     }
 
@@ -81,56 +94,50 @@ export default function IndividualPinPage() {
         e.preventDefault();
         let boardId
         let sendBoardName
-        console.log("WE ARE CHECKING BOARD handlePin in individaual pin page", sendBoardName)
         for (let board of currentUser.boards) {
-            console.log("WE ARE CHECKING BOARD handlePin for loop in individaual pin page", board)
-            console.log("WE ARE CHECKING PINBOARD handlePin for loop in individaual pin page", pinBoard)
             if (board.name == pinBoard) {
-                console.log("WE ARE CHECKING BOARD ID in individaual pin page", boardId)
                 boardId = board.id
                 sendBoardName = board.name.split(' ').join('_').toLowerCase()
             }
         }
-        try {
-            await dispatch(pinThunk(singlePin, boardId));
-            closeModal();
-            history.push(`/${currentUser.username}/${sendBoardName}`);
-          } catch (error) {
-            // Handle any errors that occur during pin dispatch
-            console.log(error);
-          }
-
-    }
-    async function unfollow(username) {
-        let response = await dispatch(unfollowUser(username))
-        if (response.errors) {
-            console.log(response.errors)
-        } else {
-            console.log("i work")
+        if (!sendBoardName) {
+            setPinErrorCheck(true);
+            return
+        }
+        const pin = await dispatch(pinThunk(singlePin, boardId)).then(closeModal())
+        if (pin) {
+            return history.push(`/${currentUser.username}/${sendBoardName}`)
         }
     }
-
-    async function follow(username) {
-        console.log("username", username)
-        let response = await dispatch(followUser(username))
+    const handleFollow = async (e) => {
+        e.preventDefault();
+        let response = await dispatch(followUser(singlePin.user.username))
         if (response.errors) {
             console.log(response.errors)
-        } else {
-            console.log("i work too")
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers + 1)
+            setIsFollowing(true);
         }
     }
-
+    const handleUnfollow = async (e) => {
+        e.preventDefault();
+        let response = await dispatch(unfollowUser(singlePin.user.username))
+        if (response.errors) {
+            console.log(response.errors)
+        } else if (response) {
+            setNumFollowers(numFollowers => numFollowers - 1)
+            setIsFollowing(false);
+        }
+    }
     if (!singlePin) return <h1>...Loading</h1>
 
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
-
 
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
-    console.log("pin data", singlePin);
-    if (!singlePin || !currentUser || !options.length) return <h1>...Loading</h1>
+    if (!Object.values(singlePin).length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
             <div className="single-pin">
@@ -200,23 +207,30 @@ export default function IndividualPinPage() {
                                 }
                             </div>
                         </div>
-                        <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
-                        <button onClick={handlePin} className="single-pin-edit-board-button">Save</button>
+
+                        {!currentUser ? null : (<> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
+                            <button onClick={handlePin} className="single-pin-edit-board-button">Save</button> </>)}
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
+                    <div> {singlePin.description ? <h2 className="single-pin-title">{singlePin.description}</h2> : null} </div>
+                    <div> {singlePin.destination ? <h2 className="single-pin-title">{singlePin.destination}</h2> : null} </div>
+                    <div> {singlePin.alt_text ? <h2 className="single-pin-title">{singlePin.alt_text}</h2> : null} </div>
                     <div className="single-pin-owner-info">
                         <div className="single-pin-profile-info">
                             <div>
-                                {singlePin.profile_image ? <img className="single-pin-profile-image" src={singlePin.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
+                                {singlePin.user?.profile_image ? <img className="single-pin-profile-image" src={singlePin.user.profile_image} /> : <i className=" single-pin-profile-default fa-solid fa-circle-user"></i>}
                             </div>
                             <div className="single-pin-owner-name-followers">
-                                <Link className="single-pin-owner-link" to={`/${singlePin.owner_info?.username}`}>{singlePin.owner_info?.first_name} {singlePin.owner_info?.last_name}</Link>
-                                <p>{formatFollowers(singlePin?.owner_info?.followers.length)}</p>
+                                <Link className="single-pin-owner-link" to={`/${singlePin.user?.username}`}>{singlePin.user?.first_name} {singlePin.user?.last_name}</Link>
+                                {!currentUser ? <p>{singlePin.user.followers.length === 1 ? "1 follower" : `${singlePin.user.followers.length} followers`}</p> : <p>{numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}</p>}
                             </div>
                         </div>
                         <div>
-                            {currentUser && currentUser.id !== singlePin.owner_id && !singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={() => follow(singlePin.user.username)} className="single-pin-follow-button">Follow</button> : null}
-                            {currentUser && currentUser.id !== singlePin.owner_id && singlePin.owner_info?.followers.includes(currentUser.username) ? <button onClick={() => unfollow(singlePin.user.username)} className="single-pin-following-button">Following</button> : null}
+                            {currentUser && !isfollowing ?
+                                <>
+                                    <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>
+                                    <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button> </> : null
+                            }
                         </div>
                     </div>
                 </div>

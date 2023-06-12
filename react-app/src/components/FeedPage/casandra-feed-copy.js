@@ -17,7 +17,7 @@ export default function CaSandraFeed() {
     let [finishedLoading, setFinished] = useState(false)
     let pins = useSelector(state => state.pins.allPins)
     let sessionUser = useSelector(state => state.session.user)
-    
+
     const [hoverBoard, setHoverBoard] = useState(false)
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
     const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
@@ -151,14 +151,15 @@ export default function CaSandraFeed() {
     console.log("session user", sessionUser)
     return (
         <div>
-            {(sessionUser && boards.length) ? (
+            {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
 
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {sessionUser.boards.length} boards</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} </NavLink>
                         <div>and</div>
-                        <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser && sessionUser.boards.length ? (sessionUser.boards.reduce(
+                            (total, board) => (board.pins.length ? total + board.pins.length : 0), 0)) : 0}pins</NavLink>
                         <div>Check them out!</div>
                     </div>
 
@@ -172,15 +173,15 @@ export default function CaSandraFeed() {
                                 <i className="fa-solid fa-angle-left fa-rotate-180"></i>
                             </div>
 
-                            {boards.map((board, index) => (
+                            {sessionUser.boards.map((board, index) => (
 
                                 <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
-                                    {/* <OpenModalButton
-                            buttonText={board.name}
-                            className="test-open-create-board-modal"
-                            modalComponent={<UpdateBoardModal id={board.id} />}
-                            onClick={() => history.push(`/boards/${board.id}`)}
-                          /> */}
+                                    <OpenModalButton
+                                        buttonText={board.name}
+                                        className="test-open-create-board-modal"
+                                        modalComponent={<UpdateBoardModal id={board.id} />}
+                                        onClick={() => history.push(`/boards/${board.id}`)}
+                                    />
                                     <div>
                                         {board.name}
                                     </div>
@@ -191,11 +192,11 @@ export default function CaSandraFeed() {
                     </div>
                 </>
 
-            ) : ((sessionUser && !boards.length) ? (
+            ) : ((currentUser && (sessionUser && sessionUser.boards.length)) ? (
                 <>
                     <div className="board-container-top-text">
                         <div>Oh no, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {sessionUser.boards.length} boards.</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
                         <div>Let's change that!</div>
                         <OpenModalButton
                             buttonText="Create Board"

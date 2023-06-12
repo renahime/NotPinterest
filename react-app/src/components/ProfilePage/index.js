@@ -123,9 +123,9 @@ export default function ProfilePage() {
                     </h5>
                     {checkUser() ?
                         <Link to={{ pathname: "/settings", state: { currentUser } }}  ><button className="profile-button edit-profile">Edit Profile</button></Link> :
-                        !isfollowing ?
-                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
-                            <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
+                        currentUser && !isfollowing ?
+                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> : currentUser && isfollowing ?
+                                <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button> : null
                     }
                     <div>
                         <button onClick={handleShowBoards} className="profile-button">Pins</button>
@@ -133,6 +133,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
             }
+
             {checkUser() ?
                 <div>
                     <div className="profile-plus-icon-wrapper">

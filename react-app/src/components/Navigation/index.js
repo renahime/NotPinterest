@@ -60,7 +60,7 @@ function Navigation({ isLoaded }) {
 								<NavLink exact to="/feed" className="tab" activeClassName="active">
 									Home
 								</NavLink>
-								<NavLink to="/today" className="tab tab-disabled" activeClassName="active" >
+								<NavLink to="/today" className="tab" activeClassName="active" >
 									Today
 								</NavLink>
 								<div className='nav-create-tab'>

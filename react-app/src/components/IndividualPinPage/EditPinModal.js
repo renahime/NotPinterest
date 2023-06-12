@@ -25,35 +25,72 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
   const [destination, setDestination] = useState(pin?.destination);
   const [alt_text, setAltText] = useState(pin?.alt_text);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   if (user) {
     for (let boardName of user.boards) {
       options.push({ value: boardName.name, label: boardName.name })
     }
   }
   const handleClose = (e) => {
+    setErrors({})
+    setBoardName(grabBoardName?.name)
+    setDescription(pin?.title)
+    setDestination(pin?.description)
+    setAltText(pin?.destination)
+    setErrors(pin?.alt_text)
     closeModal()
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
-    const pinToUpdated = { ...pin, boardName, title, description, destination, alt_text };
-    const updatedPin = dispatch(updatePinThunk(pinToUpdated)).then(updatedPin => { history.push(`/pin/${updatedPin.id}`) }).then(closeModal()).then(refreshPage()).catch(async (res) => {
-      const data = await res;
-      setErrors(data.errors);
-    });
-    if (updatedPin) {
-      pin = updatedPin
+    let validationErrors = {}
+    if (destination) {
+      let siteCheck = destination.slice(-4)
     }
-  }
-  function refreshPage() {
-    window.location.reload(false);
+    let sites = ['.com', '.jpeg', '.jpg', '.png']
+    if (title) {
+      if (title.length > 100) {
+        validationErrors.title = "Ooops! This title is getting long. Try trimming it down."
+      }
+    }
+    if (description) {
+      if (description.length > 225) {
+        validationErrors.description = "Ooops! This description is getting long. Try trimming it down."
+      }
+    }
+    if (alt_text) {
+      if (alt_text.length > 225) {
+        validationErrors.altText = "Ooops! This alt text is getting long. Try trimming it down."
+      }
+    }
+    if (destination) {
+      if (sites.includes.siteCheck) {
+        validationErrors.destinationLink = "Ooops! This isn't a valid link."
+      }
+    }
+
+    if (Object.values(validationErrors).length) {
+      setErrors(validationErrors)
+      return
+    }
+    const pinToUpdated = { ...pin, boardName, title, description, destination, alt_text };
+    const updatedPin = await dispatch(updatePinThunk(pinToUpdated)).then(setLoading(true))
+    if (updatedPin.errors) {
+      setErrors(updatedPin.errors)
+      return
+    } else {
+      closeModal()
+      setLoading(false);
+    }
   }
 
   const handleRepin = async (e) => {
     let oldBoardId
     let newBoardId
     let sendBoardName
+    let validationErrors = {}
+
     for (let userBoard of user.boards) {
       if (boardName == userBoard.name) {
         newBoardId = userBoard.id
@@ -63,13 +100,21 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
         oldBoardId = userBoard.id
       }
     }
+    if (!sendBoardName) {
+      validationErrors.boardName = "Ooop! You haven't chosen a board to re pin this to yet"
+    }
+    if (Object.values(validationErrors).length) {
+      setErrors(validationErrors)
+      return
+    }
     const sendRepin = await dispatch(repinThunk(pin, oldBoardId, newBoardId)).then(closeModal())
     if (sendRepin) {
       return history.push(`/${user.username}/${sendBoardName}`)
     }
   }
 
-  return (user.id === pin.owner_id ?
+
+  return (loading ? <h1>loading...</h1> : user.id === pin.owner_id ?
     <div className="pin-edit-owner-container">
       <h1 className="title">Edit This Pin</h1>
       <form onSubmit={handleSubmit} className="pin-edit-owner-form">
@@ -81,22 +126,86 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
                 <option className="board-options" value={option.value}>{option.label}</option>
               ))}
             </select>
+            {errors.boardName ? <p className="edit-pin-errors" style={{ color: 'red' }}>{errors.boardName}</p> : null}
           </div>
           <div className="pin-title-container">
             <h6 className="pin-title-text">Title</h6>
-            <input value={title} className="pin-edit-title-input" type="text" onChange={(e) => setTitle(e.target.value)}></input>
+            <div>
+              <input className="pin-edit-title-input" value={title} onChange={(e) => setTitle(e.target.value)} type="text"></input>
+              {errors.destination || (title && title.length > 100) ?
+                <div className="edit-pin-active-caption">
+                  <p className="create-pin-errors ">
+                    {errors.title ? errors.title : " Ooops! This title is getting long. Try trimming it down."
+                    }
+                  </p>
+                  <p className="create-pin-errors">{title ? 100 : title.length < 100 ? 100 - title.length : null}</p>
+                </div>
+                :
+                <div className={`edit-pin-active-caption`}>
+                  <p>{!title ? 100 : 100 - title.length}</p>
+                </div>
+              }
+              {errors.title ? <p className="create-pin-errors">{errors.title}</p> : null}
+            </div>
           </div>
           <div className="pin-description-container">
             <h6 className="pin-description-text">Description</h6>
-            <input className="pin-edit-description-input" value={description} onChange={(e) => setDescription(e.target.value)} type="text"></input>
+            <div className="edit-pin-description-with-errors">
+              <input className="pin-edit-description-input" value={description} onChange={(e) => setDescription(e.target.value)} type="text"></input>
+              {errors.destination || (description && description.length > 225) ?
+                <div className="edit-pin-active-caption">
+                  <p className="create-pin-errors ">
+                    {errors.description ? errors.description : " Ooops! This description is getting long. Try trimming it down."
+                    }
+                  </p>
+                  <p className="create-pin-errors">{description ? 225 : description.length < 225 ? 225 - description.length : null}</p>
+                </div>
+                :
+                <div className={`edit-pin-active-caption`}>
+                  <p>{!description ? 225 : 225 - description.length}</p>
+                </div>
+              }
+              {errors.description ? <p className="create-pin-errors">{errors.description}</p> : null}
+            </div>
           </div>
           <div className="pin-website-container">
             <h6 className="pin-website-text">Website</h6>
-            <input className="pin-edit-website-input" value={destination} onChange={(e) => setDestination(e.target.value)} type="text"></input>
+            <div className="edit-pin-website-with-errors">
+              <input className="pin-edit-website-input" value={destination} onChange={(e) => setDestination(e.target.value)} type="text"></input>
+              {errors.destination || (destination && destination.length > 225) ?
+                <div className="edit-pin-active-caption">
+                  <p className="create-pin-errors ">
+                    {errors.destination ? errors.destination : " Ooops! This site is getting long. Try trimming it down."
+                    }
+                  </p>
+                  <p className="create-pin-errors">{destination ? 225 : destination.length < 225 ? 225 - destination.length : null}</p>
+                </div>
+                :
+                <div className={`edit-pin-active-caption`}>
+                  <p>{!destination ? 225 : 225 - destination.length}</p>
+                </div>
+              }
+              {errors.destinationLink ? <p className="create-pin-errors">{errors.destinationLink}</p> : null}
+            </div>
           </div>
           <div className="pin-alt-text-container">
             <h6 className="pin-alt-text-text">Alt text</h6>
-            <input className="pin-edit-alt-text-input" value={alt_text} onChange={(e) => setAltText(e.target.value)} type="text"></input>
+            <div className="edit-pin-alt-text-with-errors">
+              <input className="pin-edit-alt-text-input" value={alt_text} onChange={(e) => setAltText(e.target.value)} type="text"></input>
+              {errors.alt_text || (alt_text && alt_text.length > 225) ?
+                <div className="edit-pin-active-caption">
+                  <p className="create-pin-errors ">
+                    {errors.alt_text ? errors.alt_text : " Ooops! This alternate text is getting long. Try trimming it down."
+                    }
+                  </p>
+                  <p className="create-pin-errors">{alt_text.length ? 225 : 225 - alt_text.length}</p>
+                </div>
+                :
+                <div className={`edit-pin-active-caption`}>
+                  <p>{!alt_text ? 225 : 225 - alt_text.length}</p>
+                </div>
+              }
+            </div>
           </div>
         </div>
         <div className="buttons-container">

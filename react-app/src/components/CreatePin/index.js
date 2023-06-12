@@ -77,7 +77,7 @@ export default function CreatePin() {
         pinData.append("destination", destinationLink)
         setLoadingImage(true)
 
-        let new_pin = await dispatch(createNewPin(pinData)).then(() => setLoadingImage(false))
+        let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
         if (new_pin.errors) {
             setErrors(new_pin.errors)
             return
