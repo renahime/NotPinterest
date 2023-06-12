@@ -22,7 +22,6 @@ export default function IndividualBoardPage() {
 
     useEffect(() => {
         dispatch(getSingleBoardThunk(username, boardName))
-        console.log(currentUser.boards)
         if (currentUser) {
             for (let board of currentUser.boards) {
                 if (board && board.id === individualBoard.id) {

@@ -14,7 +14,7 @@ function Navigation({ isLoaded }) {
 	const history = useHistory()
 	const sessionUser = useSelector((state) => state.session.user);
 	const [openMenu, setOpenMenu] = useState(false)
-	const {setModalContent} = useModal()
+	const { setModalContent } = useModal()
 	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
 	let showMenu = () => {
 		setOpenMenu(!openMenu)
@@ -59,9 +59,6 @@ function Navigation({ isLoaded }) {
 							<div className="tabs">
 								<NavLink exact to="/feed" className="tab" activeClassName="active">
 									Home
-								</NavLink>
-								<NavLink to="/today" className="tab" activeClassName="active" >
-									Today
 								</NavLink>
 								<div className='nav-create-tab'>
 									{openMenu && <div className={menuClassName}>

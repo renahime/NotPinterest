@@ -83,13 +83,6 @@ function CreateBoardModal({ username }) {
 
 
 
-  let pinsToday
-  if (pinsTodayObj || pinsArr.length > 7) {
-    pinsToday = shuffle(Object.values(pinsTodayObj))
-    pinsArr = shuffle(pinsArr)
-    pinsArr = pinsArr.slice(0, 7)
-    // dbLatestDate = pinsToday[0].created_at
-  }
   const date = new Date();
 
 

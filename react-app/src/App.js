@@ -17,7 +17,6 @@ import UserPins from "./components/UserPins";
 import UserCategoriesForm from "./components/UserCategoriesForm";
 import CaSandraFeed from "./components/FeedPage/casandra-feed"
 import Settings from "./components/Forms/SettingsForm";
-import TodayPage from "./components/TodayPage";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -41,9 +40,6 @@ function App() {
           </Route>
           <Route path="/test/update">
             <SavePinsToBoardModal />
-          </Route>
-          <Route exact path="/today">
-            <TodayPage />
           </Route>
           <Route exact path="/login" >
             <LoginFormPage />

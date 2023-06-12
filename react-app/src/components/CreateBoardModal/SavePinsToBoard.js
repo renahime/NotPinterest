@@ -1,6 +1,5 @@
 
 import OpenModalButton from "../OpenModalButton";
-import TodayPage from "../TodayPage";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
