@@ -14,7 +14,7 @@ import LoadingButton from "../LoadingButton";
 
 
 
-function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, change }) {
+function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change }) {
 
 
 //   const dispatch = useDispatch();
@@ -27,12 +27,12 @@ function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, chang
 
 //   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
 
-  useEffect(() => {
-    console.log("Before dispatch");
-    dispatch(getAllPinsThunkOld())
-      .then(() => console.log("ALL PINS FETCHED", pinsToday))
-      .catch((error) => console.log("Error fetching pins:", error));
-  }, [dispatch, change]);
+  // useEffect(() => {
+  //   console.log("Before dispatch");
+  //   dispatch(getAllPinsThunkOld())
+  //     .then(() => console.log("ALL PINS FETCHED", pinsToday))
+  //     .catch((error) => console.log("Error fetching pins:", error));
+  // }, [dispatch, change]);
 
 
   // useEffect(() => {
@@ -42,45 +42,60 @@ function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, chang
   // dispatch(fetchPinsToday())
   const currentBoard = useSelector(state => state.boards.singleBoard)
   const currentBoardState = useSelector(state => state.boards.singleBoard)
-  const allpins = useSelector(state => state.pins.pins)
+
   const currentState = useSelector(state => state)
+
+  // const pins = useSelector(state => state.pins.pins)
+
+
   // const allPins = useSelector(state => state.pins.pins)
+
   console.log("BOARD NAME AND ID", currentBoard)
+
+  console.log("currentState ", currentState)
+
+  console.log("WE ARE IN SAVE PINS TO BOARD ", pinsArr)
+
+
   // console.log("ALL PINS SELECTOR", allPins)
   // let allPinsArr = Object.values(allPins)
   // console.log("PINS ARRAY", allPinsArr)
 
 
-//   function onHover(pin) {
-//     setHover(true)
-//     setHoverDiv(pin)
-//   }
+  function onHover(pin) {
+    setHover(true)
+    setHoverDiv(pin)
+  }
 
-//   function offHover() {
-//     setHover(false)
-//     setHoverDiv("")
-//   }
+  function offHover() {
+    setHover(false)
+    setHoverDiv("")
+  }
 
-//   // const handlePinHover = (e) => {
-//   //   const target = e.target;
-//   //   if (target.classList.contains("save-pins-to-board-modal-pins")) {
-//   //     if (e.type === "mouseenter") {
-//   //       // Handle hover in
-//   //       const pinId = target.dataset.pinId; // Retrieve the pin ID from a data attribute
-//   //       setHoverDiv(pinId);
-//   //       setHover(true);
-//   //     } else if (e.type === "mouseleave") {
-//   //       // Handle hover out
-//   //       setHoverDiv("");
-//   //       setHover(false);
-//   //     }
-//   //   }
-//   // };
 
-//   async function addPinToBoard() {
-//     // await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
-//     await dispatch(pinThunk(hoverDiv, currentBoard.id))
-//   }
+
+  // const handlePinHover = (e) => {
+  //   const target = e.target;
+  //   if (target.classList.contains("save-pins-to-board-modal-pins")) {
+  //     if (e.type === "mouseenter") {
+  //       // Handle hover in
+  //       const pinId = target.dataset.pinId; // Retrieve the pin ID from a data attribute
+  //       setHoverDiv(pinId);
+  //       setHover(true);
+  //     } else if (e.type === "mouseleave") {
+  //       // Handle hover out
+  //       setHoverDiv("");
+  //       setHover(false);
+  //     }
+  //   }
+  // };
+
+
+
+  async function addPinToBoard() {
+    // await dispatch(addPinToBoardThunk(currentBoard.id, pin, pin.id))
+    await dispatch(pinThunk(hoverDiv, currentBoard.id))
+  }
 
 
   // if (Object.keys(images).length === 0) {
@@ -108,57 +123,92 @@ function SavePinsToBoardModal({ pinsToday, username, boardName, setChange, chang
   //     )
   //   }
   // }
+if (pinsArr.length == 0 ){
+  pinsArr = [
+    {"alt_text": null,
+    "boards_pinned_in": [
+      {
+        "id": 6,
+        "name": "Casual Outfits"
+      },
+      {
+        "id": 3,
+        "name": "Summer outfits"
+      }
+    ],
+    "categories": [
+      "Athleisure"
+    ],
+    "created_at": "Sun, 11 Jun 2023 20:29:01 GMT",
+    "description": "Material: cotton, Fabric: Broadcloth, Collar: O-Neck",
+    "destination": "https://vivinch.com/no-pain-no-gain-mens-hooded-gym-fitness-tank-top",
+    "id": 11,
+    "image": "https://threadterest.s3.us-east-2.amazonaws.com/No+Pain+No+Gain+Mens+Hooded+Tank+Top.jpeg",
+    "owner_id": 2,
+    "title": "No Pain No Gain Mens Hooded Tank Top",
+    "updated_at": "Sun, 11 Jun 2023 20:29:01 GMT",
+    "user": {
+      "first_name": "Jane",
+      "followers": [
+        "Demo"
+      ],
+      "id": 2,
+      "last_name": "Smith",
+      "profile_image": null,
+      "username": "jane"
+    }
+}]}
 
 
 
+  return (
+    <>
+      <div className="save-pins-to-board-modal-container">
 
-  return ( <div></div>)}
-//     <>
-//       <div className="save-pins-to-board-modal-container">
+        <h3 className="save-pins-to-new-board-text">Save some Pins to your new board</h3>
 
-//         <h3 className="save-pins-to-new-board-text">Save some Pins to your new board</h3>
-
-//         <div className="save-pin-list-container">
-//           {/* <div className="save-pins-board-list" onMouseEnter={handlePinHover} onMouseLeave={handlePinHover}> */}
-//           <div className="save-pins-board-list" >
-//             {/* {images.map((pin) => {
-//               return ( */}
-
-
-// //                 < div className="save-pins-to-board-modal-pins"
-//                   data-pin-id={pin.id}
-//                   onMouseEnter={() => onHover(pin)} onMouseLeave={() => offHover()}
-//                   style={{ backgroundImage: `url(${pin.image})`, }
-//                   }
-//                 >
-//                   <div className="save-pins-to-board-save-button"
-//                     onClick={() => addPinToBoard()}
-
-//                   >Save</div>
-//                   <div className="save-pins-to-board-modal-text-container">
-//                     {pin.description}
-//                   </div>
-
-//                 </div>
+        <div className="save-pin-list-container">
+          {/* <div className="save-pins-board-list" onMouseEnter={handlePinHover} onMouseLeave={handlePinHover}> */}
+          <div className="save-pins-board-list" >
+            {pinsArr.map((pin) => {
+              return (
 
 
-//               )
-//             })}
+                < div className="save-pins-to-board-modal-pins"
+                  data-pin-id={pin.id}
+                  onMouseEnter={() => onHover(pin)} onMouseLeave={() => offHover()}
+                  style={{ backgroundImage: `url(${pin.image})`, }
+                  }
+                >
+                  <div className="save-pins-to-board-save-button"
+                    onClick={() => addPinToBoard()}
 
-//           </div>
-//         </div>
+                  >Save</div>
+                  <div className="save-pins-to-board-modal-text-container">
+                    {pin.description}
+                  </div>
 
-//         <div className="bottom-done">
-//           <div className="bottom-done-text" onClick={() => closeModal()}>Done</div>
-//         </div>
+                </div>
+
+
+              )
+            })}
+
+          </div>
+        </div>
+
+        <div className="bottom-done">
+          <div className="bottom-done-text" onClick={() => closeModal()}>Done</div>
+        </div>
 
 
 
-//       </div >
-//     </>
-  // )
+      </div >
+    </>
+  )
 
-// }
+
+}
 
 
 export default SavePinsToBoardModal

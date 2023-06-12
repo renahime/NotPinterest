@@ -31,28 +31,45 @@ function CreateBoardModal({ username }) {
   const stateCheck = useSelector((state) => state)
 
 
+  const allpins = useSelector(state => state.pins.pins)
+
   useEffect(() => {
   }, [name, isPrivate])
 
-//   let pinsTodayObj = useSelector(state => state.pins.todayPins)
+  //   let pinsTodayObj = useSelector(state => state.pins.todayPins)
   let testUsername = useSelector(state => state.session.user)
 
 
 
 
 
-//   let pinsToday
-//   if (pinsTodayObj) {
-//     pinsToday = shuffle(Object.values(pinsTodayObj))
-//     // dbLatestDate = pinsToday[0].created_at
-//   }
-//   const date = new Date();
+  console.log("PINS FOR ARRAY", allpins)
+
+
+  let pinsArr = []
+  for (const key in allpins) {
+    const pin = allpins[key]
+    pinsArr.push(pin)
+
+  }
+
+  // shuffle(pinsArr)
+
+  console.log("PINS ARR", pinsArr)
+
+  //   let pinsToday
+  //   if (pinsTodayObj) {
+  //     pinsToday = shuffle(Object.values(pinsTodayObj))
+  //     // dbLatestDate = pinsToday[0].created_at
+  //   }
+  //   const date = new Date();
 
   // useEffect(() => {
   //   dispatch(fetchPinsToday())
   // }, [])
 
   let pinsTodayObj = useSelector(state => state)
+  console.log("PINS TODAY", pinsTodayObj)
   // let testUsername = useSelector(state => state.session.user)
 
 
@@ -72,8 +89,10 @@ function CreateBoardModal({ username }) {
   console.log("PINS", pinsTodayObj)
 
   let pinsToday
-  if (pinsTodayObj) {
+  if (pinsTodayObj || pinsArr.length > 7) {
     pinsToday = shuffle(Object.values(pinsTodayObj))
+    pinsArr = shuffle(pinsArr)
+    pinsArr = pinsArr.slice(0, 7)
     // dbLatestDate = pinsToday[0].created_at
   }
   const date = new Date();
@@ -144,7 +163,7 @@ function CreateBoardModal({ username }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <SavePinsToBoardModal pinsToday={pinsToday} username={username} setChange={setChange} change={change} boardName={name} />
+        <SavePinsToBoardModal pinsArr={pinsArr} username={username} setChange={setChange} change={change} boardName={name} />
       </div>
     );
     setModalContent(modalContent);
