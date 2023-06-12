@@ -141,95 +141,10 @@ def seed_formal_pins():
         updated_at=datetime.now()
     )
 
-    pin16 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Brown-suit.jpeg",
-        user=user2,
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin17 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/classy-green.jpeg",
-        user=user2,
-        board_tagged=[board],
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin18 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/green-blazer.jpeg",
-        user=user1,
-        board_tagged=[board],
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin19 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Blue+Suit.jpeg",
-        board_tagged=[board],
-        user=user1,
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin21 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/blazer.jpeg",
-        user=user1,
-        board_tagged=[board],
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin22 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/brownish-suit.jpeg",
-        user=user1,
-        board_tagged=[board],
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin23 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/black-suit-tailored.jpeg",
-        user=user3,
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin24 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/black-suit.jpeg",
-        user=user3,
-        board_tagged=[board],
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin25 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/Black+Suit.jpeg",
-        user=user3,
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin26 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/black+tie.jpeg",
-        board_tagged=[board],
-        user=user3,
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
 
 
-    formalwear_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin21, pin22, pin23, pin24, pin25, pin26]
+
+    formalwear_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15 ]
 
     formal = [db.session.add(pin) for pin in formalwear_pins]
 

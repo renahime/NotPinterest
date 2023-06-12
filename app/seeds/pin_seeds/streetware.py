@@ -159,80 +159,8 @@ def seed_streetwear_pins():
         updated_at=datetime.now()
     )
 
-    pin16 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/9ff063975bc2d670f503bbcda4be7347.jpg",
-        user=user2,
-        board_tagged=[board1, board3, board4],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
 
-    pin17 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/c58c1d32a76f9f3ceb28211ce93d7ac6.jpg",
-        user=user2,
-        board_tagged=[board1, board3],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin18 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/ccd0714179361b906c0d3ec1a344e8af.jpg",
-        user=user1,
-        board_tagged=[board1, board3],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin19 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/d3d5c1d00e09d04b4b05bbae41bf0037.jpg",
-        user=user1,
-        board_tagged=[board1, board3],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin20 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/ed02268d007c54b17bedf7737560eebb.jpg",
-        user=user1,
-        board_tagged=[board1, board3],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin21 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/f0561fd7d63c1ad450580628515b108b.jpg",
-        user=user1,
-        board_tagged=[board1],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin22 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/images.jpg",
-        user=user1,
-        board_tagged=[board3],
-        categories=[streetwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin23 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/rhea-bue-outfit-1-1607039441.jpg",
-        user=user3,
-        categories=[streetwear],
-        board_tagged=[board4],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-
-    streetware_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin20, pin21, pin22, pin23]
+    streetware_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15]
 
 
     street_wear_pins = [db.session.add(pin) for pin in streetware_pins]
