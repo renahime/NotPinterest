@@ -60,6 +60,8 @@ function SignupFormModal() {
 						<input
 							type="text"
 							value={username}
+							maxLength={40}
+							minLength={6}
 							onChange={(e) => setUsername(e.target.value)}
 							required
 						/>
@@ -69,6 +71,8 @@ function SignupFormModal() {
 						<input
 							type="password"
 							value={password}
+							maxLength={40}
+							minLength={5}
 							onChange={(e) => setPassword(e.target.value)}
 							required
 						/>
@@ -78,6 +82,8 @@ function SignupFormModal() {
 						<input
 							type="password"
 							value={confirmPassword}
+							maxLength={40}
+							minLength={5}
 							onChange={(e) => setConfirmPassword(e.target.value)}
 							required
 						/>

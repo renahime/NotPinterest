@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useModal } from '../../context/Modal';
 import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
@@ -13,6 +14,7 @@ function Navigation({ isLoaded }) {
 	const history = useHistory()
 	const sessionUser = useSelector((state) => state.session.user);
 	const [openMenu, setOpenMenu] = useState(false)
+	const {setModalContent} = useModal()
 	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
 	let showMenu = () => {
 		setOpenMenu(!openMenu)

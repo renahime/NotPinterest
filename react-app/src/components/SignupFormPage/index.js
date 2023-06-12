@@ -61,6 +61,8 @@ function SignupFormPage() {
             <input
               type="text"
               value={username}
+              maxLength={40}
+              minLength={6}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
@@ -71,6 +73,8 @@ function SignupFormPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              maxLength={40}
+              minLength={5}
               required
             />
           </label>
@@ -80,6 +84,8 @@ function SignupFormPage() {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              maxLength={40}
+              minLength={5}
               required
             />
           </label>
