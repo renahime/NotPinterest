@@ -163,7 +163,7 @@ export default function CaSandraFeed() {
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
                         <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} </NavLink>
-                        <div>and</div>
+                        <div> boards and</div>
                         <NavLink to={`/${sessionUser.username}`}> {sessionUser && sessionUser.boards.length ? (sessionUser.boards.reduce(
                             (total, board) => (board.pins.length ? total + board.pins.length : 0), 0)) : 0}pins</NavLink>
                         <div>Check them out!</div>
