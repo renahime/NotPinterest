@@ -164,9 +164,9 @@ export default function CaSandraFeed() {
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${username}`}> {boards.length} boards</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards</NavLink>
                         <div>and</div>
-                        <NavLink to={`/${username}/_created`}>{numberOfPins} pins</NavLink>
+                        <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
                         <div>Check them out!</div>
                     </div>
 
@@ -203,7 +203,7 @@ export default function CaSandraFeed() {
                 <>
                     <div className="board-container-top-text">
                         <div>Oh no, you have</div>
-                        <NavLink to={`/${username}`}> {boards.length} boards.</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
                         <div>Let's change that!</div>
                         <OpenModalButton
                             buttonText="Create Board"
