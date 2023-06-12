@@ -151,7 +151,6 @@ export default function CaSandraFeed() {
             />
         )
     }
-    console.log(pinsArr)
     return (
         <div>
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
@@ -159,9 +158,10 @@ export default function CaSandraFeed() {
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} </NavLink>
                         <div>and</div>
-                        <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser && sessionUser.boards.length ? (sessionUser.boards.reduce(
+                            (total, board) => (board.pins.length ? total + board.pins.length : 0), 0)) : 0}pins</NavLink>
                         <div>Check them out!</div>
                     </div>
 
@@ -175,15 +175,15 @@ export default function CaSandraFeed() {
                                 <i className="fa-solid fa-angle-left fa-rotate-180"></i>
                             </div>
 
-                            {boards.map((board, index) => (
+                            {sessionUser.boards.map((board, index) => (
 
                                 <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
                                     {/* <OpenModalButton
-        buttonText={board.name}
-        className="test-open-create-board-modal"
-        modalComponent={<UpdateBoardModal id={board.id} />}
-        onClick={() => history.push(`/boards/${board.id}`)}
-      /> */}
+                            buttonText={board.name}
+                            className="test-open-create-board-modal"
+                            modalComponent={<UpdateBoardModal id={board.id} />}
+                            onClick={() => history.push(`/boards/${board.id}`)}
+                          /> */}
                                     <div>
                                         {board.name}
                                     </div>
@@ -194,7 +194,7 @@ export default function CaSandraFeed() {
                     </div>
                 </>
 
-            ) : ((!boards.length) ? (
+            ) : ((currentUser && (sessionUser && sessionUser.boards.length)) ? (
                 <>
                     <div className="board-container-top-text">
                         <div>Oh no, you have</div>
