@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { signUp } from "../../store/session";
-import { createBoardFromProfileThunk } from "../../store/profile";
-import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
-import { fetchPinsToday } from "../../store/pins";
-import SavePinsToBoardModal from "./SavePinsToBoard";
+import { createBoardFromPinPage } from "../../store/session";
 import './CreateBoardModal.css'
 function CreateBoardFromProfile({ username }) {
 
@@ -36,7 +32,7 @@ function CreateBoardFromProfile({ username }) {
       private: isPrivate,
       description: description
     }
-    let newBoardProfile = await dispatch(createBoardFromProfileThunk(formData))
+    let newBoardProfile = await dispatch(createBoardFromPinPage(formData))
     if (newBoardProfile) {
       closeModal()
     }
@@ -76,8 +72,6 @@ function CreateBoardFromProfile({ username }) {
 
             </div>
           </label>
-
-          {/* <button type="submit" className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}> */}
           <button type="submit" className="create-board-modal-create-button" disabled={disabledButton}>
             Create
           </button>
