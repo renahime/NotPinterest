@@ -278,3 +278,9 @@ input[type="file"] {
     color: red;
     font-size: 20px;
 }
+
+.create-pin-select {
+    min-width: 250px;
+    max-width: fit-content;
+    height: 100%;
+}

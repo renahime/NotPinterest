@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewPin } from "../../store/pins";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { getAllBoardsThunk } from "../../store/boards";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Dropdown from "../Forms/SettingsForm/Dropdown"
+import { clearSinglePin } from "../../store/pins"
 import { useModal } from "../../context/Modal";
 import CreateNewBoardOnPin from "./CreateNewBoardOnPin";
 import "./CreatePin.css"
@@ -77,12 +78,15 @@ export default function CreatePin() {
         pinData.append("destination", destinationLink)
         setLoadingImage(true)
 
-        let new_pin = await dispatch(createNewPin(pinData)).then(setLoadingImage(false))
+        let new_pin = await dispatch(createNewPin(pinData))
         if (new_pin.errors) {
             setErrors(new_pin.errors)
             return
         } else {
-            history.push(`/pin/${new_pin.pin.id}`)
+            setTimeout(() => {
+                setLoadingImage(false)
+                history.push(`/pin/${new_pin.pin.id}`)
+            }, 1000)
         }
 
     }
@@ -98,6 +102,10 @@ export default function CreatePin() {
     let activeTitleClassName = titleActive ? "" : "hidden"
     let activeDescClassName = descActive ? "" : "hidden"
     let activeAltClassName = altActive ? "" : "hidden"
+
+    useEffect(() => {
+        dispatch(clearSinglePin())
+    }, [])
 
     useEffect(() => {
         if (submit) {
@@ -129,6 +137,8 @@ export default function CreatePin() {
                     <div className={pinMenuClassName}>
                         <p onClick={() => history.push("/feed")}>Delete</p>
                     </div>
+                    {errors.image ? <p className="create-pin-errors">{errors.image}</p> : null}
+                    {loadingImage ? <h3>Wait while your image is uploaded</h3> : null}
                     <div className="file-input-wrapper-wrapper">
                         <div className="file-input-wrapper">
                             <label className="new-pin-image">
@@ -150,15 +160,13 @@ export default function CreatePin() {
                             </label>
                         </div>
                     </div>
-                    {errors.image ? <p className="create-pin-errors">{errors.image}</p> : null}
-                    {loadingImage ? <h3>Wait while your image is uploaded</h3> : null}
                 </div>
                 <div className="new-pin-info-side">
                     {currentUserBoards.length ?
                         <div className="new-pin-save-and-board">
                             <label>
                                 <select
-                                    value={board}
+                                    value={board} className="create-pin-select"
                                     onChange={(e) => setBoard(e.target.value)}
                                 >
                                     {currentUserBoards.map(boardValue => (

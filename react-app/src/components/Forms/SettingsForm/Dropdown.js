@@ -64,6 +64,7 @@ const Dropdown = ({ placeHolder, options, value, isSearchable, setter }) => {
     return options.filter((option) => option.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
     );
   }
+  console.log("value", value)
   return (
     <div className="dropdown-container">
       <div onClick={handleInputClick} className="dropdown-input">

@@ -125,7 +125,7 @@ const GET_PIN = "pins/getById"
 const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
 const GET_ALL_PINS = "pins/all"
-
+const CLEAR_SINGLE_PIN = "pin/clear"
 
 
 const createPin = (pin) => ({
@@ -143,7 +143,9 @@ const getAllPins = (pins) => ({
     pins
 })
 
-
+export const clearSinglePin = () => ({
+    type: CLEAR_SINGLE_PIN
+})
 
 
 const deletePin = (pinId) => ({
@@ -260,7 +262,9 @@ export default function pinsReducer(state = initialState, action) {
             const updateAll = { ...state.allPins }
             const updateSingle = { ...action.pin }
             return { ...state, allPins: updateAll, singlePin: { ...updateSingle } }
-        default:
+        case CLEAR_SINGLE_PIN:
+            return {...state, singlePin: {}}
+            default:
             return state
     }
 }
