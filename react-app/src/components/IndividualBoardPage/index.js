@@ -22,9 +22,11 @@ export default function IndividualBoardPage() {
 
     useEffect(() => {
         dispatch(getSingleBoardThunk(username, boardName))
-        for (let board of currentUser.boards) {
-            if (board.id === individualBoard.id) {
-                setOwnerCheck(true);
+        if (currentUser) {
+            for (let board of currentUser.boards) {
+                if (board.id === individualBoard.id) {
+                    setOwnerCheck(true);
+                }
             }
         }
     }, [dispatch])
