@@ -15,7 +15,7 @@ export default function CaSandraFeed() {
     const history = useHistory()
     let [loading, setLoading] = useState(false)
     let [finishedLoading, setFinished] = useState(false)
-    let pins = useSelector(state => state.pins.allPins)
+    let pins = useSelector(state => state.pins.pins)
     let sessionUser = useSelector(state => state.session.user)
     const [hoverBoard, setHoverBoard] = useState(false)
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
@@ -24,7 +24,7 @@ export default function CaSandraFeed() {
     let pinsArr = []
     let numberOfPins = 0
     let boards = 0
-    if (loading && Object.values(pins).length) {
+    if (pins && loading && Object.values(pins).length) {
         const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
         pinsArr = filteredPinsArr
         if (sessionUser) {
@@ -144,21 +144,16 @@ export default function CaSandraFeed() {
             setFinished(true)
         }
     }, [loading, pins])
-    if (!Object.values(pins).length) {
+    if (pins && !Object.values(pins).length) {
         return (
             <LoadingButton
                 isLoading={loading}
-            // disabled={isLoading}
             />
         )
     }
-    console.log(currentUser)
-
+    console.log(pinsArr)
     return (
         <div>
-            {/* {sessionUser == null ?
-                <h3 className="board-container-top-text">Sign up for Threadterest today and make some new threads!</h3> :
-                boards > 0 ? */}
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
 
                 <>
