@@ -28,7 +28,7 @@ export default function IndividualBoardPage() {
                 }
             }
         }
-    }, [dispatch, individualBoard])
+    }, [dispatch])
 
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
     const handleBack = () => {

@@ -335,14 +335,7 @@ export default function reducer(state = initialState, action) {
 			return { ...state, user: { ...state.user, pins: addPins } };
 		case REMOVE_PIN:
 			let removePins = [...state.user.pins]
-			console.log("before", removePins);
-			for (let pin in removePins) {
-				if (removePins[pin]?.id == action.id) {
-					let index = pin;
-					removePins = removePins.slice(index, 1);
-				}
-			}
-			console.log("after", removePins);
+			removePins = removePins.filter((pin) => pin.id !== action.id);
 			return { ...state, user: { ...state.user, pins: removePins } };
 		case REMOVE_USER:
 			return { user: null };
