@@ -10,9 +10,6 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
     const [hover, setHover] = useState(false)
     const [hoverDiv, setHoverDiv] = useState("")
     const { setModalContent, closeModal } = useModal();
-    const allPins = useSelector(state => state.pins.allPin)
-    const history = useHistory()
-
     function pinDisplay(pins) {
         if (pins === 0 || pins > 1) {
             return `${pins} pins`
@@ -46,13 +43,11 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
     };
 
 
-
-
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
                 <>
-                    <Link className="profile-board-link" to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description }}} >
+                    <Link className="profile-board-link" to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }} >
                         <div className="profile-boards-wrapper" onMouseEnter={() => onHover(boards)} onMouseLeave={() => offHover()}>
                             <div className="profile-board-pics">
                                 {boards.private ? <div className="profile-board-lock-icon-wrapper">

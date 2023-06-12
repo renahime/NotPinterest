@@ -11,7 +11,7 @@ import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal({ id, newCoverImage, board }) {
+function UpdateBoardModal({ id, newCoverImage, board, userBoardsArr }) {
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -70,6 +70,11 @@ function UpdateBoardModal({ id, newCoverImage, board }) {
     const validationErrors = {};
     // await dispatch(updateBoardThunk(updatedBoardData, id))
     if (name) {
+      for (let board of userBoardsArr) {
+        if (name == board.name) {
+          validationErrors.name = "Ooops! You already have this board name."
+        }
+      }
       if (name.length > 50) {
         validationErrors.name = "Ooops! This title is getting long. Try trimming it down."
       }
@@ -92,6 +97,8 @@ function UpdateBoardModal({ id, newCoverImage, board }) {
       closeModal()
     }
   };
+
+  console.log(errors);
 
   return (
     <>
@@ -124,6 +131,9 @@ function UpdateBoardModal({ id, newCoverImage, board }) {
             ></input>
             <p>{!name ? 100 : 100 - name.length}</p>
             <p style={{ color: "red" }} >{(name && name.length > 100) ? "Ooops, this name is too long" : null}</p>
+            <p style={{ color: "red" }}>{errors.name ? (errors.name) : null}</p>
+
+
           </label>
           <label className="edit-board-modal-description">
             Description

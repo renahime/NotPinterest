@@ -217,7 +217,6 @@ export default function CaSandraFeed() {
                             <div
                                 // onHover={() =>}
                                 className="feed-individual-pin-wrapper">
-                                <div className="feed-save-button">Save</div>
                                 <div onClick={() => history.push(`/pin/${pin.id}`)}>
                                     <img className="feed-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
                                 </div>

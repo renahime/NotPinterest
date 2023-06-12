@@ -10,9 +10,11 @@ function CreateBoardFromProfile({ username }) {
   const history = useHistory()
   const [name, setName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState(false);
   const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
+  const user = useSelector(state => state.session.user)
+  console.log(user);
 
   useEffect(() => {
   }, [name, isPrivate])
@@ -27,6 +29,11 @@ function CreateBoardFromProfile({ username }) {
     e.preventDefault(); // Prevent the default form submission
     //VALIDATIONS
     //create form data
+    for (let board of user.boards) {
+      if (name == board.name) {
+        return setErrors({ 'errors': 'You already have a board with this name' })
+      }
+    }
     const formData = {
       name,
       private: isPrivate,
@@ -58,8 +65,8 @@ function CreateBoardFromProfile({ username }) {
               className="create-board-modal-name-input"
 
             ></input>
+            <p>   {errors ? <p style={{ color: 'red' }}>{errors.errors}</p> : null}</p>
           </label>
-
           <label>
             <div className="create-board-modal-flex-row">
 
