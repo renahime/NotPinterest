@@ -9,10 +9,10 @@ import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
 import Dropdown from "./Dropdown";
 import { pinThunk } from "../../store/boards";
+import { useModal } from "../../context/Modal";
 import "./IndividualPinPage.css"
 import { Link } from "react-router-dom"
 import { unfollowUser, followUser } from "../../store/session"
-import { useModal } from "../../context/Modal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Icon = () => {
@@ -33,6 +33,7 @@ export default function IndividualPinPage() {
     const [pinErrorCheck, setPinErrorCheck] = useState(false);
     let [numFollowers, setNumFollowers] = useState(0);
     let [isfollowing, setIsFollowing] = useState(false);
+    const { setModalContent } = useModal()
 
 
     useEffect(() => {
@@ -172,20 +173,30 @@ export default function IndividualPinPage() {
                             </div>
                             <div className="dropdown-menu-edit-pin">
                                 {pinnedCheck ? showMenu &&
-                                    <>
+                                    <div className="edit-pin-options">
+                                        {/* <div onClick={
+                                            () =>
+                                                setModalContent(<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />)}
+                                        >
+                                            Edit Pin
+                                        </div>
+                                        <div onClick={() => setModalContent(<ComingSoon />)} className="dropdown-item">
+                                            Report Pin
+                                        </div> */}
                                         <OpenModalButton
+                                            id="edit-pin-button"
                                             buttonText="Edit Pin"
                                             className="dropdown-item"
                                             modalComponent={<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />}
-                                        />
-                                        <OpenModalButton
+                                        /> */}
+                                        {/* <OpenModalButton
                                             buttonText="Report Pin"
                                             className="dropdown-item"
                                             modalComponent={<ComingSoon />}
                                         />
-                                    </>
+                                    </div>
                                     : showMenu &&
-                                    <>
+                                    <div>
                                         <OpenModalButton
                                             buttonText="Download Image"
                                             className="dropdown-item"
@@ -199,11 +210,11 @@ export default function IndividualPinPage() {
                                             buttonText="Report Pin"
                                             className="dropdown-item"
                                             modalComponent={<ComingSoon />} />
-                                        <OpenModalButton
+                                        {/* <OpenModalButton
                                             buttonText="Get Pin embed code"
                                             className="dropdown-item"
-                                            modalComponent={<ComingSoon />} />
-                                    </>
+                                            modalComponent={<ComingSoon />} /> */}
+                                    </div>
                                 }
                             </div>
                         </div>

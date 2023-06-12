@@ -6,6 +6,11 @@
   height: 1px;
 }
 
+#testing{
+  width: 150%;
+  border: 2px solid red;
+}
+
 .board-dropdown{
   border-radius: 15px;
   border: 2px solid #ccc;

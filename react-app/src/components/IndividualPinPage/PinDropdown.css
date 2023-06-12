@@ -3,6 +3,7 @@
   border: 1px solid #ccc;
   position: relative;
   border-radius: 5px;
+  
 }
 
 .dropdown-input {
@@ -11,4 +12,14 @@
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  width: 100%;
+  /* border: 2px solid red; */
+
+}
+
+.edit-pin-options {
+  /* border: 2px solid red; */
+  border: 2px solid red;
+
+  width: 400px;
 }
