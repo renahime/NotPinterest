@@ -24,6 +24,14 @@ export default function CaSandraFeed() {
     let [pinsArr, setPinsArr] = useState([])
     let numberOfPins = 0
     let boards = 0
+    if (pins && loading && Object.values(pins).length) {
+        const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
+        pinsArr = filteredPinsArr
+        if (sessionUser) {
+            numberOfPins = userPins
+            boards = sessionUser.boards.length
+        }
+    }
 
     useEffect(() => {
         if (sessionUser) {
@@ -74,6 +82,7 @@ export default function CaSandraFeed() {
     }
 
     function viewIndividualBoard(username, name) {
+        console.log("VIEW BOARD FUNCTION usernam", username)
         let nameArr = name.toLowerCase().split(" ")
         let formattedName = nameArr.join("_")
         history.push(`/${username}/${formattedName}`)
@@ -153,7 +162,6 @@ export default function CaSandraFeed() {
             />
         )
     }
-
     return (
         <div>
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
@@ -180,7 +188,7 @@ export default function CaSandraFeed() {
 
                             {sessionUser.boards.map((board, index) => (
 
-                                <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
+                                <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(sessionUser.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
                                     {/* <OpenModalButton
                             buttonText={board.name}
                             className="test-open-create-board-modal"
@@ -221,7 +229,7 @@ export default function CaSandraFeed() {
                             <div
                                 // onHover={() =>}
                                 className="feed-individual-pin-wrapper">
-                                <button className="feed-save-button">Save</button>
+                                <div className="feed-save-button">Save</div>
                                 <div onClick={() => history.push(`/pin/${pin.id}`)}>
                                     <img className="feed-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
                                 </div>

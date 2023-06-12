@@ -13,6 +13,9 @@ const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
 const DELETE_SESSION_BOARD = "boards/delete/session"
 const DELETE_USER_BOARD = "delete/user/boards"
+const UPDATE_USER_BOARD = "edit/user/boards"
+
+
 
 
 
@@ -64,31 +67,63 @@ const deleteSessionBoard = (id) => ({
 
 export const deleteBoard = (boardName) => ({
 	type: DELETE_USER_BOARD,
-    boardName
+	boardName
 })
+
+const updateUserBoard = (board) => ({
+	type: UPDATE_USER_BOARD,
+	board
+})
+
+
 // const getFollowing = (users) => ({
 // 	type: GET_FOLLOWERS,
 // 	users
 // })
 
-export const deleteBoardSessionThunk = (id) => async (dispatch) => {
+
+export const updateUserBoardThunk = (board, id) => async (dispatch) => {
 	try {
-			const res = await fetch(`/api/boards/${id}/delete`, {
-					method: "DELETE",
-			});
-			if (res.ok) {
-					const data = res.json()
-					dispatch(deleteSessionBoard(id));
-					return data;
-			}
-			else {
-					throw new Error("Delete board request failed");
-			}
+		const res = await fetch(`/api/boards/${id}`, {
+			method: "PUT",
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(board)
+		});
+		if (res.ok) {
+			const updated_board = await res.json();
+			dispatch(updateUserBoard(updated_board));
+			return updated_board;
+		} else {
+			throw new Error("Update board request failed");
+		}
 	} catch (error) {
-			console.error("Error occurred during deleteBoardThunk:", error);
-			return false;
+		console.error("Error occurred during updateBoardThunk:", error);
+		return null; // or handle the error in an appropriate way
 	}
 };
+
+
+
+export const deleteBoardSessionThunk = (id) => async (dispatch) => {
+	try {
+		const res = await fetch(`/api/boards/${id}/delete`, {
+			method: "DELETE",
+		});
+		if (res.ok) {
+			const data = res.json()
+			dispatch(deleteSessionBoard(id));
+			return data;
+		}
+		else {
+			throw new Error("Delete board request failed");
+		}
+	} catch (error) {
+		console.error("Error occurred during deleteBoardThunk:", error);
+		return false;
+	}
+};
+
+
 
 
 export const editProfileThunk = (user, data) => async (dispatch) => {
@@ -321,39 +356,66 @@ export default function reducer(state = initialState, action) {
 			state.user.following.slice(i, 1)
 			return { ...state, user: { ...state.user } }
 		case EDIT_USER:
-			let newState1 = {...state}
+			let newState1 = { ...state }
 			newState1.user = action.user
 			return newState1;
 		case DELETE_USER_BOARD:
-			let newState2 = {...state}
+			let newState2 = { ...state }
 			let boardIndex = state.user.boards.indexOf(action.boardName)
 			state.user.boards.splice(boardIndex, 1)
 			return newSate2
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
 
+		case UPDATE_USER_BOARD:
+			let oldBoardState = { ...state }
+			let currentProfileBoardsArr = oldBoardState.user.boards
+			console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
+			let oldBoardData;
+			let oldBoardIndex;
+			for (let i = 0; i < currentProfileBoardsArr.length; i++) {
+				console.log(currentProfileBoardsArr[i].id)
+				console.log(action.board.id)
+				if (currentProfileBoardsArr[i].id === action.board.id) {
+					// console.log("NEW BOARD", currentProfileBoardsArr[i])
+					oldBoardData = currentProfileBoardsArr[i]
+					oldBoardIndex = i
+					// console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
+					break
+				}
+			}
+			if (oldBoardIndex !== undefined && oldBoardData) {
+				console.log("OLD CURRENT PROFILE BOARDS", currentProfileBoardsArr[oldBoardIndex])
+				currentProfileBoardsArr[oldBoardIndex] = action.board
+				console.log("NEW PROFILE BOARDS", currentProfileBoardsArr[oldBoardIndex])
+			}
+			// console.log("NEW BOARD DATA in reducer", oldBoardData)
+
+			return { ...state, user: { ...oldBoardState.user, boards: currentProfileBoardsArr } }
+
+
 		case DELETE_SESSION_BOARD:
-			let userStateBeforeBoardDelete = {...state, user: {...state.user}}
+			let userStateBeforeBoardDelete = { ...state, user: { ...state.user } }
 			let userBoardstoDeleteArr = userStateBeforeBoardDelete.user.boards
 			// console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
 			let userBoardData;
 			let userBoardIndex;
-			console.log("USER/SESSION BOARDS TO ELETE ARR",userBoardstoDeleteArr)
+			console.log("USER/SESSION BOARDS TO ELETE ARR", userBoardstoDeleteArr)
 			for (let i = 0; i < userBoardstoDeleteArr.length; i++) {
-					console.log("ID",userBoardstoDeleteArr[i].id)
-					console.log(action.id)
-					if (userBoardstoDeleteArr[i].id === action.id) {
-							// console.log("NEW BOARD", currentProfileBoardsArr[i])
-							userBoardData = userBoardstoDeleteArr[i]
-							userBoardIndex = i
-							// console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
-							break
-					}
+				console.log("ID", userBoardstoDeleteArr[i].id)
+				console.log(action.id)
+				if (userBoardstoDeleteArr[i].id === action.id) {
+					// console.log("NEW BOARD", currentProfileBoardsArr[i])
+					userBoardData = userBoardstoDeleteArr[i]
+					userBoardIndex = i
+					// console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
+					break
+				}
 			}
 			if (userBoardIndex !== undefined && userBoardData) {
-					// currentProfileBoardsArr[oldBoardIndex] = action.board
-					console.log("SESSION BOARD TO DELETE", userBoardData)
-					delete userStateBeforeBoardDelete.user.boards[userBoardIndex]
+				// currentProfileBoardsArr[oldBoardIndex] = action.board
+				console.log("SESSION BOARD TO DELETE", userBoardData)
+				delete userStateBeforeBoardDelete.user.boards[userBoardIndex]
 			}
 
 			// console.log("BOARD TO DELETE", BoardData)
