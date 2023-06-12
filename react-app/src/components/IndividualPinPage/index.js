@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import "./PinDropdown.css";
 import "./IndividualPinPage.css"
+import { clearSinglePin } from "../../store/pins";
 import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
@@ -38,6 +39,7 @@ export default function IndividualPinPage() {
 
     useEffect(() => {
         dispatch(getPinById(id))
+        return(() =>  dispatch(clearSinglePin()))
     }, [dispatch, id])
 
     let grabBoardName = {}
