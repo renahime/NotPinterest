@@ -25,8 +25,6 @@ export default function CaSandraFeed() {
     let numberOfPins = 0
     let boards = 0
 
-    console.log("HOVER DIV", hoverBoardDiv)
-
     useEffect(() => {
         if (sessionUser) {
             setCurrentUser(true)
@@ -137,7 +135,6 @@ export default function CaSandraFeed() {
         }
         else {
             if (pins && loading && Object.values(pins).length) {
-                console.log('a')
                 const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
                 setPinsArr(filteredPinsArr);
                 if (sessionUser) {
@@ -149,6 +146,7 @@ export default function CaSandraFeed() {
             setFinished(true)
         }
     }, [loading, pins])
+
     if (pins && !Object.values(pins).length) {
         return (
             <LoadingButton

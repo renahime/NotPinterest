@@ -1,6 +1,5 @@
 
 import OpenModalButton from "../OpenModalButton";
-import TodayPage from "../TodayPage";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
@@ -12,8 +11,7 @@ import './ChangeBoardCoverModal.css'
 
 
 
-function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
-
+function ChangeBoardCoverModal({ updatedBoardData, board }) {
 
   const dispatch = useDispatch();
   const history = useHistory()
@@ -22,42 +20,25 @@ function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
   const [hoverDiv, setHoverDiv] = useState("")
   const [cover_image, setCoverImage] = useState(updatedBoardData?.cover_image || "")
 
+  const pins = useSelector((state) => state.pins.pins);
+  const [pinImages, setPinImages] = useState([]);
+
 
   useEffect(() => {
+    console.log(pins)
+    if (pins) {
+      console.log(pins)
+      console.log(board)
+      setPinImages(Object.values(pins).filter(pin => board.pins.includes(pin.id)));
+    }
+  }, [pins])
 
-  })
-  // console.log("PIN HOVER DIV", hoverDiv)
-  // console.log("updatedBoardData",  updatedBoardData)
-  // console.log("cover image", cover_image)
-
-  let pinsTodayObj = useSelector(state => state.pins.todayPins)
-  let stateTest = useSelector(state => state)
-
-  // console.log("STATE TEST", stateTest)
-
-
-
-  // let pinsToday
-  // if (pinImages) {
-  //   // pinsToday = shuffle(Object.values(pinsTodayObj))
-  //   pinsToday = pinImages
-  //   // dbLatestDate = pinsToday[0].created_at
-  // }
   const date = new Date();
-
-
-
-  const month = date.toLocaleString('default', { month: 'long' });
-  let year = date.getFullYear();
-  let day = date.getDate();
-  useEffect(() => {
-    // dispatch(fetchPinsToday())
-  }, [dispatch])
 
 
   function onHover(pin) {
     setHover(true)
-    setHoverDiv(pin)
+    setHoverDiv(pin.image)
   }
 
   function offHover() {
@@ -65,33 +46,23 @@ function ChangeBoardCoverModal({ pinImages, updatedBoardData,id,username }) {
     setHoverDiv("")
   }
 
-  const setBoardCoverImage= async(event) => {
+  const setBoardCoverImage = async (event) => {
     setCoverImage(hoverDiv)
-    console.log("NEW COVER IMAGE",cover_image)
-    // console.log("UPDATED BOARD COVER IMAGe", updatedBoardData)
-    // updatedBoardData.cover_image = cover_image
     const newCoverImage = cover_image
-    // console.log("UPDATED BOARD COVER IMAGe NEW NEW", updatedBoardData)
-    // console.log("UPDATED BOARD COVER IMAGe NEW NEW", newCoverImage)
-    // await dispatch(updateBoardThunk(updatedBoardData, id));
-openUpdateModal(event, hoverDiv)
-
+    openUpdateModal(event, hoverDiv)
   }
 
-  const openUpdateModal = ( event,newCoverImage) => {
+  const openUpdateModal = (event, newCoverImage) => {
     event.stopPropagation();
     const modalContent = (
       <div>
-       <UpdateBoardModal id = {id} username={username}  newCoverImage ={newCoverImage}/>
+        <UpdateBoardModal newCoverImage={newCoverImage} pins={pinImages} board={board} />
       </div>
     );
     setModalContent(modalContent);
   };
 
-
-
-
-  return (
+  return (!pinImages || !pinImages.length ? <h1>Loading...</h1> :
     <>
       <div className="-board-modal-container">
         <h3 className="change-board-new-board-text">Change board cover</h3>
@@ -101,15 +72,12 @@ openUpdateModal(event, hoverDiv)
               return (
                 <div className="change-board-modal-pins"
                   style={{
-                    backgroundImage: `url(${pin})`,
+                    backgroundImage: `url(${pin.image})`,
 
                   }}
                   onMouseEnter={() => onHover(pin)} onMouseLeave={() => offHover()}
                   onClick={setBoardCoverImage}
                 >
-                  <div className="change-board-modal-text-container">
-                    hello
-                  </div>
                 </div>
               );
             })}
@@ -117,7 +85,6 @@ openUpdateModal(event, hoverDiv)
         </div>
       </div>
       <div className="change-board-bottom-done">
-        {/* <div className="change-board-bottom-done-text" onClick={closeModal}></div> */}
       </div>
     </>
   );

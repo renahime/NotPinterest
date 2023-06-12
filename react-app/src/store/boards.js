@@ -12,33 +12,11 @@ const REPIN = "boards/repin"
 
 
 
-// const GET_CURRENT_USER_BOARDS = "boards/getCurrentUser"
-// const GET_ALL_BOARDS = "boards/all"
-// const GET_BOARDS_OF_USER = "boards/getUserBoards"
-
-
-
-
-// const getAllBoards = (boards) => ({
-//     type: GET_ALL_BOARDS,
-//     boards: boards
-// })
-
-
-// const getUserBoards = (boards) => ({
-//     type: GET_BOARDS_OF_USER,
-//     boards: boards["User Boards"]
-// })
-
 const getSingleBoard = (board) => ({
     type: GET_SINGLE_BOARD,
     board: board["User Boards"]
 })
 
-// const getOneBoardByName = (board) => ({
-//     type: GET_BOARD_BY_NAME,
-//     board: board["User Boards"]
-// })
 
 
 const createUserBoard = (board) => ({
@@ -51,9 +29,8 @@ const updateUserBoard = (board) => ({
     board
 })
 
-const deleteUserBoard = (id) => ({
+const deleteUserBoard = () => ({
     type: DELETE_BOARD,
-    id,
 });
 
 
@@ -150,24 +127,19 @@ export const updateBoardThunk = (board, id) => async (dispatch) => {
 
 
 
-export const deleteBoardThunk = (id) => async (dispatch) => {
-    try {
-        const res = await fetch(`/api/boards/${id}/delete`, {
-            method: "DELETE",
-        });
-        if (res.ok) {
-            const data = res.json()
-            dispatch(deleteUserBoard(id));
-            dispatch(deleteBoard(data.name))
-            return data;
-        }
-        else {
-            throw new Error("Delete board request failed");
-        }
-    } catch (error) {
-        console.error("Error occurred during deleteBoardThunk:", error);
-        return false;
+export const clearSingleBoard = (id) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${id}/delete`, {
+        method: "DELETE",
+    });
+    if (res.ok) {
+        const data = res.json()
+        dispatch(deleteBoard)
+        return data;
     }
+    else {
+        dispatch(deleteBoard)
+    }
+
 };
 
 export const unpinThunk = (pin, boardId) => async (dispatch) => {
@@ -256,9 +228,8 @@ export default function boardsReducer(state = initialState, action) {
             };
             return newState;
         case DELETE_BOARD:
-            if (state.singleBoard.id === action.id) {
-                state.singleBoard = {}
-            }
+            state.singleBoard = {}
+
             return {
                 ...state,
                 singleBoard: { ...state.singleBoard }

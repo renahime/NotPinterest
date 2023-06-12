@@ -24,12 +24,12 @@ export default function IndividualBoardPage() {
         dispatch(getSingleBoardThunk(username, boardName))
         if (currentUser) {
             for (let board of currentUser.boards) {
-                if (board.id === individualBoard.id) {
+                if (board && board.id === individualBoard.id) {
                     setOwnerCheck(true);
                 }
             }
         }
-    }, [dispatch])
+    }, [dispatch, individualBoard])
 
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
     const handleBack = () => {

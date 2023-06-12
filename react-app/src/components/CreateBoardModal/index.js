@@ -43,7 +43,6 @@ function CreateBoardModal({ username }) {
 
 
 
-  console.log("PINS FOR ARRAY", allpins)
 
 
   let pinsArr = []
@@ -55,7 +54,6 @@ function CreateBoardModal({ username }) {
 
   // shuffle(pinsArr)
 
-  console.log("PINS ARR", pinsArr)
 
   //   let pinsToday
   //   if (pinsTodayObj) {
@@ -69,7 +67,6 @@ function CreateBoardModal({ username }) {
   // }, [])
 
   let pinsTodayObj = useSelector(state => state)
-  console.log("PINS TODAY", pinsTodayObj)
   // let testUsername = useSelector(state => state.session.user)
 
 
@@ -77,7 +74,6 @@ function CreateBoardModal({ username }) {
     const referrer = document.referrer;
     if (referrer.includes('/create')) {
       // Do something if the page is coming from example.com/profile
-      console.log("WE ARE COMING FROM /CREATE", referrer)
 
     } else {
       // Do something else if the page is coming from somewhere else or without /profile
@@ -86,18 +82,9 @@ function CreateBoardModal({ username }) {
 
 
 
-  console.log("PINS", pinsTodayObj)
 
-  let pinsToday
-  if (pinsTodayObj || pinsArr.length > 7) {
-    pinsToday = shuffle(Object.values(pinsTodayObj))
-    pinsArr = shuffle(pinsArr)
-    pinsArr = pinsArr.slice(0, 7)
-    // dbLatestDate = pinsToday[0].created_at
-  }
   const date = new Date();
 
-  console.log("PINS TODAY CREATE BOARD MODAL", pinsToday)
 
 
   const month = date.toLocaleString('default', { month: 'long' });
@@ -123,9 +110,7 @@ function CreateBoardModal({ username }) {
     // check if board name is already taken
     if (Object.values(testUsername)) {
       const userBoards = testUsername.boards
-      console.log("USERBOARDS", testUsername.boards)
       for (const board of testUsername.boards) {
-        console.log("BOARDS", board)
         if (board.name.toLowerCase() === name.toLowerCase()) {
           setErrors(["This board name is already taken, please choose another name."])
           return

@@ -23,7 +23,7 @@ function DeletePinModal({ pin, user, boardState }) {
   }
   const handleDelete = async (e) => {
     e.preventDefault();
-    const pinId = await dispatch(deletePinThunk(pin.id)).then(closeModal()).then(history.push(`/${user.username}`))
+    const pinId = await dispatch(deletePinThunk(pin.id)).then(closeModal()).then(history.push(`/feed`))
   }
   return (
     <div className="delete-pin-container">

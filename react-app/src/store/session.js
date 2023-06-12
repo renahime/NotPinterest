@@ -192,31 +192,6 @@ export const createUserCategories = (categories) => async (dispatch) => {
 	}
 }
 
-// export const findFollowersAndFollowing = (username) => async (dispatch) => {
-// 	let res = await fetch(`/api/users/${username}/followers_and_following`)
-// 	if (res.ok) {
-// 		let followRel = await res.json()
-// 		dispatch(getFollowersAndFollowing(followRel))
-// 		return followRel
-// 	}
-// 	else {
-// 		let errors = await res.json()
-// 		return errors
-// 	}
-// }
-
-// export const findFollowing = (username) => async (dispatch) => {
-// 	let res = await fetch(`/api/users/${username}/following`)
-// 	if (res.ok) {
-// 		let following = await res.json()
-// 		dispatch(getFollowing(following))
-// 		return following
-// 	}
-// 	else {
-// 		let errors = await res.json()
-// 		return errors
-// 	}
-// }
 
 
 export const followUser = (username) => async (dispatch) => {
@@ -370,7 +345,7 @@ export default function reducer(state = initialState, action) {
 		case UPDATE_USER_BOARD:
 			let oldBoardState = { ...state }
 			let currentProfileBoardsArr = oldBoardState.user.boards
-			console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
+			console.log("WE ARE IN BOARDS UPDATE REDUCER", currentProfileBoardsArr)
 			let oldBoardData;
 			let oldBoardIndex;
 			for (let i = 0; i < currentProfileBoardsArr.length; i++) {

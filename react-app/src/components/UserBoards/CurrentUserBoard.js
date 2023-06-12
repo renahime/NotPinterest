@@ -37,12 +37,12 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
     console.log("USERNAME currentuserboard ", username)
     console.log("HOVER DIV", hoverDiv)
 
-    const openUpdateModal = (hoverDiv, username, event) => {
+    const openUpdateModal = (hoverDiv, username, event, boards) => {
         console.log("HOVER DIV INFO", hoverDiv)
         event.preventDefault();
         const modalContent = (
             <div>
-                <UpdateBoardModal id={hoverDiv} username={username} userBoardsArr={userBoardsArr} />
+                <UpdateBoardModal id={hoverDiv} username={username} userBoardsArr={userBoardsArr} board={boards} />
             </div>
         );
         setModalContent(modalContent);
@@ -90,7 +90,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                 </div>
                                 {hoverDiv === boards.id ?
                                     <div className={editBoardClassName}>
-                                        <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv, username, event)}></i>
+                                        <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv, username, event, boards)}></i>
                                     </div> : null}
                             </div>
                             <div className="profile-board-info">
