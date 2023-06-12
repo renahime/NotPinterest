@@ -1,0 +1,437 @@
+# Query: console.log(
+# ContextLines: 1
+
+132 results - 24 files
+
+react-app/src/components/CreateBoardModal/index.js:
+   62        // Do something if the page is coming from example.com/profile
+   63:
+   64  
+
+   71  
+   72:
+   73  
+
+   80  
+   81:
+   82  
+
+  106        const userBoards = testUsername.boards
+  107:
+  108        for (const board of testUsername.boards) {
+  109:   
+  110          if (board.name.toLowerCase() === name.toLowerCase()) {
+
+  128      //   setErrors(response.errors);
+  129:     //   console.log("ERRORS",errors)
+  130      // } else {
+
+react-app/src/components/CreateBoardModal/SavePinsToBoard.js:
+   27  
+   28: //   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
+   29  
+   30    useEffect(() => {
+   31:  
+   32      dispatch(getAllPinsThunkOld())
+   33:       .then(() => console.log("ALL PINS FETCHED", pinsToday))
+   34:       .catch((error) => console.log("Error fetching pins:", error));
+   35    }, [dispatch, change]);
+
+   47    // const allPins = useSelector(state => state.pins.pins)
+   48:
+   49:   // console.log("ALL PINS SELECTOR", allPins)
+   50    // let allPinsArr = Object.values(allPins)
+   51:   // console.log("PINS ARRAY", allPinsArr)
+   52  
+
+   86    // if (Object.keys(images).length === 0) {
+   87:   //   console.log("WE ARE IN LOADING STATE")
+   88    //   if (isLoading) {
+
+  100    // if (Object.keys(images).length === 0) {
+  101:   //   console.log("WE ARE IN LOADING STATE")
+  102    //   if (isLoading) {
+
+react-app/src/components/CreatePin/create-pin-copy.js:
+   40          e.preventDefault();
+   41: 
+   42          setErrors({})
+
+  117              setBoard(userBoards[0].id)
+  118:        
+  119          }
+
+react-app/src/components/CreatePin/CreateNewBoardOnPin.js:
+  31          } else {
+  32:      
+  33              closeModal()
+
+react-app/src/components/CreatePin/index.js:
+   40          e.preventDefault();
+   41:   
+   42          setErrors({})
+
+  117              setBoard(userBoards[0].id)
+  118:          
+  119          }
+
+react-app/src/components/FeedPage/casandra-feed-copy.js:
+   39          if (!sessionUser || sessionUser.categories.length === 0) {
+   40:        
+   41              let randomPins = shufflePins(pins)
+   42: 
+   43              return {
+
+   58              let randomPins = shufflePins(filteredPins)
+   59:       
+   60              return {
+
+  137          else {
+  138:      
+  139              setFinished(true)
+
+  141      }, [loading, pins, currentUser])
+  142:  
+  143      if (!Object.values(pins).length) {
+
+  150      }
+  151:    
+  152      return (
+
+react-app/src/components/FeedPage/casandra-feed.js:
+   41          if (!sessionUser || sessionUser.categories.length === 0) {
+   42:         
+   43              let randomPins = shufflePins(pins)
+   44:          
+   45              return {
+
+   60              let randomPins = shufflePins(filteredPins)
+   61:      
+   62              return {
+
+  139          else {
+  140:     
+  141              setFinished(true)
+
+  151      }
+  152:  
+  153  
+
+react-app/src/components/FeedPage/index.js:
+   29    let session = useSelector(state => state.session)
+   30:   
+   31:   // console.log("SINGLE BOARD INFO on feed page", singleBoard)
+   32: 
+   33: 
+   34  
+
+   36  
+   37: 
+   38  
+
+   65    const allPins = useSelector(state => state.pins.allPins)
+   66: 
+   67    if (allPins) {
+   68:   
+   69      allPinsArr = Object.values(allPins)
+   70:   
+   71    } else {
+
+   77    useEffect(() => {
+   78:   
+   79      dispatch(getAllPinsThunkOld())
+   80:       .then(() => console.log("ALL PINS FETCHED", allPinsArr))
+   81:       .catch((error) => console.log("Error fetching pins:", error));
+   82    }, [dispatch]);
+
+   90  
+   91:   // console.log("GET ALL BOARDS STATE TEST", boardsSelector)
+   92  
+
+  117        }
+  118:    
+  119:    
+  120      }
+
+  130        const board = boards[i]
+  131:    
+  132        if (board.pins?.length > 0) {
+  133          numberOfPinsStart += board.pins.length
+  134:  
+  135        }
+
+react-app/src/components/Forms/SettingsForm/DeleteUserModal.js:
+  16      } else {
+  17:   
+  18        closeModal()
+
+react-app/src/components/Forms/SettingsForm/index.js:
+   72      }
+   73:   
+   74      if (Object.values(validationErrors).length) {
+
+   89        const data = await res;
+   90:    
+   91        setErrors(data);
+
+   93      if (editedUser) {
+   94:  
+   95        history.push(`/${editedUser.id}`)
+
+  109    // useEffect(() => {
+  110:   //   console.log("pronouns in use effect", pronouns)
+  111    // }, [pronouns])
+
+react-app/src/components/IndividualBoardPage/index.js:
+  17      let boardName = usernameBoardName[2]
+  18:   
+  19      const currentUser = useSelector(state => state.session.user)
+
+  40  
+  41:  
+  42  
+
+react-app/src/components/IndividualPinPage/index.js:
+   56                      pinnedCheck = true;
+   57:              
+   58:     
+   59                      grabBoardName.name = userBoard.name
+   60:          
+   61                  }
+   62:         
+   63              }
+
+   97          let sendBoardName
+   98:    
+   99          for (let board of currentUser.boards) {
+  100:       
+  101:       
+  102              if (board.name == pinBoard) {
+  103:          
+  104                  boardId = board.id
+
+  120          if (response.errors) {
+  121:   
+  122          } else if (response) {
+
+  130          if (response.errors) {
+  131:         
+  132          } else if (response) {
+
+react-app/src/components/ProfilePage/index.js:
+  42          if (response.errors) {
+  43:     
+  44          } else if (response) {
+
+  52          if (response.errors) {
+  53:    
+  54          } else if (response) {
+
+react-app/src/components/TodayPage/index.js:
+  35    stringDate = dayString + " " + monthString + " " + yearString
+  36:  
+  37  
+
+react-app/src/components/UpdateBoardModal/ChangeBoardCoverModal.js:
+  28    })
+  29:   // console.log("PIN HOVER DIV", hoverDiv)
+  30:   // console.log("updatedBoardData",  updatedBoardData)
+  31:   // console.log("cover image", cover_image)
+  32  
+
+  35  
+  36:   // console.log("STATE TEST", stateTest)
+  37  
+
+  69      setCoverImage(hoverDiv)
+  70:  
+  71:     // console.log("UPDATED BOARD COVER IMAGe", updatedBoardData)
+  72      // updatedBoardData.cover_image = cover_image
+  73      const newCoverImage = cover_image
+  74:     // console.log("UPDATED BOARD COVER IMAGe NEW NEW", updatedBoardData)
+  75:     // console.log("UPDATED BOARD COVER IMAGe NEW NEW", newCoverImage)
+  76      // await dispatch(updateBoardThunk(updatedBoardData, id));
+
+react-app/src/components/UpdateBoardModal/DeleteBoardModal.js:
+  27    const onDelete = () => {
+  28:   
+  29      dispatch(deleteBoardThunk(id));
+
+  32  
+  33: 
+  34  
+
+react-app/src/components/UpdateBoardModal/index.js:
+  28    //Console.logs to check data is fetching
+  29:   // console.log("BOARD ID", id)
+  30:   // console.log("BOARD USERNAME", username)
+  31:   // console.log("newCoverIMAGE", newCoverImage)
+  32    // const { id } = useParams();
+  33    // const username = sessionUser?.username;
+  34:   // console.log("SESSION USERNAME", sessionUser?.username)
+  35  
+  36:   // console.log("ID", id)
+  37    const currentProfileBoards = useSelector((state) => state.profile.currentProfile.boards);
+  38:   // console.log("CURRENT PROFILE BOARDS", currentProfileBoards)
+  39  
+  40    const currentProfileBoardsArr = Object.values(currentProfileBoards)
+  41:   // console.log("ARR OF BOARDS", currentProfileBoardsArr)
+  42  
+
+  56    }
+  57:   // console.log("OLD BOARD DATA", oldBoardData)
+  58  
+  59    // const oldBoardData = currentProfileBoards[id - 1];
+  60:   // console.log("OLD BOARD DATA", oldBoardData)
+  61  
+  62    const pinImages = oldBoardData?.additional_images
+  63:   // console.log("PIN IMAGES", pinImages)
+  64  
+
+react-app/src/components/UserBoards/CurrentUserBoard.js:
+  36  
+  37:   
+  38:  
+  39  
+  40      const openUpdateModal = (hoverDiv, username, event) => {
+  41:      
+  42          event.preventDefault();
+
+react-app/src/components/UserCategoriesForm/index.js:
+  20  
+  21:   
+  22      if (currentUser.categories.length) history.push("/feed")
+
+react-app/src/components/UserPins/index.js:
+  10      let userPinsArr = Object.entries(pins)
+  11:   
+  12  
+
+  63  //     let userPinsArr = Object.values(userPins)
+  64: //     console.log("userPinsArr", userPinsArr)
+  65  
+
+  91  //     }, [loading, currentProfile])
+  92: //     console.log("loading", loading)
+  93  //     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
+
+react-app/src/store/boards.js:
+   94  //         let boards = await res.json()
+   95: //         console.log("GET BOARDS BY USERNAME TEST", boards)
+   96  //         dispatch(getUserBoards(boards))
+
+  117  // export const getAllBoardsThunk = () => async (dispatch) => {
+  118: //     const res = await fetch("/api/boards/").catch((e) => console.log("ALL BOARDS"))
+  119  //     if (res.status >= 400) {
+  120: //         console.log("in the get all boards of all boards reducer")
+  121  //         return
+
+  124  //         let boards = await res.json()
+  125: //         console.log("all boards", boards)
+  126  //         dispatch(getAllBoards(boards))
+
+react-app/src/store/pins.js:
+  245              let deleteAll = { ...state.pins };
+  246:    
+  247              if (deleteAll[action.pinId]) {
+
+react-app/src/store/profile.js:
+   25  //     const res = await fetch(`/api/users/users/${username}`)
+   26: //     console.log(res.status)
+   27: //     console.log("USERNAME for getUserInfo thunk", username)
+   28  //     if (res.status >= 400) {
+   29: //         console.log("umm no")
+   30  //         const userDataErrors = await res.json()
+
+   33  //     else {
+   34: //         console.log("like whatttt")
+   35  //         const userData = await res.json()
+
+  187      });
+  188:  
+  189      if (res.ok) {
+  190          const userData = await res.json()
+  191:   
+  192          if (userData.errors) {
+
+  232              let currentProfileBoardsArr = oldBoardState.currentProfile.boards
+  233:             // console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
+  234              let oldBoardData;
+
+  236              for (let i = 0; i < currentProfileBoardsArr.length; i++) {
+  237:              
+  238:           
+  239                  if (currentProfileBoardsArr[i].id === action.board.id) {
+  240:                     // console.log("NEW BOARD", currentProfileBoardsArr[i])
+  241                      oldBoardData = currentProfileBoardsArr[i]
+  242                      oldBoardIndex = i
+  243:                     // console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
+  244                      break
+
+  249              }
+  250:             // console.log("NEW BOARD DATA in reducer", oldBoardData)
+  251  
+
+  256              let currentProfileBoardstoDeleteArr = stateBeforeBoardDelete.currentProfile.boards
+  257:             // console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
+  258              let BoardData;
+  259              let BoardIndex;
+  260:          
+  261              for (let i = 0; i < currentProfileBoardstoDeleteArr.length; i++) {
+  262:               
+  263:            
+  264                  if (currentProfileBoardstoDeleteArr[i].id === action.id) {
+  265:                     // console.log("NEW BOARD", currentProfileBoardsArr[i])
+  266                      BoardData = currentProfileBoardstoDeleteArr[i]
+  267                      BoardIndex = i
+  268:                     // console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
+  269                      break
+
+  273                  // currentProfileBoardsArr[oldBoardIndex] = action.board
+  274:             
+  275                  delete stateBeforeBoardDelete.currentProfile.boards[BoardIndex]
+
+  277  
+  278:             // console.log("BOARD TO DELETE", BoardData)
+  279              return stateBeforeBoardDelete
+
+react-app/src/store/session.js:
+  139  export const createUserCategories = (categories) => async (dispatch) => {
+  140: 	console.log("categories", categories)
+  141  	let res = await fetch("/api/users/categories", {
+
+  148  	})
+  149: 
+  150  	if (res.ok) {
+
+  301  			let newSate2 = { ...state, user: { ...state.user, ...state.user.boards.push(action.board) } }
+  302: 		
+  303  			return newSate2
+
+  317  			let i = state.user.following.indexOf(unfollowed)
+  318: 
+  319: 	
+  320  			state.user.following.slice(i, 1)
+
+  336  			let userBoardstoDeleteArr = userStateBeforeBoardDelete.user.boards
+  337: 			// console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
+  338  			let userBoardData;
+  339  			let userBoardIndex;
+  340: 		
+  341  			for (let i = 0; i < userBoardstoDeleteArr.length; i++) {
+  342: 			
+  343: 			
+  344  					if (userBoardstoDeleteArr[i].id === action.id) {
+  345: 							// console.log("NEW BOARD", currentProfileBoardsArr[i])
+  346  							userBoardData = userBoardstoDeleteArr[i]
+  347  							userBoardIndex = i
+  348: 							// console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
+  349  							break
+
+  353  					// currentProfileBoardsArr[oldBoardIndex] = action.board
+  354: 			
+  355  					delete userStateBeforeBoardDelete.user.boards[userBoardIndex]
+
+  357  
+  358: 			// console.log("BOARD TO DELETE", BoardData)
+  359  			return userStateBeforeBoardDelete

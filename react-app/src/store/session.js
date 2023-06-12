@@ -12,7 +12,7 @@ const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
 const DELETE_SESSION_BOARD = "boards/delete/session"
-
+const DELETE_USER_BOARD = "delete/user/boards"
 
 
 
@@ -91,7 +91,7 @@ export const deleteBoardSessionThunk = (id) => async (dispatch) => {
 };
 
 
-export const editProfileThunk = (user) => async (dispatch) => {
+export const editProfileThunk = (user, data) => async (dispatch) => {
 	const res = await fetch(`/api/users/${user.id}`, {
 		method: "PUT",
 		body: data
