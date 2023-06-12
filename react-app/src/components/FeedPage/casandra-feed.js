@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
 import { getPinsByCategory } from "../../store/pins"
-import { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { useHistory, NavLink } from "react-router-dom"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-import { getAllPinsThunk } from "../../store/pins"
+import { getAllPinsThunkOld } from "../../store/pins"
+import LoadingButton from "../LoadingButton";
+import OpenModalButton from '../OpenModalButton';
+import CreateBoardModal from "../CreateBoardModal";
 import "./casandra-feed.css"
 
 
