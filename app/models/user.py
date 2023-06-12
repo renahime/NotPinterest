@@ -83,9 +83,9 @@ class User(db.Model, UserMixin):
     def get_ten_pints(self):
          count = 0
          pin_arr = []
-         while count < 7:
+         while count < 15 and len(self.pins) > 15:
               sorted_pins = sorted(self.pins, key=lambda x: x.created_at, reverse=True)
-              pin_arr.append({"id":sorted_pins[count].id, "image":sorted_pins[count].image})
+              pin_arr.append({"id":sorted_pins[count].id, "image":sorted_pins[count].image, "title":sorted_pins[count].title, "alt_text":sorted_pins[count].alt_text})
               count = count + 1
          return pin_arr
 
@@ -105,7 +105,7 @@ class User(db.Model, UserMixin):
             'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
-            'pins': {pin.id: pin.image for pin in self.pins},
+            'pins': self.get_ten_pints(),
             'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at
@@ -113,7 +113,7 @@ class User(db.Model, UserMixin):
 
 
     def to_dict(self):
-        return {
+                 return {
             'id': self.id,
             'username': self.username,
             'email': self.email,
@@ -128,7 +128,8 @@ class User(db.Model, UserMixin):
             'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
+            'pins': self.get_ten_pints(),
             'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at
-        }
+         }

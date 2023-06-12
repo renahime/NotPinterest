@@ -21,17 +21,9 @@ export default function CaSandraFeed() {
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
     const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
     const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
-    let pinsArr = []
+    let [pinsArr, setPinsArr] = useState([])
     let numberOfPins = 0
     let boards = 0
-    if (pins && loading && Object.values(pins).length) {
-        const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
-        pinsArr = filteredPinsArr
-        if (sessionUser) {
-            numberOfPins = userPins
-            boards = sessionUser.boards.length
-        }
-    }
 
     useEffect(() => {
         if (sessionUser) {
@@ -39,7 +31,8 @@ export default function CaSandraFeed() {
         } else {
             setCurrentUser(false)
         }
-    }, currentUser, sessionUser)
+    }, [sessionUser])
+
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
             console.log(pins)
@@ -140,6 +133,15 @@ export default function CaSandraFeed() {
             return
         }
         else {
+            if (pins && loading && Object.values(pins).length) {
+                console.log('a')
+                const { filteredPinsArr, userPins } = filterPins(Object.values(pins))
+                setPinsArr(filteredPinsArr);
+                if (sessionUser) {
+                    numberOfPins = userPins
+                    boards = sessionUser.boards.length
+                }
+            }
             console.log("pins in use", pins)
             setFinished(true)
         }
@@ -151,6 +153,7 @@ export default function CaSandraFeed() {
             />
         )
     }
+
     return (
         <div>
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (

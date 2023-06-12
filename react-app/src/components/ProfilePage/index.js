@@ -12,7 +12,6 @@ import "./ProfilePage.css"
 import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
-import CreateBoardModal from "../CreateBoardModal"
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -25,17 +24,42 @@ export default function ProfilePage() {
     let [numFollowers, setNumFollowers] = useState(0);
     let [numFollowing, setNumFollowing] = useState(0)
     let [isfollowing, setIsFollowing] = useState(false);
-    let [showBoards, setShowBoards] = useState(true)
+    let [showBoards, setShowBoards] = useState(true);
+    let [usingProfile, setUsingProfile] = useState(false);
+
+    console.log(currentUser)
+
+    let current = currentUser;
+
+
     useEffect(() => {
-        dispatch(getUserInfo(username)).then(() => setLoading(true))
-    }, [dispatch, username])
+        if (!checkUser()) {
+            dispatch(getUserInfo(username)).then(() => setLoading(true));
+            setUsingProfile(true)
+        } else {
+            setLoading(true);
+        }
+    }, [dispatch, username, currentUser])
+
+    console.log('b')
+    console.log(usingProfile)
+
+
     let showMenu = () => {
         setOpenMenu(!openMenu)
     }
     let checkUser = () => {
-        if ((currentUser && currentUser.username) === currentProfile.username) return true
+        if (currentUser && (currentUser.username == username)) return true
         else return false
     }
+
+    if (checkUser()) {
+        current = currentUser;
+        console.log('a')
+    } else {
+        current = currentProfile
+    }
+
     const handleFollow = async (e) => {
         e.preventDefault();
         let response = await dispatch(followUser(username))
@@ -58,22 +82,22 @@ export default function ProfilePage() {
     }
 
     useEffect(() => {
-        if (!loading && !currentProfile.id) {
+        if (!loading && !current.id) {
             return
         }
-        if (!Object.values(currentProfile).length) return
+        if (!Object.values(current).length) return
         else {
-            setNumFollowers(currentProfile.followers.length)
-            setNumFollowing(currentProfile.following.length)
+            setNumFollowers(current.followers.length)
+            setNumFollowing(current.following.length)
         }
         if (currentUser) {
-            if (Object.values(currentProfile).length && Object.values(currentUser).length) {
-                if (currentProfile.followers.includes(currentUser.username)) {
+            if (Object.values(current).length && Object.values(currentUser).length) {
+                if (current.followers.includes(currentUser.username)) {
                     setIsFollowing(true);
                 }
             }
         }
-    }, [loading, currentProfile, currentUser])
+    }, [loading, current, currentUser])
 
     const handleShowBoards = (e) => {
         e.stopPropagation();
@@ -90,28 +114,30 @@ export default function ProfilePage() {
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
     if (!loading) return <h1>Loading...</h1>
-    else if (!currentProfile.id) return <PageNotFound />
+    else if (!current.id) return <PageNotFound />
 
-    return (!Object.values(currentProfile).length ? <h1>Loading...</h1> :
+    console.log(current);
+
+    return (!Object.values(current).length ? <h1>Loading...</h1> :
         <div>
-            {currentProfile.id &&
+            {current.id &&
                 <div className="profile-page-base">
-                    {currentProfile.profile_image ? <img className="profile-image" src={currentProfile.profile_image} /> :
+                    {current.profile_image ? <img className="profile-image" src={current.profile_image} /> :
                         <i className="fa-solid fa-circle-user profile-image-default"></i>
                     }
-                    <h2 className="profile-user-name">{currentProfile.first_name} {currentProfile.last_name}</h2>
+                    <h2 className="profile-user-name">{current.first_name} {current.last_name}</h2>
                     <h4 className="profile-name-pronouns">
-                        <div>@{currentProfile.username}</div>
+                        <div>@{current.username}</div>
                         {
-                            currentProfile.pronouns ?
+                            current.pronouns ?
                                 <div className="profile-pronouns">
                                     <i className="fa-solid fa-circle profile-pronouns-dot"></i>
-                                    {currentProfile.pronouns}
+                                    {current.pronouns}
                                 </div>
                                 : null
                         }
                     </h4>
-                    {currentProfile.about ? <h5 className="profile-about-section">{currentProfile.about}</h5> : null}
+                    {current.about ? <h5 className="profile-about-section">{current.about}</h5> : null}
                     <h5 className="profile-followers-and-following">
                         <div>
                             {numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}
@@ -122,10 +148,10 @@ export default function ProfilePage() {
                         </div>
                     </h5>
                     {checkUser() ?
-                        <Link to={{ pathname: "/settings", state: { currentUser } }}  ><button className="profile-button edit-profile">Edit Profile</button></Link> :
-                        currentUser && !isfollowing ?
-                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> : currentUser && isfollowing ?
-                                <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button> : null
+                        <Link to={{ pathname: "/settings", state: { current } }}  ><button className="profile-button edit-profile">Edit Profile</button></Link> :
+                        !isfollowing ?
+                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
+                            <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
                     }
                     <div>
                         <button onClick={handleShowBoards} className="profile-button">Pins</button>
@@ -133,7 +159,6 @@ export default function ProfilePage() {
                     </div>
                 </div>
             }
-
             {checkUser() ?
                 <div>
                     <div className="profile-plus-icon-wrapper">
@@ -147,17 +172,16 @@ export default function ProfilePage() {
                                 <div>
                                     <OpenModalButton
                                         buttonText="Board"
-                                        className="feed-page-create-board"
-                                        modalComponent={<CreateBoardModal username={currentProfile?.username} />}
-                                    />
+                                        modalComponent={<CreateBoardFromProfile username={current?.username} />} >
+                                    </OpenModalButton>
                                 </div>
                             </div>
                         </div>}
-                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={currentProfile.boards} username={currentProfile.username} profilePicture={currentProfile.profile_image} /> : <><UserPins pins={currentProfile.pins}> </UserPins></>}
+                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={current.boards} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
                 </div>
                 :
                 <div>
-                    {!showBoards ? <NotUSerProfile userBoardsArr={currentProfile.boards} username={currentProfile.username} profilePicture={currentProfile.profile_image} /> : <><UserPins pins={currentProfile.pins}> </UserPins></>}
+                    {!showBoards ? <NotUSerProfile userBoardsArr={current.boards} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
                 </div>
             }
         </div>
