@@ -8,7 +8,8 @@ import UpdateDeleteBoardModal from "./DeleteBoardModal";
 import { deleteBoardThunk } from "../../store/boards";
 import SavePinsToBoardModal from "../CreateBoardModal/SavePinsToBoard";
 import ChangeBoardCoverModal from "./ChangeBoardCoverModal";
-import { deleteBoardProfileThunk, updateProfileBoardThunk } from "../../store/profile";
+import { deleteBoardProfileThunk, updateProfileBoardThunk} from "../../store/profile";
+import { updateUserBoardThunk } from "../../store/session";
 import { deleteBoardSessionThunk } from "../../store/session";
 
 import './UpdateBoardModal.css'
@@ -112,12 +113,12 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
   // when they click the delete section, it will delete the board and send them back to boards page
   const onDelete = () => {
     // dispatch(deleteBoardThunk(id));
-    dispatch(deleteBoardSessionThunk(id))
-    // dispatch(deleteBoardProfileThunk(id))
+    // dispatch(deleteBoardSessionThunk(id))
+    dispatch(deleteBoardProfileThunk(id))
 
 
     closeModal()
-    window.location.reload()
+    // window.location.reload()
 
   };
 
@@ -150,7 +151,8 @@ function UpdateBoardModal({ sessionUser, id, username, newCoverImage }) {
     e.preventDefault();
     // await dispatch(updateBoardThunk(updatedBoardData, id))
 
-    await dispatch(updateProfileBoardThunk(updatedBoardData, id))
+    await dispatch(updateUserBoardThunk(updatedBoardData, id))
+    // await dispatch(updateProfileBoardThunk(updatedBoardData, id))
 
     const boardName = updatedBoardData.name.split(' ').join('_').toLowerCase()
     // const boardName = currentProfileBoards[id]?.name;
