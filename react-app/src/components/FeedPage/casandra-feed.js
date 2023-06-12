@@ -26,6 +26,7 @@ export default function CaSandraFeed() {
     let boards = 0
 
     console.log("HOVER DIV", hoverBoardDiv)
+    console.log("SELECT BOARD DROPDOWN", selectedBoardDropdown)
 
     useEffect(() => {
         if (sessionUser) {
@@ -124,6 +125,15 @@ export default function CaSandraFeed() {
         }
     }
 
+
+
+  // this is for the select a board dropdown
+  const handleBoardChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedBoardDropdown(selectedValue);
+  };
+
+
     useEffect(() => {
         dispatch(getAllPinsThunkOld()).then(() => setLoading(true))
     }, [dispatch])
@@ -157,14 +167,16 @@ export default function CaSandraFeed() {
         )
     }
 
+    console.log("SESSION USER", sessionUser.first_name)
+
     return (
         <div>
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
 
                 <>
                     <div className="board-container-top-text">
-                        <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} </NavLink>
+                        <div>Hey {sessionUser.username}, you have</div>
+                        <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} boards </NavLink>
                         <div>and</div>
                         <NavLink to={`/${sessionUser.username}`}> {sessionUser && sessionUser.boards.length ? (sessionUser.boards.reduce(
                             (total, board) => (board.pins.length ? total + board.pins.length : 0), 0)) : 0}pins</NavLink>
@@ -198,50 +210,51 @@ export default function CaSandraFeed() {
 
                         </div>
                     </div>
+
                 </>
 
-            ) : ((currentUser && (sessionUser && sessionUser.boards.length)) ? (
-                <>
-                    <div className="board-container-top-text">
-                        <div>Oh no, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
-                        <div>Let's change that!</div>
-                        <OpenModalButton
-                            buttonText="Create Board"
-                            className="feed-page-create-board"
-                            modalComponent={<CreateBoardModal username={sessionUser?.username} />}
-                        />
-                    </div>
-                </>
-            ) : (null)
-            )
-            }
-            < div className="pins-feed-wrapper-wrapper">
-                <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
-                    columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
-                    <Masonry className="feed-pin-masonry" options={{ fitWidth: true }}>
-                        {pinsArr.map(pin => (
-                            <div
-                                // onHover={() =>}
-                                className="feed-individual-pin-wrapper">
-                                <div className="feed-save-button">Save</div>
-                                <div onClick={() => history.push(`/pin/${pin.id}`)}>
-                                    <img className="feed-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
-                                </div>
-                                <div className="feed-individual-pin-info" onClick={() => history.push(`/${pin.user.username}`)}>
-                                    <div>
-                                        {pin.title ? <p className="feed-pin-title">{pin.title}</p> : null}
-                                    </div>
-                                    <div className="feed-individual-pin-user-info">
-                                        {pin.user.profile_image ? <img className="feed-profile-image" src={pin.user.profile_image} /> : null}
-                                        <p>{pin.user.username}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </Masonry>
-                </ResponsiveMasonry>
+    ) : ((currentUser && (sessionUser && sessionUser.boards.length)) ? (
+        <>
+            <div className="board-container-top-text">
+                <div>Oh no, you have</div>
+                <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
+                <div>Let's change that!</div>
+                <OpenModalButton
+                    buttonText="Create Board"
+                    className="feed-page-create-board"
+                    modalComponent={<CreateBoardModal username={sessionUser?.username} />}
+                />
             </div>
+        </>
+    ) : (null)
+    )
+}
+< div className="pins-feed-wrapper-wrapper">
+    <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
+        columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
+        <Masonry className="feed-pin-masonry" options={{ fitWidth: true }}>
+            {pinsArr.map(pin => (
+                <div
+                    // onHover={() =>}
+                    className="feed-individual-pin-wrapper">
+                    {/* <div className="feed-save-button">Save</div> */}
+                    <div onClick={() => history.push(`/pin/${pin.id}`)}>
+                        <img className="feed-pin-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : ""} />
+                    </div>
+                    <div className="feed-individual-pin-info" onClick={() => history.push(`/${pin.user.username}`)}>
+                        <div>
+                            {pin.title ? <p className="feed-pin-title">{pin.title}</p> : null}
+                        </div>
+                        <div className="feed-individual-pin-user-info">
+                            {pin.user.profile_image ? <img className="feed-profile-image" src={pin.user.profile_image} /> : null}
+                            <p>{pin.user.username}</p>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </Masonry>
+    </ResponsiveMasonry>
+</div>
         </div >
     )
 }

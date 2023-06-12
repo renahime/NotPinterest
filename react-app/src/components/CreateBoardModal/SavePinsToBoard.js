@@ -79,13 +79,13 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
   //   if (target.classList.contains("save-pins-to-board-modal-pins")) {
   //     if (e.type === "mouseenter") {
   //       // Handle hover in
-  //       const pinId = target.dataset.pinId; // Retrieve the pin ID from a data attribute
-  //       setHoverDiv(pinId);
-  //       setHover(true);
+  //       const pinId = target.dataset.pinId
+  //       setHoverDiv(pinId)
+  //       setHover(true)
   //     } else if (e.type === "mouseleave") {
   //       // Handle hover out
-  //       setHoverDiv("");
-  //       setHover(false);
+  //       setHoverDiv("")
+  //       setHover(false)
   //     }
   //   }
   // };
@@ -112,17 +112,17 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
 
 
 
-  // if (Object.keys(images).length === 0) {
-  //   console.log("WE ARE IN LOADING STATE")
-  //   if (isLoading) {
-  //     return (
-  //       <LoadingButton
-  //         isLoading={isLoading}
-  //       // disabled={isLoading}
-  //       />
-  //     )
-  //   }
-  // }
+  if (Object.keys(pinsArr).length === 0) {
+    console.log("WE ARE IN LOADING STATE")
+    if (isLoading) {
+      return (
+        <LoadingButton
+          isLoading={isLoading}
+        // disabled={isLoading}
+        />
+      )
+    }
+  }
 if (pinsArr.length == 0 ){
   pinsArr = [
     {"alt_text": null,
