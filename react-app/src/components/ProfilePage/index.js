@@ -12,6 +12,7 @@ import "./ProfilePage.css"
 import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
+import CreateBoardModal from "../CreateBoardModal"
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -29,6 +30,7 @@ export default function ProfilePage() {
 
     let current = currentUser;
 
+    
 
     useEffect(() => {
         if (!checkUser()) {
@@ -170,7 +172,7 @@ export default function ProfilePage() {
                                 <div>
                                     <OpenModalButton
                                         buttonText="Board"
-                                        modalComponent={<CreateBoardFromProfile username={current?.username} current={current} />} >
+                                        modalComponent={<CreateBoardModal username={current?.username} current={current} />} >
                                     </OpenModalButton>
                                 </div>
                             </div>
