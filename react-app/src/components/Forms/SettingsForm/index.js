@@ -19,6 +19,7 @@ function Settings() {
   const history = useHistory();
   const dispatch = useDispatch();
   const hiddenFileInput = React.useRef(null);
+  const {setModalContent} = useModal()
   // const data = location.state.currentUser;
   const [firstName, setFirstName] = useState(user?.first_name || "")
   const [lastName, setLastName] = useState(user?.last_name || "")
@@ -50,11 +51,9 @@ function Settings() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("hrllo")
     setErrors({});
     let validationErrors = {}
-    if (!firstName) {
-      validationErrors.firstName = "Your profile needs a first name"
-    }
     if (firstName.length > 255) {
       validationErrors.firstName = "Name must be less than 255 chars"
     }
@@ -92,7 +91,7 @@ function Settings() {
     });
     if (editedUser) {
       console.log("EDIT", editedUser)
-      history.push(`/${editedUser.id}`)
+      history.push(`/${editedUser.username}`)
     }
   }
 
@@ -177,11 +176,9 @@ function Settings() {
             </div>
             <div className='footer-div'>
               <div className='reset-button'>
-                <OpenModalButton
-                  buttonText="Delete Account"
-                  className="reset-button"
-                  modalComponent={<DeleteUserModal user={user} />}
-                />
+                <button className='reset-button' type='button' onClick={() => setModalContent(<DeleteUserModal user={user} />)} >
+                  Delete Account
+                </button>
               </div>
               <button type="submit" className='save-button'>Save</button>
               <NavLink exact to={`/${user?.username}`}>

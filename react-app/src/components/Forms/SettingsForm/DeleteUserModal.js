@@ -4,13 +4,17 @@ import { useDispatch, useSelector } from "react-redux"
 import { useModal } from '../../../context/Modal'
 import Dropdown from './Dropdown'
 import { deleteProfileThunk } from '../../../store/profile'
+import "./DeleteUserModal.css"
+
 function DeleteUserModal({ user }) {
   const history = useHistory();
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
+
   const handleClick = async (e) => {
-    e.stopPropagation()
+    e.preventDefault()
     const deleteProfile = await dispatch(deleteProfileThunk(user))
+    console.log(deleteProfile)
     if (deleteProfile.errors) {
       setErrors(deleteProfile)
     } else {
@@ -26,12 +30,14 @@ function DeleteUserModal({ user }) {
   };
 
   return (
-    <div style={{ textAlign: 'center', margin: 'auto' }}>
+    <div className='delete-profile-modal' style={{ textAlign: 'center', margin: 'auto' }}>
       {errors ? <p>{errors.errors}</p> : null}
       <h1>Are you sure?</h1>
-      <h4>If you delete your account you won't be able to share pins and create boards catered to your style and we can't sell your data!!!</h4>
-      <button onClick={handleClick}>Yes</button>
-      <button onClick={handleClose}>No</button>
+      <h4>If you delete your account you won't be able to share threads and create seams catered to your style!</h4>
+      <div className='delete-user-modal-buttons'>
+        <button type='button' id="confirm-delete-button" onClick={handleClick}>Confirm Delete</button>
+        <button type='button' id="reject-delete-button"  onClick={() => closeModal()}>Stay a While</button>
+      </div>
     </div>
   )
 }

@@ -1,0 +1,29 @@
+.delete-profile-modal {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    padding: 30px;
+}
+
+.delete-user-modal-buttons {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.delete-user-modal-buttons > button {
+    width: 100px;
+    border-radius: 20px;
+    font-size: 15px;
+    color: white;
+    padding: 10px;
+}
+
+#confirm-delete-button {
+    background-color: red;
+    border: transparent;
+}
+
+#reject-delete-button {
+    background-color: black;
+}

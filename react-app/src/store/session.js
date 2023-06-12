@@ -102,6 +102,7 @@ export const editProfileThunk = (user, data) => async (dispatch) => {
 			return userData.errors
 		}
 		dispatch(editUser(userData))
+		return userData
 	}
 }
 
