@@ -68,9 +68,9 @@ function Navigation({ isLoaded }) {
 										{/* <div className="profile-dropdown-create-label">Create Idea Pin</div> */}
 										<NavLink to="/create" className="nav-profile-dropdown-create">Create Pin</NavLink>
 										<NavLink className="nav-profile-dropdown-create" to={{
-                  pathname: `/${sessionUser.username}`,
+											pathname: `/${sessionUser.username}`,
 
-                }} >My Boards</NavLink>
+										}} >My Boards</NavLink>
 
 									</div>}
 									<div className='tab flex-row' onClick={showMenu}>
@@ -93,7 +93,7 @@ function Navigation({ isLoaded }) {
 
 						<div className="nav-right">
 							<div>
-								<button onClick={(() => history.push("/feed"))}className='nav-explore-pins-button'>
+								<button onClick={(() => history.push("/feed"))} className='nav-explore-pins-button'>
 									Explore
 								</button>
 							</div>
@@ -112,8 +112,8 @@ function Navigation({ isLoaded }) {
 							</div>
 						</div>
 					)}
-			</div>
-		</nav >
+				</div>
+			</nav >
 		</>
 	);
 }

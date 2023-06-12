@@ -37,12 +37,12 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
     console.log("USERNAME currentuserboard ", username)
     console.log("HOVER DIV", hoverDiv)
 
-    const openUpdateModal = (hoverDiv, username, event) => {
+    const openUpdateModal = (hoverDiv, username, event, boards) => {
         console.log("HOVER DIV INFO", hoverDiv)
         event.preventDefault();
         const modalContent = (
             <div>
-                <UpdateBoardModal id={hoverDiv} username={username} userBoardsArr={userBoardsArr} />
+                <UpdateBoardModal id={hoverDiv} username={username} userBoardsArr={userBoardsArr} board={boards} />
             </div>
         );
         setModalContent(modalContent);
@@ -55,7 +55,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
                 <>
-                    <Link to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }} >
+                    <Link style={{ textDecoration: 'none', color: 'black' }} to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }} >
                         <div className="profile-boards-wrapper" onMouseEnter={() => onHover(boards)} onMouseLeave={() => offHover()}>
                             <div className="profile-board-pics">
                                 {boards.private ? <div className="profile-board-lock-icon-wrapper">
@@ -90,7 +90,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                 </div>
                                 {hoverDiv === boards.id ?
                                     <div className={editBoardClassName}>
-                                        <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv, username, event)}></i>
+                                        <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv, username, event, boards)}></i>
                                     </div> : null}
                             </div>
                             <div className="profile-board-info">
