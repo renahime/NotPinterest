@@ -28,9 +28,10 @@
 .single-pin-details {
     /* border: 2px solid green; */
     height: 100%;
+    width: 100%;
     box-sizing: border-box;
     padding-top: 50px;
-    padding-right: 30px;
+    /* padding-right: 30px; */
 
 }
 
@@ -110,20 +111,22 @@
     flex-wrap: wrap;
 }
 
-.single-pin-owner-name-followers > p {
+.single-pin-owner-name-followers>p {
     margin: 0;
     padding: 0;
     font-size: 12px;
 }
 
-.single-pin-owner-link  {
+.single-pin-owner-link {
     font-weight: 600;
     text-decoration: none;
     color: black;
     font-size: 14px;
 }
 
-.single-pin-follow-button, .single-pin-following-button, .single-pin-image-button {
+.single-pin-follow-button,
+.single-pin-following-button,
+.single-pin-image-button {
     border-radius: 30px;
     border-color: transparent;
     padding: 10px;
@@ -152,7 +155,7 @@
     cursor: pointer;
 }
 
-.single-pin-image-button > * {
+.single-pin-image-button>* {
     padding-right: 5px;
 }
 
@@ -170,14 +173,15 @@
     z-index: 2;
     border: 1px solid rgba(0, 0, 0, 0.04);
     box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
-  }
+}
 
 .dropdown-ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.dropdown-list{
+
+.dropdown-list {
     padding: 8px 12px;
 }
 
@@ -189,54 +193,59 @@
     background-color: rgba(0, 0, 0, 0.14);
     cursor: pointer;
 }
+
 .dropdown-container-edit-pin {
     text-align: left;
     border: none;
     position: relative;
     border-radius: 5px;
-    width:75px
-  }
+}
 
-  .dropdown-input {
+.dropdown-input {
     padding: 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     user-select: none;
-  }
+}
 
-  .dropdown-menu-edit-pin{
-    position:absolute;
+.dropdown-menu-edit-pin {
+    position: absolute;
     background-color: white;
     border-radius: 5px;
-    width:100%;
+    width: 100%;
     transform: translateY(4px);
     overflow: auto;
     max-height: 150px;
-  }
+}
 
-  .dropdown-item{
-    padding:5px;
-    cursor:pointer;
-  }
+.dropdown-item {
+    padding: 5px;
+    cursor: pointer;
+}
 
-  .dropdown-item:hover{
+.dropdown-item:hover {
     background-color: #9fc3f870
-  }
+}
 
-  .dropdown-item.selected {
+.dropdown-item.selected {
     background-color: #5A5A5A;
     color: #fff;
-  }
+}
 
-  .search-box {
-      padding: 5px;
-      background-color: #eee;
-  }
-  .search-box input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-  }
+.search-box {
+    padding: 5px;
+    background-color: #eee;
+}
+
+.search-box input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.single-pin-edit-board-button {
+    padding-right: 5px;
+}

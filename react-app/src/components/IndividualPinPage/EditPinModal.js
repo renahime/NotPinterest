@@ -115,7 +115,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
 
 
   return (loading ? <h1>loading...</h1> : user.id === pin.owner_id ?
-    <div id="pin-edit-owner-container">
+    <div className="pin-edit-owner-container">
       <h1 className="title">Edit This Pin</h1>
       <form onSubmit={handleSubmit} className="pin-edit-owner-form">
         <div className="board-edit-owner-input">

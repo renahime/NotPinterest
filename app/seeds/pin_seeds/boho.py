@@ -138,87 +138,8 @@ def seed_boho_pins():
         updated_at=datetime.now()
     )
 
-    pin16 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/ceb2a4a60c55448d520a3f9928a18672.jpg",
-        user=user2,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
 
-    pin17 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/e6f008a48c0daccef78084bf5c1a933e.jpg",
-        user=user2,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin18 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/e134af9a58b4a3c0058c946004396652.jpg",
-        user=user1,
-        categories=[boho],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin19 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/d32715a5b4172b4d288c817b83b5fc7b.jpg",
-        user=user1,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin21 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/eff71a4211a56715822e0139913c08de.jpg",
-        user=user1,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin22 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/ee1997467aaa3f961d3b2b57e092d32d.jpg",
-        user=user1,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin23 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/e561c2101a25fa983b1762e492be1934.jpg",
-        user=user3,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin24 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/fea49649215d20b219ac8bfbed197f3a.jpg",
-        user=user3,
-        categories=[boho],
-        board_tagged=[board],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-    pin25 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/fd1d5d1286413038bc837dc8409c6a9b.jpg",
-        user=user3,
-        categories=[boho],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
-
-
-    boho_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15, pin16, pin17, pin18, pin19, pin21, pin22, pin23, pin24, pin25]
+    boho_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15]
 
     boho_pins_list = [db.session.add(pin) for pin in boho_pins]
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import "./PinDropdown.css";
 import "./IndividualPinPage.css"
+import { clearSinglePin } from "../../store/pins";
 import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
@@ -38,6 +39,7 @@ export default function IndividualPinPage() {
 
     useEffect(() => {
         dispatch(getPinById(id))
+        return (() => dispatch(clearSinglePin()))
     }, [dispatch, id])
 
     let grabBoardName = {}
@@ -165,20 +167,15 @@ export default function IndividualPinPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="dropdown-menu-edit-pin">
+                            <div id="dropdown-menu-wrapper" className="dropdown-menu-edit-pin">
                                 {pinnedCheck ? showMenu &&
                                     <div className="edit-pin-options">
-                                        <OpenModalButton
-                                            id="edit-pin-button"
-                                            buttonText="Edit Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />}
-                                        />
-                                        <OpenModalButton
-                                            buttonText="Report Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />}
-                                        />
+                                        <div onClick={() => setModalContent(<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />)} id="edit-pin-button" className="dropdown-item">
+                                            Edit Pin
+                                        </div>
+                                        <div onClick={() => setModalContent(<ComingSoon />)} className="dropdown-item">
+                                            Report Pin
+                                        </div>
                                     </div>
                                     : showMenu &&
                                     <div>

@@ -58,14 +58,14 @@ function ProfileButton({ user }) {
                 <NavLink to={{
                   pathname: `/${user.username}`,
                   state: { showBoards: true }
-                }} onClick={closeMenu}>My Boards</NavLink>
+                }} onClick={closeMenu}>My Profile</NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink to={{
                   pathname: `/${user.username}`,
                   state: { showBoards: false }
                 }}>My Pins</NavLink>
-              </li>
+              </li> */}
               <li>
                 <NavLink to="/settings" onClick={closeMenu} >Settings</NavLink>
               </li>

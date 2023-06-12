@@ -22,7 +22,7 @@ export default function NotUSerProfile({ userBoardsArr, username }) {
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
-                <Link to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }}>
+                <Link className="profile-board-link" to={{ pathname: `/${username}/${boards.name.split(" ").join("_")}`, state: { boardName: boards.name, username: username, id: boards.id, pinCount: boards.pin_count, description: boards.description } }}>
                     <div className="profile-board-images-wrapper">
                         <div>
                             {

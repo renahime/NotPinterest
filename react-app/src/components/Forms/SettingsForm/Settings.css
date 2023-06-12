@@ -135,7 +135,10 @@ textarea {
 .footer-div{
   display:flex;
   justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
   padding: 20px 0;
+  width: 400px;
 }
 
 .reset-button > button{
