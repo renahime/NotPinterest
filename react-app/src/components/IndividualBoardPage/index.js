@@ -15,7 +15,6 @@ export default function IndividualBoardPage() {
     let usernameBoardName = location.pathname.split('/')
     let username = usernameBoardName[1]
     let boardName = usernameBoardName[2]
-    console.log(boardName)
     const currentUser = useSelector(state => state.session.user)
     let boardPins = []
     const individualBoard = useSelector(state => state.boards.singleBoard)
@@ -40,7 +39,6 @@ export default function IndividualBoardPage() {
         boardPins = Object.values(individualBoard.pinInfo);
     }
 
-    console.log("check", individualBoard);
 
     return (
         <div >

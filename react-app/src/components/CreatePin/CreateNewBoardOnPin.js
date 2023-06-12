@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useModal } from "../../context/Modal";
 
 
-export default function CreateNewBoardOnPin({setter}) {
+export default function CreateNewBoardOnPin({ setter }) {
     const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
@@ -25,11 +25,11 @@ export default function CreateNewBoardOnPin({setter}) {
         }
 
         let res = await dispatch(createBoardFromPinPage(formData)).then(closeModal())
-
         if (res.errors) {
             setErrors(res)
         } else {
             console.log("res", res)
+            let res = await dispatch()
             closeModal()
         }
     }
@@ -37,7 +37,7 @@ export default function CreateNewBoardOnPin({setter}) {
     return (
         <div>
             <form onSubmit={onSubmit}>
-                {errors? <p>{errors.errors}</p> : null}
+                {errors ? <p>{errors.errors}</p> : null}
                 <label className="create-board-modal-name">
                     Name
                     <input
@@ -70,5 +70,3 @@ export default function CreateNewBoardOnPin({setter}) {
         </div>
     )
 }
-
-

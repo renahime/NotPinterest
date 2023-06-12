@@ -34,11 +34,8 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
 
     let editBoardClassName = hover ? `profile-edit-board-icon` : "profile-edit-board-icon hidden"
 
-    console.log("USERNAME currentuserboard ", username)
-    console.log("HOVER DIV", hoverDiv)
 
     const openUpdateModal = (hoverDiv, username, event, boards) => {
-        console.log("HOVER DIV INFO", hoverDiv)
         event.preventDefault();
         const modalContent = (
             <div>

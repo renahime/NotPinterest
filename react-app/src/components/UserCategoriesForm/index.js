@@ -18,7 +18,6 @@ export default function UserCategoriesForm() {
     let [oldMoneyImage, setOldMneyImage] = useState(false)
     let [streetWearImage, setStreetwearImage] = useState(false)
 
-    console.log(currentUser.categories)
     if (currentUser.categories.length) history.push("/feed")
 
     let handleSubmit = async (e) => {
@@ -31,12 +30,12 @@ export default function UserCategoriesForm() {
 
 
         let interests = {
-            boho: bohoImage ? "yes": "no",
-            athleisure: athleisureImage ? "yes": "no",
-            dark: darkImage ? "yes": "no",
-            formalwear: formalImage ? "yes": "no",
-            old_money: oldMoneyImage ? "yes": "no",
-            streetware: streetWearImage ? "yes": "no"
+            boho: bohoImage ? "yes" : "no",
+            athleisure: athleisureImage ? "yes" : "no",
+            dark: darkImage ? "yes" : "no",
+            formalwear: formalImage ? "yes" : "no",
+            old_money: oldMoneyImage ? "yes" : "no",
+            streetware: streetWearImage ? "yes" : "no"
         }
 
         let categories = await dispatch(createUserCategories(interests))

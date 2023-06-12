@@ -19,7 +19,7 @@ function Settings() {
   const history = useHistory();
   const dispatch = useDispatch();
   const hiddenFileInput = React.useRef(null);
-  const {setModalContent} = useModal()
+  const { setModalContent } = useModal()
   // const data = location.state.currentUser;
   const [firstName, setFirstName] = useState(user?.first_name || "")
   const [lastName, setLastName] = useState(user?.last_name || "")
@@ -51,7 +51,6 @@ function Settings() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("hrllo")
     setErrors({});
     let validationErrors = {}
     if (firstName.length > 255) {
@@ -69,7 +68,6 @@ function Settings() {
     if (username.length > 40) {
       validationErrors.username = "Username must be less than 40 characters."
     }
-    console.log('about', validationErrors.about)
     if (Object.values(validationErrors).length) {
       setErrors(validationErrors)
       return
@@ -86,22 +84,20 @@ function Settings() {
 
     const editedUser = await dispatch(editProfileThunk(user, profileData)).catch(async (res) => {
       const data = await res;
-      console.log("data", data)
       setErrors(data);
     });
     if (editedUser) {
-      console.log("EDIT", editedUser)
       history.push(`/${editedUser.username}`)
     }
   }
 
   useEffect(() => {
     if (typeof profilePic === "object") {
-        let prev = URL.createObjectURL(profilePic)
-        setPreviewPic(prev)
-        return () => {
-            URL.revokeObjectURL(prev)
-        }
+      let prev = URL.createObjectURL(profilePic)
+      setPreviewPic(prev)
+      return () => {
+        URL.revokeObjectURL(prev)
+      }
     }
   }, [profilePic])
 
@@ -109,7 +105,7 @@ function Settings() {
   //   console.log("pronouns in use effect", pronouns)
   // }, [pronouns])
 
-  
+
   return (
     <div className='settings-with-footer'>
       <div className='main-settings-div'>
@@ -127,7 +123,7 @@ function Settings() {
               <div className='photo-and-button'>
                 {profilePic ? <img id='profile-picture-display' src={previewPic}></img> : <img id='profile-picture-display' src="https://res.cloudinary.com/djp7wsuit/image/upload/v1686473703/Untitled_design_4_jhphmw.png"></img>}
                 <button id='file-input-actual-button' type='button' onClick={handleClick}>Change</button>
-                <input 
+                <input
                   className='file-input-button'
                   type="file"
                   accept="image/*"
@@ -140,12 +136,12 @@ function Settings() {
                 <div className='first-name-info'>
                   <h6>First name</h6>
                   <input className='first-name-input' value={firstName} type="text" onChange={(e) => setFirstName(e.target.value)} />
-                {errors.firstName ? <p className='settings-form-errors'>{errors.firstName}</p> : null}
+                  {errors.firstName ? <p className='settings-form-errors'>{errors.firstName}</p> : null}
                 </div>
                 <div className='last-name-info'>
                   <h6>Last name</h6>
                   <input className='first-name-input' type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                {errors.lastName ? <p className='settings-form-errors'>{errors.lastName}</p> : null}
+                  {errors.lastName ? <p className='settings-form-errors'>{errors.lastName}</p> : null}
                 </div>
               </div>
               <div className='about-info'>
@@ -157,7 +153,7 @@ function Settings() {
               <div className='pronoun-info'>
                 <h6>Pronouns</h6>
                 <div className='pronoun-select-list'>
-                  <Dropdown isSearchable={true} value={pronouns} placeHolder={pronouns ? pronouns : "Add Your Pronouns"} options={options} setter={(x) => setPronouns(x)}/>
+                  <Dropdown isSearchable={true} value={pronouns} placeHolder={pronouns ? pronouns : "Add Your Pronouns"} options={options} setter={(x) => setPronouns(x)} />
                 </div>
                 <div className='pronoun-description'>
                   <h6>Choose a sets of pronouns to appear on your profile so others know how to refer to you. You can edit or remove these any time.</h6>

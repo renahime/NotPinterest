@@ -245,7 +245,6 @@ export default function pinsReducer(state = initialState, action) {
             return { ...state, pins: { ...action.pins } }
         case DELETE_PIN:
             let deleteAll = { ...state.pins };
-            console.log(deleteAll);
             if (deleteAll[action.pinId]) {
                 delete deleteAll[action.pinId]
             }
@@ -263,8 +262,8 @@ export default function pinsReducer(state = initialState, action) {
             const updateSingle = { ...action.pin }
             return { ...state, allPins: updateAll, singlePin: { ...updateSingle } }
         case CLEAR_SINGLE_PIN:
-            return {...state, singlePin: {}}
-            default:
+            return { ...state, singlePin: {} }
+        default:
             return state
     }
 }

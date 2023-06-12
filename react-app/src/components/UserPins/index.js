@@ -8,7 +8,6 @@ export default function UserPins({ pins }) {
     const history = useHistory()
     // const currentProfile = useSelector(state => state.profile.currentProfile)
     let userPinsArr = Object.values(pins);
-    console.log(userPinsArr);
     // if (!currentProfile.id) return <PageNotFound />
     return (
         <div>

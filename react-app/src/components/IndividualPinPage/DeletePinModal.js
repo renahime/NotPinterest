@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import { deletePinThunk } from "../../store/pins";
+import { removePin } from "../../store/session";
 
 function DeletePinModal({ pin, user, boardState }) {
   const { closeModal } = useModal();
@@ -23,7 +24,11 @@ function DeletePinModal({ pin, user, boardState }) {
   }
   const handleDelete = async (e) => {
     e.preventDefault();
-    const pinId = await dispatch(deletePinThunk(pin.id)).then(closeModal()).then(history.push(`/feed`))
+    const pinId = await dispatch(deletePinThunk(pin.id)).then(closeModal())
+    let removeFromProfile = await dispatch(removePin(pin.id))
+    if (pinId) {
+      history.push(`/${user.username}`)
+    }
   }
   return (
     <div className="delete-pin-container">

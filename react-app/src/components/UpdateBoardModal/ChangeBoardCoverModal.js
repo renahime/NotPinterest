@@ -25,10 +25,7 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
 
 
   useEffect(() => {
-    console.log(pins)
     if (pins) {
-      console.log(pins)
-      console.log(board)
       setPinImages(Object.values(pins).filter(pin => board.pins.includes(pin.id)));
     }
   }, [pins])

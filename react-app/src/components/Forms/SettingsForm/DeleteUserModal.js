@@ -14,14 +14,12 @@ function DeleteUserModal({ user }) {
   const handleClick = async (e) => {
     e.preventDefault()
     const deleteProfile = await dispatch(deleteProfileThunk(user))
-    console.log(deleteProfile)
     if (deleteProfile.errors) {
       setErrors(deleteProfile)
     } else {
-      console.log("deleted")
       closeModal()
       return history.push(`/`)
-      
+
     }
   }
   const { closeModal } = useModal();
@@ -36,7 +34,7 @@ function DeleteUserModal({ user }) {
       <h4>If you delete your account you won't be able to share threads and create seams catered to your style!</h4>
       <div className='delete-user-modal-buttons'>
         <button type='button' id="confirm-delete-button" onClick={handleClick}>Confirm Delete</button>
-        <button type='button' id="reject-delete-button"  onClick={() => closeModal()}>Stay a While</button>
+        <button type='button' id="reject-delete-button" onClick={() => closeModal()}>Stay a While</button>
       </div>
     </div>
   )

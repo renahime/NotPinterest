@@ -14,7 +14,8 @@ const DELETE_PROFILE = "users/DELETE_PROFILE"
 const DELETE_SESSION_BOARD = "boards/delete/session"
 const DELETE_USER_BOARD = "delete/user/boards"
 const UPDATE_USER_BOARD = "edit/user/boards"
-
+const ADD_PIN = "add/user/pins"
+const REMOVE_PIN = "remove/user/pins"
 
 
 
@@ -75,6 +76,15 @@ const updateUserBoard = (board) => ({
 	board
 })
 
+export const addPin = (pin) => ({
+	type: ADD_PIN,
+	pin
+})
+
+export const removePin = (id) => ({
+	type: REMOVE_PIN,
+	id
+})
 
 // const getFollowing = (users) => ({
 // 	type: GET_FOLLOWERS,
@@ -173,7 +183,6 @@ export const createBoardFromPinPage = (board) => async (dispatch) => {
 }
 
 export const createUserCategories = (categories) => async (dispatch) => {
-	console.log("categories", categories)
 	let res = await fetch("/api/users/categories", {
 		method: "POST",
 		headers: {
@@ -182,7 +191,6 @@ export const createUserCategories = (categories) => async (dispatch) => {
 		body: JSON.stringify(categories)
 
 	})
-	console.log("res", res)
 	if (res.ok) {
 		let categories = await res.json()
 		dispatch(setCategories(categories))
@@ -321,13 +329,26 @@ export default function reducer(state = initialState, action) {
 			return newState
 		case SET_USER:
 			return { ...state, user: action.payload };
+		case ADD_PIN:
+			const addPins = [...state.user.pins]
+			addPins.unshift(action.pin.pin);
+			return { ...state, user: { ...state.user, pins: addPins } };
+		case REMOVE_PIN:
+			let removePins = [...state.user.pins]
+			console.log("before", removePins);
+			for (let pin in removePins) {
+				if (removePins[pin]?.id == action.id) {
+					let index = pin;
+					removePins = removePins.slice(index, 1);
+				}
+			}
+			console.log("after", removePins);
+			return { ...state, user: { ...state.user, pins: removePins } };
 		case REMOVE_USER:
 			return { user: null };
 		case UNFOLLOW_USER:
 			let unfollowed = action.user
 			let i = state.user.following.indexOf(unfollowed)
-			console.log("state.user.following", state.user.following)
-			console.log("state.user", state.user)
 			state.user.following.slice(i, 1)
 			return { ...state, user: { ...state.user } }
 		case EDIT_USER:
@@ -345,7 +366,6 @@ export default function reducer(state = initialState, action) {
 		case UPDATE_USER_BOARD:
 			let oldBoardState = { ...state }
 			let currentProfileBoardsArr = oldBoardState.user.boards
-			console.log("WE ARE IN BOARDS UPDATE REDUCER", currentProfileBoardsArr)
 			let oldBoardData;
 			let oldBoardIndex;
 			for (let i = 0; i < currentProfileBoardsArr.length; i++) {
@@ -360,22 +380,17 @@ export default function reducer(state = initialState, action) {
 				}
 			}
 			if (oldBoardIndex !== undefined && oldBoardData) {
-				console.log("OLD CURRENT PROFILE BOARDS", currentProfileBoardsArr[oldBoardIndex])
 				currentProfileBoardsArr[oldBoardIndex] = action.board
-				console.log("NEW PROFILE BOARDS", currentProfileBoardsArr[oldBoardIndex])
 			}
 			// console.log("NEW BOARD DATA in reducer", oldBoardData)
 
 			return { ...state, user: { ...oldBoardState.user, boards: currentProfileBoardsArr } }
-
-
 		case DELETE_SESSION_BOARD:
 			let userStateBeforeBoardDelete = { ...state, user: { ...state.user } }
 			let userBoardstoDeleteArr = userStateBeforeBoardDelete.user.boards
 			// console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
 			let userBoardData;
 			let userBoardIndex;
-			console.log("USER/SESSION BOARDS TO ELETE ARR", userBoardstoDeleteArr)
 			for (let i = 0; i < userBoardstoDeleteArr.length; i++) {
 				console.log("ID", userBoardstoDeleteArr[i].id)
 				console.log(action.id)

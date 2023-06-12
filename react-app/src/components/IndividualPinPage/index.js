@@ -131,13 +131,6 @@ export default function IndividualPinPage() {
 
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
 
-    function formatFollowers(num) {
-        if (num === 1) return "1 follower"
-        else return `${num} followers`
-    }
-
-    console.log(currentUser)
-    console.log(isfollowing)
 
     if (!Object.values(singlePin).length) return <h1>...Loading</h1>
     return (
@@ -229,7 +222,7 @@ export default function IndividualPinPage() {
                             </div>
                         </div>
                         <div>
-                            {currentUser ?
+                            {currentUser && (currentUser.id !== singlePin.owner_id) ?
                                 <>
                                     {!isfollowing ? (<button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>) : (<button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>)}
                                 </> : null

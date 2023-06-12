@@ -37,9 +37,7 @@ export default function CaSandraFeed() {
 
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
-            console.log(pins)
             let randomPins = shufflePins(pins)
-            console.log(randomPins.splice(0, 30))
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
                 userPins: null
@@ -56,7 +54,6 @@ export default function CaSandraFeed() {
                 }
             }
             let randomPins = shufflePins(filteredPins)
-            console.log("random pins: ", randomPins)
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
                 userPins: userPins
@@ -135,11 +132,9 @@ export default function CaSandraFeed() {
             return
         }
         else {
-            console.log("pins in use", pins)
             setFinished(true)
         }
     }, [loading, pins, currentUser])
-    console.log("pinsArr", pinsArr)
     if (!Object.values(pins).length) {
         return (
             <LoadingButton
@@ -148,7 +143,6 @@ export default function CaSandraFeed() {
             />
         )
     }
-    console.log("session user", sessionUser)
     return (
         <div>
             {(currentUser && (sessionUser && sessionUser.boards.length)) ? (

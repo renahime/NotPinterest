@@ -35,9 +35,7 @@ export default function CaSandraFeed() {
 
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
-            console.log(pins)
             let randomPins = shufflePins(pins)
-            console.log(randomPins.splice(0, 30))
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
                 userPins: null
@@ -54,7 +52,6 @@ export default function CaSandraFeed() {
                 }
             }
             let randomPins = shufflePins(filteredPins)
-            console.log("random pins: ", randomPins)
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
                 userPins: userPins
@@ -74,7 +71,6 @@ export default function CaSandraFeed() {
     }
 
     function viewIndividualBoard(username, name) {
-        console.log("VIEW BOARD FUNCTION usernam", username)
         let nameArr = name.toLowerCase().split(" ")
         let formattedName = nameArr.join("_")
         history.push(`/${username}/${formattedName}`)
@@ -142,7 +138,6 @@ export default function CaSandraFeed() {
                     boards = sessionUser.boards.length
                 }
             }
-            console.log("pins in use", pins)
             setFinished(true)
         }
     }, [loading, pins])

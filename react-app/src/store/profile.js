@@ -252,15 +252,12 @@ export default function profileReducer(state = initialState, action) {
             return { ...state, currentProfile: { ...oldBoardState.currentProfile, boards: currentProfileBoardsArr } }
 
         case DELETE_PROFILE_BOARD:
-            let stateBeforeBoardDelete = {...state, currentProfile: {...state.currentProfile}}
+            let stateBeforeBoardDelete = { ...state, currentProfile: { ...state.currentProfile } }
             let currentProfileBoardstoDeleteArr = stateBeforeBoardDelete.currentProfile.boards
             // console.log("WE ARE IN BOARDS UPDATE REDUCER",currentProfileBoardsArr)
             let BoardData;
             let BoardIndex;
-            console.log("BOARDS TO ELETE ARR", currentProfileBoardstoDeleteArr)
             for (let i = 0; i < currentProfileBoardstoDeleteArr.length; i++) {
-                console.log("ID",currentProfileBoardstoDeleteArr[i].id)
-                console.log(action.id)
                 if (currentProfileBoardstoDeleteArr[i].id === action.id) {
                     // console.log("NEW BOARD", currentProfileBoardsArr[i])
                     BoardData = currentProfileBoardstoDeleteArr[i]
@@ -271,14 +268,13 @@ export default function profileReducer(state = initialState, action) {
             }
             if (BoardIndex !== undefined && BoardData) {
                 // currentProfileBoardsArr[oldBoardIndex] = action.board
-                console.log("BOARD TO DELETE", BoardData)
                 delete stateBeforeBoardDelete.currentProfile.boards[BoardIndex]
             }
 
             // console.log("BOARD TO DELETE", BoardData)
             return stateBeforeBoardDelete
 
-            default:
+        default:
             return state
     }
 }

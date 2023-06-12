@@ -27,8 +27,6 @@ export default function ProfilePage() {
     let [showBoards, setShowBoards] = useState(true);
     let [usingProfile, setUsingProfile] = useState(false);
 
-    console.log(currentUser)
-
     let current = currentUser;
 
 
@@ -41,8 +39,6 @@ export default function ProfilePage() {
         }
     }, [dispatch, username, currentUser])
 
-    console.log('b')
-    console.log(usingProfile)
 
 
     let showMenu = () => {
@@ -55,7 +51,6 @@ export default function ProfilePage() {
 
     if (checkUser()) {
         current = currentUser;
-        console.log('a')
     } else {
         current = currentProfile
     }
@@ -80,6 +75,9 @@ export default function ProfilePage() {
             setIsFollowing(false);
         }
     }
+
+    const pins = useSelector(state => state.pins.pins)
+
 
     useEffect(() => {
         if (!loading && !current.id) {
@@ -113,10 +111,9 @@ export default function ProfilePage() {
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
+
     if (!loading) return <h1>Loading...</h1>
     else if (!current.id) return <PageNotFound />
-
-    console.log(current);
 
     return (!Object.values(current).length ? <h1>Loading...</h1> :
         <div>
