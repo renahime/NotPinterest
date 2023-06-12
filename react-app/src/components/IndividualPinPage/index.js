@@ -33,7 +33,7 @@ export default function IndividualPinPage() {
     const [pinErrorCheck, setPinErrorCheck] = useState(false);
     let [numFollowers, setNumFollowers] = useState(0);
     let [isfollowing, setIsFollowing] = useState(false);
-    const { setModalContent } = useModal()
+    const {setModalContent} = useModal()
 
 
     useEffect(() => {
@@ -174,22 +174,13 @@ export default function IndividualPinPage() {
                             <div className="dropdown-menu-edit-pin">
                                 {pinnedCheck ? showMenu &&
                                     <div className="edit-pin-options">
-                                        {/* <div onClick={
-                                            () =>
-                                                setModalContent(<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />)}
-                                        >
-                                            Edit Pin
-                                        </div>
-                                        <div onClick={() => setModalContent(<ComingSoon />)} className="dropdown-item">
-                                            Report Pin
-                                        </div> */}
                                         <OpenModalButton
                                             id="edit-pin-button"
                                             buttonText="Edit Pin"
                                             className="dropdown-item"
                                             modalComponent={<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />}
-                                        /> */}
-                                        {/* <OpenModalButton
+                                        />
+                                        <OpenModalButton
                                             buttonText="Report Pin"
                                             className="dropdown-item"
                                             modalComponent={<ComingSoon />}
