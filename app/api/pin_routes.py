@@ -118,26 +118,24 @@ def create_pin():
     form = PinForm()
     print("made it")
     # Sets the boards that a user has and can save thier pin to
-    user_boards = Board.query.filter(Board.owner_id == current_user.id).all()
-    if user_boards:
-        form.board.choices = [board.id for board in user_boards]
-
-    if not user_boards:
-        form.board.choices = []
 
     user = User.query.get(current_user.id)
     if not user:
         return {"errors": "Couldn't find user"}
     # sets the CSRF token on the form to the CSRF token that came in on the request
     form['csrf_token'].data = request.cookies['csrf_token']
+    
+    print("INNNNNNNNNNNNNNNNNNNNNNNNNNNNn")
 
     # if the form doesn't have any issues make a new pin in the database and send that back to the user
     if form.validate_on_submit():
-        print("pin route errors part3")
-
+        # print("INNNNNNNNNNNNNNNNNNNNNNNNNNNNn")
         data = form.data
+        user_boards = Board.query.filter(Board.owner_id == current_user.id).all()
 
-
+        if data["board"] not in [board.name for board in user_boards]:
+            return {"errors": "Invalid board name."}
+        
         pin_image = data["image"]
         pin_image.filename = get_unique_filename(pin_image.filename)
         s3_upload = upload_file_to_s3(pin_image)
@@ -152,15 +150,17 @@ def create_pin():
             user=user
         )
 
-        board_to_save_pin_to = Board.query.get(data["board"])
+        board_to_save_pin_to = ""
+        for board in user.boards:
+            if board.name == data["board"]:
+                board_to_save_pin_to = board
+
         new_pin.board_tagged.append(board_to_save_pin_to)
 
         db.session.add(new_pin)
         db.session.commit()
         return new_pin.to_dict()
-
     # if the form has issues send the error messages back to the user
-    print("pin route errors part4")
     return {"errors": validation_errors_to_error_messages(form.errors)}, 401
 
 

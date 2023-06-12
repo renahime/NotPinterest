@@ -114,11 +114,12 @@ export default function CreatePin() {
 
     useEffect(() => {
         if (userBoards.length && !board) {
-            setBoard(userBoards[0].id)
+            setBoard(userBoards[0].name)
             console.log(userBoards)
         }
     }, [userBoards])
 
+    console.log("bords", board)
 
     return (
         <div className="new-pin-wrapper">
@@ -162,7 +163,7 @@ export default function CreatePin() {
                                 >
                                     {currentUserBoards.map(boardValue => (
                                         <option
-                                            key={boardValue.id}>
+                                            key={boardValue.name}>
                                             {boardValue.name}
                                         </option>
                                     ))}
