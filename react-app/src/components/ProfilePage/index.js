@@ -170,12 +170,12 @@ export default function ProfilePage() {
                                 <div>
                                     <OpenModalButton
                                         buttonText="Board"
-                                        modalComponent={<CreateBoardFromProfile username={current?.username} />} >
+                                        modalComponent={<CreateBoardFromProfile username={current?.username} current={current} />} >
                                     </OpenModalButton>
                                 </div>
                             </div>
                         </div>}
-                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={current.boards} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
+                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={current.boards} current={current} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
                 </div>
                 :
                 <div>

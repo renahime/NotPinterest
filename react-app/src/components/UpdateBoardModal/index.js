@@ -11,7 +11,7 @@ import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal({ id, newCoverImage, board, userBoardsArr }) {
+function UpdateBoardModal({ id, newCoverImage, board, current }) {
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -19,7 +19,7 @@ function UpdateBoardModal({ id, newCoverImage, board, userBoardsArr }) {
   const [errors, setErrors] = useState([]);
   const { setModalContent, closeModal } = useModal();
 
-  const user = useSelector((state) => state.sessionUser);
+  console.log(current);
 
   //set form data
   const [name, setName] = useState(board?.name);
@@ -70,9 +70,11 @@ function UpdateBoardModal({ id, newCoverImage, board, userBoardsArr }) {
     const validationErrors = {};
     // await dispatch(updateBoardThunk(updatedBoardData, id))
     if (name) {
-      for (let board of userBoardsArr) {
-        if (name == board.name) {
-          validationErrors.name = "Ooops! You already have this board name."
+      for (let board of current.boards) {
+        if (board) {
+          if (name == board.name) {
+            validationErrors.name = "Ooops! You already have this board name."
+          }
         }
       }
       if (name.length > 50) {
@@ -89,13 +91,7 @@ function UpdateBoardModal({ id, newCoverImage, board, userBoardsArr }) {
       return
     }
     let updatedBoard = await dispatch(updateUserBoardThunk(updatedBoardData, board.id))
-    const boardName = updatedBoardData.name.split(' ').join('_').toLowerCase()
-    if (updatedBoard.errors) {
-      setErrors(updatedBoard.errors)
-      return
-    } else {
-      closeModal()
-    }
+    closeModal()
   };
 
   console.log(errors);

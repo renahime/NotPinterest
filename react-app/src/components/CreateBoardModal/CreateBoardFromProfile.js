@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { createBoardFromPinPage } from "../../store/session";
 import './CreateBoardModal.css'
-function CreateBoardFromProfile({ username }) {
+function CreateBoardFromProfile({ username, current }) {
 
   const dispatch = useDispatch();
   const history = useHistory()
@@ -14,7 +14,7 @@ function CreateBoardFromProfile({ username }) {
   const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
   const user = useSelector(state => state.session.user)
-  console.log(user);
+  console.log(current)
 
   useEffect(() => {
   }, [name, isPrivate])
@@ -29,9 +29,11 @@ function CreateBoardFromProfile({ username }) {
     e.preventDefault(); // Prevent the default form submission
     //VALIDATIONS
     //create form data
-    for (let board of user.boards) {
-      if (name == board.name) {
-        return setErrors({ 'errors': 'You already have a board with this name' })
+    for (let board of current.boards) {
+      if (board) {
+        if (name == board.name) {
+          return setErrors({ 'errors': 'You already have a board with this name' })
+        }
       }
     }
     const formData = {

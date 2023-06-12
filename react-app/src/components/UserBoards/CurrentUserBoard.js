@@ -6,7 +6,7 @@ import { useModal } from "../../context/Modal"
 import { Link } from "react-router-dom"
 import './UserBoards.css'
 
-export default function CurrentUserBoard({ userBoardsArr, username, profileImage }) {
+export default function CurrentUserBoard({ userBoardsArr, username, profileImage, user, current }) {
     const [hover, setHover] = useState(false)
     const [hoverDiv, setHoverDiv] = useState("")
     const { setModalContent, closeModal } = useModal();
@@ -27,7 +27,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         setHover(false)
         setHoverDiv("")
     }
-
+    console.log(current);
 
     let editBoardClassName = hover ? `profile-edit-board-icon` : "profile-edit-board-icon hidden"
 
@@ -36,7 +36,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         event.preventDefault();
         const modalContent = (
             <div>
-                <UpdateBoardModal id={hoverDiv} username={username} userBoardsArr={userBoardsArr} board={boards} />
+                <UpdateBoardModal id={hoverDiv} username={username} current={current} userBoardsArr={userBoardsArr} board={boards} />
             </div>
         );
         setModalContent(modalContent);
