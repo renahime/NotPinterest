@@ -1,10 +1,13 @@
-// import { useDispatch, useSelector } from "react-redux"
-// import { getPinsByCategory } from "../../store/pins"
-// import { useEffect, useState } from "react"
-// import { useHistory } from "react-router-dom"
-// import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
-// import { getAllPinsThunk } from "../../store/pins"
-// import "./casandra-feed.css"
+import { useDispatch, useSelector } from "react-redux"
+import { getPinsByCategory } from "../../store/pins"
+import React, { useEffect, useState } from "react"
+import { useHistory, NavLink } from "react-router-dom"
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
+import { getAllPinsThunkOld } from "../../store/pins"
+import LoadingButton from "../LoadingButton";
+import OpenModalButton from '../OpenModalButton';
+import CreateBoardModal from "../CreateBoardModal";
+import "./casandra-feed.css"
 
 
 export default function CaSandraFeed() {
@@ -14,10 +17,12 @@ export default function CaSandraFeed() {
     let [finishedLoading, setFinished] = useState(false)
     let pins = useSelector(state => state.pins.allPins)
     let sessionUser = useSelector(state => state.session.user)
+    
     const [hoverBoard, setHoverBoard] = useState(false)
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
     const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
     const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
+
     let pinsArr = []
     let numberOfPins = 0
     let boards = 0
@@ -30,13 +35,6 @@ export default function CaSandraFeed() {
         }
     }
 
-    useEffect(() => {
-        if (sessionUser) {
-            setCurrentUser(true)
-        } else {
-            setCurrentUser(false)
-        }
-    }, currentUser, sessionUser)
     function filterPins(pins) {
         if (!sessionUser || sessionUser.categories.length === 0) {
             console.log(pins)
@@ -140,7 +138,8 @@ export default function CaSandraFeed() {
             console.log("pins in use", pins)
             setFinished(true)
         }
-    }, [loading, pins])
+    }, [loading, pins, currentUser])
+    console.log("pinsArr", pinsArr)
     if (!Object.values(pins).length) {
         return (
             <LoadingButton
@@ -149,22 +148,17 @@ export default function CaSandraFeed() {
             />
         )
     }
-    console.log(currentUser)
-
+    console.log("session user", sessionUser)
     return (
         <div>
-            {/* {sessionUser == null ?
-                <h3 className="board-container-top-text">Sign up for Threadterest today and make some new threads!</h3> :
-                boards > 0 ? */}
-            {(currentUser && (sessionUser && sessionUser.boards.length)) ? (
+            {(sessionUser && boards.length) ? (
 
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}>  {sessionUser && sessionUser.boards.length ? (sessionUser.boards.length) : 0} </NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser.boards.length} boards</NavLink>
                         <div>and</div>
-                        <NavLink to={`/${sessionUser.username}`}> {sessionUser && sessionUser.boards.length ? (sessionUser.boards.reduce(
-                            (total, board) => (board.pins.length ? total + board.pins.length : 0), 0)) : 0}pins</NavLink>
+                        <NavLink to={`/${sessionUser.username}/_created`}>{numberOfPins} pins</NavLink>
                         <div>Check them out!</div>
                     </div>
 
@@ -178,7 +172,7 @@ export default function CaSandraFeed() {
                                 <i className="fa-solid fa-angle-left fa-rotate-180"></i>
                             </div>
 
-                            {sessionUser.boards.map((board, index) => (
+                            {boards.map((board, index) => (
 
                                 <div key={board.id} className="board-top" style={boardColors[index % boardColors.length]} onClick={() => viewIndividualBoard(board.user.username, board.name)} onMouseEnter={() => onHoverBoard(board)} onMouseLeave={() => offHoverBoard()}>
                                     {/* <OpenModalButton
@@ -197,11 +191,11 @@ export default function CaSandraFeed() {
                     </div>
                 </>
 
-            ) : ((currentUser && (sessionUser && sessionUser.boards.length)) ? (
+            ) : ((sessionUser && !boards.length) ? (
                 <>
                     <div className="board-container-top-text">
                         <div>Oh no, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {boards.length} boards.</NavLink>
+                        <NavLink to={`/${sessionUser.username}`}> {sessionUser.boards.length} boards.</NavLink>
                         <div>Let's change that!</div>
                         <OpenModalButton
                             buttonText="Create Board"

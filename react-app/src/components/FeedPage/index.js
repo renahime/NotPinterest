@@ -23,6 +23,7 @@ function FeedPage() {
   const [hoverBoardDiv, setHoverBoardDiv] = useState("")
   const [randomizedArrays, setRandomizedArrays] = useState([]);
 
+
   // let singleBoard = useSelector(state => state.boards.singleBoard)
   let state = useSelector(state => state)
   let session = useSelector(state => state.session)
@@ -182,7 +183,7 @@ function FeedPage() {
 
 
   //check if we have any boards in our database or state. If not, we will load the page or not render it at all
-  if (typeof boards === 'undefined' || boards.length === 0 || allPinsArr.length == 0 || dividedArrays.length == 0) {
+  if (allPinsArr.length == 0 ) {
 
     //Loading screen
     if (isLoading) {
@@ -255,15 +256,17 @@ function FeedPage() {
 
         ) : (
           <>
-            <div className="board-container-top-text">
+            <div className={`board-container-top-text disable-style`}>
               <div>Oh no, you have</div>
               <NavLink to={`/${username}`}> {boards.length} boards.</NavLink>
               <div>Let's change that!</div>
+              <div>
               <OpenModalButton
                 buttonText="Create Board"
                 className="feed-page-create-board"
                 modalComponent={<CreateBoardModal username={sessionUser?.username} />}
               />
+              </div>
             </div>
           </>
 

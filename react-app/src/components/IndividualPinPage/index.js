@@ -54,8 +54,12 @@ export default function IndividualPinPage() {
             for (let board of singlePin.boards_pinned_in) {
                 if (board.id == userBoard.id) {
                     pinnedCheck = true;
+                    console.log("UserBoard", userBoard.name)
+                    console.log("GrabBoardName", grabBoardName)
                     grabBoardName.name = userBoard.name
+                    console.log("GrabBoardName", grabBoardName)
                 }
+                console.log("We didnt get grabBoardName", grabBoardName)
             }
             options.push({ 'value': userBoard.name, 'label': userBoard.name })
         }
@@ -77,7 +81,7 @@ export default function IndividualPinPage() {
         return () => {
             window.removeEventListener("click", handler)
         }
-    })
+    }, [])
 
     const changeBoardName = (newBoard) => {
         setPinBoard(newBoard)
@@ -91,8 +95,12 @@ export default function IndividualPinPage() {
         e.preventDefault();
         let boardId
         let sendBoardName
+        console.log("WE ARE CHECKING BOARD handlePin in individaual pin page", sendBoardName)
         for (let board of currentUser.boards) {
+            console.log("WE ARE CHECKING BOARD handlePin for loop in individaual pin page", board)
+            console.log("WE ARE CHECKING PINBOARD handlePin for loop in individaual pin page", pinBoard)
             if (board.name == pinBoard) {
+                console.log("WE ARE CHECKING BOARD ID in individaual pin page", boardId)
                 boardId = board.id
                 sendBoardName = board.name.split(' ').join('_').toLowerCase()
             }

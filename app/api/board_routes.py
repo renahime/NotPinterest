@@ -7,6 +7,18 @@ from .auth_routes import validation_errors_to_error_messages
 board_routes = Blueprint('boards', __name__)
 
 
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
+
+
+
 #Route to get a specific board of a user
 @board_routes.route("/users/<username>/<board_name>", methods= ["GET"])
 def get_one_user_board(username, board_name):
@@ -111,6 +123,7 @@ def create_board():
             description=form.data["description"],
             user=user
         )
+    
         db.session.add(new_board)
         db.session.commit()
 

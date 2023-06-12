@@ -12,6 +12,7 @@ import "./ProfilePage.css"
 import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
+import CreateBoardModal from "../CreateBoardModal"
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -145,8 +146,9 @@ export default function ProfilePage() {
                                 <div>
                                     <OpenModalButton
                                         buttonText="Board"
-                                        modalComponent={<CreateBoardFromProfile username={currentProfile?.username} />} >
-                                    </OpenModalButton>
+                                        className="feed-page-create-board"
+                                        modalComponent={<CreateBoardModal username={currentProfile?.username} />}
+                                    />
                                 </div>
                             </div>
                         </div>}

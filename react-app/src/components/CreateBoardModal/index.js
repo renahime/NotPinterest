@@ -8,6 +8,7 @@ import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
 // import { fetchPinsToday } from "../../store/pins";
 import SavePinsToBoardModal from "./SavePinsToBoard";
 import './CreateBoardModal.css'
+import { getAllPinsThunkOld } from "../../store/pins";
 
 
 
@@ -21,6 +22,10 @@ function CreateBoardModal({ username }) {
   const [errors, setErrors] = useState([]);
   const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
+  const [change, setChange] = useState(false)
+
+
+
 
 
   const stateCheck = useSelector((state) => state)
@@ -47,9 +52,38 @@ function CreateBoardModal({ username }) {
   //   dispatch(fetchPinsToday())
   // }, [])
 
-//   const month = date.toLocaleString('default', { month: 'long' });
-//   let year = date.getFullYear();
-//   let day = date.getDate();
+  let pinsTodayObj = useSelector(state => state)
+  // let testUsername = useSelector(state => state.session.user)
+
+
+  useEffect(() => {
+    const referrer = document.referrer;
+    if (referrer.includes('/create')) {
+      // Do something if the page is coming from example.com/profile
+      console.log("WE ARE COMING FROM /CREATE", referrer)
+
+    } else {
+      // Do something else if the page is coming from somewhere else or without /profile
+    }
+  }, []);
+
+
+
+  console.log("PINS", pinsTodayObj)
+
+  let pinsToday
+  if (pinsTodayObj) {
+    pinsToday = shuffle(Object.values(pinsTodayObj))
+    // dbLatestDate = pinsToday[0].created_at
+  }
+  const date = new Date();
+
+  console.log("PINS TODAY CREATE BOARD MODAL", pinsToday)
+
+
+  const month = date.toLocaleString('default', { month: 'long' });
+  let year = date.getFullYear();
+  let day = date.getDate();
 
 
 
@@ -67,7 +101,18 @@ function CreateBoardModal({ username }) {
 
     //VALIDATIONS
 
-
+    // check if board name is already taken
+    if (Object.values(testUsername)) {
+      const userBoards = testUsername.boards
+      console.log("USERBOARDS", testUsername.boards)
+      for (const board of testUsername.boards) {
+        console.log("BOARDS", board)
+        if (board.name.toLowerCase() === name.toLowerCase()) {
+          setErrors(["This board name is already taken, please choose another name."])
+          return
+        }
+      }
+    }
 
     //create form data
     const formData = {
@@ -76,8 +121,18 @@ function CreateBoardModal({ username }) {
       description: description
     }
     //log formData
-    await dispatch(createBoardThunk(formData))
-    history.push(`/${username}/${formData.name}`)
+
+    await dispatch(createBoardThunk(formData)).then(() => history.push(`/${username}/${formData.name}`))
+
+    // if (response && response.errors) {
+    //   setErrors(response.errors);
+    //   console.log("ERRORS",errors)
+    // } else {
+    //   history.push(`/${username}/${formData.name}`);
+    //   closeModal();
+    //   openModal();
+    // }
+
     closeModal()
     openModal()
 
@@ -89,7 +144,7 @@ function CreateBoardModal({ username }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        {/* <SavePinsToBoardModal pinsToday={pinsToday} username={username} boardName={name} /> */}
+        <SavePinsToBoardModal pinsToday={pinsToday} username={username} setChange={setChange} change={change} boardName={name} />
       </div>
     );
     setModalContent(modalContent);
@@ -97,16 +152,13 @@ function CreateBoardModal({ username }) {
 
   function shuffle(array) {
     let currentIndex = array.length, randomIndex;
-
     while (currentIndex != 0) {
-
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
     }
-
     return array;
   }
 
@@ -145,6 +197,11 @@ function CreateBoardModal({ username }) {
 
             </div>
           </label>
+          <ul>
+            {errors.map((error, idx) => (
+              <li className="login-form-errors" key={idx}>{error}</li>
+            ))}
+          </ul>
 
           {/* <button type="submit" className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}> */}
           <button type="submit" className="create-board-modal-create-button" disabled={disabledButton}>
