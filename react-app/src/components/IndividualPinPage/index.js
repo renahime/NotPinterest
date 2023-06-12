@@ -137,7 +137,7 @@ export default function IndividualPinPage() {
         if (num === 1) return "1 follower"
         else return `${num} followers`
     }
-    if (!singlePin) return <h1>...Loading</h1>
+    if (!Object.values(singlePin).length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
             <div className="single-pin">
@@ -208,8 +208,8 @@ export default function IndividualPinPage() {
                             </div>
                         </div>
 
-                        {!currentUser ? null : <> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
-                            <button onClick={handlePin} className="single-pin-edit-board-button">Save</button> </>}
+                        {!currentUser ? null : (<> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
+                            <button onClick={handlePin} className="single-pin-edit-board-button">Save</button> </>)}
                     </div>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
                     <div> {singlePin.description ? <h2 className="single-pin-title">{singlePin.description}</h2> : null} </div>
@@ -222,13 +222,15 @@ export default function IndividualPinPage() {
                             </div>
                             <div className="single-pin-owner-name-followers">
                                 <Link className="single-pin-owner-link" to={`/${singlePin.user?.username}`}>{singlePin.user?.first_name} {singlePin.user?.last_name}</Link>
-                                <p>{numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}</p>
+                                {!currentUser ? <p>{singlePin.user.followers.length === 1 ? "1 follower" : `${singlePin.user.followers.length} followers`}</p> : <p>{numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}</p>}
                             </div>
                         </div>
                         <div>
-                            {!isfollowing ?
-                                <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
-                                <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>}
+                            {currentUser && !isfollowing ?
+                                <>
+                                    <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>
+                                    <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button> </> : null
+                            }
                         </div>
                     </div>
                 </div>
