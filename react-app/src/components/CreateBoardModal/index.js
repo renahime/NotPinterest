@@ -9,6 +9,8 @@ import ChangeBoardCoverModal from "../UpdateBoardModal/ChangeBoardCoverModal";
 import SavePinsToBoardModal from "./SavePinsToBoard";
 import './CreateBoardModal.css'
 import { getAllPinsThunkOld } from "../../store/pins";
+import CreateBoardFromPinModal from "../IndividualPinPage/CreateBoardModal";
+import { createBoardFromPinPage } from "../../store/session";
 
 
 
@@ -51,6 +53,8 @@ function CreateBoardModal({ username }) {
     pinsArr.push(pin)
 
   }
+
+  console.log("PINSARR", pinsArr)
 
   // shuffle(pinsArr)
 
@@ -127,6 +131,8 @@ function CreateBoardModal({ username }) {
     //log formData
 
     await dispatch(createBoardThunk(formData)).then(() => history.push(`/${username}/${formData.name}`))
+    // await dispatch(createBoardFromPinPage(formData)).then(() => history.push(`/${username}/${formData.name}`))
+
 
     // if (response && response.errors) {
     //   setErrors(response.errors);
@@ -138,6 +144,7 @@ function CreateBoardModal({ username }) {
     // }
 
     closeModal()
+
     openModal()
 
     // openModal(<SavePinsToBoardModal />);
