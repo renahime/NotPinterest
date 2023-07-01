@@ -101,19 +101,15 @@ class User(db.Model, UserMixin):
             'pronouns': self.pronouns,
             'website': self.website,
             'profile_image': self.profile_image,
-            'follower_count': len([follower.username for follower in self.followers]),
-            'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
-            'pins': self.get_ten_pints(),
-            'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at
          }
 
 
     def to_dict(self):
-                 return {
+        return {
             'id': self.id,
             'username': self.username,
             'email': self.email,
@@ -124,12 +120,8 @@ class User(db.Model, UserMixin):
             'pronouns': self.pronouns,
             'website': self.website,
             'profile_image': self.profile_image,
-            'follower_count': len([follower.username for follower in self.followers]),
-            'following_count': len([[follow.username for follow in self.following]]),
             'followers': [follower.username for follower in self.followers],
             'following': [follow.username for follow in self.following],
-            'pins': self.get_ten_pints(),
-            'boards': self.boards_pinned_to_dict(),
             'created_at': self.created_at,
             'updated_at': self.updated_at
-         }
+        }

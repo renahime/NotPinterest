@@ -143,12 +143,25 @@ class Board(db.Model):
             'cover_image': [image.image for image in self.pin_cover_image],
             'additional_images': self.findOtherImages(),
             'description': self.description,
-            'owner_id': self.owner_id,
-            'user': self.user.to_dict(),
-            'categories': [category.name for category in self.categories],
-            'pins': [{"id":pin.id, "image":pin.image, "username":pin.user.username, "profile_picture":pin.user.profile_image} for pin in self.pins_tagged],
+            'owner': {
+                'id': self.user.id,
+                'username': self.user.username,
+                'profile_image': self.user.profile_image
+            },
+            # 'categories': [category.name for category in self.categories],
             'created_at': self.created_at,
             'updated_at': self.updated_at
+        }
+    
+    def less_to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'private' : self.private,
+            'cover_image': [image.image for image in self.pin_cover_image],
+            'additional_images': self.findOtherImages(),
+            'description': self.description,
+            'num_pins': len(self.pins_tagged)
         }
 
 class Pin(db.Model):
@@ -182,17 +195,31 @@ class Pin(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'owner_id': self.owner_id,
             'image': self.image,
             'title': self.title,
             'description': self.description,
             'alt_text': self.alt_text,
             'destination': self.destination,
             'categories': [category.name for category in self.categories],
-            'boards_pinned_in': self.boards_pinned_to_dict(),
+            'owner' : {
+                'id': self.user.id,
+                'username': self.user.username,
+                'profile_image': self.user.profile_image
+            },
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            'user': {"id": self.user.id, "profile_image":self.user.profile_image, "first_name": self.user.first_name, "last_name":self.user.last_name, "username":self.user.username, "followers": [follower.username for follower in self.user.followers]}
+            # 'user': {"id": self.user.id, "profile_image":self.user.profile_image, "first_name": self.user.first_name, "last_name":self.user.last_name, "username":self.user.username, "followers": [follower.username for follower in self.user.followers]}
+        }
+    
+    def less_to_dict(self):
+        return {
+            'id': self.id,
+            'image': self.image,
+            'title': self.title,
+            'description': self.description,
+            'alt_text': self.alt_text,
+            'destination': self.destination,
+            'categories': [category.name for category in self.categories]
         }
 
 
