@@ -1,6 +1,6 @@
 import { deleteBoard } from "./session"
 
-const GET_BOARDS_OF_USER = "boards/getUserBoards"
+const GET_BOARDS_OF_CURRENT_USER = "boards/getUserBoards"
 const GET_SINGLE_BOARD = 'boards/single'
 // const GET_BOARD_BY_NAME = "boards/getBoardByName"
 const CREATE_USER_BOARD = 'boards/new'
@@ -17,7 +17,10 @@ const getSingleBoard = (board) => ({
     board: board["User Boards"]
 })
 
-
+const getBoardsOfCurrentUser = (boards) => ({
+    type: GET_BOARDS_OF_CURRENT_USER,
+    boards: boards
+})
 
 const createUserBoard = (board) => ({
     type: CREATE_USER_BOARD,
@@ -32,7 +35,6 @@ const updateUserBoard = (board) => ({
 const deleteUserBoard = () => ({
     type: DELETE_BOARD,
 });
-
 
 const unPin = (pin, boardId) => ({
     type: UN_PIN,
@@ -53,6 +55,16 @@ const pinBoard = (pin, boardId) => ({
     boardId,
 })
 
+
+export const getCurrentUserBoards = () => async(dispatch) => {
+    const res = await fetch("/api/boards/current_user")
+
+    if (res.ok) {
+        let boards = await res.json()
+        dispatch(getBoardsOfCurrentUser(boards))
+        return
+    }
+}
 
 
 
@@ -198,11 +210,13 @@ export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
 //     }
 // };
 
-const initialState = { singleBoard: {} }
+const initialState = { singleBoard: {}, allBoards: {}, currentUserBoards: {}, currentProfileBoards: {} }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
+        case GET_BOARDS_OF_CURRENT_USER:
+            return {...state, singleBoard: {...state.singleBoard}, allBoards: {...state.allBoards}, currentUserBoards: {...action.boards}, currentProfileBoards: {...state.currentProfileBoards}}
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {

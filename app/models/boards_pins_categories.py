@@ -143,7 +143,7 @@ class Board(db.Model):
             'cover_image': [image.image for image in self.pin_cover_image],
             'additional_images': self.findOtherImages(),
             'description': self.description,
-            'owner': {
+            'user': {
                 'id': self.user.id,
                 'username': self.user.username,
                 'profile_image': self.user.profile_image
@@ -201,7 +201,7 @@ class Pin(db.Model):
             'alt_text': self.alt_text,
             'destination': self.destination,
             'categories': [category.name for category in self.categories],
-            'owner' : {
+            'user' : {
                 'id': self.user.id,
                 'username': self.user.username,
                 'profile_image': self.user.profile_image
