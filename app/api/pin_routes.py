@@ -27,9 +27,9 @@ def get_all_pins():
     return all_pins
 
 
-@pin_routes.route("/boards/<int:id>")
+@pin_routes.route("/boards/<id>")
 def get_pins_by_board(id):
-    board = Board.get(id)
+    board = Board.query.get(id)
 
     if not board:
         return {"errors": "Board couldn't be found"}

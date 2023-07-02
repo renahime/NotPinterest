@@ -14,7 +14,7 @@ const GET_BOARDS_BY_USER = "boards/singleUser"
 
 const getSingleBoard = (board) => ({
     type: GET_SINGLE_BOARD,
-    board: board["User Boards"]
+    board
 })
 
 const getBoardsOfCurrentUser = (boards) => ({
@@ -86,7 +86,7 @@ export const getSingleBoardThunk = (username, boardname) => async (dispatch) => 
     if (res.ok) {
         let board = await res.json();
         dispatch(getSingleBoard(board));
-        return;
+        return board;
     }
 }
 

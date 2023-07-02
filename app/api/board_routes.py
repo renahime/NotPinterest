@@ -40,7 +40,7 @@ def get_one_user_board(username, board_name):
     if user_board:
         board = user_board.to_dict()
         board["pinInfo"] = pin_info
-        return {"User Boards" : board}
+        return board
 
     else:
         return {"errors": "No Boards found"}, 404

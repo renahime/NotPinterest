@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getBoardByName, getSingleBoardThunk } from "../../store/boards"
+import { getPinsForBoard } from "../../store/pins"
 import { useDispatch, useSelector } from "react-redux"
 import PinsForBoardPage from "./PinsForBoardPage"
 import './IndividualBoardPage.css'
@@ -17,11 +18,12 @@ export default function IndividualBoardPage() {
     let boardName = usernameBoardName[2]
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
+    const currentBoardPins = useSelector(state => state.pins.currentBoardPins)
     let boardPins = []
     const individualBoard = useSelector(state => state.boards.singleBoard)
 
     useEffect(() => {
-        dispatch(getSingleBoardThunk(username, boardName))
+        dispatch(getSingleBoardThunk(username, boardName)).then((board) => dispatch(getPinsForBoard(board.id)))
         if (currentUser) {
             if (username === currentUser.username) {
                 setOwnerCheck(true);
@@ -75,9 +77,9 @@ export default function IndividualBoardPage() {
                                 </div>
                             </div>}
                     </div>
-                    {/* <div className="pins-for-board-page-wrapper">
-                        <PinsForBoardPage pins={boardPins} />
-                    </div> */}
+                    <div className="pins-for-board-page-wrapper">
+                        <PinsForBoardPage pins={currentBoardPins} />
+                    </div>
                 </div>}
         </div>
     )
