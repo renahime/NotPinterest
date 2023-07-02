@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo } from "../../store/session"
 import { unfollowUser, followUser } from "../../store/session"
 import { getOtherUserBoards, getCurrentUserBoards } from "../../store/boards"
-import { getCurrentUserPins } from "../../store/pins"
+import { getCurrentUserPins, getOtherUserPins } from "../../store/pins"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
@@ -25,6 +25,7 @@ export default function ProfilePage() {
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const currentUserPins = useSelector(state => state.pins.currentUserPins)
+    const currentProfilePins = useSelector(state => state.pins.currentProfilePins)
     const otherUserBoards = useSelector(state => state.boards.currentProfileBoards)
     let [numFollowers, setNumFollowers] = useState(0);
     let [numFollowing, setNumFollowing] = useState(0)
@@ -36,7 +37,7 @@ export default function ProfilePage() {
 
     useEffect(() => {
         if (!checkUser()) {
-            dispatch(getUserInfo(username)).then(() => dispatch(getOtherUserBoards(username))).then(() => setLoading(true));
+            dispatch(getUserInfo(username)).then(() => dispatch(getOtherUserBoards(username))).then(() => dispatch(getOtherUserPins(username))).then(() => setLoading(true));
             setUsingProfile(true)
         } else {
             dispatch(getCurrentUserBoards()).then(() => dispatch(getCurrentUserPins())).then(() => setLoading(true))
@@ -183,7 +184,7 @@ export default function ProfilePage() {
                 </div>
                 :
                 <div>
-                    {!showBoards ? <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
+                    {!showBoards ? <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={currentProfilePins}> </UserPins></>}
                 </div>
             }
         </div>
