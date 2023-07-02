@@ -34,7 +34,7 @@ def get_users_pins_by_username(username):
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
+        all_pins[pin.id] = pin.less_to_dict()
     return all_pins
 
 #Route to get a pins by category
