@@ -5,13 +5,13 @@ import PageNotFound from "../PageNotFound"
 import "../ProfilePage/ProfilePage.css"
 
 export default function UserPins({ pins }) {
-    // const history = useHistory()
+    const history = useHistory()
     // const currentProfile = useSelector(state => state.profile.currentProfile)
-    // let userPinsArr = Object.values(pins);
+    let userPinsArr = Object.values(pins);
     // if (!currentProfile.id) return <PageNotFound />
     return (
         <div>
-            {/* <div className="individual-board-pins-wrapper">
+            <div className="individual-board-pins-wrapper">
                 {userPinsArr.length ?
                     <ResponsiveMasonry className="board-pins-wrapper" options={{ fitWidth: true }}
                         columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
@@ -30,7 +30,7 @@ export default function UserPins({ pins }) {
                     </ResponsiveMasonry>
                     : <h2>Share your threads with us today!</h2>
                 }
-            </div> */}
+            </div>
         </div>
     )
 }

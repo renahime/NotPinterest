@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo } from "../../store/session"
 import { unfollowUser, followUser } from "../../store/session"
 import { getOtherUserBoards, getCurrentUserBoards } from "../../store/boards"
+import { getCurrentUserPins } from "../../store/pins"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
@@ -23,6 +24,7 @@ export default function ProfilePage() {
     const currentProfile = useSelector(state => state.session.currentProfile)
     const currentUser = useSelector(state => state.session.user)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
+    const currentUserPins = useSelector(state => state.pins.currentUserPins)
     const otherUserBoards = useSelector(state => state.boards.currentProfileBoards)
     let [numFollowers, setNumFollowers] = useState(0);
     let [numFollowing, setNumFollowing] = useState(0)
@@ -37,8 +39,7 @@ export default function ProfilePage() {
             dispatch(getUserInfo(username)).then(() => dispatch(getOtherUserBoards(username))).then(() => setLoading(true));
             setUsingProfile(true)
         } else {
-            dispatch(getCurrentUserBoards())
-            setLoading(true);
+            dispatch(getCurrentUserBoards()).then(() => dispatch(getCurrentUserPins())).then(() => setLoading(true))
         }
     }, [dispatch])
 // }, [dispatch, username, currentUser])
@@ -178,7 +179,7 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>}
-                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={Object.values(currentUserBoards)} current={current} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
+                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={Object.values(currentUserBoards)} current={current} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={currentUserPins}> </UserPins></>}
                 </div>
                 :
                 <div>

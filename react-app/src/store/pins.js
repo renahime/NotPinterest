@@ -164,6 +164,15 @@ const getPinsOfCurrentUser = (pins) => ({
 })
 
 
+export const getOtherUserPins = () => async (dispatch) => {
+    const res = await fetch("/api/pins/current_user")
+    if (res.ok) {
+        let pins = await res.json()
+        dispatch(getPinsOfCurrentUser(pins))
+        return pins
+    }
+}
+
 export const getCurrentUserPins = () => async (dispatch) => {
     const res = await fetch("/api/pins/current_user")
     if (res.ok) {
@@ -198,8 +207,6 @@ export const getAllPinsThunkOld = () => async (dispatch) => {
         return errors
     }
 }
-
-
 
 
 export const deletePinThunk = (pinId) => async (dispatch) => {
