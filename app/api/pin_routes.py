@@ -27,6 +27,21 @@ def get_all_pins():
     return all_pins
 
 
+@pin_routes.route("/boards/<int:id>")
+def get_pins_by_board(id):
+    board = Board.get(id)
+
+    if not board:
+        return {"errors": "Board couldn't be found"}
+    
+    pins = {}
+
+    for pin in board.pins_tagged:
+        pins[pin.id] = pin.to_dict()
+
+    return pins
+
+
 # gets all of the pins of a user
 @pin_routes.route("/users/<username>")
 def get_users_pins_by_username(username):

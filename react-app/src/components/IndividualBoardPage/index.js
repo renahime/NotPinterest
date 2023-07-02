@@ -16,16 +16,15 @@ export default function IndividualBoardPage() {
     let username = usernameBoardName[1]
     let boardName = usernameBoardName[2]
     const currentUser = useSelector(state => state.session.user)
+    const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     let boardPins = []
     const individualBoard = useSelector(state => state.boards.singleBoard)
 
     useEffect(() => {
         dispatch(getSingleBoardThunk(username, boardName))
         if (currentUser) {
-            for (let board of currentUser.boards) {
-                if (board && board.id === individualBoard.id) {
-                    setOwnerCheck(true);
-                }
+            if (username === currentUser.username) {
+                setOwnerCheck(true);
             }
         }
     }, [dispatch])
@@ -76,9 +75,9 @@ export default function IndividualBoardPage() {
                                 </div>
                             </div>}
                     </div>
-                    <div className="pins-for-board-page-wrapper">
+                    {/* <div className="pins-for-board-page-wrapper">
                         <PinsForBoardPage pins={boardPins} />
-                    </div>
+                    </div> */}
                 </div>}
         </div>
     )
