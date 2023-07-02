@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams, useHistory, Link, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserInfo } from "../../store/session"
-import { unfollowUser, followUser } from "../../store/session"
+import { unfollowUser, followUser, clearProfile } from "../../store/session"
 import { getOtherUserBoards, getCurrentUserBoards } from "../../store/boards"
 import { getCurrentUserPins, getOtherUserPins } from "../../store/pins"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
@@ -42,6 +42,7 @@ export default function ProfilePage() {
         } else {
             dispatch(getCurrentUserBoards()).then(() => dispatch(getCurrentUserPins())).then(() => setLoading(true))
         }
+        return (() => dispatch(clearProfile()))
     }, [dispatch])
 // }, [dispatch, username, currentUser])
 

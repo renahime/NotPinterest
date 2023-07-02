@@ -10,6 +10,7 @@ const UN_PIN = "boards/unpin"
 const PIN = "boards/pin"
 const REPIN = "boards/repin"
 const GET_BOARDS_BY_USER = "boards/singleUser"
+const CLEAR_BOARD = "boards/clearSingleBoard"
 
 
 const getSingleBoard = (board) => ({
@@ -58,6 +59,10 @@ const pinBoard = (pin, boardId) => ({
 const otherUserBoards = (boards) => ({
     type: GET_BOARDS_BY_USER,
     boards
+})
+
+export const clearBoard = () => ({
+    type: CLEAR_BOARD
 })
 
 
@@ -228,6 +233,8 @@ const initialState = { singleBoard: {}, allBoards: {}, currentUserBoards: {}, cu
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
+        case CLEAR_BOARD:
+            return {...state, singleBoard: {}, allBoards: {...state.allBoards}, currentUserBoards: {...state.currentUserBoards}, currentProfileBoards: {...state.currentProfileBoards}}
         case GET_BOARDS_BY_USER:
             return {...state, singleBoard: {...state.singleBoard}, allBoards: {...state.allBoards}, currentUserBoards: {...state.currentUserBoards}, currentProfileBoards: action.boards}
         case GET_BOARDS_OF_CURRENT_USER:

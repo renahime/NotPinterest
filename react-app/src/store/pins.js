@@ -129,6 +129,7 @@ const CLEAR_SINGLE_PIN = "pin/clear"
 const GET_CURRENT_USER_PINS = "pins/currentUser"
 const GET_OTHER_USER_PINS = "pins/otherUser"
 const GET_PINS_OF_BOARD = "pins/boardPins"
+const CLEAR_BOARD_PINS = "pins/clearBoardPins"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
@@ -173,6 +174,10 @@ const getPinsOfOthertUser = (pins) => ({
 const getPinsOfBoard = (pins) => ({
     type: GET_PINS_OF_BOARD,
     pins
+})
+
+export const clearBoardPins = () => ({
+    type: CLEAR_BOARD_PINS
 })
 
 
@@ -273,6 +278,8 @@ const initialState = { pins: {}, singlePin: {}, currentBoardPins: {}, currentUse
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
+        case CLEAR_BOARD_PINS:
+            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {}, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins}}
         case GET_PINS_OF_BOARD:
             return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: action.pins, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins}}
         case GET_OTHER_USER_PINS:

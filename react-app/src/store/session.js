@@ -17,7 +17,7 @@ const UPDATE_USER_BOARD = "edit/user/boards"
 const ADD_PIN = "add/user/pins"
 const REMOVE_PIN = "remove/user/pins"
 const GET_PROFILE = "users/GET_USER"
-
+const CLEAR_PROFILE = "users/clearProfile"
 
 
 
@@ -89,6 +89,10 @@ export const removePin = (id) => ({
 const getUser = (user) => ({
     type: GET_PROFILE,
     user
+})
+
+export const clearProfile = () => ({
+	type: CLEAR_PROFILE
 })
 
 // const getFollowing = (users) => ({
@@ -338,6 +342,8 @@ const initialState = { user: null, currentProfile: {} };
 export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
+		case CLEAR_PROFILE:
+			return { ...state, user: {...state.user}, currentProfile: {} }
 		case GET_PROFILE:
             return { ...state, user: {...state.user}, currentProfile: action.user }
 		case CREATE_USER_BOARD_FROM_PIN:

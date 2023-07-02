@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getBoardByName, getSingleBoardThunk } from "../../store/boards"
-import { getPinsForBoard } from "../../store/pins"
+import { getBoardByName, getSingleBoardThunk, clearBoard } from "../../store/boards"
+import { getPinsForBoard, clearBoardPins } from "../../store/pins"
 import { useDispatch, useSelector } from "react-redux"
 import PinsForBoardPage from "./PinsForBoardPage"
 import './IndividualBoardPage.css'
@@ -29,6 +29,10 @@ export default function IndividualBoardPage() {
                 setOwnerCheck(true);
             }
         }
+        return (() => {
+            dispatch(clearBoard())
+            dispatch(clearBoardPins())
+        })
     }, [dispatch])
 
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
