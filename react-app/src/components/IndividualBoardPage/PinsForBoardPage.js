@@ -17,9 +17,9 @@ export default function PinsForBoardPage({ pins }) {
                                     {pin.title ? <p className="individual-board-pin-title">{pin.title}</p> : null}
                                 </div>
                             </div>
-                            <div className="individual-board-pin-owner-info" onClick={() => history.push(`/${pin.owner_info.username}`)}>
-                                {pin.owner_info?.profile_image ? <img className="individual-board-individual-pin-profile-image" src={pin.owner_info?.profile_image} /> : null}
-                                {pin.owner_info?.username}
+                            <div className="individual-board-pin-owner-info" onClick={() => history.push(`/${pin.user.username}`)}>
+                                {pin.user?.profile_image ? <img className="individual-board-individual-pin-profile-image" src={pin.user?.profile_image} /> : null}
+                                {pin.user?.username}
                             </div>
                         </div>
                     ))}

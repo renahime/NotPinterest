@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
-import { getPinById } from "../../store/pins"
+import { getPinById, clearSinglePin } from "../../store/pins"
+import { getCurrentUserBoards } from "../../store/boards"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import "./PinDropdown.css";
 import "./IndividualPinPage.css"
-import { clearSinglePin } from "../../store/pins";
 import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
@@ -26,6 +26,8 @@ export default function IndividualPinPage() {
     const [showMenu, setShowMenu] = useState(false)
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
+    // const pinOwnerProfile = useSelector(state => state.session.currentProfile)
+    const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const { closeModal } = useModal();
     const history = useHistory()
     const dispatch = useDispatch()
@@ -37,8 +39,12 @@ export default function IndividualPinPage() {
     const { setModalContent } = useModal()
 
 
+    
     useEffect(() => {
         dispatch(getPinById(id))
+        if (!Object.values(currentUserBoards)) {
+            dispatch(getCurrentUserBoards())
+        }        
         return (() => dispatch(clearSinglePin()))
     }, [dispatch, id])
 
@@ -47,10 +53,10 @@ export default function IndividualPinPage() {
     let options = [];
     if (currentUser) {
         if (Object.values(singlePin).length && Object.values(currentUser).length) {
-            if (singlePin.owner_id == currentUser.id) {
+            if (singlePin.user.id == currentUser.id) {
                 pinnedCheck = true
             }
-            for (let userBoard of currentUser.boards) {
+            for (let userBoard of Object.values(currentUserBoards)) {
                 for (let board of singlePin.boards_pinned_in) {
                     if (board.id == userBoard.id) {
                         pinnedCheck = true;
@@ -82,6 +88,7 @@ export default function IndividualPinPage() {
         }
     })
 
+    // console.log("pinOwnerProfile", pinOwnerProfile)
     const changeBoardName = (newBoard) => {
         setPinBoard(newBoard)
     }
@@ -133,7 +140,7 @@ export default function IndividualPinPage() {
 
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
 
-
+    console.log("options", options)
     if (!Object.values(singlePin).length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
@@ -172,9 +179,6 @@ export default function IndividualPinPage() {
                                     <div className="edit-pin-options">
                                         <div onClick={() => setModalContent(<EditPinModal originalBoardName={grabBoardName.name} grabBoardName={grabBoardName} pin={singlePin} />)} id="edit-pin-button" className="dropdown-item">
                                             Edit Pin
-                                        </div>
-                                        <div onClick={() => setModalContent(<ComingSoon />)} className="dropdown-item">
-                                            Report Pin
                                         </div>
                                     </div>
                                     : showMenu &&

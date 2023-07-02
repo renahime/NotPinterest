@@ -201,10 +201,14 @@ class Pin(db.Model):
             'alt_text': self.alt_text,
             'destination': self.destination,
             'categories': [category.name for category in self.categories],
+            'boards_pinned_in': self.boards_pinned_to_dict(), 
             'user' : {
                 'id': self.user.id,
+                'first_name': self.user.first_name,
+                'last_name': self.user.last_name,
                 'username': self.user.username,
-                'profile_image': self.user.profile_image
+                'profile_image': self.user.profile_image,
+                'followers': [followers.username for followers in self.user.followers]
             },
             'created_at': self.created_at,
             'updated_at': self.updated_at,

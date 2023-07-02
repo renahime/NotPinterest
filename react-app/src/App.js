@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import { authenticate } from "./store/session";
+import { getCurrentUserBoards } from "./store/boards";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import FeedPage from "./components/FeedPage";
@@ -23,7 +24,11 @@ function App() {
   const sessionUser = useSelector(state => state.session.user)
 
   useEffect(() => {
-    dispatch(authenticate()).then(() => setIsLoaded(true));
+    dispatch(authenticate()).then((data) => {
+      if (data["message"]) {
+        dispatch(getCurrentUserBoards())
+      }
+    }).then(() => setIsLoaded(true));
   }, [dispatch]);
 
 

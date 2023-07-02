@@ -269,6 +269,7 @@ export const authenticate = () => async (dispatch) => {
 		}
 
 		dispatch(setUser(data));
+		return {message : "Successful setting"}
 	}
 };
 

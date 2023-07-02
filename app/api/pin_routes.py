@@ -110,20 +110,10 @@ def get_pin_by_id(id):
     # querires Pin database for the pin with the id that the user requested
     pin = Pin.query.get(id)
     # sends back an error message if the pin id isn't valid
-
-    owner_info = {}
-    owner = pin.user.to_dict()
-    print("owner", owner)
-    owner_info["first_name"] = owner["first_name"]
-    owner_info["last_name"] = owner["last_name"]
-    owner_info["followers"] = owner["followers"]
-    owner_info["username"] = owner["username"]
-
     if not pin:
         return {"errors": "Pin couldn't be found"}, 404
 
     found_pin = pin.to_dict()
-    found_pin["owner_info"] = owner_info
     return found_pin
 
 # route to create a new pin

@@ -253,7 +253,8 @@ export const getPinById = (pin_id) => async (dispatch) => {
 
     if (res.ok) {
         const pin = await res.json()
-        return dispatch(getPin(pin))
+        dispatch(getPin(pin))
+        return pin
     }
 
 }
@@ -287,7 +288,7 @@ export default function pinsReducer(state = initialState, action) {
         case GET_CURRENT_USER_PINS:
             return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {...state.currentBoardPins}, currentUserPins: action.pins, currentProfilePins: {...state.currentProfilePins}}
         case GET_PIN:
-            return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin } }
+            return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin }, currentBoardPins: {...state.currentBoardPins}, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins} }
         case CREATE_PIN:
             return { ...state, pins: { ...state.pins, [action.pin.id]: action.pin } }
         case GET_ALL_PINS:
