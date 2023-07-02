@@ -239,8 +239,7 @@ export default function boardsReducer(state = initialState, action) {
                 },
             };
         case GET_SINGLE_BOARD:
-            return { ...state, singleBoard: { ...action.board } };
-
+            return {...state, singleBoard: action.board, allBoards: {...state.allBoards}, currentUserBoards: {...state.currentUserBoards}, currentProfileBoards: {...state.currentProfileBoards}};
         case UPDATE_USER_BOARD:
             if (state.singleBoard.id === action.board.id) {
                 state.singleBoard = action.board;

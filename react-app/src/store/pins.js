@@ -128,6 +128,7 @@ const GET_ALL_PINS = "pins/all"
 const CLEAR_SINGLE_PIN = "pin/clear"
 const GET_CURRENT_USER_PINS = "pins/currentUser"
 const GET_OTHER_USER_PINS = "pins/otherUser"
+const GET_PINS_OF_BOARD = "pins/boardPins"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
@@ -169,6 +170,20 @@ const getPinsOfOthertUser = (pins) => ({
     pins
 })
 
+const getPinsOfBoard = (pins) => ({
+    type: GET_PINS_OF_BOARD,
+    pins
+})
+
+
+export const getPinsForBoard = (id) => async (dispatch) => {
+    let res = await fetch(`/api/pins/boards/${id}`)
+    if (res.ok) {
+        let pins = await res.json()
+        dispatch(getPinsOfBoard(pins))
+        return pins
+    }
+}
 
 export const getOtherUserPins = (username) => async (dispatch) => {
     const res = await fetch(`/api/pins/users/${username}`)
@@ -258,6 +273,8 @@ const initialState = { pins: {}, singlePin: {}, currentBoardPins: {}, currentUse
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
+        case GET_PINS_OF_BOARD:
+            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: action.pins, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins}}
         case GET_OTHER_USER_PINS:
             return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {...state.currentBoardPins}, currentUserPins: {...state.currentUserPins}, currentProfilePins: action.pins}
         case GET_CURRENT_USER_PINS:
