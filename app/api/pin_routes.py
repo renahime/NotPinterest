@@ -86,7 +86,7 @@ def get_users_pins_by_current_user():
     all_pins = {}
     # standardizes the format of the pins returned to the user
     for pin in pins:
-        all_pins[pin.id] = pin.to_dict()
+        all_pins[pin.id] = pin.less_to_dict()
     return all_pins
 
 # route to get a pin by id

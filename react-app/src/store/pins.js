@@ -126,7 +126,7 @@ const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
 const GET_ALL_PINS = "pins/all"
 const CLEAR_SINGLE_PIN = "pin/clear"
-
+const GET_CURRENT_USER_PINS = "pins/currentUser"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
@@ -158,9 +158,20 @@ const updateUserPin = (pin) => ({
     pin
 })
 
+const getPinsOfCurrentUser = (pins) => ({
+    type: GET_CURRENT_USER_PINS,
+    pins
+})
 
 
-
+export const getCurrentUserPins = () => async (dispatch) => {
+    const res = await fetch("/api/pins/current_user")
+    if (res.ok) {
+        let pins = await res.json()
+        dispatch(getPinsOfCurrentUser(pins))
+        return pins
+    }
+}
 
 export const createNewPin = (pin_info) => async (dispatch) => {
     const res = await fetch("/api/pins/new", {
@@ -176,9 +187,6 @@ export const createNewPin = (pin_info) => async (dispatch) => {
         return errors
     }
 }
-
-
-
 
 export const getAllPinsThunkOld = () => async (dispatch) => {
     let res = await fetch(`/api/pins/`)
@@ -233,10 +241,12 @@ export const updatePinThunk = (pin) => async (dispatch) => {
     }
 };
 
-const initialState = { pins: {}, singlePin: {} }
+const initialState = { pins: {}, singlePin: {}, currentBoardPins: {}, currentUserPins: {}, currentProfilePins: {} }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
+        case GET_CURRENT_USER_PINS:
+            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {...state.currentBoardPins}, currentUserPins: action.pins, currentProfilePins: {...state.currentProfilePins}}
         case GET_PIN:
             return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin } }
         case CREATE_PIN:
