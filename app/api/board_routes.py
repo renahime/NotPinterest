@@ -95,7 +95,7 @@ def get_user_boards(username):
     user_boards = Board.query.join(User).filter(User.username == username).all()
 
     if user_boards:
-        return {"User Boards" : [board.to_dict() for board in user_boards]}
+        return {board.id : board.less_to_dict() for board in user_boards}
 
     else:
         return {"errors": "No Boards found"}

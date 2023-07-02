@@ -91,14 +91,12 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                 </div>
                                 <div>
                                     <p className="profile-pins-on-board">
-                                        {pinDisplay(boards.pin_count)}
+                                        {pinDisplay(boards.num_pins)}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </Link>
-
-
                 </>
             ))}
         </div>

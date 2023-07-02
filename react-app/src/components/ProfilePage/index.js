@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { useParams, useHistory } from "react-router-dom"
+import { useParams, useHistory, Link, NavLink } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { getUserInfo } from "../../store/profile"
+import { getUserInfo } from "../../store/session"
 import { unfollowUser, followUser } from "../../store/session"
+import { getOtherUserBoards, getCurrentUserBoards } from "../../store/boards"
 import CurrentUserBoard from "../UserBoards/CurrentUserBoard"
 import NotUSerProfile from "../UserBoards/NotUserProfile"
 import PageNotFound from "../PageNotFound"
-import { Link, NavLink } from "react-router-dom/cjs/react-router-dom.min"
 import LoadingButton from "../LoadingButton"
 import "./ProfilePage.css"
 import UserPins from '../UserPins'
@@ -20,8 +20,10 @@ export default function ProfilePage() {
     const dispatch = useDispatch()
     const [openMenu, setOpenMenu] = useState(false)
     const [loading, setLoading] = useState(false)
-    const currentProfile = useSelector(state => state.profile.currentProfile)
+    const currentProfile = useSelector(state => state.session.currentProfile)
     const currentUser = useSelector(state => state.session.user)
+    const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
+    const otherUserBoards = useSelector(state => state.boards.currentProfileBoards)
     let [numFollowers, setNumFollowers] = useState(0);
     let [numFollowing, setNumFollowing] = useState(0)
     let [isfollowing, setIsFollowing] = useState(false);
@@ -30,16 +32,16 @@ export default function ProfilePage() {
 
     let current = currentUser;
 
-    
-
     useEffect(() => {
         if (!checkUser()) {
-            dispatch(getUserInfo(username)).then(() => setLoading(true));
+            dispatch(getUserInfo(username)).then(() => dispatch(getOtherUserBoards(username))).then(() => setLoading(true));
             setUsingProfile(true)
         } else {
+            dispatch(getCurrentUserBoards())
             setLoading(true);
         }
-    }, [dispatch, username, currentUser])
+    }, [dispatch])
+// }, [dispatch, username, currentUser])
 
 
 
@@ -113,7 +115,6 @@ export default function ProfilePage() {
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
-
     if (!loading) return <h1>Loading...</h1>
     else if (!current.id) return <PageNotFound />
 
@@ -177,11 +178,11 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>}
-                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={current.boards} current={current} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
+                    </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={Object.values(currentUserBoards)} current={current} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
                 </div>
                 :
                 <div>
-                    {!showBoards ? <NotUSerProfile userBoardsArr={current.boards} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
+                    {!showBoards ? <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={current.pins}> </UserPins></>}
                 </div>
             }
         </div>

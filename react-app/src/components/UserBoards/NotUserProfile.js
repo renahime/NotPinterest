@@ -56,7 +56,7 @@ export default function NotUSerProfile({ userBoardsArr, username }) {
                         </div>
                         <div>
                             <p className="profile-pins-on-board">
-                                {pinDisplay(boards.pin_count)}
+                                {pinDisplay(boards.num_pins)}
                             </p>
                         </div>
                     </div>

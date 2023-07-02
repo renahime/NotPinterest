@@ -16,7 +16,7 @@ const DELETE_USER_BOARD = "delete/user/boards"
 const UPDATE_USER_BOARD = "edit/user/boards"
 const ADD_PIN = "add/user/pins"
 const REMOVE_PIN = "remove/user/pins"
-
+const GET_PROFILE = "users/GET_USER"
 
 
 
@@ -86,10 +86,32 @@ export const removePin = (id) => ({
 	id
 })
 
+const getUser = (user) => ({
+    type: GET_PROFILE,
+    user
+})
+
 // const getFollowing = (users) => ({
 // 	type: GET_FOLLOWERS,
 // 	users
 // })
+
+
+export const getUserInfo = (username) => async (dispatch) => {
+    const res = await fetch(`/api/users/users/${username}`)
+    if (res.status >= 400) {
+        const userDataErrors = await res.json()
+        return { errors: userDataErrors }
+    }
+    else {
+        const userData = await res.json()
+        if (userData.errors) {
+            return userData.errors
+        }
+        return dispatch(getUser(userData))
+    }
+}
+
 
 
 export const updateUserBoardThunk = (board, id) => async (dispatch) => {
@@ -311,11 +333,13 @@ export const signUp = (username, email, password) => async (dispatch) => {
 	}
 };
 
-const initialState = { user: null };
+const initialState = { user: null, currentProfile: {} };
 
 export default function reducer(state = initialState, action) {
 	let newState = {}
 	switch (action.type) {
+		case GET_PROFILE:
+            return { ...state, user: {...state.user}, currentProfile: action.user }
 		case CREATE_USER_BOARD_FROM_PIN:
 			let newSate2 = { ...state, user: { ...state.user, ...state.user.boards.push(action.board) } }
 			console.log("newSate2", newSate2)
