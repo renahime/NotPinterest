@@ -25,7 +25,7 @@ function CreateBoardModal({ username }) {
   const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
   const [change, setChange] = useState(false)
-
+  const userBoards = useSelector(state => state.boards.currentUserBoards)
 
 
 
@@ -113,8 +113,8 @@ function CreateBoardModal({ username }) {
 
     // check if board name is already taken
     if (Object.values(testUsername)) {
-      const userBoards = testUsername.boards
-      for (const board of testUsername.boards) {
+      // const userBoards = testUsername.boards
+      for (const board of Object.values(userBoards)) {
         if (board.name.toLowerCase() === name.toLowerCase()) {
           setErrors(["This board name is already taken, please choose another name."])
           return

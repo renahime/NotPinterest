@@ -234,34 +234,64 @@ export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
         case CLEAR_BOARD:
-            return {...state, singleBoard: {}, allBoards: {...state.allBoards}, currentUserBoards: {...state.currentUserBoards}, currentProfileBoards: {...state.currentProfileBoards}}
+            return {...state, 
+                singleBoard: {}, 
+                allBoards: {...state.allBoards},
+                currentUserBoards: {...state.currentUserBoards},
+                currentProfileBoards: {...state.currentProfileBoards}
+            }
         case GET_BOARDS_BY_USER:
-            return {...state, singleBoard: {...state.singleBoard}, allBoards: {...state.allBoards}, currentUserBoards: {...state.currentUserBoards}, currentProfileBoards: action.boards}
+            return {...state,
+                singleBoard: {...state.singleBoard},
+                allBoards: {...state.allBoards}, 
+                currentUserBoards: {...state.currentUserBoards}, 
+                currentProfileBoards: action.boards
+            }
         case GET_BOARDS_OF_CURRENT_USER:
-            return {...state, singleBoard: {...state.singleBoard}, allBoards: {...state.allBoards}, currentUserBoards: {...action.boards}, currentProfileBoards: {...state.currentProfileBoards}}
+            return {...state, 
+                singleBoard: {...state.singleBoard}, 
+                allBoards: {...state.allBoards}, 
+                currentUserBoards: {...action.boards}, 
+                currentProfileBoards: {...state.currentProfileBoards}
+            }
         case CREATE_USER_BOARD:
             return {
                 ...state, allBoards: {
                     ...state.allBoards, [action.board.id]: action.board
-                },
+                }, currentUserBoards: {
+                    ...state.currentUserBoards, [action.board.id]: action.board
+                }, 
+                currentProfileBoards: {...state.currentProfileBoards}
             };
         case GET_SINGLE_BOARD:
-            return {...state, singleBoard: action.board, allBoards: {...state.allBoards}, currentUserBoards: {...state.currentUserBoards}, currentProfileBoards: {...state.currentProfileBoards}};
-        case UPDATE_USER_BOARD:
-            if (state.singleBoard.id === action.board.id) {
-                state.singleBoard = action.board;
-            }
-            newState = {
-                ...state,
-                allBoards: {
-                    ...state.allBoards,
-                    [action.board.id]: action.board
-                },
-                singleBoard: {
-                    ...state.singleBoard
-                }
+            return {...state, 
+                singleBoard: action.board, 
+                allBoards: {...state.allBoards}, 
+                currentUserBoards: {...state.currentUserBoards}, 
+                currentProfileBoards: {...state.currentProfileBoards}
             };
-            return newState;
+        case UPDATE_USER_BOARD:
+            let newState5 = {...state, 
+                singleBoard: {...state.singleBoard}, 
+                allBoards: {...state.allBoards, [action.board.id]: action.board}, 
+                currentUserBoards: {...state.currentUserBoards, [action.board.id]: action.board}, 
+                currentProfileBoards: {...state.currentProfileBoards}}
+
+            if (newState5.singleBoard.id === action.board.id) {
+                newState5.singleBoard = action.board;
+            }
+
+            // newState = {
+            //     ...state,
+            //     allBoards: {
+            //         ...state.allBoards,
+            //         [action.board.id]: action.board
+            //     },
+            //     singleBoard: {
+            //         ...state.singleBoard
+            //     }
+            // };
+            return newState5;
         case DELETE_BOARD:
             state.singleBoard = {}
 

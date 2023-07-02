@@ -347,10 +347,10 @@ export default function reducer(state = initialState, action) {
 			return { ...state, user: {...state.user}, currentProfile: {} }
 		case GET_PROFILE:
             return { ...state, user: {...state.user}, currentProfile: action.user }
-		case CREATE_USER_BOARD_FROM_PIN:
-			let newSate2 = { ...state, user: { ...state.user, ...state.user.boards.push(action.board) } }
-			console.log("newSate2", newSate2)
-			return newSate2
+		// case CREATE_USER_BOARD_FROM_PIN:
+		// 	let newSate2 = { ...state, user: { ...state.user, ...state.user.boards.push(action.board) } }
+		// 	console.log("newSate2", newSate2)
+		// 	return newSate2
 		case SET_USER_CATEGORIES:
 			let user = { ...state.user }
 			user.categories = action.categories
@@ -383,32 +383,32 @@ export default function reducer(state = initialState, action) {
 			let newState2 = { ...state }
 			let boardIndex = state.user.boards.indexOf(action.boardName)
 			state.user.boards.splice(boardIndex, 1)
-			return newSate2
+			return newState2
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
 
-		case UPDATE_USER_BOARD:
-			let oldBoardState = { ...state }
-			let currentProfileBoardsArr = oldBoardState.user.boards
-			let oldBoardData;
-			let oldBoardIndex;
-			for (let i = 0; i < currentProfileBoardsArr.length; i++) {
-				console.log(currentProfileBoardsArr[i].id)
-				console.log(action.board.id)
-				if (currentProfileBoardsArr[i].id === action.board.id) {
-					// console.log("NEW BOARD", currentProfileBoardsArr[i])
-					oldBoardData = currentProfileBoardsArr[i]
-					oldBoardIndex = i
-					// console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
-					break
-				}
-			}
-			if (oldBoardIndex !== undefined && oldBoardData) {
-				currentProfileBoardsArr[oldBoardIndex] = action.board
-			}
-			// console.log("NEW BOARD DATA in reducer", oldBoardData)
+		// case UPDATE_USER_BOARD:
+		// 	let oldBoardState = { ...state }
+		// 	let currentProfileBoardsArr = oldBoardState.user.boards
+		// 	let oldBoardData;
+		// 	let oldBoardIndex;
+		// 	for (let i = 0; i < currentProfileBoardsArr.length; i++) {
+		// 		console.log(currentProfileBoardsArr[i].id)
+		// 		console.log(action.board.id)
+		// 		if (currentProfileBoardsArr[i].id === action.board.id) {
+		// 			// console.log("NEW BOARD", currentProfileBoardsArr[i])
+		// 			oldBoardData = currentProfileBoardsArr[i]
+		// 			oldBoardIndex = i
+		// 			// console.log("WE ARE IN UPDATE PROFILE REDUCER THUNK", oldBoardData)
+		// 			break
+		// 		}
+		// 	}
+		// 	if (oldBoardIndex !== undefined && oldBoardData) {
+		// 		currentProfileBoardsArr[oldBoardIndex] = action.board
+		// 	}
+		// 	// console.log("NEW BOARD DATA in reducer", oldBoardData)
 
-			return { ...state, user: { ...oldBoardState.user, boards: currentProfileBoardsArr } }
+		// 	return { ...state, user: { ...oldBoardState.user, boards: currentProfileBoardsArr } }
 		case DELETE_SESSION_BOARD:
 			let userStateBeforeBoardDelete = { ...state, user: { ...state.user } }
 			let userBoardstoDeleteArr = userStateBeforeBoardDelete.user.boards

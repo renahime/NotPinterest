@@ -143,6 +143,7 @@ class Board(db.Model):
             'cover_image': [image.image for image in self.pin_cover_image],
             'additional_images': self.findOtherImages(),
             'description': self.description,
+            'num_pins': len(self.pins_tagged),
             'user': {
                 'id': self.user.id,
                 'username': self.user.username,

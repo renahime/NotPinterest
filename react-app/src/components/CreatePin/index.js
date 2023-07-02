@@ -13,7 +13,7 @@ import { addPin } from "../../store/session";
 export default function CreatePin() {
     const history = useHistory()
     const currentUser = useSelector(state => state.session.user)
-    const currentUserBoards = useSelector(state => state.session.user.boards)
+    const currentUserBoards = useSelector(state => state.boards.boards)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [errors, setErrors] = useState("")

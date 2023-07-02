@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { updateUserBoardThunk } from "../../store/session";
+import { updateBoardThunk } from "../../store/boards";
 import { useHistory } from 'react-router-dom'
 import { clearSingleBoard } from "../../store/boards";
 import ChangeBoardCoverModal from "./ChangeBoardCoverModal";
 import { deleteBoardSessionThunk } from "../../store/session";
+import { getPinsForBoard, clearBoardPins } from "../../store/pins";
 
 import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
 function UpdateBoardModal({ id, newCoverImage, board, current }) {
-
   const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getPinsForBoard(id))
+    return (() => clearBoardPins())
+  }, [dispatch])
+
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
   const [errors, setErrors] = useState([]);
   const { setModalContent, closeModal } = useModal();
+  const boardPins = useSelector(state => state.pins.currentBoardPins)
+  const userBoards = useSelector(state => state.boards.currentUserBoards)
 
   console.log(current);
 
@@ -70,7 +78,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
     const validationErrors = {};
     // await dispatch(updateBoardThunk(updatedBoardData, id))
     if (name) {
-      for (let board of current.boards) {
+      for (let board of Object.values(userBoards)) {
         if (board) {
           if (name == board.name) {
             validationErrors.name = "Ooops! You already have this board name."
@@ -90,8 +98,9 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
       setErrors(validationErrors)
       return
     }
-    let updatedBoard = await dispatch(updateUserBoardThunk(updatedBoardData, board.id))
+    let updatedBoard = await dispatch(updateBoardThunk(updatedBoardData, board.id))
     closeModal()
+    console.log("updatedboard", updatedBoard)
   };
 
   console.log(errors);
@@ -110,7 +119,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
               <img src={cover_image} className="edit-board-cover-image" />
             </div>
           </div>
-            : board.pins.length ? <div className="edit-board-cover-image-container">
+            : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
               <div className="edit-board-cover-image-text">Board cover</div>
               <div className="edit-board-cover-image" onClick={openModal}>
                 <img src='https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png' className="edit-board-cover-image" />
