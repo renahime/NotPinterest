@@ -4,6 +4,12 @@ Threadterest is a soft clone of Pinterest. A social media platform that allows u
 
 Check out [Threadterest](https://threadterest.onrender.com/)
 
+## Index
+[MVP Feature List](https://github.com/renahime/NotPinterest/wiki/MVP-List) | [Database Schema](https://github.com/renahime/NotPinterest/wiki/Database-Schema-Design) | [User Stories](https://github.com/renahime/NotPinterest/wiki/User-Stories) | [Wire Frames](https://github.com/renahime/NotPinterest/wiki/WireFrame)
+
+## Technologies Used
+Python | Flask | React | Redux | AWS S3 bucket | SQL Alchemy | HTML | CSS
+
 ## Getting started
 1. Clone this repository (only this branch)
 
