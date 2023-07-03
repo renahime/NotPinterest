@@ -10,6 +10,13 @@ Check out [Threadterest](https://threadterest.onrender.com/)
 ## Technologies Used
 Python | Flask | React | Redux | AWS S3 bucket | SQL Alchemy | HTML | CSS
 
+# Splash Page
+![](https://i.imgur.com/6yhtdYp.gif)
+# Feed Page
+![](https://i.imgur.com/zimouBO.gif)
+# S3 Bucket 
+![](https://i.imgur.com/5YlRq0u.gif)
+
 ## Getting started
 1. Clone this repository (only this branch)
 
@@ -155,14 +162,6 @@ your site just below the name of the Web Service at the top of the page.
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/
 
-
-
-# Splash Page
-![](https://i.imgur.com/6yhtdYp.gif)
-# Feed Page
-![](https://i.imgur.com/zimouBO.gif)
-# S3 Bucket 
-![](https://i.imgur.com/5YlRq0u.gif)
 
 # Features
 ## Boards
