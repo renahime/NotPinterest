@@ -146,3 +146,27 @@ your site just below the name of the Web Service at the top of the page.
 
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/
+
+#Splash Page
+![](https://imgur.com/zimouBO)
+
+# Features
+## Boards
+* Users can read/view other Boards
+* Users can create a Board
+* Users can edit a Board
+* Users can delete a Board
+
+## Pins
+* Users can reac/view Pins
+* Users can create a Pin
+* Users can edit a Pin
+* Uses can delete a Pin
+
+## AWS
+Logged in Users can 
+* Locate their spot with Google Maps Api
+
+## Personalized Feed
+* Logged in Users can choose cateogories they are interested in and have a personalized feed
+  
