@@ -1,6 +1,8 @@
-# Flask React Project
+# Threadterest
 
-This is the starter for the Flask React project.
+Threadterest is a soft clone of Pinterest. A social media platform that allows users to discover, save, and share visual content and ideas through digital boards and pins.
+
+Check out [Threadterest](https://threadterest.onrender.com/)
 
 ## Getting started
 1. Clone this repository (only this branch)
@@ -147,8 +149,14 @@ your site just below the name of the Web Service at the top of the page.
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/
 
-#Splash Page
-![](https://imgur.com/zimouBO)
+
+
+# Splash Page
+![](https://i.imgur.com/6yhtdYp.gif)
+# Feed Page
+![](https://i.imgur.com/zimouBO.gif)
+# S3 Bucket 
+![](https://i.imgur.com/5YlRq0u.gif)
 
 # Features
 ## Boards
@@ -158,14 +166,14 @@ your site just below the name of the Web Service at the top of the page.
 * Users can delete a Board
 
 ## Pins
-* Users can reac/view Pins
+* Users can read/view Pins
 * Users can create a Pin
 * Users can edit a Pin
 * Uses can delete a Pin
 
 ## AWS
 Logged in Users can 
-* Locate their spot with Google Maps Api
+* Upload images for their boards or pins to AWS S3
 
 ## Personalized Feed
 * Logged in Users can choose cateogories they are interested in and have a personalized feed
