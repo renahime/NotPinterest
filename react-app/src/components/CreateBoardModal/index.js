@@ -10,9 +10,6 @@ import SavePinsToBoardModal from "./SavePinsToBoard";
 import './CreateBoardModal.css'
 import { getAllPinsThunkOld } from "../../store/pins";
 import CreateBoardFromPinModal from "../IndividualPinPage/CreateBoardModal";
-import { createBoardFromPinPage } from "../../store/session";
-
-
 
 
 function CreateBoardModal({ username }) {
@@ -47,14 +44,14 @@ function CreateBoardModal({ username }) {
 
 
 
-  let pinsArr = []
-  for (const key in allpins) {
-    const pin = allpins[key]
-    pinsArr.push(pin)
+  // let pinsArr = []
+  // for (const key in allpins) {
+  //   const pin = allpins[key]
+  //   pinsArr.push(pin)
 
-  }
+  // }
 
-  console.log("PINSARR", pinsArr)
+  // console.log("PINSARR", pinsArr)
 
   // shuffle(pinsArr)
 
@@ -155,7 +152,7 @@ function CreateBoardModal({ username }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <SavePinsToBoardModal pinsArr={pinsArr} username={username} setChange={setChange} change={change} boardName={name} />
+        <SavePinsToBoardModal pinsArr={Object.values(allpins)} username={username} setChange={setChange} change={change} boardName={name} />
       </div>
     );
     setModalContent(modalContent);

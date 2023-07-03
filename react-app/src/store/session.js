@@ -360,10 +360,10 @@ export default function reducer(state = initialState, action) {
 			return newState
 		case SET_USER:
 			return { ...state, user: action.payload };
-		case ADD_PIN:
-			const addPins = [...state.user.pins]
-			addPins.unshift(action.pin.pin);
-			return { ...state, user: { ...state.user, pins: addPins } };
+		// case ADD_PIN:
+		// 	const addPins = [...state.user.pins]
+		// 	addPins.unshift(action.pin.pin);
+		// 	return { ...state, user: { ...state.user, pins: addPins } };
 		case REMOVE_PIN:
 			let removePins = [...state.user.pins]
 			removePins = removePins.filter((pin) => pin.id !== action.id);

@@ -280,17 +280,6 @@ export default function boardsReducer(state = initialState, action) {
             if (newState5.singleBoard.id === action.board.id) {
                 newState5.singleBoard = action.board;
             }
-
-            // newState = {
-            //     ...state,
-            //     allBoards: {
-            //         ...state.allBoards,
-            //         [action.board.id]: action.board
-            //     },
-            //     singleBoard: {
-            //         ...state.singleBoard
-            //     }
-            // };
             return newState5;
         case DELETE_BOARD:
             state.singleBoard = {}
@@ -307,13 +296,13 @@ export default function boardsReducer(state = initialState, action) {
                 }
             }
             return { ...state, singleBoard: unPinSingle }
-        case PIN:
-            const pinSingle = { ...state.singleBoard }
-            if (typeof pinSingle === 'object') {
-                if ("pinInfo" in pinSingle)
-                    pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
-            }
-            return { ...state, singleBoard: pinSingle }
+        // case PIN:
+        //     const pinSingle = { ...state.singleBoard }
+        //     if (typeof pinSingle === 'object') {
+        //         if ("pinInfo" in pinSingle)
+        //             pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
+        //     }
+        //     return { ...state, singleBoard: pinSingle }
         case REPIN:
             const repinSingle = { ...state.singleBoard }
             if (typeof repinSingle === 'object') {

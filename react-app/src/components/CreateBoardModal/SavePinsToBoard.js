@@ -7,7 +7,7 @@ import { NavLink, Redirect, useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import './SavePinsToBoard.css'
 // import { addPinToBoardThunk, getBoardByName } from "../../store/boards";
-import { pinThunk } from "../../store/boards";
+import { pinThunk } from "../../store/pins";
 import { getAllPinsThunkOld } from "../../store/pins";
 import LoadingButton from "../LoadingButton";
 
@@ -23,15 +23,19 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
   const [isLoading, setIsLoading] = useState(true);
   const { setModalContent, closeModal } = useModal();
   const history = useHistory()
+  const allpins = useSelector(state => state.pins.pins)
 
   //   // console.log("PINS TODAY SAVE PINS TO BOARD MODAL", pinsToday)
 
-  // useEffect(() => {
-  //   console.log("Before dispatch");
-  //   dispatch(getAllPinsThunkOld())
-  //     .then(() => console.log("ALL PINS FETCHED", pinsToday))
-  //     .catch((error) => console.log("Error fetching pins:", error));
-  // }, [dispatch, change]);
+  useEffect(() => {
+    // console.log("allpins", allpins)
+    // console.log(Object.values(allpins))
+    if (!Object.values(allpins).length) {
+      dispatch(getAllPinsThunkOld())
+    }
+      // .then(() => console.log("ALL PINS FETCHED", pinsToday))
+      // .catch((error) => console.log("Error fetching pins:", error));
+  }, [dispatch]);
 
 
   // useEffect(() => {
@@ -117,43 +121,43 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
   //     )
   //   }
   // }
-  if (pinsArr.length == 0) {
-    pinsArr = [
-      {
-        "alt_text": null,
-        "boards_pinned_in": [
-          {
-            "id": 6,
-            "name": "Casual Outfits"
-          },
-          {
-            "id": 3,
-            "name": "Summer outfits"
-          }
-        ],
-        "categories": [
-          "Athleisure"
-        ],
-        "created_at": "Sun, 11 Jun 2023 20:29:01 GMT",
-        "description": "Material: cotton, Fabric: Broadcloth, Collar: O-Neck",
-        "destination": "https://vivinch.com/no-pain-no-gain-mens-hooded-gym-fitness-tank-top",
-        "id": 11,
-        "image": "https://threadterest.s3.us-east-2.amazonaws.com/No+Pain+No+Gain+Mens+Hooded+Tank+Top.jpeg",
-        "owner_id": 2,
-        "title": "No Pain No Gain Mens Hooded Tank Top",
-        "updated_at": "Sun, 11 Jun 2023 20:29:01 GMT",
-        "user": {
-          "first_name": "Jane",
-          "followers": [
-            "Demo"
-          ],
-          "id": 2,
-          "last_name": "Smith",
-          "profile_image": null,
-          "username": "jane"
-        }
-      }]
-  }
+  // if (pinsArr.length == 0) {
+  //   pinsArr = [
+  //     {
+  //       "alt_text": null,
+  //       "boards_pinned_in": [
+  //         {
+  //           "id": 6,
+  //           "name": "Casual Outfits"
+  //         },
+  //         {
+  //           "id": 3,
+  //           "name": "Summer outfits"
+  //         }
+  //       ],
+  //       "categories": [
+  //         "Athleisure"
+  //       ],
+  //       "created_at": "Sun, 11 Jun 2023 20:29:01 GMT",
+  //       "description": "Material: cotton, Fabric: Broadcloth, Collar: O-Neck",
+  //       "destination": "https://vivinch.com/no-pain-no-gain-mens-hooded-gym-fitness-tank-top",
+  //       "id": 11,
+  //       "image": "https://threadterest.s3.us-east-2.amazonaws.com/No+Pain+No+Gain+Mens+Hooded+Tank+Top.jpeg",
+  //       "owner_id": 2,
+  //       "title": "No Pain No Gain Mens Hooded Tank Top",
+  //       "updated_at": "Sun, 11 Jun 2023 20:29:01 GMT",
+  //       "user": {
+  //         "first_name": "Jane",
+  //         "followers": [
+  //           "Demo"
+  //         ],
+  //         "id": 2,
+  //         "last_name": "Smith",
+  //         "profile_image": null,
+  //         "username": "jane"
+  //       }
+  //     }]
+  // }
 
 
 
@@ -166,7 +170,7 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
         <div className="save-pin-list-container">
           {/* <div className="save-pins-board-list" onMouseEnter={handlePinHover} onMouseLeave={handlePinHover}> */}
           <div className="save-pins-board-list" >
-            {pinsArr.map((pin) => {
+            {Object.values(allpins).slice(0, 15).map((pin) => {
               return (
                 < div className="save-pins-to-board-modal-pins"
                   data-pin-id={pin.id}

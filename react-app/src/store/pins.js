@@ -130,6 +130,7 @@ const GET_CURRENT_USER_PINS = "pins/currentUser"
 const GET_OTHER_USER_PINS = "pins/otherUser"
 const GET_PINS_OF_BOARD = "pins/boardPins"
 const CLEAR_BOARD_PINS = "pins/clearBoardPins"
+const PIN = "boards/pin"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
@@ -179,6 +180,26 @@ const getPinsOfBoard = (pins) => ({
 export const clearBoardPins = () => ({
     type: CLEAR_BOARD_PINS
 })
+
+const pinBoard = (pin, boardId) => ({
+    type: PIN,
+    pin,
+    boardId,
+})
+
+export const pinThunk = (pin, boardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${boardId}/pin/${pin.id}`, {
+        method: "POST",
+    });
+    if (res.ok) {
+        dispatch(pinBoard(pin, boardId));
+        return pin
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
 
 
 export const getPinsForBoard = (id) => async (dispatch) => {
@@ -279,18 +300,60 @@ const initialState = { pins: {}, singlePin: {}, currentBoardPins: {}, currentUse
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
+        case PIN:
+            return {...state, 
+                pins: {...state.pins}, 
+                singlePin: {...state.singlePin}, 
+                currentBoardPins: {...state.currentBoardPins, [action.pin.id]: action.pin}, 
+                currentUserPins: {...state.currentUserPins}, 
+                currentProfilePins: {...state.currentProfilePins}
+            }
         case CLEAR_BOARD_PINS:
-            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {}, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins}}
+            return {...state, 
+                pins: {...state.pins}, 
+                singlePin: {...state.singlePin}, 
+                currentBoardPins: {}, 
+                currentUserPins: {...state.currentUserPins}, 
+                currentProfilePins: {...state.currentProfilePins}
+            }
         case GET_PINS_OF_BOARD:
-            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: action.pins, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins}}
+            return {...state, 
+                pins: {...state.pins}, 
+                singlePin: {...state.singlePin}, 
+                currentBoardPins: action.pins, 
+                currentUserPins: {...state.currentUserPins}, 
+                currentProfilePins: {...state.currentProfilePins}
+            }
         case GET_OTHER_USER_PINS:
-            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {...state.currentBoardPins}, currentUserPins: {...state.currentUserPins}, currentProfilePins: action.pins}
+            return {...state, 
+                pins: {...state.pins}, 
+                singlePin: {...state.singlePin}, 
+                currentBoardPins: {...state.currentBoardPins}, 
+                currentUserPins: {...state.currentUserPins}, 
+                currentProfilePins: action.pins}
         case GET_CURRENT_USER_PINS:
-            return {...state, pins: {...state.pins}, singlePin: {...state.singlePin}, currentBoardPins: {...state.currentBoardPins}, currentUserPins: action.pins, currentProfilePins: {...state.currentProfilePins}}
+            return {...state, 
+                pins: {...state.pins}, 
+                singlePin: {...state.singlePin}, 
+                currentBoardPins: {...state.currentBoardPins}, 
+                currentUserPins: action.pins, 
+                currentProfilePins: {...state.currentProfilePins}
+            }
         case GET_PIN:
-            return { ...state, pins: { ...state.pins }, singlePin: { ...action.pin }, currentBoardPins: {...state.currentBoardPins}, currentUserPins: {...state.currentUserPins}, currentProfilePins: {...state.currentProfilePins} }
+            return { ...state, 
+                pins: { ...state.pins }, 
+                singlePin: { ...action.pin }, 
+                currentBoardPins: {...state.currentBoardPins}, 
+                currentUserPins: {...state.currentUserPins}, 
+                currentProfilePins: {...state.currentProfilePins}
+            }
         case CREATE_PIN:
-            return { ...state, pins: { ...state.pins, [action.pin.id]: action.pin } }
+            return { ...state, 
+                pins: { ...state.pins, [action.pin.id]: action.pin },
+                currentBoardPins: {...state.currentBoardPins}, 
+                currentUserPins: {...state.currentUserPins, [action.pin.id]: action.pin}, 
+                currentProfilePins: {...state.currentProfilePins}
+            }
         case GET_ALL_PINS:
             return { ...state, pins: { ...action.pins } }
         case DELETE_PIN:

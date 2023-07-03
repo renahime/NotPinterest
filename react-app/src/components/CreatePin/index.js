@@ -13,7 +13,7 @@ import { addPin } from "../../store/session";
 export default function CreatePin() {
     const history = useHistory()
     const currentUser = useSelector(state => state.session.user)
-    const currentUserBoards = useSelector(state => state.boards.boards)
+    const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [errors, setErrors] = useState("")
@@ -31,7 +31,7 @@ export default function CreatePin() {
     const [submit, setSubmit] = useState(false)
     const { setModalContent, setOnModalClose } = useModal();
     const dispatch = useDispatch()
-    let userBoards = Object.values(currentUser.boards)
+    let userBoards = Object.values(currentUserBoards)
 
     function formatFollowers(num) {
         if (num === 1) return "1 follower"
@@ -161,14 +161,14 @@ export default function CreatePin() {
                     </div>
                 </div>
                 <div className="new-pin-info-side">
-                    {currentUserBoards.length ?
+                    {userBoards.length ?
                         <div className="new-pin-save-and-board">
                             <label>
                                 <select
                                     value={board} className="create-pin-select"
                                     onChange={(e) => setBoard(e.target.value)}
                                 >
-                                    {currentUserBoards.map(boardValue => (
+                                    {userBoards.map(boardValue => (
                                         <option
                                             key={boardValue.name}>
                                             {boardValue.name}
