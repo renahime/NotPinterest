@@ -14,7 +14,7 @@ import OpenModalButton from "../OpenModalButton";
 
 function UpdateBoardModal({ id, newCoverImage, board, current }) {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getPinsForBoard(id))
     return (() => clearBoardPins())
@@ -28,9 +28,9 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
   const userBoards = useSelector(state => state.boards.currentUserBoards)
 
   //set form data
-  const [name, setName] = useState(board?.name);
-  const [description, setDescription] = useState(board?.description);
-  const [isPrivate, setIsPrivate] = useState(board?.private);
+  const [name, setName] = useState(board.name);
+  const [description, setDescription] = useState(board.description);
+  const [isPrivate, setIsPrivate] = useState(board.private);
   const [cover_image, setCoverImage] = useState(
     newCoverImage ? newCoverImage : board?.cover_image
   );
@@ -105,71 +105,72 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
         <div className="edit-board-modal-header">
           Edit board
         </div>
-        <form style={{ maxHeight: '100%', maxWidth: '100%' }} onSubmit={onSubmit}>
+        <form className="edit-board-from" style={{ maxHeight: '100%', width: '100%' }} onSubmit={onSubmit}>
           {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
-          {cover_image[0] ? <div className="edit-board-cover-image-container">
-            <div className="edit-board-cover-image-text">Board cover</div>
-            <div className="edit-board-cover-image" onClick={openModal}>
-              <img src={cover_image} className="edit-board-cover-image" />
-            </div>
-          </div>
-            : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
+          <div>
+            {cover_image[0] ? <div className="edit-board-cover-image-container">
               <div className="edit-board-cover-image-text">Board cover</div>
               <div className="edit-board-cover-image" onClick={openModal}>
-                <img src='https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png' className="edit-board-cover-image" />
-              </div>
-            </div> : null}
-          <label className="edit-board-modal-name">
-            Name
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="edit-board-modal-name-input"
-            ></input>
-            <p>{!name ? 100 : 100 - name.length}</p>
-            <p style={{ color: "red" }} >{(name && name.length > 100) ? "Ooops, this name is too long" : null}</p>
-            <p style={{ color: "red" }}>{errors.name ? (errors.name) : null}</p>
-
-
-          </label>
-          <label className="edit-board-modal-description">
-            Description
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="What's your board about?"
-              className="edit-board-modal-description-input"
-            ></textarea>
-            <p>{!description ? 225 : 225 - description.length}</p>
-            <p style={{ color: "red" }} >{(description && description.length > 225) ? "Ooops, this description is too long" : null}</p>
-          </label>
-          <label>
-            <p className="edit-board-settings">Settings</p>
-            <div className="edit-board-modal-flex-row">
-              <input type="checkbox" checked={isPrivate} onChange={handlePrivateChange} className="edit-board-checkbox-input" />
-              <div>
-                <p className="edit-board-modal-private-text bold">Keep this board secret</p>
-                <p className="edit-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
+                <img src={cover_image} className="edit-board-cover-image" />
               </div>
             </div>
-          </label>
-          <button className="edit-board-modal-create-button" disabled={disabledButton} >
-            Done
-          </button>
-          <div className="edit-board-delete-text-bottom-container" >
-            <p className="edit-board-action">Action</p>
-            <h2 className="edit-board-delete-text" onClick={onDelete}>Delete Board
-              {/* <OpenModalButton
+              : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
+                <div className="edit-board-cover-image-text">Board cover</div>
+                <div className="edit-board-cover-image" onClick={openModal}>
+                  <img src='https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png' className="edit-board-cover-image" />
+                </div>
+              </div> : null}
+            <label className="edit-board-modal-name">
+              Name
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="edit-board-modal-name-input"
+              ></input>
+              <p className="edit-board-text">{100 - name.length}</p>
+              <p className="edit-board-text" style={{ color: "red" }} >{(name.length > 100) ? "Ooops, this name is too long" : null}</p>
+              <p className="edit-board-text" style={{ color: "red" }}>{errors.name ? (errors.name) : null}</p>
+            </label>
+            <label className="edit-board-modal-description">
+              Description
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="What's your board about?"
+                className="edit-board-modal-description-input"
+              ></textarea>
+              <p className="edit-board-text">{225 - description.length}</p>
+              <p className="edit-board-text" style={{ color: "red" }} >{(description && description.length > 225) ? "Ooops, this description is too long" : null}</p>
+            </label>
+            <label>
+              <p className="edit-board-settings">Settings</p>
+              <div className="edit-board-modal-flex-row">
+                <input type="checkbox" checked={isPrivate} onChange={handlePrivateChange} className="edit-board-checkbox-input" />
+                <div>
+                  <p className="edit-board-modal-private-text bold">Keep this board secret</p>
+                  <p className="edit-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
+                </div>
+              </div>
+            </label>
+            <div className="edit-board-delete-text-bottom-container" >
+              <p className="edit-board-action">Action</p>
+              <h2 className="edit-board-delete-text" onClick={onDelete}>Delete Board
+                {/* <OpenModalButton
                   buttonText="Delete Board"
                   className="dropdown-item"
                   modalComponent={<DeleteBoardModal id={id} user={sessionUser} />}
                 /> */}
-            </h2>
-            <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>
-            <br></br>
-            <p className="edit-board-delete-warning">You can't undo this!</p>
+              </h2>
+              <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>
+              <p className="edit-board-delete-warning">You can't undo this!</p>
+            </div>
+          </div>
+          <div className="edit-board-button-wrapper">
+            <button className="edit-board-modal-create-button" disabled={disabledButton} >
+              Done
+            </button>
           </div>
 
         </form>

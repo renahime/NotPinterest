@@ -11,7 +11,7 @@
   background-color: white;
   border-radius: 15px;
   position: relative;
-
+  /* border: 2px solid red; */
 }
 
 .edit-board-modal-header {
@@ -39,7 +39,7 @@
   align-items: left;
   /* background-color: red; */
   height: 100%;
-  width: 55%;
+  /* width: 55%; */
 }
 
 
@@ -74,8 +74,6 @@
   align-items: left;
   font-size: 11px;
   vertical-align: middle;
-
-
 }
 
 .edit-board-modal-description-input {
@@ -92,9 +90,15 @@
 }
 
 
+.edit-board-text {
+  padding: 0;
+  margin: 0;
+}
 
-
-
+.edit-board-from {
+  overflow-y: scroll;
+  width: 100%;
+}
 
 
 .edit-board-modal-private-text {
@@ -148,8 +152,6 @@
   background-color: rgb(232, 232, 232);
   color: black;
   padding: 10px 15px;
-
-
 }
 
 .edit-board-modal-create-button {
@@ -162,14 +164,19 @@
   ;
   color: white;
   padding: 10px 15px;
-
-
 }
 
 .edit-board-modal-create-button:hover {
   background-color: rgb(126, 4, 4);
 }
 
+.edit-board-button-wrapper {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 80px;
+  background-color: white;
+}
 
 
 .edit-board-delete-text-bottom-container {
@@ -182,7 +189,7 @@
   /* margin: 0px 0px; */
   margin-left: 20px;
   cursor: pointer;
-
+  padding-bottom: 100px;
 }
 
 
@@ -271,3 +278,18 @@
   height: 100%;
   object-fit: cover;
 } */
+
+@media screen and (max-width: 1400px) {
+  .edit-board-modal-container {
+    height: 500px;
+  }
+
+  .edit-board-modal-header {
+    padding-top: 20px;
+  }
+}
+
+.edit-board-delete-warning {
+  padding: 0;
+  margin: 0;
+}
