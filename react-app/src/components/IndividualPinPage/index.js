@@ -73,6 +73,8 @@ export default function IndividualPinPage() {
         }
     }
 
+    console.log("single pin", singlePin)
+
     // useEffect(() => {
     //     if (currentUser) {
     //         if (Object.values(singlePin).length && Object.values(currentUser).length) {
@@ -189,26 +191,27 @@ export default function IndividualPinPage() {
                                             Edit Pin
                                         </div>
                                     </div>
-                                    : showMenu &&
-                                    <div>
-                                        {/* <OpenModalButton
-                                            buttonText="Download Image"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />}
-                                        /> */}
-                                        <OpenModalButton
-                                            buttonText="Hide Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />} />
-                                        <OpenModalButton
-                                            buttonText="Report Pin"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />} />
-                                        {/* <OpenModalButton
-                                            buttonText="Get Pin embed code"
-                                            className="dropdown-item"
-                                            modalComponent={<ComingSoon />} /> */}
-                                    </div>
+                                    : null
+                                    // showMenu &&
+                                    // <div>
+                                    //     <OpenModalButton
+                                    //         buttonText="Download Image"
+                                    //         className="dropdown-item"
+                                    //         modalComponent={<ComingSoon />}
+                                    //     />
+                                    //     <OpenModalButton
+                                    //         buttonText="Hide Pin"
+                                    //         className="dropdown-item"
+                                    //         modalComponent={<ComingSoon />} />
+                                    //     <OpenModalButton
+                                    //         buttonText="Report Pin"
+                                    //         className="dropdown-item"
+                                    //         modalComponent={<ComingSoon />} />
+                                    //     <OpenModalButton
+                                    //         buttonText="Get Pin embed code"
+                                    //         className="dropdown-item"
+                                    //         modalComponent={<ComingSoon />} />
+                                    // </div>
                                 }
                             </div>
                         </div>
@@ -219,7 +222,6 @@ export default function IndividualPinPage() {
                     <p style={{ color: 'red' }}>{pinErrorCheck ? "A board was not recognized to be pinned" : null}</p>
                     <div> {singlePin.title ? <h2 className="single-pin-title">{singlePin.title}</h2> : null} </div>
                     <div> {singlePin.description ? <h2 className="single-pin-title">{singlePin.description}</h2> : null} </div>
-                    <div> {singlePin.destination ? <h2 className="single-pin-title">{singlePin.destination}</h2> : null} </div>
                     <div> {singlePin.alt_text ? <h2 className="single-pin-title">{singlePin.alt_text}</h2> : null} </div>
                     <div className="single-pin-owner-info">
                         <div className="single-pin-profile-info">

@@ -20,10 +20,10 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
   const singlePinWithBoardState = boardState;
   const grabOriginalBoardName = originalBoardName
   const [boardName, setBoardName] = useState(grabBoardName?.name);
-  const [title, setTitle] = useState(pin?.title);
-  const [description, setDescription] = useState(pin?.description);
-  const [destination, setDestination] = useState(pin?.destination);
-  const [alt_text, setAltText] = useState(pin?.alt_text);
+  const [title, setTitle] = useState(pin.title ? pin.title : "");
+  const [description, setDescription] = useState(pin.description ? pin.description : "");
+  const [destination, setDestination] = useState(pin.destination ? pin.destination : "");
+  const [alt_text, setAltText] = useState(pin.alt_text ? pin.alt_text : "");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
@@ -115,8 +115,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
     // }
   }
 
-
-  return (loading ? <h1>loading...</h1> : user.id === pin.owner_id ?
+  return (loading ? <h1>loading...</h1> : user.id === pin.user.id ?
     <div className="pin-edit-owner-container">
       <h1 className="title">Edit This Pin</h1>
       <form onSubmit={handleSubmit} className="pin-edit-owner-form">
@@ -133,60 +132,41 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
           <div className="pin-title-container">
             <h6 className="pin-title-text">Title</h6>
             <div>
-              <input className="pin-edit-title-input" value={title} onChange={(e) => setTitle(e.target.value)} type="text"></input>
-              {errors.destination || (title && title.length > 100) ?
-                <div className="edit-pin-active-caption">
-                  <p className="create-pin-errors ">
-                    {errors.title ? errors.title : " Ooops! This title is getting long. Try trimming it down."
-                    }
-                  </p>
-                  <p className="create-pin-errors">{title ? 100 : title.length < 100 ? 100 - title.length : null}</p>
-                </div>
-                :
-                <div className={`edit-pin-active-caption`}>
-                  <p>{!title ? 100 : 100 - title.length}</p>
-                </div>
-              }
-              {errors.title ? <p className="create-pin-errors">{errors.title}</p> : null}
+              <label>
+                <input
+                  className="pin-edit-title-input"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                />
+                <p className={title.length > 100 ? "create-pin-errors" : null}>{100 - title.length}</p>
+                {errors.title ? <p className="create-pin-errors">{errors.title}</p> : null}
+              </label>
             </div>
           </div>
           <div className="pin-description-container">
             <h6 className="pin-description-text">Description</h6>
             <div className="edit-pin-description-with-errors">
-              <input className="pin-edit-description-input" value={description} onChange={(e) => setDescription(e.target.value)} type="text"></input>
-              {errors.destination || (description && description.length > 225) ?
-                <div className="edit-pin-active-caption">
-                  <p className="create-pin-errors ">
-                    {errors.description ? errors.description : " Ooops! This description is getting long. Try trimming it down."
-                    }
-                  </p>
-                  <p className="create-pin-errors">{description ? 225 : description.length < 225 ? 225 - description.length : null}</p>
-                </div>
-                :
-                <div className={`edit-pin-active-caption`}>
-                  <p>{!description ? 225 : 225 - description.length}</p>
-                </div>
-              }
+              <textarea
+                className="pin-edit-description-input"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                type="text"
+              />
+              <p className={description.length > 255 ? "create-pin-errors" : null}>{255 - description.length}</p>
               {errors.description ? <p className="create-pin-errors">{errors.description}</p> : null}
             </div>
           </div>
           <div className="pin-website-container">
             <h6 className="pin-website-text">Website</h6>
             <div className="edit-pin-website-with-errors">
-              <input className="pin-edit-website-input" value={destination} onChange={(e) => setDestination(e.target.value)} type="text"></input>
-              {errors.destination || (destination && destination.length > 225) ?
-                <div className="edit-pin-active-caption">
-                  <p className="create-pin-errors ">
-                    {errors.destination ? errors.destination : " Ooops! This site is getting long. Try trimming it down."
-                    }
-                  </p>
-                  <p className="create-pin-errors">{destination ? 225 : destination.length < 225 ? 225 - destination.length : null}</p>
-                </div>
-                :
-                <div className={`edit-pin-active-caption`}>
-                  <p>{!destination ? 225 : 225 - destination.length}</p>
-                </div>
-              }
+              <input
+                className="pin-edit-website-input"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                type="url"
+              />
+              <p className={destination.length > 255 ? "create-pin-errors" : null}>{255 - destination.length}</p>
               {errors.destinationLink ? <p className="create-pin-errors">{errors.destinationLink}</p> : null}
             </div>
           </div>
@@ -194,19 +174,8 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
             <h6 className="pin-alt-text-text">Alt text</h6>
             <div className="edit-pin-alt-text-with-errors">
               <input className="pin-edit-alt-text-input" value={alt_text} onChange={(e) => setAltText(e.target.value)} type="text"></input>
-              {errors.alt_text || (alt_text && alt_text.length > 225) ?
-                <div className="edit-pin-active-caption">
-                  <p className="create-pin-errors ">
-                    {errors.alt_text ? errors.alt_text : " Ooops! This alternate text is getting long. Try trimming it down."
-                    }
-                  </p>
-                  <p className="create-pin-errors">{alt_text.length ? 225 : 225 - alt_text.length}</p>
-                </div>
-                :
-                <div className={`edit-pin-active-caption`}>
-                  <p>{!alt_text ? 225 : 225 - alt_text.length}</p>
-                </div>
-              }
+              <p className={alt_text.length > 255 ? "create-pin-errors" : null}>{255 - alt_text.length}</p>
+              {errors.alt_text ? <p className="create-pin-errors">{errors.alt_text}</p> : null}
             </div>
           </div>
         </div>
