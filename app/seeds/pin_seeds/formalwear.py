@@ -11,14 +11,14 @@ def seed_formal_pins():
     formalwear = Category.query.filter(Category.name == "Formal Ware").one()
     board = Board.query.get(2)
 
-    pin1 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/tan-suit.jpeg",
-        user=user1,
-        board_tagged=[board],
-        categories=[formalwear],
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
+    # pin1 = Pin(
+    #     image="https://threadterest.s3.us-east-2.amazonaws.com/tan-suit.jpeg",
+    #     user=user1,
+    #     board_tagged=[board],
+    #     categories=[formalwear],
+    #     created_at=datetime.now(),
+    #     updated_at=datetime.now()
+    # )
 
     pin2 = Pin(
         image="https://threadterest.s3.us-east-2.amazonaws.com/white-blazer.jpeg",
@@ -144,7 +144,7 @@ def seed_formal_pins():
 
 
 
-    formalwear_pins = [pin1, pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15 ]
+    formalwear_pins = [pin2, pin3, pin4, pin5, pin6, pin7, pin8, pin9, pin10, pin11, pin12, pin13, pin14, pin15 ]
 
     formal = [db.session.add(pin) for pin in formalwear_pins]
 

@@ -39,7 +39,7 @@ export default function CaSandraFeed() {
         if (!sessionUser || sessionUser.categories.length === 0) {
             let randomPins = shufflePins(pins)
             return {
-                filteredPinsArr: randomPins.splice(0, 15),
+                filteredPinsArr: randomPins.splice(0, 30),
                 userPins: null
             }
         } else {
@@ -55,7 +55,7 @@ export default function CaSandraFeed() {
             }
             let randomPins = shufflePins(filteredPins)
             return {
-                filteredPinsArr: randomPins.splice(0, 15),
+                filteredPinsArr: randomPins.splice(0, 30),
                 userPins: userPins
             }
         }

@@ -165,7 +165,7 @@ def edit_board(id):
             image_found = False
             for pin in board_to_edit.pins_tagged:
                 if pin.image == form.data["cover_image"]:
-                    board_to_edit.pin_cover_image.pop()
+                    board_to_edit.pin_cover_image.clear()
                     board_to_edit.pin_cover_image.append(pin)
                     image_found = True
             if not image_found:
