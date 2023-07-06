@@ -6,26 +6,26 @@ import { useDispatch, useSelector } from "react-redux"
 import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import { deletePinThunk } from "../../store/pins";
-import { removePin } from "../../store/session";
+// import { removePin } from "../../store/session";
 
 function DeletePinModal({ pin, user, boardState }) {
   const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
-  let boardName = null
-  if (user) {
-    for (let userBoard of user.boards) {
-      for (let pinId of userBoard.pins) {
-        if (pinId == pin.id) {
-          boardName = userBoard.name.split(' ').join('_').toLowerCase()
-        }
-      }
-    }
-  }
+  // let boardName = null
+  // if (user) {
+  //   for (let userBoard of user.boards) {
+  //     for (let pinId of userBoard.pins) {
+  //       if (pinId == pin.id) {
+  //         boardName = userBoard.name.split(' ').join('_').toLowerCase()
+  //       }
+  //     }
+  //   }
+  // }
   const handleDelete = async (e) => {
     e.preventDefault();
     const pinId = await dispatch(deletePinThunk(pin.id)).then(closeModal())
-    let removeFromProfile = await dispatch(removePin(pin.id))
+    // let removeFromProfile = await dispatch(removePin(pin.id))
     if (pinId) {
       history.push(`/${user.username}`)
     }

@@ -7,7 +7,7 @@ import { clearSinglePin } from "../../store/pins"
 import { useModal } from "../../context/Modal";
 import CreateNewBoardOnPin from "./CreateNewBoardOnPin";
 import "./CreatePin.css"
-import { addPin } from "../../store/session";
+// import { addPin } from "../../store/session";
 
 
 export default function CreatePin() {
@@ -83,7 +83,7 @@ export default function CreatePin() {
             setErrors(new_pin.errors)
             return
         } else {
-            let sendPintoProfile = await dispatch(addPin(new_pin));
+            // let sendPintoProfile = await dispatch(addPin(new_pin));
             console.log("new pin", new_pin)
             setTimeout(() => {
                 setLoadingImage(false)

@@ -16,7 +16,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
   const options = []
   const history = useHistory();
   const dispatch = useDispatch();
-  const { closeModal } = useModal();
+  const { closeModal, setModalContent } = useModal();
   const singlePinWithBoardState = boardState;
   const grabOriginalBoardName = originalBoardName
   const [boardName, setBoardName] = useState(grabBoardName?.name);
@@ -180,12 +180,10 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
           </div>
         </div>
         <div className="buttons-container">
-          <button className="edt-pin-delete-button">
-            <OpenModalButton
-              buttonText="Delete"
-              className="dropdown-item"
-              modalComponent={<DeletePinModal boardState={singlePinWithBoardState} originalBoardName={grabOriginalBoardName} user={user} pin={pin} />}
-            />
+          <button 
+          onClick={() => setModalContent(<DeletePinModal boardState={singlePinWithBoardState} originalBoardName={grabOriginalBoardName} user={user} pin={pin} />)}
+          className="edt-pin-delete-button">
+            Delete
           </button>
           <div className="submit-and-cancel-buttons">
             <button className="edit-pin-submit-button" type="submit">Save</button>

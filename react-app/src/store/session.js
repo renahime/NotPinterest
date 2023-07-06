@@ -14,8 +14,8 @@ const DELETE_PROFILE = "users/DELETE_PROFILE"
 // const DELETE_SESSION_BOARD = "boards/delete/session"
 // const DELETE_USER_BOARD = "delete/user/boards"
 // const UPDATE_USER_BOARD = "edit/user/boards"
-const ADD_PIN = "add/user/pins"
-const REMOVE_PIN = "remove/user/pins"
+// const ADD_PIN = "add/user/pins"
+// const REMOVE_PIN = "remove/user/pins"
 const GET_PROFILE = "users/GET_USER"
 const CLEAR_PROFILE = "users/clearProfile"
 
@@ -76,15 +76,15 @@ const newFollow = (user) => ({
 // 	board
 // })
 
-export const addPin = (pin) => ({
-	type: ADD_PIN,
-	pin
-})
+// export const addPin = (pin) => ({
+// 	type: ADD_PIN,
+// 	pin
+// })
 
-export const removePin = (id) => ({
-	type: REMOVE_PIN,
-	id
-})
+// export const removePin = (id) => ({
+// 	type: REMOVE_PIN,
+// 	id
+// })
 
 const getUser = (user) => ({
     type: GET_PROFILE,
@@ -368,10 +368,10 @@ export default function reducer(state = initialState, action) {
 		// 	const addPins = [...state.user.pins]
 		// 	addPins.unshift(action.pin.pin);
 		// 	return { ...state, user: { ...state.user, pins: addPins } };
-		case REMOVE_PIN:
-			let removePins = [...state.user.pins]
-			removePins = removePins.filter((pin) => pin.id !== action.id);
-			return { ...state, user: { ...state.user, pins: removePins } };
+		// case REMOVE_PIN:
+		// 	let removePins = [...state.user.pins]
+		// 	removePins = removePins.filter((pin) => pin.id !== action.id);
+		// 	return { ...state, user: { ...state.user, pins: removePins } };
 		case REMOVE_USER:
 			return { user: null };
 		case UNFOLLOW_USER:
