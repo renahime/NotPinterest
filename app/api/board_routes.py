@@ -136,10 +136,7 @@ def create_board():
 @board_routes.route('/<int:id>', methods=['GET','PUT'])
 @login_required
 def edit_board(id):
-    print("WE ARE In edit board route")
     board_to_edit = Board.query.get(id)
-
-    print("WE ARE In edit board route 2")
 
     if current_user.id != board_to_edit.owner_id:
         return {"errors":"you do not own this board"}

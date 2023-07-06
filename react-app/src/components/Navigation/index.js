@@ -20,7 +20,7 @@ function Navigation({ isLoaded }) {
 		setOpenMenu(!openMenu)
 	}
 
-	const currentProfile = useSelector(state => state.profile.currentProfile)
+	// const currentProfile = useSelector(state => state.profile.currentProfile)
 	const currentUser = useSelector(state => state.session.user)
 
 

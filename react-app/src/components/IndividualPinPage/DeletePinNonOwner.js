@@ -7,16 +7,22 @@ import OpenModalButton from '../OpenModalButton';
 import DeletePinModal from "./DeletePinModal";
 import EditPinModal from "./EditPinModal";
 import { unpinThunk } from "../../store/boards";
+import { getPinsForBoard } from "../../store/pins";
 
 function DeletePinNonOwner({ pin, user }) {
   const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
   const singlePinWithBoardState = useSelector(state => state)
+  const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
   let boardName = null
   let boardId = null
+
+  // useEffect(() => {
+  //   dispatch(getPinsForBoard())
+  // }, [dispatch])
   if (user) {
-    for (let userBoard of user.boards) {
+    for (let userBoard of Object.values(currentUserBoards)) {
       for (let pinId of userBoard.pins) {
         if (pinId == pin.id) {
           boardName = userBoard.name.split(' ').join('_').toLowerCase()

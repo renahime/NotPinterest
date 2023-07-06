@@ -26,8 +26,10 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
   const [alt_text, setAltText] = useState(pin?.alt_text);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
+
   if (user) {
-    for (let boardName of user.boards) {
+    for (let boardName of Object.values(currentUserBoards)) {
       options.push({ value: boardName.name, label: boardName.name })
     }
   }

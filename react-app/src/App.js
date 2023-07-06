@@ -25,7 +25,7 @@ function App() {
 
   useEffect(() => {
     dispatch(authenticate()).then((data) => {
-      if (data["message"]) {
+      if (data && data["message"]) {
         dispatch(getCurrentUserBoards())
       }
     }).then(() => setIsLoaded(true));

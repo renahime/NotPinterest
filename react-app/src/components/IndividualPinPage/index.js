@@ -101,7 +101,7 @@ export default function IndividualPinPage() {
         e.preventDefault();
         let boardId
         let sendBoardName
-        for (let board of currentUser.boards) {
+        for (let board of Object.values(currentUserBoards)) {
             if (board.name == pinBoard) {
                 boardId = board.id
                 sendBoardName = board.name.split(' ').join('_').toLowerCase()

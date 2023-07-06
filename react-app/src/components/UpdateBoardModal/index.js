@@ -27,8 +27,6 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
   const boardPins = useSelector(state => state.pins.currentBoardPins)
   const userBoards = useSelector(state => state.boards.currentUserBoards)
 
-  console.log(current);
-
   //set form data
   const [name, setName] = useState(board?.name);
   const [description, setDescription] = useState(board?.description);
@@ -71,16 +69,15 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
     cover_image: cover_image
   };
 
-
   // on Submit we update the new Board data and then we redirect user to their new board page
   const onSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
     // await dispatch(updateBoardThunk(updatedBoardData, id))
     if (name) {
-      for (let board of Object.values(userBoards)) {
-        if (board) {
-          if (name == board.name) {
+      for (let boards of Object.values(userBoards)) {
+        if (boards) {
+          if (name == boards.name && boards.id != board.id) {
             validationErrors.name = "Ooops! You already have this board name."
           }
         }
@@ -100,10 +97,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
     }
     let updatedBoard = await dispatch(updateBoardThunk(updatedBoardData, board.id))
     closeModal()
-    console.log("updatedboard", updatedBoard)
   };
-
-  console.log(errors);
 
   return (
     <>

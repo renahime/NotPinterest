@@ -7,7 +7,7 @@ import boardsReducer from './boards';
 
 const rootReducer = combineReducers({
   session,
-  profile: profileReducer,
+  // profile: profileReducer,
   pins: pinsReducer,
   boards: boardsReducer
 });

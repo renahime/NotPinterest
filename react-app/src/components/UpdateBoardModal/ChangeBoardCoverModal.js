@@ -6,6 +6,7 @@ import { NavLink, Redirect, useHistory } from "react-router-dom";
 // import { fetchPinsToday, getPinById } from "../../store/pins";
 import { useModal } from "../../context/Modal";
 import { updateBoardThunk } from "../../store/boards";
+import { getPinsForBoard } from "../../store/pins";
 import UpdateBoardModal from ".";
 import './ChangeBoardCoverModal.css'
 
@@ -20,15 +21,14 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
   const [hoverDiv, setHoverDiv] = useState("")
   const [cover_image, setCoverImage] = useState(updatedBoardData?.cover_image || "")
 
-  const pins = useSelector((state) => state.pins.pins);
-  const [pinImages, setPinImages] = useState([]);
-
+  const boardPins = useSelector((state) => state.pins.currentBoardPins);
+  // const [pinImages, setPinImages] = useState([]);
 
   useEffect(() => {
-    if (pins) {
-      setPinImages(Object.values(pins).filter(pin => board.pins.includes(pin.id)));
-    }
-  }, [pins])
+
+    dispatch(getPinsForBoard(board.id))
+
+  }, [dispatch])
 
   const date = new Date();
 
@@ -53,24 +53,23 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
     event.stopPropagation();
     const modalContent = (
       <div>
-        <UpdateBoardModal newCoverImage={newCoverImage} pins={pinImages} board={board} />
+        <UpdateBoardModal newCoverImage={newCoverImage} board={board} />
       </div>
     );
     setModalContent(modalContent);
   };
 
-  return (!pinImages || !pinImages.length ? <h1>Loading...</h1> :
+  return (!Object.values(boardPins).length ? <h1>Loading...</h1> :
     <>
       <div className="-board-modal-container">
         <h3 className="change-board-new-board-text">Change board cover</h3>
         <div className="change-board-list-container">
           <div className="change-board-board-list">
-            {pinImages.map((pin) => {
+            {Object.values(boardPins).map((pin) => {
               return (
                 <div className="change-board-modal-pins"
                   style={{
                     backgroundImage: `url(${pin.image})`,
-
                   }}
                   onMouseEnter={() => onHover(pin)} onMouseLeave={() => offHover()}
                   onClick={setBoardCoverImage}
