@@ -317,7 +317,13 @@ export const updatePinThunk = (pin) => async (dispatch) => {
     }
 };
 
-const initialState = { pins: {}, singlePin: {}, currentBoardPins: {}, currentUserPins: {}, currentProfilePins: {} }
+const initialState = { pins: {}, 
+                        singlePin: {}, 
+                        currentBoardPins: {}, 
+                        currentUserPins: {}, 
+                        currentProfilePins: {}, 
+                        currentUserBoardPins: {} 
+                    }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
@@ -421,9 +427,14 @@ export default function pinsReducer(state = initialState, action) {
                 singlePin: { ...deleteSinglePin }
             };
         case UPDATE_USER_PIN:
-            const updateAll = { ...state.allPins }
-            const updateSingle = { ...action.pin }
-            return { ...state, allPins: updateAll, singlePin: { ...updateSingle } }
+            return {
+                    ...state,
+                    pins: { ...state.pins, [action.pin.id] : action.pin },
+                    singlePin:  action.pin ,
+                    currentBoardPins: { ...state.currentBoardPins },
+                    currentUserPins: { ...state.currentUserPins, [action.pin.id]: action.pin },
+                    currentProfilePins: { ...state.currentProfilePins }
+                }
         case CLEAR_SINGLE_PIN:
             return { ...state, singlePin: {} }
         default:
