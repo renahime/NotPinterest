@@ -27,9 +27,9 @@ export default function ProfilePage() {
     const currentUserPins = useSelector(state => state.pins.currentUserPins)
     const currentProfilePins = useSelector(state => state.pins.currentProfilePins)
     const otherUserBoards = useSelector(state => state.boards.currentProfileBoards)
-    let [numFollowers, setNumFollowers] = useState(0);
-    let [numFollowing, setNumFollowing] = useState(0)
-    let [isfollowing, setIsFollowing] = useState(false);
+    // let [numFollowers, setNumFollowers] = useState(0);
+    // let [numFollowing, setNumFollowing] = useState(0)
+    // let [isfollowing, setIsFollowing] = useState(false);
     let [showBoards, setShowBoards] = useState(true);
     let [usingProfile, setUsingProfile] = useState(false);
 
@@ -68,8 +68,8 @@ export default function ProfilePage() {
         if (response.errors) {
             console.log(response.errors)
         } else if (response) {
-            setNumFollowers(numFollowers => numFollowers + 1)
-            setIsFollowing(true);
+            // setNumFollowers(numFollowers => numFollowers + 1)
+            // setIsFollowing(true);
         }
     }
     const handleUnfollow = async (e) => {
@@ -78,31 +78,31 @@ export default function ProfilePage() {
         if (response.errors) {
             console.log(response.errors)
         } else if (response) {
-            setNumFollowers(numFollowers => numFollowers - 1)
-            setIsFollowing(false);
+            // setNumFollowers(numFollowers => numFollowers - 1)
+            // setIsFollowing(false);
         }
     }
 
     const pins = useSelector(state => state.pins.pins)
 
 
-    useEffect(() => {
-        if (!loading && !current.id) {
-            return
-        }
-        if (!Object.values(current).length) return
-        else {
-            setNumFollowers(current.followers.length)
-            setNumFollowing(current.following.length)
-        }
-        if (currentUser) {
-            if (Object.values(current).length && Object.values(currentUser).length) {
-                if (current.followers.includes(currentUser.username)) {
-                    setIsFollowing(true);
-                }
-            }
-        }
-    }, [loading, current, currentUser])
+    // useEffect(() => {
+    //     if (!loading && !current.id) {
+    //         return
+    //     }
+    //     if (!Object.values(current).length) return
+    //     else {
+    //         setNumFollowers(current.followers.length)
+    //         setNumFollowing(current.following.length)
+    //     }
+    //     if (currentUser) {
+    //         if (Object.values(current).length && Object.values(currentUser).length) {
+    //             if (current.followers.includes(currentUser.username)) {
+    //                 setIsFollowing(true);
+    //             }
+    //         }
+    //     }
+    // }, [loading, current, currentUser])
 
     const handleShowBoards = (e) => {
         e.stopPropagation();
@@ -143,16 +143,16 @@ export default function ProfilePage() {
                     {current.about ? <h5 className="profile-about-section">{current.about}</h5> : null}
                     <h5 className="profile-followers-and-following">
                         <div>
-                            {numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}
+                            {/* {numFollowers === 1 ? "1 follower" : `${numFollowers} followers`} */}
                         </div>
                         <i className="fa-solid fa-circle profile-followers-and-following-dot"></i>
                         <div>
-                            {numFollowing} following
+                            {/* {numFollowing} following */}
                         </div>
                     </h5>
                     {checkUser() ?
                         <Link to={{ pathname: "/settings", state: { current } }}  ><button className="profile-button edit-profile">Edit Profile</button></Link> :
-                        !isfollowing ?
+                        "hellp" ?
                             <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
                             <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
                     }

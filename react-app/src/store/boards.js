@@ -1,4 +1,4 @@
-import { deleteBoard } from "./session"
+// import { deleteBoard } from "./session"
 
 const GET_BOARDS_OF_CURRENT_USER = "boards/getUserBoards"
 const GET_SINGLE_BOARD = 'boards/single'
@@ -157,20 +157,20 @@ export const updateBoardThunk = (board, id) => async (dispatch) => {
 
 
 
-export const clearSingleBoard = (id) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${id}/delete`, {
-        method: "DELETE",
-    });
-    if (res.ok) {
-        const data = res.json()
-        dispatch(deleteBoard)
-        return data;
-    }
-    else {
-        dispatch(deleteBoard)
-    }
+// export const clearSingleBoard = (id) => async (dispatch) => {
+//     const res = await fetch(`/api/boards/${id}/delete`, {
+//         method: "DELETE",
+//     });
+//     if (res.ok) {
+//         const data = res.json()
+//         dispatch(deleteBoard)
+//         return data;
+//     }
+//     else {
+//         dispatch(deleteBoard)
+//     }
 
-};
+// };
 
 // export const unpinThunk = (pin, boardId) => async (dispatch) => {
 //     const res = await fetch(`/api/boards/${boardId}/unpin/${pin.id}`, {

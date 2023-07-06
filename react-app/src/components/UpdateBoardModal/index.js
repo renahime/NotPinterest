@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { updateBoardThunk } from "../../store/boards";
 import { useHistory } from 'react-router-dom'
-import { clearSingleBoard } from "../../store/boards";
+// import { clearSingleBoard } from "../../store/boards";
 import ChangeBoardCoverModal from "./ChangeBoardCoverModal";
-import { deleteBoardSessionThunk } from "../../store/session";
+// import { deleteBoardSessionThunk } from "../../store/session";
 import { getPinsForBoard, clearBoardPins } from "../../store/pins";
 
 import './UpdateBoardModal.css'
@@ -53,12 +53,12 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
 
   const disabledButton = name === "";
   const onDelete = async (e) => {
-    let deletedBoard = await dispatch(deleteBoardSessionThunk(board.id))
-    if (deletedBoard.errors) {
-      console.log(deletedBoard)
-    } else {
-      closeModal()
-    }
+    // let deletedBoard = await dispatch(deleteBoardSessionThunk(board.id))
+    // if (deletedBoard.errors) {
+    //   console.log(deletedBoard)
+    // } else {
+    //   closeModal()
+    // }
   };
 
   //updated data that we will send to the thunk

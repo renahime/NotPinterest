@@ -9,11 +9,11 @@ import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
 import Dropdown from "./Dropdown";
-import { pinThunk } from "../../store/boards";
+import { pinThunk } from "../../store/pins";
 import { useModal } from "../../context/Modal";
 import "./IndividualPinPage.css"
 import { Link } from "react-router-dom"
-import { unfollowUser, followUser } from "../../store/session"
+import { unfollowUser, followUser, getUserInfo, clearProfile } from "../../store/session"
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Icon = () => {
@@ -26,6 +26,9 @@ export default function IndividualPinPage() {
     const [showMenu, setShowMenu] = useState(false)
     const singlePin = useSelector(state => state.pins.singlePin)
     const currentUser = useSelector(state => state.session.user)
+    const currentUserFollowing = useSelector(state => state.session.user.following)
+    // const currentProfileFollowers = useSelector(state => state.session.currentProfile.followers)
+    const currentProfileFollowers = useSelector(state => state.session.currentProfile.followers)
     // const pinOwnerProfile = useSelector(state => state.session.currentProfile)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const { closeModal } = useModal();
@@ -34,18 +37,20 @@ export default function IndividualPinPage() {
     const { id } = useParams()
     const [showDetails, setShowDetails] = useState(false)
     const [pinErrorCheck, setPinErrorCheck] = useState(false);
-    let [numFollowers, setNumFollowers] = useState(0);
-    let [isfollowing, setIsFollowing] = useState(false);
+    // let [numFollowers, setNumFollowers] = useState(0);
+    // let [isfollowing, setIsFollowing] = useState(false);
     const { setModalContent } = useModal()
 
-
-    
     useEffect(() => {
-        dispatch(getPinById(id))
+        dispatch(getPinById(id)).then((pin) => dispatch(getUserInfo(pin.user.username)))
+
         if (!Object.values(currentUserBoards)) {
             dispatch(getCurrentUserBoards())
-        }        
-        return (() => dispatch(clearSinglePin()))
+        }
+        return (() => {
+            dispatch(clearSinglePin())
+            dispatch(clearProfile())
+        })
     }, [dispatch, id])
 
     let grabBoardName = {}
@@ -68,16 +73,16 @@ export default function IndividualPinPage() {
         }
     }
 
-    useEffect(() => {
-        if (currentUser) {
-            if (Object.values(singlePin).length && Object.values(currentUser).length) {
-                setNumFollowers(singlePin.user.followers.length)
-                if (singlePin.user.followers.includes(currentUser.username)) {
-                    setIsFollowing(true);
-                }
-            }
-        }
-    }, [singlePin, currentUser])
+    // useEffect(() => {
+    //     if (currentUser) {
+    //         if (Object.values(singlePin).length && Object.values(currentUser).length) {
+    //             setNumFollowers(singlePin.user.followers.length)
+    //             if (singlePin.user.followers.includes(currentUser.username)) {
+    //                 setIsFollowing(true);
+    //             }
+    //         }
+    //     }
+    // }, [singlePin, currentUser])
 
     const [pinBoard, setPinBoard] = useState(grabBoardName?.name)
     useEffect(() => {
@@ -122,8 +127,8 @@ export default function IndividualPinPage() {
         if (response.errors) {
             console.log(response.errors)
         } else if (response) {
-            setNumFollowers(numFollowers => numFollowers + 1)
-            setIsFollowing(true);
+            // setNumFollowers(numFollowers => numFollowers + 1)
+            // setIsFollowing(true);
         }
     }
     const handleUnfollow = async (e) => {
@@ -132,15 +137,16 @@ export default function IndividualPinPage() {
         if (response.errors) {
             console.log(response.errors)
         } else if (response) {
-            setNumFollowers(numFollowers => numFollowers - 1)
-            setIsFollowing(false);
+            // setNumFollowers(numFollowers => numFollowers - 1)
+            // setIsFollowing(false);
         }
     }
+
+    // console.log("single pin", currentProfileFollowers)
     if (!singlePin) return <h1>...Loading</h1>
 
     let singlePinImageClassName = showDetails ? "single-pin-image-button" : "single-pin-image-button hidden"
 
-    console.log("options", options)
     if (!Object.values(singlePin).length) return <h1>...Loading</h1>
     return (
         <div className="single-pin-wrapper">
@@ -169,9 +175,11 @@ export default function IndividualPinPage() {
                             <div onClick={handleInputClick} className="dropdown-input">
                                 <div className="dropdown-selected-value"></div>
                                 <div className="dropdown-tools">
-                                    <div className="dropdown-tool">
-                                        <Icon />
-                                    </div>
+                                    {singlePin.user.id === currentUser.id &&
+                                        <div className="dropdown-tool">
+                                            <Icon />
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div id="dropdown-menu-wrapper" className="dropdown-menu-edit-pin">
@@ -183,11 +191,11 @@ export default function IndividualPinPage() {
                                     </div>
                                     : showMenu &&
                                     <div>
-                                        <OpenModalButton
+                                        {/* <OpenModalButton
                                             buttonText="Download Image"
                                             className="dropdown-item"
                                             modalComponent={<ComingSoon />}
-                                        />
+                                        /> */}
                                         <OpenModalButton
                                             buttonText="Hide Pin"
                                             className="dropdown-item"
@@ -220,19 +228,23 @@ export default function IndividualPinPage() {
                             </div>
                             <div className="single-pin-owner-name-followers">
                                 <Link className="single-pin-owner-link" to={`/${singlePin.user?.username}`}>{singlePin.user?.first_name} {singlePin.user?.last_name}</Link>
-                                {!currentUser ? <p>{singlePin.user.followers.length === 1 ? "1 follower" : `${singlePin.user.followers.length} followers`}</p> : <p>{numFollowers === 1 ? "1 follower" : `${numFollowers} followers`}</p>}
+                                {currentProfileFollowers &&
+                                    <p>{currentProfileFollowers?.length === 1 ? "1 follower" : `${currentProfileFollowers.length} followers`}</p>
+                                }
                             </div>
                         </div>
                         <div>
-                            {currentUser && (currentUser.id !== singlePin.owner_id) ?
-                                <>
-                                    {!isfollowing ? (<button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>) : (<button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>)}
-                                </> : null
+                            {currentUser && currentUser.id === singlePin.user.id ?
+                                null :
+                                currentUserFollowing.includes(singlePin.user.username) ?
+                                    (<button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>)
+                                    :
+                                    (<button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>)
                             }
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

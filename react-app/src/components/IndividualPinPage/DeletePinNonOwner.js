@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import OpenModalButton from '../OpenModalButton';
 import DeletePinModal from "./DeletePinModal";
 import EditPinModal from "./EditPinModal";
-import { unpinThunk } from "../../store/boards";
+// import { unpinThunk } from "../../store/boards";
 import { getPinsForBoard } from "../../store/pins";
 
 function DeletePinNonOwner({ pin, user }) {
@@ -33,10 +33,10 @@ function DeletePinNonOwner({ pin, user }) {
   }
   const handleDelete = async (e) => {
     e.preventDefault();
-    const unpinAction = await dispatch(unpinThunk(pin, boardId)).then(closeModal())
-    if (unpinAction) {
-      return history.push(`/${user.username}/${boardName}`)
-    }
+    // const unpinAction = await dispatch(unpinThunk(pin, boardId)).then(closeModal())
+    // if (unpinAction) {
+    //   return history.push(`/${user.username}/${boardName}`)
+    // }
   }
   return (
     <div className="delete-pin-container">

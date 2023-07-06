@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { createBoardFromPinPage } from "../../store/session";
+import { createBoardThunk } from "../../store/boards";
 import './CreateBoardModal.css'
 function CreateBoardFromProfile({ username, current }) {
 
@@ -41,7 +41,7 @@ function CreateBoardFromProfile({ username, current }) {
       private: isPrivate,
       description: description
     }
-    let newBoardProfile = await dispatch(createBoardFromPinPage(formData))
+    let newBoardProfile = await dispatch(createBoardThunk(formData))
     if (newBoardProfile) {
       closeModal()
     }
