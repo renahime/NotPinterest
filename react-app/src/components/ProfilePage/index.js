@@ -22,7 +22,11 @@ export default function ProfilePage() {
     const [openMenu, setOpenMenu] = useState(false)
     const [loading, setLoading] = useState(false)
     const currentProfile = useSelector(state => state.session.currentProfile)
+    const currentProfileFollowers = useSelector(currentProfile ? state => state.session.currentProfile.followers : null)
+    const currentProfileFollowing = useSelector(currentProfile ? state => state.session.currentProfile.following : null)
     const currentUser = useSelector(state => state.session.user)
+    const currentUserFollowing = useSelector(state => state.session.user.following)
+    const currentUserFollowers = useSelector(state => state.session.user.followers)
     const currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const currentUserPins = useSelector(state => state.pins.currentUserPins)
     const currentProfilePins = useSelector(state => state.pins.currentProfilePins)
@@ -44,7 +48,7 @@ export default function ProfilePage() {
         }
         return (() => dispatch(clearProfile()))
     }, [dispatch])
-// }, [dispatch, username, currentUser])
+    // }, [dispatch, username, currentUser])
 
 
 
@@ -114,6 +118,23 @@ export default function ProfilePage() {
         setShowBoards(false);
     };
 
+    let formatFollowersOutput = () => {
+        if (currentProfileFollowers) {
+            if (currentProfileFollowers.length === 1) {
+                return "1 follower"
+            } else {
+                return `${currentProfileFollowers.length} followers`
+            }
+        } else {
+            if (currentUserFollowers.length === 1) {
+                return "1 follower"
+            } else {
+                return `${currentUserFollowers.length} followers`
+
+            }
+        }
+    }
+
 
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
@@ -143,18 +164,19 @@ export default function ProfilePage() {
                     {current.about ? <h5 className="profile-about-section">{current.about}</h5> : null}
                     <h5 className="profile-followers-and-following">
                         <div>
-                            {/* {numFollowers === 1 ? "1 follower" : `${numFollowers} followers`} */}
+                            {formatFollowersOutput()}
                         </div>
                         <i className="fa-solid fa-circle profile-followers-and-following-dot"></i>
                         <div>
-                            {/* {numFollowing} following */}
+                            {currentProfileFollowing ? currentProfileFollowing.length : currentUserFollowing.length} following
                         </div>
                     </h5>
                     {checkUser() ?
                         <Link to={{ pathname: "/settings", state: { current } }}  ><button className="profile-button edit-profile">Edit Profile</button></Link> :
-                        "hellp" ?
-                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button> :
+                        currentUserFollowing.includes(currentProfile.username) ?
                             <button id="unfollow-button" className="profile-button" onClick={handleUnfollow}>Unfollow</button>
+                            :
+                            <button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>
                     }
                     <div>
 
