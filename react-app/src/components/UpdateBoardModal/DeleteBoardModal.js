@@ -2,7 +2,7 @@ import { useModal } from "../../context/Modal";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from "react-redux"
 import { deleteBoard } from "../../store/boards";
-
+import "./UpdateDeleteBoardModal.css"
 
 function UpdateDeleteBoardModal({ id, user }) {
   const { closeModal } = useModal();
@@ -14,12 +14,12 @@ function UpdateDeleteBoardModal({ id, user }) {
   };
 
   return (
-    <div className="delete-pin-container">
-      <h1>Are you sure?</h1>
-      <h6>Once you delete a Board, you can't undo it!</h6>
-      <div className="buttons">
-        <button onClick={() => closeModal()}>Cancel</button>
-        <button onClick={onDelete}>Delete</button>
+    <div className="delete-board-container">
+      <h1 className="delete-board-page-header">Are you sure?</h1>
+      <h2 className="delete-board-page-caption">Once you delete a Board, you can't undo it!</h2>
+      <div className="delete-board-page-buttons">
+        <button className="delete-board-page-cancel-button" onClick={() => closeModal()}>Cancel</button>
+        <button className="delete-board-page-delete-button" onClick={onDelete}>Delete</button>
       </div>
     </div>
   )
