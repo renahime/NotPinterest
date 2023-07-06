@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import ChangeBoardCoverModal from "./ChangeBoardCoverModal";
 // import { deleteBoardSessionThunk } from "../../store/session";
 import { getPinsForBoard, clearBoardPins } from "../../store/pins";
-
+import UpdateDeleteBoardModal from "./DeleteBoardModal";
 import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
@@ -53,12 +53,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
 
   const disabledButton = name === "";
   const onDelete = async (e) => {
-    // let deletedBoard = await dispatch(deleteBoardSessionThunk(board.id))
-    // if (deletedBoard.errors) {
-    //   console.log(deletedBoard)
-    // } else {
-    //   closeModal()
-    // }
+    setModalContent(<UpdateDeleteBoardModal id={id}/>)
   };
 
   //updated data that we will send to the thunk
@@ -157,11 +152,6 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
             <div className="edit-board-delete-text-bottom-container" >
               <p className="edit-board-action">Action</p>
               <h2 className="edit-board-delete-text" onClick={onDelete}>Delete Board
-                {/* <OpenModalButton
-                  buttonText="Delete Board"
-                  className="dropdown-item"
-                  modalComponent={<DeleteBoardModal id={id} user={sessionUser} />}
-                /> */}
               </h2>
               <p className="edit-board-delete-warning">Delete this board and all its Pins forever.</p>
               <p className="edit-board-delete-warning">You can't undo this!</p>

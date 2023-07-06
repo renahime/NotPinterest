@@ -7,7 +7,7 @@ import OpenModalButton from '../OpenModalButton';
 import DeletePinModal from "./DeletePinModal";
 import DeletePinNonOwner from "./DeletePinNonOwner";
 import { updatePinThunk } from "../../store/pins";
-import { repinThunk } from "../../store/boards";
+// import { repinThunk } from "../../store/boards";
 import "./EditPinModal.css"
 
 
@@ -109,10 +109,10 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
       setErrors(validationErrors)
       return
     }
-    const sendRepin = await dispatch(repinThunk(pin, oldBoardId, newBoardId)).then(closeModal())
-    if (sendRepin) {
-      return history.push(`/${user.username}/${sendBoardName}`)
-    }
+    // const sendRepin = await dispatch(repinThunk(pin, oldBoardId, newBoardId)).then(closeModal())
+    // if (sendRepin) {
+    //   return history.push(`/${user.username}/${sendBoardName}`)
+    // }
   }
 
 

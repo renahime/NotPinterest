@@ -33,8 +33,9 @@ const updateUserBoard = (board) => ({
     board
 })
 
-const deleteUserBoard = () => ({
+const deleteUserBoard = (id) => ({
     type: DELETE_BOARD,
+    id
 });
 
 // const unPin = (pin, boardId) => ({
@@ -65,6 +66,21 @@ export const clearBoard = () => ({
     type: CLEAR_BOARD
 })
 
+
+export const deleteBoard = (id) => async(dispatch) => {
+    let res = await fetch(`/api/boards/${id}/delete`, {
+        method: "DELETE"
+    })
+
+    if (res.ok) {
+        let message = await res.json()
+        dispatch(deleteUserBoard(id))
+        return message
+    } else {
+        let errors = await res.json()
+        return errors
+    }
+}
 
 export const getCurrentUserBoards = () => async(dispatch) => {
     const res = await fetch("/api/boards/current_user")
@@ -198,20 +214,18 @@ export const updateBoardThunk = (board, id) => async (dispatch) => {
 //     }
 // }
 
-export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${oldBoardId}/${pin.id}/pin_to/${newBoardId}`, {
-        method: "POST",
-    });
-    if (res.ok) {
-        dispatch(rePin(pin, oldBoardId, newBoardId));
-        return pin
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
-
-
+// export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
+//     const res = await fetch(`/api/boards/${oldBoardId}/${pin.id}/pin_to/${newBoardId}`, {
+//         method: "POST",
+//     });
+//     if (res.ok) {
+//         dispatch(rePin(pin, oldBoardId, newBoardId));
+//         return pin
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
 // export const getBoardByName = (username, boardname) => async (dispatch) => {
 //     try {
@@ -227,6 +241,8 @@ export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
 //         console.error("Error fetching board:", error);
 //     }
 // };
+
+
 
 const initialState = { singleBoard: {}, allBoards: {}, currentUserBoards: {}, currentProfileBoards: {} }
 
@@ -282,12 +298,14 @@ export default function boardsReducer(state = initialState, action) {
             }
             return newState5;
         case DELETE_BOARD:
-            state.singleBoard = {}
-
-            return {
-                ...state,
-                singleBoard: { ...state.singleBoard }
-            };
+            let newState6 = {...state, 
+                singleBoard: {...state.singleBoard}, 
+                allBoards: {...state.allBoards}, 
+                currentUserBoards: {...state.currentUserBoards}, 
+                currentProfileBoards: {...state.currentProfileBoards}}
+            delete newState6.allBoards[action.id]
+            delete newState6.currentUserBoards[action.id]
+            return newState6
         // case UN_PIN:
         //     const unPinSingle = { ...state.singleBoard }
         //     if (typeof unPinSingle === 'object') {
