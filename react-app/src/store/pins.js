@@ -257,7 +257,8 @@ export const createNewPin = (pin_info) => async (dispatch) => {
 
     if (res.ok) {
         const new_pin = await res.json()
-        return dispatch(createPin(new_pin))
+        dispatch(createPin(new_pin))
+        return new_pin
     } else {
         const errors = await res.json()
         return errors
