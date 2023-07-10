@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import ProfileButton from './ProfileButton';
@@ -10,17 +10,44 @@ import CreateBoardModal from '../CreateBoardModal';
 import './Navigation.css';
 
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded, setGrabString, setSearching }) {
 	const history = useHistory()
 	const sessionUser = useSelector((state) => state.session.user);
 	const [openMenu, setOpenMenu] = useState(false)
+	const [searchString, setSearchString] = useState("")
 	const { setModalContent } = useModal()
+	const [path, setPath] = useState(window.location.pathname)
 	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
 	let showMenu = () => {
 		setOpenMenu(!openMenu)
 	}
 
-	// const currentProfile = useSelector(state => state.profile.currentProfile)
+	useEffect(() => {
+		setPath(window.location.pathname)
+		console.log('')
+	}, [window.location.pathname, path])
+
+	const handleFilter = (e) => {
+		let grabString = searchString
+		if (!path.includes('/feed')) {
+			setSearchString("")
+			history.push({
+				pathname: '/feed',
+				state: grabString
+			})
+		} else {
+			setSearchString("")
+			setGrabString("")
+			setSearching(false)
+		}
+		return
+	}
+
+	const handleChanges = (e) => {
+		setSearchString(e.target.value)
+		setGrabString(e.target.value)
+	}
+
 	const currentUser = useSelector(state => state.session.user)
 
 
@@ -76,8 +103,8 @@ function Navigation({ isLoaded }) {
 									</div>
 								</div>
 							</div>
-							<input type="text" className="search-bar" placeholder="Search" />
-
+							<input value={searchString} onChange={handleChanges} type="text" className="search-bar" placeholder="Search" />
+							{path.includes("/feed") ? <button onClick={handleFilter} className='search-button'>Clear</button> : <button onClick={handleFilter} className='search-button'>Search</button>}
 						</div>
 					</>
 				)}

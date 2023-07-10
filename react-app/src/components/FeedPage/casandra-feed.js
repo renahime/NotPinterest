@@ -11,7 +11,7 @@ import CreateBoardModal from "../CreateBoardModal";
 import "./casandra-feed.css"
 
 
-export default function CaSandraFeed() {
+export default function CaSandraFeed({ grabString, setGrabString, setSearching, searching }) {
     const dispatch = useDispatch()
     const history = useHistory()
     let [loading, setLoading] = useState(false)
@@ -21,6 +21,7 @@ export default function CaSandraFeed() {
     let currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const [hoverBoard, setHoverBoard] = useState(false)
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
+    const [searchString, setSearchString] = useState(grabString)
     // const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
     const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
     let [pinsArr, setPinsArr] = useState([])
@@ -35,14 +36,53 @@ export default function CaSandraFeed() {
         }
     }, [sessionUser])
 
+    useEffect(() => {
+        if (grabString) {
+            setSearching(true)
+        } else {
+            setSearching(false)
+        }
+    }, [searching, grabString])
+
     function filterPins(pins) {
-        if (!sessionUser || sessionUser.categories.length === 0) {
+        if ((!sessionUser || sessionUser.categories.length === 0) && !searching) {
             let randomPins = shufflePins(pins)
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
                 userPins: null
             }
-        } else {
+        } else if (searching) {
+            let filteredPins = []
+            let userPins = 0
+            for (let pin of pins) {
+                if (pin.owner_id === sessionUser.id) userPins++
+                if (pin.title && pin.title.toLowerCase().includes(grabString.toLowerCase())) {
+                    filteredPins.push(pin)
+                }
+                if (pin.description && pin.description.toLowerCase().includes(grabString.toLowerCase())) {
+                    filteredPins.push(pin)
+                }
+                if (pin.alt_text && pin.alt_text.toLowerCase().includes(grabString.toLowerCase())) {
+                    filteredPins.push(pin)
+                }
+                if (pin.user.username.toLowerCase().includes(grabString.toLowerCase())) {
+                    filteredPins.push(pin)
+                }
+                if (pin.categories.length > 0) {
+                    for (let category of pin.categories) {
+                        if (category.toLowerCase().includes(grabString.toLowerCase())) {
+                            filteredPins.push(pin)
+                        }
+                    }
+                }
+            }
+            let randomPins = shufflePins(filteredPins)
+            return {
+                filteredPinsArr: randomPins.splice(0, 30),
+                userPins: userPins
+            }
+        }
+        else if (!searching) {
             let filteredPins = []
             let userPins = 0
             let categories = sessionUser.categories
@@ -53,9 +93,8 @@ export default function CaSandraFeed() {
                         filteredPins.push(pin)
                 }
             }
-            let randomPins = shufflePins(filteredPins)
             return {
-                filteredPinsArr: randomPins.splice(0, 30),
+                filteredPinsArr: filteredPins.splice(0, 30),
                 userPins: userPins
             }
         }
@@ -146,7 +185,7 @@ export default function CaSandraFeed() {
             }
             setFinished(true)
         }
-    }, [loading, pins])
+    }, [loading, pins, grabString])
 
     if (pins && !Object.values(pins).length) {
         return (
@@ -218,7 +257,7 @@ export default function CaSandraFeed() {
             )
             }
             < div className="pins-feed-wrapper-wrapper">
-                <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
+                {pinsArr.length > 0 ? <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
                     columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
                     <Masonry className="feed-pin-masonry" options={{ fitWidth: true }}>
                         {pinsArr.map(pin => (
@@ -240,7 +279,7 @@ export default function CaSandraFeed() {
                             </div>
                         ))}
                     </Masonry>
-                </ResponsiveMasonry>
+                </ResponsiveMasonry> : <h1>Sowwi couldn't find any pins :c</h1>}
             </div>
         </div >
     )

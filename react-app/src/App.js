@@ -21,8 +21,9 @@ import Settings from "./components/Forms/SettingsForm";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [grabString, setGrabString] = useState("")
+  const [searching, setSearching] = useState(false)
   const sessionUser = useSelector(state => state.session.user)
-
   useEffect(() => {
     dispatch(authenticate()).then((data) => {
       if (data && data["message"]) {
@@ -34,7 +35,7 @@ function App() {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
+      <Navigation setGrabString={setGrabString} isLoaded={isLoaded} setSearching={setSearching} />
       {isLoaded && (
         <Switch>
           <Route exact path="/setCategories">
@@ -57,7 +58,7 @@ function App() {
           </Route>
           <Route exact path="/feed">
             {/* <FeedPage sessionUser={sessionUser} /> */}
-            <CaSandraFeed />
+            <CaSandraFeed grabString={grabString} setGrabString={setGrabString} searching={searching} setSearching={setSearching} />
           </Route>
           <Route exact path="/">
             <LandingPage />
@@ -79,10 +80,6 @@ function App() {
           </Route>
           <Route path="/:username">
             <ProfilePage />
-          </Route>
-          <Route exact path="/oldfeed">
-            <FeedPage sessionUser={sessionUser} />
-            {/* <CaSandraFeed /> */}
           </Route>
         </Switch>
       )}
