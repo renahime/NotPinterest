@@ -63,7 +63,7 @@ function App() {
             <CaSandraFeed />
           </Route>
           <Route exact path="/">
-            <LandingPage />
+            {sessionUser ? <CaSandraFeed /> : <LandingPage />}
           </Route>
           {/* <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
