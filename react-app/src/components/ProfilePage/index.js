@@ -209,7 +209,7 @@ export default function ProfilePage() {
                         {openMenu && <div className={menuClassName}>
                             <div className="profile-dropdown-create-label">Create</div>
                             <NavLink style={{ textDecoration: 'none', width: "100%", textAlign: 'left', color: 'black' }} to="/create"> <div className="profile-dropdown-create">Pin</div> </NavLink>
-                            <div className="profile-dropdown-create" onClick={showMenu}>
+                            <div className="" onClick={showMenu}>
                                 <div>
                                     <OpenModalButton
                                         buttonText="Board"

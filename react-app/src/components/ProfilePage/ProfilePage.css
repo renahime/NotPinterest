@@ -130,8 +130,10 @@
 }
 
 .profile-dropdown-create {
-    font-size: 16px;
+    font-size: 14px;
     padding: 8px 5px;
+    /* margin-left: 5px; */
+    margin-top: 5px;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
