@@ -15,7 +15,7 @@ import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
 import CreateBoardModal from "../CreateBoardModal"
 
-export default function ProfilePage() {
+export default function CurrentUserBoardProfile() {
     const history = useHistory()
     const { username } = useParams()
     const dispatch = useDispatch()
@@ -113,7 +113,7 @@ export default function ProfilePage() {
     const handleShowBoards = (e) => {
         e.stopPropagation();
         setShowBoards(true);
-        setShowPins(false);
+        setShowPins(false)
         history.push(`/${username}`);
     };
 
@@ -157,10 +157,10 @@ export default function ProfilePage() {
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
-    // if (!loading) return <h1></h1>
+    // if (!loading) return <h1>Loading...</h1>
     // else if (!current.id) return <PageNotFound />
 
-    return (!Object.values(current).length ? <h1></h1> :
+    return (!Object.values(current).length ? <h1>Loading...</h1> :
         <div>
             {current.id &&
                 <div className="profile-page-base">
@@ -198,10 +198,8 @@ export default function ProfilePage() {
                     }
                     <div>
 
-                        <button onClick={handleShowBoards} className={showPins ? "profile-button" : "profile-button underline"}>Pins</button>
-
-                        <button onClick={handleShowPins} className={showBoards ? "profile-button" : "profile-button underline"}>Boards</button>
-                       
+                        <button onClick={handleShowBoards} className={ "profile-button"}>Pins</button>
+                        <button onClick={handleShowPins} className={"profile-button underline"}>Boards</button>
                     </div>
                 </div>
             }
@@ -223,11 +221,11 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>}
-                    </div> {checkUser() && <><UserPins pins={currentUserPins}> </UserPins></>}
+                    </div> {checkUser() &&  <CurrentUserBoard userBoardsArr={Object.values(currentUserBoards)} current={current} username={current.username} profilePicture={current.profile_image} /> }
                 </div>
                 :
                 <div className="user-profile-bottom-wrapper">
-                    {<><UserPins pins={currentProfilePins}> </UserPins></>}
+                    {!showBoards && <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> }
                 </div>
             }
         </div>

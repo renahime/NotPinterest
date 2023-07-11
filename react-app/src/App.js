@@ -19,6 +19,7 @@ import UserCategoriesForm from "./components/UserCategoriesForm";
 import CaSandraFeed from "./components/FeedPage/casandra-feed"
 import Settings from "./components/Forms/SettingsForm";
 import AboutLinks from "./components/AboutLinks";
+import CurrentUserBoardProfile from "./components/ProfilePage/CurrentUserBoardProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,12 +76,17 @@ function App() {
           <Route path="/:username/_created">
             <UserPins />
           </Route>
+          < Route path = '/:username/boards'>
+            <CurrentUserBoardProfile/>
+          </Route>
+
           <Route path="/:username/_saved">
             <ProfilePage session={sessionUser} />
           </Route>
           <Route exact path="/:username/:boardName">
             <IndividualBoardPage />
           </Route>
+
           <Route path="/:username">
             <ProfilePage />
           </Route>
