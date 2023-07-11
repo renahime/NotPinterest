@@ -126,6 +126,7 @@ const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
 const GET_ALL_PINS = "pins/all"
 const CLEAR_SINGLE_PIN = "pin/clear"
+const CLEAR_ALL_PINS = "pins/clear"
 const GET_CURRENT_USER_PINS = "pins/currentUser"
 const GET_OTHER_USER_PINS = "pins/otherUser"
 const GET_PINS_OF_BOARD = "pins/boardPins"
@@ -152,7 +153,6 @@ const getAllPins = (pins) => ({
 export const clearSinglePin = () => ({
     type: CLEAR_SINGLE_PIN
 })
-
 
 const deletePin = (pinId) => ({
     type: DELETE_PIN,
@@ -213,7 +213,7 @@ export const unpinThunk = (pin, boardId) => async (dispatch) => {
     }
 }
 
-export const getUserBoarPins = () => async(dispatch) => {
+export const getUserBoarPins = () => async (dispatch) => {
     let res = await fetch("/api/pins/user/boards")
 
     if (res.ok) {
@@ -337,25 +337,26 @@ export const updatePinThunk = (pin) => async (dispatch) => {
     }
 };
 
-const initialState = { pins: {}, 
-                        singlePin: {}, 
-                        currentBoardPins: {}, 
-                        currentUserPins: {}, 
-                        currentProfilePins: {}, 
-                        currentUserBoardPins: {} 
-                    }
+const initialState = {
+    pins: {},
+    singlePin: {},
+    currentBoardPins: {},
+    currentUserPins: {},
+    currentProfilePins: {},
+    currentUserBoardPins: {}
+}
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_CURRENT_USER_BOARD_PINS:
             return {
                 ...state,
-                pins: { ...state.pins},
+                pins: { ...state.pins },
                 singlePin: { ...state.singlePin },
                 currentBoardPins: { ...state.currentBoardPins },
                 currentUserPins: { ...state.currentUserPins },
                 currentProfilePins: { ...state.currentProfilePins },
-                currentUserBoardPins: {...action.pins}
+                currentUserBoardPins: { ...action.pins }
             }
         case UN_PIN:
             let newState = {
@@ -367,7 +368,7 @@ export default function pinsReducer(state = initialState, action) {
                 currentProfilePins: { ...state.currentProfilePins }
             }
 
-            delete newState.currentBoardPins[action.pin.id]          
+            delete newState.currentBoardPins[action.pin.id]
             return newState
         case PIN:
             return {
@@ -436,12 +437,12 @@ export default function pinsReducer(state = initialState, action) {
         case DELETE_PIN:
             let newState3 = {
                 ...state,
-                pins: { ...state.pins},
-                singlePin: { },
+                pins: { ...state.pins },
+                singlePin: {},
                 currentBoardPins: { ...state.currentBoardPins },
                 currentUserPins: { ...state.currentUserPins },
                 currentProfilePins: { ...state.currentProfilePins },
-                currentUserBoardPins: {...state.currentUserBoardPins}
+                currentUserBoardPins: { ...state.currentUserBoardPins }
             }
 
             delete newState3.pins[action.pinId]
@@ -466,13 +467,13 @@ export default function pinsReducer(state = initialState, action) {
             return newState3
         case UPDATE_USER_PIN:
             return {
-                    ...state,
-                    pins: { ...state.pins, [action.pin.id] : action.pin },
-                    singlePin:  action.pin ,
-                    currentBoardPins: { ...state.currentBoardPins },
-                    currentUserPins: { ...state.currentUserPins, [action.pin.id]: action.pin },
-                    currentProfilePins: { ...state.currentProfilePins }
-                }
+                ...state,
+                pins: { ...state.pins, [action.pin.id]: action.pin },
+                singlePin: action.pin,
+                currentBoardPins: { ...state.currentBoardPins },
+                currentUserPins: { ...state.currentUserPins, [action.pin.id]: action.pin },
+                currentProfilePins: { ...state.currentProfilePins }
+            }
         case CLEAR_SINGLE_PIN:
             return { ...state, singlePin: {} }
         default:

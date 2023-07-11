@@ -21,13 +21,21 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
     let currentUserBoards = useSelector(state => state.boards.currentUserBoards)
     const [hoverBoard, setHoverBoard] = useState(false)
     const [hoverBoardDiv, setHoverBoardDiv] = useState("")
-    const [searchString, setSearchString] = useState(grabString)
+    const [found, setFound] = useState(false)
+    const [check, setCheck] = useState(true)
     // const [selectedBoardDropdown, setSelectedBoardDropdown] = useState(sessionUser?.boards[0]?.name || "")
     const [currentUser, setCurrentUser] = useState(sessionUser ? true : false)
     let [pinsArr, setPinsArr] = useState([])
     let numberOfPins = 0
     let boards = 0
 
+
+    useEffect(() => {
+        window.addEventListener("beforeunload", (e) => {
+            setSearching(false)
+            setGrabString("")
+        });
+    }, [])
     useEffect(() => {
         if (sessionUser) {
             setCurrentUser(true)
@@ -77,6 +85,11 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
                 }
             }
             let randomPins = shufflePins(filteredPins)
+            if (randomPins.length > 0) {
+                setCheck(true)
+            } else {
+                setCheck(false)
+            }
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
                 userPins: userPins
@@ -180,10 +193,10 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
                 setPinsArr(filteredPinsArr);
                 if (sessionUser) {
                     numberOfPins = userPins
-                    // boards = sessionUser.boards.length
                 }
             }
             setFinished(true)
+            setFound(true)
         }
     }, [loading, pins, grabString])
 
@@ -279,7 +292,7 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
                             </div>
                         ))}
                     </Masonry>
-                </ResponsiveMasonry> : <h1>Sowwi couldn't find any pins :c</h1>}
+                </ResponsiveMasonry> : check ? <LoadingButton isLoading={found}></LoadingButton> : <h1>couldn't find pins sowwi :c</h1>}
             </div>
         </div >
     )
