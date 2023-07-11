@@ -45,7 +45,7 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
     console.log("newCoverImage", newCoverImage)
     const modalContent = (
       <div>
-        <UpdateBoardModal newCoverImage={newCoverImage} board={board} />
+        <UpdateBoardModal updatedBoard={updatedBoardData} newCoverImage={newCoverImage} board={board} />
       </div>
     );
     setModalContent(modalContent);

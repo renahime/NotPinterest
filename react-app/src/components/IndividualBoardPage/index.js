@@ -27,9 +27,9 @@ export default function IndividualBoardPage() {
     let boardPins = []
     const individualBoard = useSelector(state => state.boards.singleBoard)
 
-    const openUpdateModal = () => {
 
-    }
+    console.log("USERNAME", username)
+    console.log("CURRENT BOARRD", currentBoard)
 
     useEffect(() => {
         if (currentUser && Object.values(currentUserBoard).length) {
@@ -54,6 +54,33 @@ export default function IndividualBoardPage() {
             }
         })
     }, [dispatch, currentUserBoard])
+
+
+    // If we click off of the Create tab, the modal will dissapear
+    useEffect(() => {
+        const handleClick = (event) => {
+            if (menu === true) {
+                showMenu(false)
+            }
+        };
+        document.addEventListener('click', handleClick);
+        return () => {
+            document.removeEventListener('click', handleClick);
+        };
+    }, [menu]);
+
+    console.log("TESTING ID", individualBoard.id)
+    console.log("INDIVUDAL BOARD", individualBoard)
+
+    const openUpdateModal = (event) => {
+        event.preventDefault();
+        const modalContent = (
+            <div>
+                <UpdateBoardModal id={currentBoard.id} username={username} board={currentBoard} />
+            </div>
+        );
+        setModalContent(modalContent);
+    };
 
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
     const handleBack = () => {

@@ -12,13 +12,17 @@ import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal({ id, newCoverImage, board, current, }) {
+function UpdateBoardModal({ id, newCoverImage, board, current,updatedBoard }) {
   const dispatch = useDispatch();
+
+  console.log("ID",id)
+  console.log(newCoverImage)
+  console.log("BOARD",board)
 
   useEffect(() => {
     dispatch(getPinsForBoard(id))
     return (() => clearBoardPins())
-  }, [dispatch])
+  }, [dispatch,board])
 
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -28,9 +32,9 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
   const userBoards = useSelector(state => state.boards.currentUserBoards)
 
   //set form data
-  const [name, setName] = useState(board.name);
-  const [description, setDescription] = useState(board.description);
-  const [isPrivate, setIsPrivate] = useState(board.private);
+  const [name, setName] = useState(updatedBoard && Object.keys(updatedBoard).length ? updatedBoard.name : board.name);
+  const [description, setDescription] = useState(updatedBoard && Object.keys(updatedBoard).length ? updatedBoard.description : board.description);
+  const [isPrivate, setIsPrivate] = useState(updatedBoard && Object.keys(updatedBoard).length ? updatedBoard.private : board.private);
   const [cover_image, setCoverImage] = useState(
     board.cover_image ? board.cover_image : [""]
   );
@@ -139,8 +143,8 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
                 required
                 className="edit-board-modal-name-input"
               ></input>
-              <p className="edit-board-text">{100 - name.length}</p>
-              <p className="edit-board-text" style={{ color: "red" }} >{(name.length > 100) ? "Ooops, this name is too long" : null}</p>
+              <p className="edit-board-text">{100 - name?.length}</p>
+              <p className="edit-board-text" style={{ color: "red" }} >{(name?.length > 100) ? "Ooops, this name is too long" : null}</p>
               <p className="edit-board-text" style={{ color: "red" }}>{errors.name ? (errors.name) : null}</p>
             </label>
             <label className="edit-board-modal-description">
@@ -151,8 +155,8 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
                 placeholder="What's your board about?"
                 className="edit-board-modal-description-input"
               ></textarea>
-              <p className="edit-board-text">{225 - description.length}</p>
-              <p className="edit-board-text" style={{ color: "red" }} >{(description && description.length > 225) ? "Ooops, this description is too long" : null}</p>
+              <p className="edit-board-text">{225 - description?.length}</p>
+              <p className="edit-board-text" style={{ color: "red" }} >{(description && description?.length > 225) ? "Ooops, this description is too long" : null}</p>
             </label>
             <label>
               <p className="edit-board-settings">Settings</p>
