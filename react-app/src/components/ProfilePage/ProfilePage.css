@@ -95,13 +95,14 @@
     border-radius: 100%;
     background-color: transparent;
     border: transparent;
-    padding: 10px;
+    padding: 10px 13px;
     color: #111111;
     cursor: pointer;
 }
 
 .profile-plus-button:hover {
     background-color: #E0E0E0;
+    padding: 10px 13px;
 }
 
 .hidden {
@@ -159,4 +160,6 @@
 
 .underline {
     text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
 }
