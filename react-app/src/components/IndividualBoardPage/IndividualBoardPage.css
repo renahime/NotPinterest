@@ -98,6 +98,11 @@
     width: 100%;
 }
 
+.individual-board-pins-wrapper-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .individual-board-pin-image {
     width: 250px;
     height: auto;

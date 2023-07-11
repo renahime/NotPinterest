@@ -210,7 +210,7 @@ export default function ProfilePage() {
                     </div> {checkUser() && !showBoards ? <CurrentUserBoard userBoardsArr={Object.values(currentUserBoards)} current={current} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={currentUserPins}> </UserPins></>}
                 </div>
                 :
-                <div>
+                <div className="user-profile-bottom-wrapper">
                     {!showBoards ? <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> : <><UserPins pins={currentProfilePins}> </UserPins></>}
                 </div>
             }
