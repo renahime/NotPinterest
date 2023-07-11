@@ -84,7 +84,7 @@ def get_current_user_boards():
     all_boards = {}
 
     for board in user_boards:
-        all_boards[board.id] = board.less_to_dict()
+        all_boards[board.id] = board.detailed_to_dict()
     return all_boards
 
 

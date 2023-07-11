@@ -7,7 +7,7 @@ import { NavLink, Redirect, useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import './SavePinsToBoard.css'
 // import { addPinToBoardThunk, getBoardByName } from "../../store/boards";
-import { pinThunk } from "../../store/pins";
+import { pinThunk } from "../../store/boards";
 import { getAllPinsThunkOld } from "../../store/pins";
 import LoadingButton from "../LoadingButton";
 

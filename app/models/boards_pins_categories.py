@@ -164,6 +164,25 @@ class Board(db.Model):
             'description': self.description,
             'num_pins': len(self.pins_tagged)
         }
+    
+    def detailed_to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'private': self.private,
+            'cover_image': [image.image for image in self.pin_cover_image],
+            'additional_images': self.findOtherImages(),
+            'description': self.description,
+            'pins': {pin.id: pin.to_dict() for pin in self.pins_tagged},
+            'user': {
+                'id': self.user.id,
+                'username': self.user.username,
+                'profile_image': self.user.profile_image
+            },
+            # 'categories': [category.name for category in self.categories],
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
 
 class Pin(db.Model):
     __tablename__ = 'pins'

@@ -130,9 +130,7 @@ const GET_CURRENT_USER_PINS = "pins/currentUser"
 const GET_OTHER_USER_PINS = "pins/otherUser"
 const GET_PINS_OF_BOARD = "pins/boardPins"
 const CLEAR_BOARD_PINS = "pins/clearBoardPins"
-const PIN = "boards/pin"
-const UN_PIN = "boards/unpin"
-const GET_ALL_CURRENT_USER_BOARD_PINS = "pins/userBoardPins"
+// const GET_ALL_CURRENT_USER_BOARD_PINS = "boards/userBoardPins"
 
 const createPin = (pin) => ({
     type: CREATE_PIN,
@@ -183,61 +181,61 @@ export const clearBoardPins = () => ({
     type: CLEAR_BOARD_PINS
 })
 
-const pinBoard = (pin, boardId) => ({
-    type: PIN,
-    pin,
-    boardId,
-})
+// const pinBoard = (pin, boardId) => ({
+//     type: PIN,
+//     pin,
+//     boardId,
+// })
 
-const unPin = (pin, boardId) => ({
-    type: UN_PIN,
-    pin,
-    boardId,
-})
+// const unPin = (pin, boardId) => ({
+//     type: UN_PIN,
+//     pin,
+//     boardId,
+// })
 
-const getAllBoardPinsOfCurrentUser = (pins) => ({
-    type: GET_ALL_CURRENT_USER_BOARD_PINS,
-    pins
-})
+// const getAllBoardPinsOfCurrentUser = (pins) => ({
+//     type: GET_ALL_CURRENT_USER_BOARD_PINS,
+//     pins
+// })
 
-export const unpinThunk = (pin, boardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${boardId}/unpin/${pin.id}`, {
-        method: "DELETE",
-    });
-    if (res.ok) {
-        dispatch(unPin(pin, boardId));
-        return pin
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
+// export const unpinThunk = (pin, boardId) => async (dispatch) => {
+//     const res = await fetch(`/api/boards/${boardId}/unpin/${pin.id}`, {
+//         method: "DELETE",
+//     });
+//     if (res.ok) {
+//         dispatch(unPin(pin, boardId));
+//         return pin
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
-export const getUserBoarPins = () => async(dispatch) => {
-    let res = await fetch("/api/pins/user/boards")
+// export const getUserBoarPins = () => async(dispatch) => {
+//     let res = await fetch("/api/pins/user/boards")
 
-    if (res.ok) {
-        let pins = await res.json()
-        dispatch(getAllBoardPinsOfCurrentUser(pins))
-        return pins
-    } else {
-        let errors = await res.json()
-        return errors
-    }
-}
+//     if (res.ok) {
+//         let pins = await res.json()
+//         dispatch(getAllBoardPinsOfCurrentUser(pins))
+//         return pins
+//     } else {
+//         let errors = await res.json()
+//         return errors
+//     }
+// }
 
-export const pinThunk = (pin, boardId) => async (dispatch) => {
-    const res = await fetch(`/api/boards/${boardId}/pin/${pin.id}`, {
-        method: "POST",
-    });
-    if (res.ok) {
-        dispatch(pinBoard(pin, boardId));
-        return pin
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
+// export const pinThunk = (pin, boardId) => async (dispatch) => {
+//     const res = await fetch(`/api/boards/${boardId}/pin/${pin.id}`, {
+//         method: "POST",
+//     });
+//     if (res.ok) {
+//         dispatch(pinBoard(pin, boardId));
+//         return pin
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
 
 
@@ -342,42 +340,41 @@ const initialState = { pins: {},
                         currentBoardPins: {}, 
                         currentUserPins: {}, 
                         currentProfilePins: {}, 
-                        currentUserBoardPins: {} 
+                        // currentUserBoardPins: {} 
                     }
 
 export default function pinsReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_ALL_CURRENT_USER_BOARD_PINS:
-            return {
-                ...state,
-                pins: { ...state.pins},
-                singlePin: { ...state.singlePin },
-                currentBoardPins: { ...state.currentBoardPins },
-                currentUserPins: { ...state.currentUserPins },
-                currentProfilePins: { ...state.currentProfilePins },
-                currentUserBoardPins: {...action.pins}
-            }
-        case UN_PIN:
-            let newState = {
-                ...state,
-                pins: { ...state.pins },
-                singlePin: { ...state.singlePin },
-                currentBoardPins: { ...state.currentBoardPins },
-                currentUserPins: { ...state.currentUserPins },
-                currentProfilePins: { ...state.currentProfilePins }
-            }
-
-            delete newState.currentBoardPins[action.pin.id]          
-            return newState
-        case PIN:
-            return {
-                ...state,
-                pins: { ...state.pins },
-                singlePin: { ...state.singlePin },
-                currentBoardPins: { ...state.currentBoardPins, [action.pin.id]: action.pin },
-                currentUserPins: { ...state.currentUserPins },
-                currentProfilePins: { ...state.currentProfilePins }
-            }
+        // case GET_ALL_CURRENT_USER_BOARD_PINS:
+        //     return {
+        //         ...state,
+        //         pins: { ...state.pins},
+        //         singlePin: { ...state.singlePin },
+        //         currentBoardPins: { ...state.currentBoardPins },
+        //         currentUserPins: { ...state.currentUserPins },
+        //         currentProfilePins: { ...state.currentProfilePins },
+        //         currentUserBoardPins: {...action.pins}
+        //     }
+        // case UN_PIN:
+        //     let newState = {
+        //         ...state,
+        //         pins: { ...state.pins },
+        //         singlePin: { ...state.singlePin },
+        //         currentBoardPins: { ...state.currentBoardPins },
+        //         currentUserPins: { ...state.currentUserPins },
+        //         currentProfilePins: { ...state.currentProfilePins }
+        //     }
+        //     delete newState.currentBoardPins[action.pin.id]          
+        //     return newState
+        // case PIN:
+        //     return {
+        //         ...state,
+        //         pins: { ...state.pins },
+        //         singlePin: { ...state.singlePin },
+        //         currentBoardPins: { ...state.currentBoardPins, [action.pin.id]: action.pin },
+        //         currentUserPins: { ...state.currentUserPins },
+        //         currentProfilePins: { ...state.currentProfilePins }
+        //     }
         case CLEAR_BOARD_PINS:
             return {
                 ...state,
@@ -441,7 +438,7 @@ export default function pinsReducer(state = initialState, action) {
                 currentBoardPins: { ...state.currentBoardPins },
                 currentUserPins: { ...state.currentUserPins },
                 currentProfilePins: { ...state.currentProfilePins },
-                currentUserBoardPins: {...state.currentUserBoardPins}
+                // currentUserBoardPins: {...state.currentUserBoardPins}
             }
 
             delete newState3.pins[action.pinId]

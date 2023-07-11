@@ -6,11 +6,13 @@ const GET_SINGLE_BOARD = 'boards/single'
 const CREATE_USER_BOARD = 'boards/new'
 const UPDATE_USER_BOARD = 'boards/edit'
 const DELETE_BOARD = "boards/delete";
-// const UN_PIN = "boards/unpin"
-// const PIN = "boards/pin"
+const UN_PIN = "boards/unpin"
+const PIN = "boards/pin"
 const REPIN = "boards/repin"
 const GET_BOARDS_BY_USER = "boards/singleUser"
 const CLEAR_BOARD = "boards/clearSingleBoard"
+// const GET_ALL_CURRENT_USER_BOARD_PINS = "boards/userBoardPins"
+
 
 
 const getSingleBoard = (board) => ({
@@ -38,10 +40,9 @@ const deleteUserBoard = (id) => ({
     id
 });
 
-// const unPin = (pin, boardId) => ({
-//     type: UN_PIN,
-//     pin,
-//     boardId,
+// const getAllBoardPinsOfCurrentUser = (pins) => ({
+//     type: GET_ALL_CURRENT_USER_BOARD_PINS,
+//     pins
 // })
 
 const rePin = (pin, oldBoardId, newBoardId) => ({
@@ -51,11 +52,17 @@ const rePin = (pin, oldBoardId, newBoardId) => ({
     newBoardId
 })
 
-// const pinBoard = (pin, boardId) => ({
-//     type: PIN,
-//     pin,
-//     boardId,
-// })
+const pinBoard = (pin, boardId) => ({
+    type: PIN,
+    pin,
+    boardId,
+})
+
+const unPin = (pin, boardId) => ({
+    type: UN_PIN,
+    pin,
+    boardId,
+})
 
 const otherUserBoards = (boards) => ({
     type: GET_BOARDS_BY_USER,
@@ -66,6 +73,19 @@ export const clearBoard = () => ({
     type: CLEAR_BOARD
 })
 
+
+// export const getUserBoarPins = () => async(dispatch) => {
+//     let res = await fetch("/api/pins/user/boards")
+
+//     if (res.ok) {
+//         let boards = await res.json()
+//         dispatch(getAllBoardPinsOfCurrentUser(boards))
+//         return boards
+//     } else {
+//         let errors = await res.json()
+//         return errors
+//     }
+// }
 
 export const deleteBoard = (id) => async(dispatch) => {
     let res = await fetch(`/api/boards/${id}/delete`, {
@@ -110,15 +130,6 @@ export const getSingleBoardThunk = (username, boardname) => async (dispatch) => 
         return board;
     }
 }
-
-// export const getBoardsByUsername = (username) => async (dispatch) => {
-//     const res = await fetch(`/api/boards/users/${username}`)
-//     if (res.ok) {
-//         let boards = await res.json()
-//         console.log("GET BOARDS BY USERNAME TEST", boards)
-//         dispatch(getUserBoards(boards))
-//     }
-// }
 
 export const createBoardThunk = (board) => async (dispatch) => {
     const res = await fetch('/api/boards/', {
@@ -188,31 +199,32 @@ export const updateBoardThunk = (board, id) => async (dispatch) => {
 
 // };
 
-// export const unpinThunk = (pin, boardId) => async (dispatch) => {
-//     const res = await fetch(`/api/boards/${boardId}/unpin/${pin.id}`, {
-//         method: "DELETE",
-//     });
-//     if (res.ok) {
-//         dispatch(unPin(pin, boardId));
-//         return pin
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const pinThunk = (pin, boardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${boardId}/pin/${pin.id}`, {
+        method: "POST",
+    });
+    if (res.ok) {
+        dispatch(pinBoard(pin, boardId));
+        return pin
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
 
-// export const pinThunk = (pin, boardId) => async (dispatch) => {
-//     const res = await fetch(`/api/boards/${boardId}/pin/${pin.id}`, {
-//         method: "POST",
-//     });
-//     if (res.ok) {
-//         dispatch(pinBoard(pin, boardId));
-//         return pin
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const unpinThunk = (pin, boardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${boardId}/unpin/${pin.id}`, {
+        method: "DELETE",
+    });
+    if (res.ok) {
+        dispatch(unPin(pin, boardId));
+        return pin
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
+
 
 // export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
 //     const res = await fetch(`/api/boards/${oldBoardId}/${pin.id}/pin_to/${newBoardId}`, {
@@ -244,11 +256,39 @@ export const updateBoardThunk = (board, id) => async (dispatch) => {
 
 
 
-const initialState = { singleBoard: {}, allBoards: {}, currentUserBoards: {}, currentProfileBoards: {} }
+const initialState = { singleBoard: {}, 
+                        allBoards: {}, 
+                        currentUserBoards: {}, 
+                        currentProfileBoards: {}
+                    }
 
 export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
+        case UN_PIN:
+            newState = {
+                ...state,
+                singleBoard: { ...state.singleBoard },
+                allBoards: { ...state.allBoards },
+                currentUserBoards: { ...state.currentUserBoards },
+                currentProfileBoards: { ...state.currentProfileBoards },
+            }
+            delete newState.currentUserBoards.pins[action.pin.id]    
+            return newState
+        case PIN:
+            return {
+                ...state,
+                singleBoard: { ...state.singleBoard },
+                allBoards: { ...state.allBoards },
+                currentUserBoards: { ...state.currentUserBoards, 
+                                    [action.boardId]: {...state.currentUserBoards[action.boardId], 
+                                        pins : {...state.currentUserBoards[action.boardId].pins, 
+                                            [action.pin.id]: action.pin}
+                                        }
+                                    },
+                currentProfileBoards: { ...state.currentProfileBoards },
+                currentBoardPins: { ...state.currentBoardPins, [action.pin.id]: action.pin },
+            }
         case CLEAR_BOARD:
             return {...state, 
                 singleBoard: {}, 
