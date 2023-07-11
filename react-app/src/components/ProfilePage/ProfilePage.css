@@ -167,3 +167,7 @@
     text-decoration-thickness: 2px;
     text-underline-offset: 4px;
 }
+
+.user-profile-bottom-wrapper {
+    width: 100%;
+}

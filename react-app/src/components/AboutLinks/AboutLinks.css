@@ -1,0 +1,79 @@
+.about-links-button {
+    position: fixed;
+    bottom: 20px;
+    left: 40px;
+    z-index: 2;
+    padding: 10px;
+    border-color: #e60023;
+    border-radius: 50%;
+}
+
+.about-links-button > i{
+    color: #e60023;
+    font-size: 20px;
+}
+
+.about-links-button::before {
+    content: "Meet the Developers";
+    position: absolute;
+    display:none;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    width: 70px;
+    height: 35px;
+    background-color: #e60023;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+.about-links-button:hover::before {
+    display:block;
+}
+
+.about-links {
+    text-decoration: none;
+}
+
+.about-links > i {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.about-links > i:hover {
+    color: #e60023;
+}
+
+/* .about-links-header {
+    padding-bottom: 10px;
+} */
+
+.about-links-header > th {
+    width: 100px;
+    padding-bottom: 10px;
+}
+
+.about-links-modal {
+    padding: 10px;
+    display: grid;
+}
+
+.about-links-modal > button {
+    justify-self: end;
+    padding: 3px;
+    background-color: transparent;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+.about-links-modal > button:hover {
+    color: #e60023;
+}
+
+.about-links-rows > tr > td {
+    padding-bottom: 5px;
+}

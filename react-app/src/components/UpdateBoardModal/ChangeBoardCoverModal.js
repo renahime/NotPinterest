@@ -19,17 +19,12 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
   const { setModalContent, closeModal } = useModal();
   const [hover, setHover] = useState(false)
   const [hoverDiv, setHoverDiv] = useState("")
-  const [cover_image, setCoverImage] = useState(updatedBoardData?.cover_image || "")
 
   const boardPins = useSelector((state) => state.pins.currentBoardPins);
-  // const [pinImages, setPinImages] = useState([]);
 
   useEffect(() => {
     dispatch(getPinsForBoard(board.id))
   }, [dispatch])
-
-  const date = new Date();
-
 
   function onHover(pin) {
     setHover(true)
@@ -41,14 +36,13 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
     setHoverDiv("")
   }
 
-  const setBoardCoverImage = async (event) => {
-    setCoverImage(hoverDiv)
-    const newCoverImage = cover_image
-    openUpdateModal(event, hoverDiv)
+  const setBoardCoverImage = async (event, image) => {
+    openUpdateModal(event, image)
   }
 
   const openUpdateModal = (event, newCoverImage) => {
     event.stopPropagation();
+    console.log("newCoverImage", newCoverImage)
     const modalContent = (
       <div>
         <UpdateBoardModal newCoverImage={newCoverImage} board={board} />
@@ -76,7 +70,7 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
                     backgroundImage: `url(${pin.image})`,
                   }}
                   onMouseEnter={() => onHover(pin)} onMouseLeave={() => offHover()}
-                  onClick={setBoardCoverImage}
+                  onClick={(e) => setBoardCoverImage(e, pin.image)}
                 >
                 </div>
               );

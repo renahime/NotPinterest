@@ -22,7 +22,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
 
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([""]);
   const { setModalContent, closeModal } = useModal();
   const boardPins = useSelector(state => state.pins.currentBoardPins)
   const userBoards = useSelector(state => state.boards.currentUserBoards)
@@ -32,20 +32,18 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
   const [description, setDescription] = useState(board.description);
   const [isPrivate, setIsPrivate] = useState(board.private);
   const [cover_image, setCoverImage] = useState(
-    newCoverImage ? newCoverImage : board?.cover_image
+    board.cover_image ? board.cover_image : [""]
   );
 
   // when we click on Board Cover we need to open up modal to save pins to board.
   const openModal = () => {
     const modalContent = (
       <div>
-        <ChangeBoardCoverModal updatedBoardData={updatedBoardData} board={board} />
+        <ChangeBoardCoverModal updatedBoardData={updatedBoardData} board={board}/>
       </div>
     );
     setModalContent(modalContent);
   };
-
-
 
   const handlePrivateChange = (e) => {
     setIsPrivate(e.target.checked);
@@ -90,9 +88,25 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
       setErrors(validationErrors)
       return
     }
-    let updatedBoard = await dispatch(updateBoardThunk(updatedBoardData, board.id))
+
+    let changeBoard = {
+      name,
+      private: isPrivate,
+      description: description,
+      cover_image: newCoverImage ? newCoverImage : cover_image
+    }
+
+    let updatedBoard = await dispatch(updateBoardThunk(changeBoard, board.id))
     closeModal()
   };
+
+  let imageDisplay = "https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png"
+
+  if (newCoverImage) {
+    imageDisplay = newCoverImage
+  } else if (cover_image[0]) {
+    imageDisplay = cover_image[0]
+  }
 
   return (
     <>
@@ -103,18 +117,19 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
         <form className="edit-board-from" style={{ maxHeight: '100%', width: '100%' }} onSubmit={onSubmit}>
           {/* <div className="edit-board-cover-image-plus-sign">+</div> */}
           <div>
-            {cover_image[0] ? <div className="edit-board-cover-image-container">
+            {/* {cover_image[0] ?  */}
+            <div className="edit-board-cover-image-container">
               <div className="edit-board-cover-image-text">Board cover</div>
               <div className="edit-board-cover-image" onClick={openModal}>
-                <img src={cover_image} className="edit-board-cover-image" />
+                <img src={imageDisplay} className="edit-board-cover-image" />
               </div>
             </div>
-              : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
+              {/* : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
                 <div className="edit-board-cover-image-text">Board cover</div>
                 <div className="edit-board-cover-image" onClick={openModal}>
                   <img src='https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png' className="edit-board-cover-image" />
                 </div>
-              </div> : null}
+              </div> : null */}
             <label className="edit-board-modal-name">
               Name
               <input

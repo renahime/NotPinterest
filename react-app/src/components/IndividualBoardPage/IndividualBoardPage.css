@@ -100,20 +100,28 @@
     padding-top: 15px;
 
     width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.individual-board-pins-wrapper-wrapper {
+    display: flex;
+    justify-content: center;
 }
 
 .individual-board-pin-image {
-    width: 250px;
+    width: 100%;
     height: auto;
     border-radius: 20px;
     object-fit: contain;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     cursor: zoom-in;
 }
 
 .individual-board-individual-pins-wrapper{
     display: grid;
     padding-bottom: 10px;
+    width: 100%;
 }
 
 
@@ -154,6 +162,7 @@
     font-weight: 500;
     font-size: 14px;
     width: 80%;
+    cursor: zoom-in;
 }
 
 .individual-board-pin-owner-info {
@@ -171,6 +180,8 @@
 
 .individual-boards-link-to-pin {
     cursor: zoom-in;
+    position: relative;
+    width: 100%;
 }
 
 .singleboard-pins-length{
@@ -199,4 +210,96 @@
 
 .cursor-pointer{
     cursor: pointer;
+}
+.individual-board-edit-pin-button {
+    position: absolute;
+    display: none;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 50%;
+    padding: 5px;
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, .6);
+    cursor: pointer;
+}
+
+.individual-board-edit-pin-button > i {
+    font-size: 20px;
+}
+
+.individual-board-individual-pins-wrapper:hover {
+    .individual-board-edit-pin-button {
+        display: block;
+    }
+}
+
+.edit-pin-board-wrapper {
+    display: grid;
+    justify-items: center;
+    padding: 10px;
+}
+
+.edit-pin-board-title {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.edit-pin-board-content {
+    display: flex;
+    height: 300px;
+    column-gap: 10px;
+}
+
+.move-pin-board-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.move-pin-board-form-wrapper > h2 {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.move-pin-board-form {
+    display: flex;
+    column-gap: 5px;
+}
+
+.edit-pin-board-image {
+    max-height: 300px;
+}
+
+.edit-pin-board-buttons-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.edit-pin-board-buttons, .edit-pin-board-buttons-save {
+    border-color: transparent;
+    padding: 7px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.edit-pin-board-buttons {
+    background-color: #efefef;
+    color: black;
+}
+
+.edit-pin-board-buttons{
+    background-color: #e2e2e2;
+}
+
+.edit-pin-board-buttons-save {
+    background-color: red;
+    color: white;
+}
+
+.edit-pin-board-buttons-save:hover {
+    background-color: #ad081b;
 }

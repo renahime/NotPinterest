@@ -9,7 +9,7 @@ import OpenModalButton from '../OpenModalButton';
 import EditPinModal from "./EditPinModal";
 import ComingSoon from "./ComingSoonModal";
 import Dropdown from "./Dropdown";
-import { pinThunk } from "../../store/pins";
+import { pinThunk } from "../../store/boards";
 import { useModal } from "../../context/Modal";
 import "./IndividualPinPage.css"
 import { Link } from "react-router-dom"

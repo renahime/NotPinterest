@@ -214,3 +214,10 @@
   font-size: 10px;
   /* text-align: right; */
 }
+
+.board-dropdown-edit-pin {
+    border-radius: 15px;
+    border: 2px solid #ccc;
+    padding: 10px;
+    width: 300px;
+}

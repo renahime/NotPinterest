@@ -27,7 +27,6 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         setHover(false)
         setHoverDiv("")
     }
-    console.log(current);
 
     let editBoardClassName = hover ? `profile-edit-board-icon` : "profile-edit-board-icon hidden"
 
@@ -42,6 +41,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         setModalContent(modalContent);
     };
 
+    console.log("boards", userBoardsArr)
 
     return (
         <div className="profile-boards-all">
@@ -91,7 +91,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                 </div>
                                 <div>
                                     <p className="profile-pins-on-board">
-                                        {pinDisplay(boards.num_pins)}
+                                        {boards.pins ? pinDisplay(Object.values(boards.pins).length) : null}
                                     </p>
                                 </div>
                             </div>

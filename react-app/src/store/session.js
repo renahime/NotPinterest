@@ -1,25 +1,14 @@
 // constants
 //
-
-
-
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 const UNFOLLOW_USER = "session/UNFOLLOW_USER"
 const FOLLOW_USER = "session/FOLLOW_USER"
 const SET_USER_CATEGORIES = "session/POST_CATEGORIES"
-// const CREATE_USER_BOARD_FROM_PIN = 'boards/new'
 const EDIT_USER = "users/EDIT_USER"
 const DELETE_PROFILE = "users/DELETE_PROFILE"
-// const DELETE_SESSION_BOARD = "boards/delete/session"
-// const DELETE_USER_BOARD = "delete/user/boards"
-// const UPDATE_USER_BOARD = "edit/user/boards"
-// const ADD_PIN = "add/user/pins"
-// const REMOVE_PIN = "remove/user/pins"
 const GET_PROFILE = "users/GET_USER"
 const CLEAR_PROFILE = "users/clearProfile"
-
-
 
 
 export const editUser = (user) => ({
@@ -56,36 +45,6 @@ const newFollow = (user) => ({
 	user
 })
 
-// const createUserBoard = (board) => ({
-// 	type: CREATE_USER_BOARD_FROM_PIN,
-// 	board
-// })
-
-// const deleteSessionBoard = (id) => ({
-// 	type: DELETE_SESSION_BOARD,
-// 	id,
-// });
-
-// export const deleteBoard = (boardName) => ({
-// 	type: DELETE_USER_BOARD,
-// 	boardName
-// })
-
-// const updateUserBoard = (board) => ({
-// 	type: UPDATE_USER_BOARD,
-// 	board
-// })
-
-// export const addPin = (pin) => ({
-// 	type: ADD_PIN,
-// 	pin
-// })
-
-// export const removePin = (id) => ({
-// 	type: REMOVE_PIN,
-// 	id
-// })
-
 const getUser = (user) => ({
     type: GET_PROFILE,
     user
@@ -94,12 +53,6 @@ const getUser = (user) => ({
 export const clearProfile = () => ({
 	type: CLEAR_PROFILE
 })
-
-// const getFollowing = (users) => ({
-// 	type: GET_FOLLOWERS,
-// 	users
-// })
-
 
 export const getUserInfo = (username) => async (dispatch) => {
     const res = await fetch(`/api/users/users/${username}`)
@@ -115,52 +68,6 @@ export const getUserInfo = (username) => async (dispatch) => {
         return dispatch(getUser(userData))
     }
 }
-
-
-
-// export const updateUserBoardThunk = (board, id) => async (dispatch) => {
-// 	try {
-// 		const res = await fetch(`/api/boards/${id}`, {
-// 			method: "PUT",
-// 			headers: { 'Content-Type': 'application/json' },
-// 			body: JSON.stringify(board)
-// 		});
-// 		if (res.ok) {
-// 			const updated_board = await res.json();
-// 			dispatch(updateUserBoard(updated_board));
-// 			return updated_board;
-// 		} else {
-// 			throw new Error("Update board request failed");
-// 		}
-// 	} catch (error) {
-// 		console.error("Error occurred during updateBoardThunk:", error);
-// 		return null; // or handle the error in an appropriate way
-// 	}
-// };
-
-
-
-// export const deleteBoardSessionThunk = (id) => async (dispatch) => {
-// 	try {
-// 		const res = await fetch(`/api/boards/${id}/delete`, {
-// 			method: "DELETE",
-// 		});
-// 		if (res.ok) {
-// 			const data = res.json()
-// 			dispatch(deleteSessionBoard(id));
-// 			return data;
-// 		}
-// 		else {
-// 			throw new Error("Delete board request failed");
-// 		}
-// 	} catch (error) {
-// 		console.error("Error occurred during deleteBoardThunk:", error);
-// 		return false;
-// 	}
-// };
-
-
-
 
 export const editProfileThunk = (user, data) => async (dispatch) => {
 	const res = await fetch(`/api/users/${user.id}`, {
@@ -191,23 +98,6 @@ export const deleteProfileThunk = (user) => async (dispatch) => {
 	}
 }
 
-// export const createBoardFromPinPage = (board) => async (dispatch) => {
-// 	const res = await fetch('/api/boards/', {
-// 		method: "POST",
-// 		headers: { 'Content-Type': 'application/json' },
-// 		body: JSON.stringify(board)
-// 	})
-
-// 	if (res.ok) {
-// 		const new_board = await res.json()
-// 		dispatch(createUserBoard(new_board))
-// 		return new_board
-// 	}
-// 	else {
-// 		return ("Error response:", res)
-// 	}
-// }
-
 export const createUserCategories = (categories) => async (dispatch) => {
 	let res = await fetch("/api/users/categories", {
 		method: "POST",
@@ -225,8 +115,6 @@ export const createUserCategories = (categories) => async (dispatch) => {
 		return { errors: "Could not set category" }
 	}
 }
-
-
 
 export const followUser = (username) => async (dispatch) => {
 	const res = await fetch(`/api/users/follow/${username}`, {
@@ -347,10 +235,6 @@ export default function reducer(state = initialState, action) {
 			return { ...state, user: {...state.user}, currentProfile: {} }
 		case GET_PROFILE:
             return { ...state, user: {...state.user}, currentProfile: action.user }
-		// case CREATE_USER_BOARD_FROM_PIN:
-		// 	let newSate2 = { ...state, user: { ...state.user, ...state.user.boards.push(action.board) } }
-		// 	console.log("newSate2", newSate2)
-		// 	return newSate2
 		case SET_USER_CATEGORIES:
 			let user = { ...state.user }
 			user.categories = action.categories
@@ -364,14 +248,6 @@ export default function reducer(state = initialState, action) {
 			return newState
 		case SET_USER:
 			return { ...state, user: action.payload };
-		// case ADD_PIN:
-		// 	const addPins = [...state.user.pins]
-		// 	addPins.unshift(action.pin.pin);
-		// 	return { ...state, user: { ...state.user, pins: addPins } };
-		// case REMOVE_PIN:
-		// 	let removePins = [...state.user.pins]
-		// 	removePins = removePins.filter((pin) => pin.id !== action.id);
-		// 	return { ...state, user: { ...state.user, pins: removePins } };
 		case REMOVE_USER:
 			return { user: null };
 		case UNFOLLOW_USER:
@@ -388,14 +264,8 @@ export default function reducer(state = initialState, action) {
 			let newState1 = { ...state }
 			newState1.user = action.user
 			return newState1;
-		// case DELETE_USER_BOARD:
-		// 	let newState2 = { ...state }
-		// 	let boardIndex = state.user.boards.indexOf(action.boardName)
-		// 	state.user.boards.splice(boardIndex, 1)
-		// 	return newState2
 		case DELETE_PROFILE:
 			return { currentProfile: {} }
-
 		// case UPDATE_USER_BOARD:
 		// 	let oldBoardState = { ...state }
 		// 	let currentProfileBoardsArr = oldBoardState.user.boards
@@ -443,8 +313,6 @@ export default function reducer(state = initialState, action) {
 
 		// 	// console.log("BOARD TO DELETE", BoardData)
 		// 	return userStateBeforeBoardDelete
-
-
 		default:
 			return state;
 	}

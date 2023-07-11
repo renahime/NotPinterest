@@ -20,7 +20,7 @@ def seed_boho_pins():
     )
 
     pin2 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/7efeddfd860a56c548369587046017cc.jpg",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/05e5405da6b2bdc6a8e9fdd9f855d6d0.jpg",
         user=user1,
         categories=[boho],
         board_tagged=[board],
