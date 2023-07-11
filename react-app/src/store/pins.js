@@ -452,14 +452,6 @@ export default function pinsReducer(state = initialState, action) {
                     delete board[action.pinId]
                 }
             }
-            // let deleteAll = { ...state.pins };
-            // if (deleteAll[action.pinId]) {
-            //     delete deleteAll[action.pinId]
-            // }
-            // let deleteSinglePin = { ...state.singlePin }
-            // if (deleteSinglePin.id == action.pinId) {
-            //     deleteSinglePin = {};
-            // }
             return newState3
         case UPDATE_USER_PIN:
             return {

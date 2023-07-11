@@ -346,21 +346,6 @@ export default function boardsReducer(state = initialState, action) {
             delete newState6.allBoards[action.id]
             delete newState6.currentUserBoards[action.id]
             return newState6
-        // case UN_PIN:
-        //     const unPinSingle = { ...state.singleBoard }
-        //     if (typeof unPinSingle === 'object') {
-        //         if (action.pin.id.toString() in unPinSingle.pinInfo) {
-        //             delete unPinSingle.pinInfo[action.pin.id.toString()]
-        //         }
-        //     }
-        //     return { ...state, singleBoard: unPinSingle }
-        // case PIN:
-        //     const pinSingle = { ...state.singleBoard }
-        //     if (typeof pinSingle === 'object') {
-        //         if ("pinInfo" in pinSingle)
-        //             pinSingle.pinInfo[action.pin.id.toString()] = action.pin;
-        //     }
-        //     return { ...state, singleBoard: pinSingle }
         case REPIN:
             const repinSingle = { ...state.singleBoard }
             if (typeof repinSingle === 'object') {
