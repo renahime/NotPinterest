@@ -65,21 +65,6 @@ function LandingPage() {
 
       </div>
 
-      <div className='landing-page-footer'>
-        <p>Terms of Service</p>
-        <p>Privacy Policy</p>
-        <p>Help</p>
-        <p>Iphone App</p>
-        <p>Android App</p>
-        <p>Users</p>
-        <p>Collections</p>
-        <p>Today</p>
-        <p>Explore</p>
-        <p>Watch</p>
-        <p>Shop</p>
-
-      </div>
-
 
     </div>
   );
