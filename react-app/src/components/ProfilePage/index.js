@@ -53,9 +53,6 @@ export default function ProfilePage() {
             }
         })
     }, [dispatch])
-    // }, [dispatch, username, currentUser])
-
-
 
     let showMenu = () => {
         setOpenMenu(!openMenu)

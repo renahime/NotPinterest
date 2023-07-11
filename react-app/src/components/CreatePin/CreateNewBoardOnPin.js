@@ -28,43 +28,40 @@ export default function CreateNewBoardOnPin({ setter }) {
         if (res.errors) {
             setErrors(res)
         } else {
-            console.log("res", res)
-            let res = await dispatch()
             closeModal()
         }
     }
 
     return (
-        <div>
+        <div className="create-board-on-pin-wrapper">
             <form onSubmit={onSubmit}>
                 {errors ? <p>{errors.errors}</p> : null}
-                <label className="create-board-modal-name">
-                    Name
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        className="create-board-modal-name-input"
+                    <label className="create-board-modal-name">
+                        Name
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            className="create-board-modal-name-input"
 
-                    ></input>
-                </label>
+                        ></input>
+                    </label>
+                    <label>
+                        <div className="create-board-modal-flex-row">
+                            <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} className="checkbox-input" />
 
-                <label>
-                    <div className="create-board-modal-flex-row">
-                        <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} className="checkbox-input" />
-
-                        <div>
-                            <p className="create-board-modal-private-text bold">Keep this board secret</p>
-                            <p className="create-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
+                            <div>
+                                <p className="create-board-modal-private-text bold">Keep this board secret</p>
+                                <p className="create-board-modal-private-text">So only you and collaborators can see it. Learn more</p>
+                            </div>
                         </div>
-                    </div>
-                </label>
+                    </label>
 
-                {/* <button type="submit" className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}> */}
-                <button type="submit" className="create-board-modal-create-button" disabled={disabledButton}>
-                    Create
-                </button>
+                    {/* <button type="submit" className="create-board-modal-create-button" disabled={disabledButton} onClick={openModal}> */}
+                    <button type="submit" className="create-pin-board-modal-create-button" disabled={disabledButton}>
+                        Create
+                    </button>
 
             </form>
         </div>

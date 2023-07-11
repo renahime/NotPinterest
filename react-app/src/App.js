@@ -37,7 +37,7 @@ function App() {
 
   return (
     <>
-      <Navigation setGrabString={setGrabString} grabString={grabString} isLoaded={isLoaded} setSearching={setSearching} />
+      {/* <Navigation setGrabString={setGrabString} grabString={grabString} isLoaded={isLoaded} setSearching={setSearching} /> */}
       <AboutLinks />
       {isLoaded && (
         <Switch>

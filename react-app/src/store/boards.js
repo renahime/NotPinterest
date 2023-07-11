@@ -314,7 +314,9 @@ export default function boardsReducer(state = initialState, action) {
             }
         case CREATE_USER_BOARD:
             return {
-                ...state, allBoards: {
+                ...state, 
+                singleBoard: {},
+                allBoards: {
                     ...state.allBoards, [action.board.id]: action.board
                 }, currentUserBoards: {
                     ...state.currentUserBoards, [action.board.id]: action.board

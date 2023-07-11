@@ -65,6 +65,9 @@ function Settings() {
     if (website.length > 255) {
       validationErrors.website = "Please enter no more than 255 characters."
     }
+    if (!username) {
+      validationErrors.username = "Username is required."
+    }
     if (username.length > 40) {
       validationErrors.username = "Username must be less than 40 characters."
     }
@@ -87,7 +90,7 @@ function Settings() {
       setErrors(data);
     });
     if (editedUser) {
-      history.push(`/${editedUser.username}`)
+      // history.push(`/${editedUser.username}`)
     }
   }
 

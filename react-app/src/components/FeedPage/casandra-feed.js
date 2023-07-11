@@ -44,13 +44,13 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
         }
     }, [sessionUser])
 
-    useEffect(() => {
-        if (grabString) {
-            setSearching(true)
-        } else {
-            setSearching(false)
-        }
-    }, [searching, grabString])
+    // useEffect(() => {
+    //     if (grabString) {
+    //         setSearching(true)
+    //     } else {
+    //         setSearching(false)
+    //     }
+    // }, [searching, grabString])
 
     function filterPins(pins) {
         if ((!sessionUser || sessionUser.categories.length === 0) && !searching) {
@@ -213,7 +213,7 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
     return (
         <div>
 
-            {(currentUser && (sessionUser && currentUserBoards)) ? (
+            {(currentUser && (sessionUser && userBoards.length)) ? (
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
@@ -253,17 +253,21 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
                     </div>
                 </>
 
-            ) : ((currentUser && (sessionUser && userBoards.length)) ? (
+            ) : ((currentUser && (sessionUser && !userBoards.length)) ? (
                 <>
-                    <div className="board-container-top-text">
-                        <div>Oh no, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {userBoards.length} boards.</NavLink>
-                        <div>Let's change that!</div>
-                        <OpenModalButton
-                            buttonText="Create Board"
-                            className="feed-page-create-board"
-                            modalComponent={<CreateBoardModal username={sessionUser?.username} />}
-                        />
+                    <div className="board-container-top-text-no-boards">
+                        <div>
+                            <span>Oh no, you have</span>
+                            <NavLink to={`/${sessionUser.username}`}> {userBoards.length} boards.</NavLink>
+                            <span>Let's change that!</span>
+                        </div>
+                        <div>
+                            <OpenModalButton
+                                buttonText="Create Board"
+                                className="feed-page-create-board"
+                                modalComponent={<CreateBoardModal username={sessionUser.username} />}
+                            />
+                        </div>
                     </div>
                 </>
             ) : (null)
