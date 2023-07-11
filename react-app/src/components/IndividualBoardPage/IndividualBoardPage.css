@@ -221,3 +221,74 @@
         display: block;
     }
 }
+
+.edit-pin-board-wrapper {
+    display: grid;
+    justify-items: center;
+    padding: 10px;
+}
+
+.edit-pin-board-title {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.edit-pin-board-content {
+    display: flex;
+    height: 300px;
+    column-gap: 10px;
+}
+
+.move-pin-board-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.move-pin-board-form-wrapper > h2 {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.move-pin-board-form {
+    display: flex;
+    column-gap: 5px;
+}
+
+.edit-pin-board-image {
+    max-height: 300px;
+}
+
+.edit-pin-board-buttons-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.edit-pin-board-buttons, .edit-pin-board-buttons-save {
+    border-color: transparent;
+    padding: 7px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.edit-pin-board-buttons {
+    background-color: #efefef;
+    color: black;
+}
+
+.edit-pin-board-buttons{
+    background-color: #e2e2e2;
+}
+
+.edit-pin-board-buttons-save {
+    background-color: red;
+    color: white;
+}
+
+.edit-pin-board-buttons-save:hover {
+    background-color: #ad081b;
+}

@@ -15,7 +15,7 @@ export default function EditBoardPinsModal({ pin, currentBoard }) {
         options.push({ value: boardName.name, label: boardName.name })
     }
 
-    let handleSaveClick = async() => {
+    let handleSaveClick = async () => {
         if (currentBoard.name === boardName) {
             closeModal()
         } else {
@@ -29,35 +29,44 @@ export default function EditBoardPinsModal({ pin, currentBoard }) {
         }
     }
 
-    let handleDeleteClick = async() => {
+    let handleDeleteClick = async () => {
         let deletedPin = await dispatch(unpinThunk(pin, currentBoard.id)).then(() => closeModal())
     }
 
 
     return (
-        <div>
-            <h1>Edit this Pin</h1>
-            <div>
-                <h2>Change Board</h2>
-                <form>
-                    <p>Board</p>
-                    <select 
-                    className="board-dropdown-edit-pin"
-                        value={boardName}
-                        onChange={(e) => setBoardName(e.target.value)}>
-                        {options.map((option) => (
-                            <option
-                                className="board-options"
-                                value={option.value}>{option.label}
-                            </option>
-                        ))}
-                    </select>
-                </form>
+        <div className="edit-pin-board-wrapper">
+            <h1 className="edit-pin-board-title">Edit this Pin</h1>
+            <div className="edit-pin-board-content">
+                <div className="move-pin-board-form-wrapper">
+                    <h2>Change Board</h2>
+                    <form className="move-pin-board-form">
+                        <p>Board</p>
+                        <select
+                            className="board-dropdown-edit-pin"
+                            value={boardName}
+                            onChange={(e) => setBoardName(e.target.value)}>
+                            {options.map((option) => (
+                                <option
+                                    className="board-options"
+                                    value={option.value}>{option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </form>
+                </div>
+                <div>
+                    <img className="edit-pin-board-image" src={pin.image} alt={pin.alt_text ? pin.alt_text : "changed-pin-image"} />
+                </div>
             </div>
-            <div>
-                <button onClick={handleDeleteClick}>Delete</button>
-                <button onClick={() => closeModal()}>Cancel</button>
-                <button onClick={handleSaveClick}>Save</button>
+            <div className="edit-pin-board-buttons-wrapper">
+                <div>
+                    <button className="edit-pin-board-buttons" onClick={handleDeleteClick}>Delete</button>
+                </div>
+                <div>
+                    <button className="edit-pin-board-buttons"  onClick={() => closeModal()}>Cancel</button>
+                    <button className="edit-pin-board-buttons-save"  onClick={handleSaveClick}>Save</button>
+                </div>
             </div>
         </div>
     )
