@@ -157,6 +157,10 @@
     color: white;
 }
 
+#unfollow-button:hover{
+    background-color: rgb(216, 4, 4);
+}
+
 
 .underline {
     text-decoration: underline;
