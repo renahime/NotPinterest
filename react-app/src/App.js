@@ -35,7 +35,7 @@ function App() {
 
   return (
     <>
-      <Navigation setGrabString={setGrabString} isLoaded={isLoaded} setSearching={setSearching} />
+      <Navigation setGrabString={setGrabString} grabString={grabString} isLoaded={isLoaded} setSearching={setSearching} />
       {isLoaded && (
         <Switch>
           <Route exact path="/setCategories">

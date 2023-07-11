@@ -10,11 +10,11 @@ import CreateBoardModal from '../CreateBoardModal';
 import './Navigation.css';
 
 
-function Navigation({ isLoaded, setGrabString, setSearching }) {
+function Navigation({ isLoaded, setGrabString, setSearching, grabString }) {
 	const history = useHistory()
 	const sessionUser = useSelector((state) => state.session.user);
 	const [openMenu, setOpenMenu] = useState(false)
-	const [searchString, setSearchString] = useState("")
+	const [searchString, setSearchString] = useState(grabString)
 	const { setModalContent } = useModal()
 	const [path, setPath] = useState(window.location.pathname)
 	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
