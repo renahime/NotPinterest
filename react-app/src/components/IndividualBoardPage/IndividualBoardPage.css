@@ -162,6 +162,7 @@
     column-gap: 5px;
     width: 100%;
     cursor: pointer;
+    /* margin-left: 10px; */
 }
 
 .individual-board-pin-owner-info:hover {
