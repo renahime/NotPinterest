@@ -12,14 +12,14 @@ import './ChangeBoardCoverModal.css'
 
 
 
-function ChangeBoardCoverModal({ updatedBoardData, board }) {
+function ChangeBoardCoverModal({ updatedBoardData, board, setCoverImage }) {
 
   const dispatch = useDispatch();
   const history = useHistory()
   const { setModalContent, closeModal } = useModal();
   const [hover, setHover] = useState(false)
   const [hoverDiv, setHoverDiv] = useState("")
-  const [cover_image, setCoverImage] = useState(updatedBoardData?.cover_image || "")
+  // const [cover_image] = useState(updatedBoardData?.cover_image || "")
 
   const boardPins = useSelector((state) => state.pins.currentBoardPins);
   // const [pinImages, setPinImages] = useState([]);
@@ -30,7 +30,7 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
 
   }, [dispatch])
 
-  const date = new Date();
+  // const date = new Date();
 
 
   function onHover(pin) {
@@ -44,8 +44,8 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
   }
 
   const setBoardCoverImage = async (event) => {
-    setCoverImage(hoverDiv)
-    const newCoverImage = cover_image
+    // setCoverImage(hoverDiv)
+    // const newCoverImage = cover_image
     openUpdateModal(event, hoverDiv)
   }
 

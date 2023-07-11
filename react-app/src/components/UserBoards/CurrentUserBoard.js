@@ -41,6 +41,8 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         setModalContent(modalContent);
     };
 
+    console.log("boards", userBoardsArr)
+
     return (
         <div className="profile-boards-all">
             {userBoardsArr.map(boards => (
@@ -89,7 +91,7 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                 </div>
                                 <div>
                                     <p className="profile-pins-on-board">
-                                        {pinDisplay(Object.values(boards.pins).length)}
+                                        {boards.pins ? pinDisplay(Object.values(boards.pins).length) : null}
                                     </p>
                                 </div>
                             </div>

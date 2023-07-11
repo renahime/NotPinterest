@@ -173,7 +173,7 @@ def edit_board(id):
         if form.data["description"]:
             board_to_edit.description = form.data["description"]
         db.session.commit()
-        return board_to_edit.to_dict()
+        return board_to_edit.detailed_to_dict()
 
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401

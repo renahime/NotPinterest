@@ -39,7 +39,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <ChangeBoardCoverModal updatedBoardData={updatedBoardData} board={board} />
+        <ChangeBoardCoverModal updatedBoardData={updatedBoardData} board={board} setCoverImage={(x) => setCoverImage(x)}/>
       </div>
     );
     setModalContent(modalContent);
@@ -90,6 +90,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current }) {
       setErrors(validationErrors)
       return
     }
+    // console.log("cover image", cover_image)
     let updatedBoard = await dispatch(updateBoardThunk(updatedBoardData, board.id))
     closeModal()
   };

@@ -46,7 +46,11 @@ export default function ProfilePage() {
         } else {
             dispatch(getCurrentUserBoards()).then(() => dispatch(getCurrentUserPins())).then(() => setLoading(true))
         }
-        return (() => dispatch(clearProfile()))
+        return (() => {
+            if (!checkUser) {
+                dispatch(clearProfile())
+            }
+        })
     }, [dispatch])
     // }, [dispatch, username, currentUser])
 
