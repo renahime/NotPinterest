@@ -67,6 +67,10 @@
     cursor: pointer;
 }
 
+.single-pin-edit-board-button:hover{
+    background-color: rgb(203, 3, 3);
+}
+
 .single-pin-edit-board-form {
     display: flex;
     width: 100%;

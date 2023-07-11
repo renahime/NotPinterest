@@ -241,7 +241,7 @@ export default function IndividualPinPage() {
                                 currentUserFollowing.includes(singlePin.user.username) ?
                                     (<button id="unfollow-button" className="profile-button unfollow-individual-pin-page" onClick={handleUnfollow}>Unfollow</button>)
                                     :
-                                    (<button onClick={handleFollow} className="profile-button" id="follow-button">Follow</button>)
+                                    (<button onClick={handleFollow} className="profile-button unfollow-individual-pin-page " id="follow-button">Follow</button>)
                             }
                         </div>
                     </div>

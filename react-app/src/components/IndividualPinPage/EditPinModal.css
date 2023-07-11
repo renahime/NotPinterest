@@ -6,12 +6,12 @@
   height: 1px;
 }
 
-#testing{
+#testing {
   width: 150%;
   border: 2px solid red;
 }
 
-.board-dropdown{
+.board-dropdown {
   border-radius: 15px;
   border: 2px solid #ccc;
   padding: 15px;
@@ -20,7 +20,8 @@
   /* height: 1px; */
   color: black;
 }
-.board-options{
+
+.board-options {
   border-radius: 15px;
   border: 2px solid #ccc;
   padding: 20px;
@@ -28,21 +29,24 @@
   height: 1px;
   color: black;
 }
-.pin-edit-website-input{
+
+.pin-edit-website-input {
   border-radius: 15px;
   border: 2px solid #ccc;
   padding: 20px;
   width: 200px;
   height: 1px;
 }
-.pin-edit-description-input{
+
+.pin-edit-description-input {
   border-radius: 15px;
   border: 2px solid #ccc;
   padding: 20px;
   width: 200px;
   height: 50px;
 }
-.pin-edit-alt-text-input{
+
+.pin-edit-alt-text-input {
   border-radius: 15px;
   border: 2px solid #ccc;
   padding: 20px;
@@ -50,70 +54,78 @@
   height: 1px;
 }
 
-.pin-title-container{
-  display:flex;
+.pin-title-container {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap:100px
+  gap: 100px
 }
 
-.board-title-container{
-  display:flex;
+.board-title-container {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  gap:100px;
+  gap: 100px;
   /* font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,"ＭＳ Ｐゴシック",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"; */
 }
 
-.pin-description-container{
-  display:flex;
+.pin-description-container {
+  display: flex;
   flex-direction: row;
-  gap:100px
+  gap: 100px
 }
 
-.pin-website-container{
-  display:flex;
+.pin-website-container {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap:100px
+  gap: 100px
 }
 
-.pin-alt-text-container{
-  display:flex;
+.pin-alt-text-container {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 25px;
-  gap:100px
+  gap: 100px
 }
 
-.title{
+.title {
   text-align: center;
 }
 
-.edt-pin-delete-button{
-  float:left;
+.edt-pin-delete-button {
+  float: left;
   background-color: #efefef;
-  border:0;
+  border: 0;
   width: 65px;
   height: 40px;
   border-radius: 24px;
-  color:#151515;
+  color: #151515;
   cursor: pointer;
 }
 
-.edit-pin-cancel-button{
-  float:right;
+.edt-pin-delete-button:hover{
+  background-color: #dbdbdb;
+}
+
+.edit-pin-cancel-button {
+  float: right;
   background-color: #efefef;
-  border:0;
+  border: 0;
   width: 65px;
   height: 40px;
   border-radius: 24px;
-  color:#151515;
+  color: #151515;
   cursor: pointer;
 }
 
-.submit-and-cancel-buttons > button {
+.edit-pin-cancel-button:hover{
+  background-color: #dbdbdb;
+}
+
+.submit-and-cancel-buttons>button {
   padding: 10px;
 }
 
@@ -121,59 +133,66 @@
   padding-bottom: 20px;
 }
 
-.edit-pin-submit-button{
-  float:right;
+.edit-pin-submit-button {
+  float: right;
   background-color: #e60023;
-  border:0;
+  border: 0;
   width: 65px;
   height: 40px;
   border-radius: 24px;
-  color:white;
+  color: white;
   margin-left: 15px;
   cursor: pointer;
 }
-.edt-pin-delete-button-non-owner{
-  float:left;
-  background-color: #efefef;
-  border:0;
-  width: 65px;
-  height: 40px;
-  border-radius: 24px;
-  color:#151515;
-  cursor: pointer;
+
+.edit-pin-submit-button:hover {
+  background-color: rgb(203, 3, 2);
 }
-.edit-pin-submit-button-non-owner{
-  float:right;
-  background-color: #e60023;
-  border:0;
-  width: 65px;
-  height: 40px;
-  border-radius: 24px;
-  color:white;
-  cursor: pointer;
-}
-.edit-pin-cancel-button-non-owner{
-  float:right;
+
+.edt-pin-delete-button-non-owner {
+  float: left;
   background-color: #efefef;
-  border:0;
+  border: 0;
   width: 65px;
   height: 40px;
   border-radius: 24px;
-  color:#151515;
+  color: #151515;
   cursor: pointer;
 }
 
-.edit-pin-title-with-errors{
-  display:flex;
+.edit-pin-submit-button-non-owner {
+  float: right;
+  background-color: #e60023;
+  border: 0;
+  width: 65px;
+  height: 40px;
+  border-radius: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+.edit-pin-cancel-button-non-owner {
+  float: right;
+  background-color: #efefef;
+  border: 0;
+  width: 65px;
+  height: 40px;
+  border-radius: 24px;
+  color: #151515;
+  cursor: pointer;
+}
+
+.edit-pin-title-with-errors {
+  display: flex;
   flex-direction: column;
 }
 
 
-.pin-edit-owner-container{
+.pin-edit-owner-container {
   width: 500px;
 }
 
-.pin-edit-owner-inner-container{
+.pin-edit-owner-inner-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -183,7 +202,7 @@
 }
 
 
-.edit-board-errors{
+.edit-board-errors {
   word-wrap: break-word;
   width: 240px;
   font-size: 10px;
@@ -191,7 +210,7 @@
 }
 
 
-.edit-board-character-count{
+.edit-board-character-count {
   font-size: 10px;
   /* text-align: right; */
 }

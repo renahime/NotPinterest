@@ -17,6 +17,7 @@ function ProfileButton({ user }) {
     setShowMenu(true);
   };
 
+  console.log("USER", user)
   useEffect(() => {
     if (!showMenu) return;
 
@@ -42,9 +43,13 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button className="nav-icon-button" onClick={openMenu}>
-        <i className="fa-regular fa-user nav-icon"></i>
-      </button>
+      <div className="nav-bar-right-side-cursor" onClick={openMenu}>
+        <button className="nav-icon-button" onClick={openMenu}>
+          {/* <i className="fa-regular fa-user nav-icon"></i> */}
+          {user.first_name[0]}
+        </button>
+        <i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow nav-bar-right-arrow" onClick={openMenu}></i>
+      </div>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>

@@ -239,6 +239,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  cursor: pointer;
 
 }
 
@@ -305,4 +306,18 @@
 
 .open-modal-button {
   cursor: pointer;
+}
+
+
+.nav-bar-right-arrow{
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.nav-bar-right-side-cursor{
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }

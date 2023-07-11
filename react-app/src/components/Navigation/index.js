@@ -30,7 +30,7 @@ function Navigation({ isLoaded }) {
 	const currentUser = useSelector(state => state.session.user)
 
 
-	// If we click off of the Create tab, the modal will dissapear 
+	// If we click off of the Create tab, the modal will dissapear
 	useEffect(() => {
     const handleClick = (event) => {
 			if (openMenu === true) {
