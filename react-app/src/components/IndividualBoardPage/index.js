@@ -38,7 +38,7 @@ export default function IndividualBoardPage() {
         })
     }, [dispatch])
 
-    let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
+    let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper cursor-pointer" : "board-ellipsis-wrapper hidden"
     const handleBack = () => {
         history.goBack()
     }
@@ -79,7 +79,7 @@ export default function IndividualBoardPage() {
         <div >
             {!Object.values(individualBoard).length ? <h1>Loading..</h1> :
                 <div className="individual-board-wrapper">
-                    <i onClick={handleBack} class="fa-solid fa-arrow-left"></i>
+                    <i onClick={handleBack} class="fa-solid fa-arrow-left cursor-pointer"></i>
                     <div className="individual-board-info-wrapper">
                         {ownerCheck ?
                             <div className="individual-board-info">
