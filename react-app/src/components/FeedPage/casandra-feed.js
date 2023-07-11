@@ -220,7 +220,7 @@ export default function CaSandraFeed() {
             < div className="pins-feed-wrapper-wrapper">
                 <ResponsiveMasonry className="pins-feed-wrapper" options={{ fitWidth: true }}
                     columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
-                    <Masonry className="feed-pin-masonry" options={{ fitWidth: true }}>
+                    <Masonry gutter="10px" className="feed-pin-masonry" options={{ fitWidth: true }}>
                         {pinsArr.map(pin => (
                             <div
                                 // onHover={() =>}

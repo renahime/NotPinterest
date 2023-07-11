@@ -12,6 +12,7 @@ export default function IndividualBoardPage() {
     const location = useLocation();
     const history = useHistory()
     let [ownerCheck, setOwnerCheck] = useState(false);
+    let [loading, setLoading] = useState(false);
     const [menu, showMenu] = useState(false)
     const [currentBoard, setCurrentBoard] = useState({})
     let usernameBoardName = location.pathname.split('/')
@@ -31,13 +32,16 @@ export default function IndividualBoardPage() {
                     let name = boardName.split("_").join(" ")
                     if (board.name === name) {
                         setCurrentBoard(board)
+                        setLoading(true)
                     }
                 }
             } else {
                 dispatch(getSingleBoardThunk(username, boardName)).then((board) => dispatch(getPinsForBoard(board.id)))
+                setLoading(true)
             }
         }
         return (() => {
+            setLoading(false)
             if (!Object.values(currentBoard).length) {
                 dispatch(clearBoard())
                 dispatch(clearBoardPins())
@@ -55,7 +59,7 @@ export default function IndividualBoardPage() {
         boardPins = Object.values(individualBoard.pinInfo);
     }
 
-
+    if (!loading) return <h1>Loading</h1>
     return (
         <div >
             {!Object.values(individualBoard).length && !ownerCheck ? <h1>Loading..</h1> :
@@ -93,7 +97,7 @@ export default function IndividualBoardPage() {
                             </div>}
                     </div>
                     <div className="pins-for-board-page-wrapper">
-                        <PinsForBoardPage ownerCheck={() => ownerCheck()} pins={ownerCheck ? Object.values(currentBoard.pins) : boardPins } />
+                        <PinsForBoardPage currentBoard={ownerCheck ? currentBoard : ""} ownerCheck={ownerCheck} pins={ownerCheck ? Object.values(currentBoard.pins) : boardPins } />
                     </div>
                 </div>}
         </div>

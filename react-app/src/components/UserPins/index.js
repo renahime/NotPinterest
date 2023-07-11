@@ -15,7 +15,7 @@ export default function UserPins({ pins }) {
                 {userPinsArr.length ?
                     <ResponsiveMasonry className="board-pins-wrapper" options={{ fitWidth: true }}
                         columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
-                        <Masonry className="board-pin-masonry" options={{ fitWidth: true }}>
+                        <Masonry gutter="10px" className="board-pin-masonry" options={{ fitWidth: true }}>
                             {userPinsArr.map(pin => (
                                 <div className="individual-board-individual-pins-wrapper">
                                     <div className="individual-boards-link-to-pin" onClick={() => history.push(`/pin/${pin.id}`)}>

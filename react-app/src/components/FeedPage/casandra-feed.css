@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 20px;
+    /* padding-left: 20px; */
 
 }
 
@@ -18,11 +18,11 @@
     width: 100%;
     box-sizing: border-box;
     justify-content: center;
-    gap: 10px;
+    padding: 10px;    
 }
 
 .feed-pin-image {
-    width: 250px;
+    width: 100%;
     height: auto;
     border-radius: 20px;
     object-fit: contain;
@@ -55,6 +55,7 @@
     padding-bottom: 10px;
     position: relative;
     cursor: pointer;
+    width: 100%;
 }
 
 .feed-individual-pin-wrapper:hover {
@@ -63,6 +64,10 @@
 
 .feed-individual-pin-wrapper:hover .feed-save-button {
     opacity: 1;
+}
+
+.feed-individual-pin-wrapper > div {
+  width: 100%;
 }
 
 .feed-save-button:hover {

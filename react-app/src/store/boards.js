@@ -226,18 +226,18 @@ export const unpinThunk = (pin, boardId) => async (dispatch) => {
 }
 
 
-// export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
-//     const res = await fetch(`/api/boards/${oldBoardId}/${pin.id}/pin_to/${newBoardId}`, {
-//         method: "POST",
-//     });
-//     if (res.ok) {
-//         dispatch(rePin(pin, oldBoardId, newBoardId));
-//         return pin
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const repinThunk = (pin, oldBoardId, newBoardId) => async (dispatch) => {
+    const res = await fetch(`/api/boards/${oldBoardId}/${pin.id}/pin_to/${newBoardId}`, {
+        method: "POST",
+    });
+    if (res.ok) {
+        dispatch(rePin(pin, oldBoardId, newBoardId));
+        return pin
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
 
 // export const getBoardByName = (username, boardname) => async (dispatch) => {
 //     try {
@@ -266,14 +266,16 @@ export default function boardsReducer(state = initialState, action) {
     let newState = {}
     switch (action.type) {
         case UN_PIN:
-            newState = {
-                ...state,
-                singleBoard: { ...state.singleBoard },
-                allBoards: { ...state.allBoards },
-                currentUserBoards: { ...state.currentUserBoards },
-                currentProfileBoards: { ...state.currentProfileBoards },
+            newState = {...state, 
+                singleBoard: {...state.singleBoard}, 
+                allBoards: {...state.allBoards}, 
+                currentUserBoards: {...state.currentUserBoards}, 
+                currentProfileBoards: {...state.currentProfileBoards}
             }
-            delete newState.currentUserBoards.pins[action.pin.id]    
+
+            newState.currentUserBoards[action.boardId].pins = {...state.currentUserBoards[action.boardId].pins}
+            delete newState.currentUserBoards[action.boardId].pins[action.pin.id]
+  
             return newState
         case PIN:
             return {
@@ -347,18 +349,19 @@ export default function boardsReducer(state = initialState, action) {
             delete newState6.currentUserBoards[action.id]
             return newState6
         case REPIN:
-            const repinSingle = { ...state.singleBoard }
-            if (typeof repinSingle === 'object') {
-                if ("pinInfo" in repinSingle) {
-                    if (action.oldBoardId.toString() in repinSingle.pinInfo) {
-                        delete repinSingle.pinInfo[action.pin.id.toString()]
-                    }
-                    if (action.newBoardId.toString() in repinSingle.pinInfo) {
-                        repinSingle.pinInfo[action.pin.id.toString()] = action.pin
-                    }
-                }
+            let newState7 = {...state, 
+                singleBoard: {...state.singleBoard}, 
+                allBoards: {...state.allBoards}, 
+                currentUserBoards: {...state.currentUserBoards}, 
+                currentProfileBoards: {...state.currentProfileBoards}
             }
-            return { ...state, singleBoard: repinSingle }
+            newState7.currentUserBoards[action.newBoardId].pins = {...state.currentUserBoards[action.newBoardId].pins}
+            newState7.currentUserBoards[action.oldBoardId].pins = {...state.currentUserBoards[action.oldBoardId].pins}
+
+            newState7.currentUserBoards[action.newBoardId].pins[action.pin.id] = action.pin
+            delete newState7.currentUserBoards[action.oldBoardId].pins[action.pin.id]
+
+            return newState7
         default:
             return state
     }
