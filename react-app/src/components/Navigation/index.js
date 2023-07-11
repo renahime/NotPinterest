@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -15,13 +15,37 @@ function Navigation({ isLoaded }) {
 	const sessionUser = useSelector((state) => state.session.user);
 	const [openMenu, setOpenMenu] = useState(false)
 	const { setModalContent } = useModal()
+	const menuRef = useRef(null);
 	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
+
 	let showMenu = () => {
-		setOpenMenu(!openMenu)
+		if (openMenu === true) {
+			setOpenMenu(false)
+		} else {
+			setOpenMenu(true)
+		}
 	}
 
 	// const currentProfile = useSelector(state => state.profile.currentProfile)
 	const currentUser = useSelector(state => state.session.user)
+
+
+	// If we click off of the Create tab, the modal will dissapear 
+	useEffect(() => {
+    const handleClick = (event) => {
+			if (openMenu === true) {
+				setOpenMenu(false)
+			}
+    };
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, [openMenu]);
+
+
+
+
 
 
 	return (

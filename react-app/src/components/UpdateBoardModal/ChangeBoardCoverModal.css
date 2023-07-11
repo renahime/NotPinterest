@@ -59,6 +59,11 @@
 
 }
 
+.change-board-modal-pins:hover{
+ opacity: 0.8;
+ cursor: pointer;
+}
+
 .change-board-modal-text-container {
   position: absolute;
   bottom: 0;

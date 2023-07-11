@@ -35,6 +35,7 @@ export default function ProfilePage() {
     // let [numFollowing, setNumFollowing] = useState(0)
     // let [isfollowing, setIsFollowing] = useState(false);
     let [showBoards, setShowBoards] = useState(true);
+    const [showPins, setShowPins] = useState(false)
     let [usingProfile, setUsingProfile] = useState(false);
 
     let current = currentUser;
@@ -111,11 +112,13 @@ export default function ProfilePage() {
     const handleShowBoards = (e) => {
         e.stopPropagation();
         setShowBoards(true);
+        setShowPins(false)
     };
 
     const handleShowPins = (e) => {
         e.stopPropagation();
         setShowBoards(false);
+        setShowPins(true)
     };
 
     let formatFollowersOutput = () => {
@@ -135,6 +138,18 @@ export default function ProfilePage() {
         }
     }
 
+    	// If we click off of the Create tab, the modal will dissapear
+	useEffect(() => {
+        const handleClick = (event) => {
+                if (openMenu === true) {
+                    setOpenMenu(false)
+                }
+        };
+        document.addEventListener('click', handleClick);
+        return () => {
+          document.removeEventListener('click', handleClick);
+        };
+      }, [openMenu]);
 
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
@@ -180,8 +195,8 @@ export default function ProfilePage() {
                     }
                     <div>
 
-                        <button onClick={handleShowBoards} className="profile-button">Pins</button>
-                        <button onClick={handleShowPins} className="profile-button">Boards</button>
+                        <button onClick={handleShowBoards} className={showPins ? "profile-button" : "profile-button underline"}>Pins</button>
+                        <button onClick={handleShowPins} className={showBoards ? "profile-button" : "profile-button underline"}>Boards</button>
                     </div>
                 </div>
             }

@@ -40,6 +40,20 @@ export default function IndividualBoardPage() {
         history.goBack()
     }
 
+
+    	// If we click off of the Create tab, the modal will dissapear
+	useEffect(() => {
+        const handleClick = (event) => {
+                if (menu === true) {
+                    showMenu(false)
+                }
+        };
+        document.addEventListener('click', handleClick);
+        return () => {
+          document.removeEventListener('click', handleClick);
+        };
+      }, [menu]);
+
     if (individualBoard.pins) {
         boardPins = Object.values(individualBoard.pinInfo);
     }

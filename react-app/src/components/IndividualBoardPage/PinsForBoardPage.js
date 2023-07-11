@@ -6,8 +6,8 @@ export default function PinsForBoardPage({ pins }) {
     let pinsArr = Object.values(pins)
     return (
         <div className="individual-board-pins-wrapper">
-            <ResponsiveMasonry className="board-pins-wrapper" 
-                columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1200: 5, 1900: 6 }}>
+            <ResponsiveMasonry className="board-pins-wrapper"
+                columnsCountBreakPoints={{ 350: 2, 830: 3, 1100: 4, 1350: 5, 1900: 6 }}>
                 <Masonry className="board-pin-masonry" options={{ fitWidth: true }}>
                     {pinsArr.map(pin => (
                         <div className="individual-board-individual-pins-wrapper">

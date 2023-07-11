@@ -53,6 +53,7 @@
 .new-pin-menu > p {
     padding: 10px 0;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .new-pin-menu > p:hover {
