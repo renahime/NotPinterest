@@ -126,6 +126,7 @@ const DELETE_PIN = "pins/delete"
 const UPDATE_USER_PIN = "pins/edit"
 const GET_ALL_PINS = "pins/all"
 const CLEAR_SINGLE_PIN = "pin/clear"
+const CLEAR_ALL_PINS = "pins/clear"
 const GET_CURRENT_USER_PINS = "pins/currentUser"
 const GET_OTHER_USER_PINS = "pins/otherUser"
 const GET_PINS_OF_BOARD = "pins/boardPins"
@@ -150,7 +151,6 @@ const getAllPins = (pins) => ({
 export const clearSinglePin = () => ({
     type: CLEAR_SINGLE_PIN
 })
-
 
 const deletePin = (pinId) => ({
     type: DELETE_PIN,
@@ -433,8 +433,8 @@ export default function pinsReducer(state = initialState, action) {
         case DELETE_PIN:
             let newState3 = {
                 ...state,
-                pins: { ...state.pins},
-                singlePin: { },
+                pins: { ...state.pins },
+                singlePin: {},
                 currentBoardPins: { ...state.currentBoardPins },
                 currentUserPins: { ...state.currentUserPins },
                 currentProfilePins: { ...state.currentProfilePins },
@@ -455,13 +455,13 @@ export default function pinsReducer(state = initialState, action) {
             return newState3
         case UPDATE_USER_PIN:
             return {
-                    ...state,
-                    pins: { ...state.pins, [action.pin.id] : action.pin },
-                    singlePin:  action.pin ,
-                    currentBoardPins: { ...state.currentBoardPins },
-                    currentUserPins: { ...state.currentUserPins, [action.pin.id]: action.pin },
-                    currentProfilePins: { ...state.currentProfilePins }
-                }
+                ...state,
+                pins: { ...state.pins, [action.pin.id]: action.pin },
+                singlePin: action.pin,
+                currentBoardPins: { ...state.currentBoardPins },
+                currentUserPins: { ...state.currentUserPins, [action.pin.id]: action.pin },
+                currentProfilePins: { ...state.currentProfilePins }
+            }
         case CLEAR_SINGLE_PIN:
             return { ...state, singlePin: {} }
         default:

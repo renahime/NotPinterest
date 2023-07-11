@@ -194,6 +194,16 @@
   outline: none;
 }
 
+.search-button{
+  color: black;
+  border-radius: 24px;
+  padding: 12px 13px;
+  transition: background-color 0.3s ease;
+  font-size: 13.5px;
+  cursor: pointer;
+  outline: none;
+}
+
 .nav-log-in {
   background-color: #f00505;
   margin-right: 5px;

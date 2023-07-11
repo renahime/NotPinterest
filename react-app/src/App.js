@@ -23,8 +23,9 @@ import AboutLinks from "./components/AboutLinks";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [grabString, setGrabString] = useState("")
+  const [searching, setSearching] = useState(false)
   const sessionUser = useSelector(state => state.session.user)
-
   useEffect(() => {
     dispatch(authenticate()).then((data) => {
       if (data && data["message"]) {
@@ -36,7 +37,7 @@ function App() {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
+      <Navigation setGrabString={setGrabString} grabString={grabString} isLoaded={isLoaded} setSearching={setSearching} />
       <AboutLinks />
       {isLoaded && (
         <Switch>
@@ -60,7 +61,7 @@ function App() {
           </Route>
           <Route exact path="/feed">
             {/* <FeedPage sessionUser={sessionUser} /> */}
-            <CaSandraFeed />
+            <CaSandraFeed grabString={grabString} setGrabString={setGrabString} searching={searching} setSearching={setSearching} />
           </Route>
           <Route exact path="/">
             {sessionUser ? <CaSandraFeed /> : <LandingPage />}
@@ -82,10 +83,6 @@ function App() {
           </Route>
           <Route path="/:username">
             <ProfilePage />
-          </Route>
-          <Route exact path="/oldfeed">
-            <FeedPage sessionUser={sessionUser} />
-            {/* <CaSandraFeed /> */}
           </Route>
         </Switch>
       )}
