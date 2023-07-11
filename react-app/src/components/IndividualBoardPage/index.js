@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { getBoardByName, getSingleBoardThunk, clearBoard } from "../../store/boards"
+import { authenticate } from "../../store/session";
+import { getBoardByName, getSingleBoardThunk, clearBoard, getCurrentUserBoards } from "../../store/boards"
 import { getPinsForBoard, clearBoardPins } from "../../store/pins"
 import { useDispatch, useSelector } from "react-redux"
 import PinsForBoardPage from "./PinsForBoardPage"
@@ -12,9 +13,11 @@ export default function IndividualBoardPage() {
     const location = useLocation();
     const history = useHistory()
     let [ownerCheck, setOwnerCheck] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     let [loading, setLoading] = useState(false);
     const [menu, showMenu] = useState(false)
     const [currentBoard, setCurrentBoard] = useState({})
+    const [currentBoardPinsUser, setCurrentBoardPinsUser] = useState({})
     let usernameBoardName = location.pathname.split('/')
     let username = usernameBoardName[1]
     let boardName = usernameBoardName[2]
@@ -23,6 +26,15 @@ export default function IndividualBoardPage() {
     const currentBoardPins = useSelector(state => state.pins.currentBoardPins)
     let boardPins = []
     const individualBoard = useSelector(state => state.boards.singleBoard)
+    // let boardPins
+
+    // useEffect(() => {
+    //     dispatch(authenticate()).then((data) => {
+    //         if (data && data["message"]) {
+    //             dispatch(getCurrentUserBoards())
+    //         }
+    //     }).then(() => setIsLoaded(true));
+    // }, [dispatch]);
 
     useEffect(() => {
         if (currentUser) {
@@ -32,16 +44,19 @@ export default function IndividualBoardPage() {
                     let name = boardName.split("_").join(" ")
                     if (board.name === name) {
                         setCurrentBoard(board)
-                        setLoading(true)
+                        // setLoading(true)
+                        // setCurrentBoardPinsUser(board.pins)
+                        // boardPins = Object.values(currentBoard.pins)
+                        console.log("pins", board.pins)
                     }
                 }
             } else {
                 dispatch(getSingleBoardThunk(username, boardName)).then((board) => dispatch(getPinsForBoard(board.id)))
-                setLoading(true)
+                // setLoading(true)
             }
         }
         return (() => {
-            setLoading(false)
+            // setLoading(false)
             if (!Object.values(currentBoard).length) {
                 dispatch(clearBoard())
                 dispatch(clearBoardPins())
@@ -51,6 +66,14 @@ export default function IndividualBoardPage() {
         })
     }, [dispatch])
 
+    useEffect(() => {
+        if (currentUser) {
+            if (currentBoard) {
+                setCurrentBoardPinsUser(currentBoard.pins)
+            }
+        }
+    }, [currentUser, currentBoard])
+
     let ellipsisInfoClassName = menu ? "board-ellipsis-wrapper" : "board-ellipsis-wrapper hidden"
     const handleBack = () => {
         history.goBack()
@@ -59,7 +82,9 @@ export default function IndividualBoardPage() {
         boardPins = Object.values(individualBoard.pinInfo);
     }
 
-    if (!loading) return <h1>Loading</h1>
+    console.log("currentBoardPinsUser", currentBoardPinsUser)
+
+    // if (!loading) return <h1>Loading</h1>
     return (
         <div >
             {!Object.values(individualBoard).length && !ownerCheck ? <h1>Loading..</h1> :
@@ -97,7 +122,7 @@ export default function IndividualBoardPage() {
                             </div>}
                     </div>
                     <div className="pins-for-board-page-wrapper">
-                        <PinsForBoardPage currentBoard={ownerCheck ? currentBoard : ""} ownerCheck={ownerCheck} pins={ownerCheck ? Object.values(currentBoard.pins) : boardPins } />
+                        {/* <PinsForBoardPage currentBoard={ownerCheck ? currentBoard : ""} ownerCheck={ownerCheck} pins={ownerCheck && Object.values(currentBoard).length ? Object.values(currentBoardPinsUser) : boardPins} /> */}
                     </div>
                 </div>}
         </div>
