@@ -117,6 +117,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
 
   return (loading ? <h1>loading...</h1> : user.id === pin.user.id ?
     <div className="pin-edit-owner-container">
+      <div className="pin-edit-owner-inner-container">
       <h1 className="title">Edit This Pin</h1>
       <form onSubmit={handleSubmit} className="pin-edit-owner-form">
         <div className="board-edit-owner-input">
@@ -124,7 +125,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
             <h6 className="board-title-text">Board</h6>
             <select className="board-dropdown" value={boardName} onChange={(e) => setBoardName(e.target.value)}>
               {options.map((option) => (
-                <option className="board-options" value={option.value}>{option.label}</option>
+                <option className="board-options" value={option.value} key={option.value}>{option.label}</option>
               ))}
             </select>
             {errors.boardName ? <p className="edit-pin-errors" style={{ color: 'red' }}>{errors.boardName}</p> : null}
@@ -139,8 +140,8 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
                   onChange={(e) => setTitle(e.target.value)}
                   type="text"
                 />
-                <p className={title.length > 100 ? "create-pin-errors" : null}>{100 - title.length}</p>
-                {errors.title ? <p className="create-pin-errors">{errors.title}</p> : null}
+                <p className={title.length > 100 ? "create-pin-errors edit-board-errors" : "edit-board-character-count"}>{title.length + "/" + 100}</p>
+                {errors.title ? <p className="create-pin-errors edit-board-errors">{errors.title}</p> : null}
               </label>
             </div>
           </div>
@@ -153,8 +154,8 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
                 onChange={(e) => setDescription(e.target.value)}
                 type="text"
               />
-              <p className={description.length > 255 ? "create-pin-errors" : null}>{255 - description.length}</p>
-              {errors.description ? <p className="create-pin-errors">{errors.description}</p> : null}
+              <p className={description.length > 255 ? "create-pin-errors edit-board-errors" : "edit-board-character-count"}>{description.length + "/" + 255}</p>
+              {errors.description ? <p className="create-pin-errors edit-board-errors">{errors.description}</p> : null}
             </div>
           </div>
           <div className="pin-website-container">
@@ -166,7 +167,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
                 onChange={(e) => setDestination(e.target.value)}
                 type="url"
               />
-              <p className={destination.length > 255 ? "create-pin-errors" : null}>{255 - destination.length}</p>
+              <p className={destination.length > 255 ? "create-pin-errors edit-board-errors" : "edit-board-character-count"}>{destination.length + "/" +255}</p>
               {errors.destinationLink ? <p className="create-pin-errors">{errors.destinationLink}</p> : null}
             </div>
           </div>
@@ -174,13 +175,13 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
             <h6 className="pin-alt-text-text">Alt text</h6>
             <div className="edit-pin-alt-text-with-errors">
               <input className="pin-edit-alt-text-input" value={alt_text} onChange={(e) => setAltText(e.target.value)} type="text"></input>
-              <p className={alt_text.length > 255 ? "create-pin-errors" : null}>{255 - alt_text.length}</p>
+              <p className={alt_text.length > 255 ? "create-pin-errors edit-board-errors" : "edit-board-character-count"}>{alt_text.length + "/" + 255}</p>
               {errors.alt_text ? <p className="create-pin-errors">{errors.alt_text}</p> : null}
             </div>
           </div>
         </div>
         <div className="buttons-container">
-          <button 
+          <button
           onClick={() => setModalContent(<DeletePinModal boardState={singlePinWithBoardState} originalBoardName={grabOriginalBoardName} user={user} pin={pin} />)}
           className="edt-pin-delete-button">
             Delete
@@ -191,6 +192,7 @@ function EditPinModal({ pin, boardState, originalBoardName, grabBoardName }) {
           </div>
         </div>
       </form>
+      </div>
     </div >
     :
     <div className="pin-edit-non-owner-container">

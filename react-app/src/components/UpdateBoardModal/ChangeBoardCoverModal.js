@@ -25,9 +25,7 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
   // const [pinImages, setPinImages] = useState([]);
 
   useEffect(() => {
-
     dispatch(getPinsForBoard(board.id))
-
   }, [dispatch])
 
   const date = new Date();
@@ -59,7 +57,13 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
     setModalContent(modalContent);
   };
 
-  return (!Object.values(boardPins).length ? <h1>Loading...</h1> :
+  return (!Object.values(boardPins).length ?
+    <div className="change-board-you-have-no-pins">
+      <i className="fa-regular fa-x change-board-you-have-no-pins-x" onClick={() => closeModal()}></i>
+      <h1 className="change-board-you-have-no-pins-title">You have no pins!</h1>
+      {/* <div className="change-board-you-have-no-pins-add"> Add some here </div> */}
+    </div>
+    :
     <>
       <div className="-board-modal-container">
         <h3 className="change-board-new-board-text">Change board cover</h3>

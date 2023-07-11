@@ -12,7 +12,7 @@ import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal({ id, newCoverImage, board, current }) {
+function UpdateBoardModal({ id, newCoverImage, board, current, }) {
   const dispatch = useDispatch();
 
   useEffect(() => {

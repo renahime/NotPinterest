@@ -94,3 +94,37 @@
   align-items: center;
   display: flex;
 }
+
+
+.change-board-you-have-no-pins{
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.change-board-you-have-no-pins-add{
+  margin-top: 50px;
+  position: absolute;
+  bottom: 10px;
+}
+
+.change-board-you-have-no-pins-x{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  /* padding: 10px; */
+  background-color: transparent;
+  border: 10px solid transparent;
+  transition: font-size linear 0.2s ;
+}
+
+.change-board-you-have-no-pins-x:hover{
+font-size: 22px;
+
+
+}

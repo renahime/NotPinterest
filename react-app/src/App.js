@@ -80,10 +80,6 @@ function App() {
           <Route path="/:username">
             <ProfilePage />
           </Route>
-          <Route exact path="/oldfeed">
-            <FeedPage sessionUser={sessionUser} />
-            {/* <CaSandraFeed /> */}
-          </Route>
         </Switch>
       )}
     </>

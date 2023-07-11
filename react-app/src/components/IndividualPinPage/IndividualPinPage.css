@@ -20,7 +20,8 @@
 
 .single-pin-image {
     width: 100%;
-    height: 100%;
+    max-height: 700px;
+    min-height: 200px;
     object-fit: cover;
     border-radius: 30px 0 0 30px;
 }
@@ -40,7 +41,8 @@
     border-color: transparent;
     background-color: white;
     font-size: 20px;
-    margin-right: 15px;
+    /* margin-right: 15px; */
+    cursor: pointer;
 }
 
 .single-pin-ellipsis:hover {
@@ -62,6 +64,7 @@
     color: white;
     padding: 10px;
     font-size: 15px;
+    cursor: pointer;
 }
 
 .single-pin-edit-board-form {
@@ -257,4 +260,9 @@
 
 .unfollow-individual-pin-page{
     margin-right: 15px;
+}
+
+
+.margin-right-15{
+    /* margin-right: 15px; */
 }

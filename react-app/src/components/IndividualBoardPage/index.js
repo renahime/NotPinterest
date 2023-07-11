@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux"
 import PinsForBoardPage from "./PinsForBoardPage"
 import './IndividualBoardPage.css'
 import { Link, useHistory, useLocation } from "react-router-dom"
+import UpdateBoardModal from "../UpdateBoardModal"
+import { useModal } from "../../context/Modal"
 
 export default function IndividualBoardPage() {
     const dispatch = useDispatch();
@@ -13,6 +15,7 @@ export default function IndividualBoardPage() {
     const history = useHistory()
     let [ownerCheck, setOwnerCheck] = useState(false);
     const [menu, showMenu] = useState(false)
+    const { setModalContent, closeModal } = useModal();
     let usernameBoardName = location.pathname.split('/')
     let username = usernameBoardName[1]
     let boardName = usernameBoardName[2]
@@ -41,18 +44,31 @@ export default function IndividualBoardPage() {
     }
 
 
-    	// If we click off of the Create tab, the modal will dissapear
-	useEffect(() => {
+    // If we click off of the Create tab, the modal will dissapear
+    useEffect(() => {
         const handleClick = (event) => {
-                if (menu === true) {
-                    showMenu(false)
-                }
+            if (menu === true) {
+                showMenu(false)
+            }
         };
         document.addEventListener('click', handleClick);
         return () => {
-          document.removeEventListener('click', handleClick);
+            document.removeEventListener('click', handleClick);
         };
-      }, [menu]);
+    }, [menu]);
+
+
+    const openUpdateModal = ( event) => {
+        event.preventDefault();
+        const modalContent = (
+            <div>
+                <UpdateBoardModal id={individualBoard.id} username={username} board={individualBoard} />
+            </div>
+        );
+        setModalContent(modalContent);
+    };
+
+
 
     if (individualBoard.pins) {
         boardPins = Object.values(individualBoard.pinInfo);
@@ -73,8 +89,8 @@ export default function IndividualBoardPage() {
                                         <i className="fa-solid fa-ellipsis"></i>
                                     </button>
                                     <div className={ellipsisInfoClassName}>
-                                        <p>Board options</p>
-                                        <p>Edit board</p>
+                                        {/* <p>Board options</p> */}
+                                        <p onClick={(event) => openUpdateModal(event)} >Edit board</p>
                                     </div>
                                 </div>
                                 {individualBoard.user.profile_image ? <img className="individual-board-profile-image" src={individualBoard.user.profile_image} /> : <i className="fa-solid fa-circle-user individual-board-profile-image"></i>}

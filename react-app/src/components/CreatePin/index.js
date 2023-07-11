@@ -129,6 +129,20 @@ export default function CreatePin() {
     }, [userBoards])
 
 
+    // If we click off of the Create tab, the modal will dissapear
+	useEffect(() => {
+        const handleClick = (event) => {
+                if (showMenu === true) {
+                    setShowMenu(false)
+                }
+        };
+        document.addEventListener('click', handleClick);
+        return () => {
+          document.removeEventListener('click', handleClick);
+        };
+      }, [showMenu]);
+
+
     return (
         <div className="new-pin-wrapper">
             <form onSubmit={e => handleSubmit(e)} encType="multipart/form-data" className="new-pin-form">

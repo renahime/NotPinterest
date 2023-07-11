@@ -216,7 +216,7 @@ export default function IndividualPinPage() {
                             </div>
                         </div>
 
-                        {!currentUser ? null : (<> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0].label} options={options} isSearchable={true} />
+                        {!currentUser ? null : (<> <Dropdown parentCallBack={changeBoardName} placeHolder={Object.keys(grabBoardName).length ? grabBoardName.name : options[0]?.label} options={options} isSearchable={true} />
                             <div className="pin-with-error"><button onClick={handlePin} className="single-pin-edit-board-button">Save</button> </div>  </>)}
                     </div>
                     <p style={{ color: 'red' }}>{pinErrorCheck ? "A board was not recognized to be pinned" : null}</p>

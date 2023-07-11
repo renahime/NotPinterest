@@ -7,7 +7,7 @@ import CreateBoardFromPinModal from "./CreateBoardModal";
 
 const Icon = () => {
   return (
-    <button className="single-pin-ellipsis"><i class="fa-solid fa-chevron-down"></i></button>
+    <button className="single-pin-ellipsis margin-right-15"><i class="fa-solid fa-chevron-down"></i></button>
   );
 };
 
