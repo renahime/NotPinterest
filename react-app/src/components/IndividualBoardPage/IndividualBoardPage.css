@@ -169,6 +169,7 @@
 
 .individual-boards-link-to-pin {
     cursor: zoom-in;
+    position: relative;
 }
 
 .singleboard-pins-length{
@@ -193,3 +194,9 @@
     justify-content: center;
     width: 100%;
 }
+
+.individual-board-edit-pin-button {
+    position: absolute;
+    z-index: 2;
+}
+

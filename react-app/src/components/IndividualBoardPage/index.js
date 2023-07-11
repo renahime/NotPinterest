@@ -93,7 +93,7 @@ export default function IndividualBoardPage() {
                             </div>}
                     </div>
                     <div className="pins-for-board-page-wrapper">
-                        <PinsForBoardPage pins={ownerCheck ? Object.values(currentBoard.pins) : boardPins } />
+                        <PinsForBoardPage ownerCheck={() => ownerCheck()} pins={ownerCheck ? Object.values(currentBoard.pins) : boardPins } />
                     </div>
                 </div>}
         </div>
