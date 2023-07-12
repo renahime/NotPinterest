@@ -19,12 +19,17 @@ import UserCategoriesForm from "./components/UserCategoriesForm";
 import CaSandraFeed from "./components/FeedPage/casandra-feed"
 import Settings from "./components/Forms/SettingsForm";
 import AboutLinks from "./components/AboutLinks";
+import SignupFormModal from "./components/SignupFormModal";
+import LoginError from "./components/LoginError";
+import OpenModalButton from "./components/OpenModalButton";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [grabString, setGrabString] = useState("")
+  const [searchInput, setSearchInput] = useState(grabString)
   const [searching, setSearching] = useState(false)
+  const [path, setPath] = useState(window.location.pathname)
   const sessionUser = useSelector(state => state.session.user)
   useEffect(() => {
     dispatch(authenticate()).then((data) => {
@@ -37,7 +42,7 @@ function App() {
 
   return (
     <>
-      <Navigation setGrabString={setGrabString} grabString={grabString} isLoaded={isLoaded} setSearching={setSearching} />
+      <Navigation setGrabString={setGrabString} grabString={grabString} searchInput={searchInput} setSearchInput={setSearchInput} isLoaded={isLoaded} setSearching={setSearching} />
       <AboutLinks />
       {isLoaded && (
         <Switch>
@@ -45,7 +50,7 @@ function App() {
             <UserCategoriesForm />
           </Route>
           <Route exact path="/settings">
-            <Settings />
+            {sessionUser ? <Settings /> : <LoginError></LoginError>}
           </Route>
           <Route path="/test/update">
             <SavePinsToBoardModal />
@@ -57,32 +62,32 @@ function App() {
             <SignupFormPage />
           </Route>
           <Route exact path="/create">
-            <CreatePin />
+            {sessionUser ? <CreatePin /> : <LoginError></LoginError>}
           </Route>
           <Route exact path="/feed">
             {/* <FeedPage sessionUser={sessionUser} /> */}
             <CaSandraFeed grabString={grabString} setGrabString={setGrabString} searching={searching} setSearching={setSearching} />
           </Route>
-          <Route exact path="/">
-            {sessionUser ? <CaSandraFeed /> : <LandingPage />}
+          <Route exact path="/" >
+            {sessionUser ? <CaSandraFeed grabString={grabString} setGrabString={setGrabString} searching={searching} setSearching={setSearching} /> : <LandingPage />}
           </Route>
           {/* <Route exact path="/boards/:id">
             <UpdateBoardModal sessionUser={sessionUser} />
           </Route> */}
           <Route exact path="/pin/:id">
-            <IndividualPinPage />
+            {sessionUser ? <IndividualPinPage></IndividualPinPage> : <LoginError></LoginError>}
           </Route>
           <Route path="/:username/_created">
             <UserPins />
           </Route>
           <Route path="/:username/_saved">
-            <ProfilePage session={sessionUser} />
+            {sessionUser ? <ProfilePage session={sessionUser} /> : <LoginError></LoginError>}
           </Route>
           <Route exact path="/:username/:boardName">
-            <IndividualBoardPage />
+            {sessionUser ? <IndividualBoardPage /> : <LoginError></LoginError>}
           </Route>
           <Route path="/:username">
-            <ProfilePage />
+            {sessionUser ? <ProfilePage /> : <LoginError></LoginError>}
           </Route>
         </Switch>
       )}

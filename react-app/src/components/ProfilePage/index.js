@@ -14,6 +14,7 @@ import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
 import CreateBoardModal from "../CreateBoardModal"
+import LoginError from "../LoginError"
 
 export default function ProfilePage() {
     const history = useHistory()
@@ -31,9 +32,6 @@ export default function ProfilePage() {
     const currentUserPins = useSelector(state => state.pins.currentUserPins)
     const currentProfilePins = useSelector(state => state.pins.currentProfilePins)
     const otherUserBoards = useSelector(state => state.boards.currentProfileBoards)
-    // let [numFollowers, setNumFollowers] = useState(0);
-    // let [numFollowing, setNumFollowing] = useState(0)
-    // let [isfollowing, setIsFollowing] = useState(false);
     let [showBoards, setShowBoards] = useState(true);
     const [showPins, setShowPins] = useState(false)
     let [usingProfile, setUsingProfile] = useState(false);
@@ -142,24 +140,28 @@ export default function ProfilePage() {
         }
     }
 
-    	// If we click off of the Create tab, the modal will dissapear
-	useEffect(() => {
+    // If we click off of the Create tab, the modal will dissapear
+    useEffect(() => {
         const handleClick = (event) => {
-                if (openMenu === true) {
-                    setOpenMenu(false)
-                }
+            if (openMenu === true) {
+                setOpenMenu(false)
+            }
         };
         document.addEventListener('click', handleClick);
         return () => {
-          document.removeEventListener('click', handleClick);
+            document.removeEventListener('click', handleClick);
         };
-      }, [openMenu]);
+    }, [openMenu]);
 
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
     if (!loading) return <h1>Loading...</h1>
     else if (!current.id) return <PageNotFound />
+
+    if (!currentUser) {
+        return <LoginError></LoginError>
+    }
 
     return (!Object.values(current).length ? <h1>Loading...</h1> :
         <div>

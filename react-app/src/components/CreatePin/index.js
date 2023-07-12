@@ -87,7 +87,7 @@ export default function CreatePin() {
             console.log("new pin", new_pin)
             setTimeout(() => {
                 setLoadingImage(false)
-                history.push(`/pin/${new_pin.pin.id}`)
+                history.push(`/pin/${new_pin.id}`)
             }, 1000)
         }
 
@@ -130,17 +130,17 @@ export default function CreatePin() {
 
 
     // If we click off of the Create tab, the modal will dissapear
-	useEffect(() => {
+    useEffect(() => {
         const handleClick = (event) => {
-                if (showMenu === true) {
-                    setShowMenu(false)
-                }
+            if (showMenu === true) {
+                setShowMenu(false)
+            }
         };
         document.addEventListener('click', handleClick);
         return () => {
-          document.removeEventListener('click', handleClick);
+            document.removeEventListener('click', handleClick);
         };
-      }, [showMenu]);
+    }, [showMenu]);
 
 
     return (

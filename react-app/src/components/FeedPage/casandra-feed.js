@@ -29,7 +29,6 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
     let numberOfPins = 0
     let boards = 0
 
-
     useEffect(() => {
         window.addEventListener("beforeunload", (e) => {
             setSearching(false)
@@ -48,12 +47,14 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
         if (grabString) {
             setSearching(true)
         } else {
+            console.log('aa')
             setSearching(false)
         }
     }, [searching, grabString])
 
     function filterPins(pins) {
         if ((!sessionUser || sessionUser.categories.length === 0) && !searching) {
+            console.log("1")
             let randomPins = shufflePins(pins)
             return {
                 filteredPinsArr: randomPins.splice(0, 30),
@@ -62,6 +63,7 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
         } else if (searching) {
             let filteredPins = []
             let userPins = 0
+            console.log("2")
             for (let pin of pins) {
                 if (pin.owner_id === sessionUser.id) userPins++
                 if (pin.title && pin.title.toLowerCase().includes(grabString.toLowerCase())) {
@@ -96,6 +98,7 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
             }
         }
         else if (!searching) {
+            console.log("3")
             let filteredPins = []
             let userPins = 0
             let categories = sessionUser.categories
@@ -194,11 +197,12 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
                 if (sessionUser) {
                     numberOfPins = userPins
                 }
+                console.log(pinsArr);
             }
             setFinished(true)
             setFound(true)
         }
-    }, [loading, pins, grabString])
+    }, [loading, pins, grabString, searching])
 
     if (pins && !Object.values(pins).length) {
         return (

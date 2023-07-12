@@ -1,4 +1,4 @@
-import { useEffect, useState,useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -10,14 +10,11 @@ import CreateBoardModal from '../CreateBoardModal';
 import './Navigation.css';
 
 
-function Navigation({ isLoaded, setGrabString, setSearching, grabString }) {
+function Navigation({ isLoaded, setGrabString, setSearching, grabString, searchInput, setSearchInput }) {
 	const history = useHistory()
+	const location = useLocation()
 	const sessionUser = useSelector((state) => state.session.user);
 	const [openMenu, setOpenMenu] = useState(false)
-	const [searchString, setSearchString] = useState(grabString)
-	const { setModalContent } = useModal()
-	const menuRef = useRef(null);
-	const [path, setPath] = useState(window.location.pathname)
 	let menuClassName = openMenu ? "nav-profile-menu" : "hidden nav-profile-menu"
 
 	let showMenu = () => {
@@ -29,20 +26,19 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString }) {
 	}
 
 	useEffect(() => {
-		setPath(window.location.pathname)
-		console.log('')
-	}, [window.location.pathname, path])
-
+		setSearchInput("")
+		setGrabString("")
+	}, [location])
 	const handleFilter = (e) => {
-		let grabString = searchString
-		if (!path.includes('/feed')) {
-			setSearchString("")
+		let grabString = searchInput
+		if (!location.pathname.includes('/feed')) {
+			setSearchInput("")
 			history.push({
 				pathname: '/feed',
 				state: grabString
 			})
 		} else {
-			setSearchString("")
+			setSearchInput("")
 			setGrabString("")
 			setSearching(false)
 		}
@@ -50,7 +46,7 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString }) {
 	}
 
 	const handleChanges = (e) => {
-		setSearchString(e.target.value)
+		setSearchInput(e.target.value)
 		setGrabString(e.target.value)
 	}
 
@@ -59,16 +55,16 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString }) {
 
 	// If we click off of the Create tab, the modal will dissapear
 	useEffect(() => {
-    const handleClick = (event) => {
+		const handleClick = (event) => {
 			if (openMenu === true) {
 				setOpenMenu(false)
 			}
-    };
-    document.addEventListener('click', handleClick);
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, [openMenu]);
+		};
+		document.addEventListener('click', handleClick);
+		return () => {
+			document.removeEventListener('click', handleClick);
+		};
+	}, [openMenu]);
 
 
 
@@ -117,8 +113,8 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString }) {
 									</div>
 								</div>
 							</div>
-							<input value={searchString} onChange={handleChanges} type="text" className="search-bar" placeholder="Search" />
-							{path.includes("/feed") ? <button onClick={handleFilter} className='search-button'>Clear</button> : <button onClick={handleFilter} className='search-button'>Search</button>}
+							<input value={searchInput} onChange={handleChanges} type="text" className="search-bar" placeholder="Search" />
+							{location.pathname.includes("/feed") ? <button onClick={handleFilter} className='search-button'>Clear</button> : <button onClick={handleFilter} className='search-button'>Search</button>}
 						</div>
 					</>
 				)}
