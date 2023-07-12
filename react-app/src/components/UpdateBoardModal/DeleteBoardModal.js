@@ -4,13 +4,25 @@ import { useDispatch } from "react-redux"
 import { deleteBoard } from "../../store/boards";
 import "./UpdateDeleteBoardModal.css"
 
-function UpdateDeleteBoardModal({ id, user }) {
+function UpdateDeleteBoardModal({ id, user,boardPage, username }) {
   const { closeModal } = useModal();
   const history = useHistory();
   const dispatch = useDispatch();
 
   const onDelete = () => {
-    dispatch(deleteBoard(id)).then(() => closeModal())
+    dispatch(deleteBoard(id)).then(() =>{
+
+      if (boardPage == true) {
+        history.push(`/${username}/boards`)
+      }
+ 
+      closeModal()
+
+    })
+
+
+
+
   };
 
   return (

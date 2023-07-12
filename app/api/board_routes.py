@@ -79,7 +79,7 @@ def get_board_by_id(id):
 def get_current_user_boards():
     user = User.query.get(current_user.id)
     user_boards = user.boards
-    
+
     all_boards = {}
 
     for board in user_boards:
@@ -122,7 +122,7 @@ def create_board():
             description=form.data["description"],
             user=user
         )
-    
+
         db.session.add(new_board)
         db.session.commit()
 
@@ -158,7 +158,7 @@ def edit_board(id):
     if form.validate_on_submit():
         if form.data["name"]:
             board_to_edit.name = form.data["name"]
-        if form.data["private"]:
+        if "private" in form.data:
             board_to_edit.private = form.data["private"]
         if form.data["cover_image"]:
             image_found = False
@@ -192,7 +192,7 @@ def delete_board(id):
 
     db.session.delete(board)
     db.session.commit()
-    
+
     # return {"name": board.name}
     return {"message": "Board deleted"}
 

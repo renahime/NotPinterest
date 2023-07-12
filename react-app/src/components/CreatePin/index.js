@@ -87,7 +87,7 @@ export default function CreatePin() {
             console.log("new pin", new_pin)
             setTimeout(() => {
                 setLoadingImage(false)
-                history.push(`/pin/${new_pin.pin.id}`)
+                history.push(`/pin/${new_pin.id}`)
             }, 1000)
         }
 

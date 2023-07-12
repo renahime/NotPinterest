@@ -53,7 +53,7 @@ export default function IndividualBoardPage() {
                 setCurrentBoard({})
             }
         })
-    }, [dispatch, currentUserBoard])
+    }, [dispatch, currentUserBoard, boardName])
 
 
     // If we click off of the Create tab, the modal will dissapear
@@ -76,7 +76,7 @@ export default function IndividualBoardPage() {
         event.preventDefault();
         const modalContent = (
             <div>
-                <UpdateBoardModal id={currentBoard.id} username={username} board={currentBoard} />
+                <UpdateBoardModal id={currentBoard.id} username={username} board={currentBoard} boardPage={true}/>
             </div>
         );
         setModalContent(modalContent);
