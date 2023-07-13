@@ -46,7 +46,7 @@ function ProfileButton({ user }) {
       <div className="nav-bar-right-side-cursor" onClick={openMenu}>
         <button className="nav-icon-button" onClick={openMenu}>
           {/* <i className="fa-regular fa-user nav-icon"></i> */}
-          {user.first_name[0]}
+          {user.username[0]}
         </button>
         <i className="fa-solid fa-angle-left fa-rotate-270 tab-arrow nav-bar-right-arrow" onClick={openMenu}></i>
       </div>

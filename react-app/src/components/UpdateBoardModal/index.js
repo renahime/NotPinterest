@@ -12,13 +12,17 @@ import './UpdateBoardModal.css'
 import OpenModalButton from "../OpenModalButton";
 
 
-function UpdateBoardModal({ id, newCoverImage, board, current, }) {
+function UpdateBoardModal({ id, newCoverImage, board, boardPage, updatedBoard, username }) {
   const dispatch = useDispatch();
+
+  console.log("ID", id)
+  console.log(newCoverImage)
+  console.log("BOARD", board)
 
   useEffect(() => {
     dispatch(getPinsForBoard(id))
     return (() => clearBoardPins())
-  }, [dispatch])
+  }, [dispatch, board])
 
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,10 +31,12 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
   const boardPins = useSelector(state => state.pins.currentBoardPins)
   const userBoards = useSelector(state => state.boards.currentUserBoards)
 
+
+
   //set form data
-  const [name, setName] = useState(board.name);
-  const [description, setDescription] = useState(board.description);
-  const [isPrivate, setIsPrivate] = useState(board.private);
+  const [name, setName] = useState(updatedBoard && Object.keys(updatedBoard).length ? updatedBoard.name : board.name);
+  const [description, setDescription] = useState(updatedBoard && Object.keys(updatedBoard).length ? updatedBoard.description : board.description);
+  const [isPrivate, setIsPrivate] = useState(updatedBoard && Object.keys(updatedBoard).length ? updatedBoard.private : board.private);
   const [cover_image, setCoverImage] = useState(
     board.cover_image ? board.cover_image : [""]
   );
@@ -39,19 +45,25 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
   const openModal = () => {
     const modalContent = (
       <div>
-        <ChangeBoardCoverModal updatedBoardData={updatedBoardData} board={board}/>
+        <ChangeBoardCoverModal updatedBoardData={updatedBoardData} board={board} />
       </div>
     );
     setModalContent(modalContent);
   };
 
-  const handlePrivateChange = (e) => {
-    setIsPrivate(e.target.checked);
+  const handlePrivateChange = async (e) => {
+    await setIsPrivate(e.target.checked)
+    console.log("TESTING PRIVATE", e.target.checked)
+    console.log("TESTING PRIVATE isPrivate", isPrivate)
   };
+
+  useEffect(() => {
+    console.log("TESTING PRIVATE isPrivat in useffect", isPrivate);
+  }, [isPrivate]);
 
   const disabledButton = name === "";
   const onDelete = async (e) => {
-    setModalContent(<UpdateDeleteBoardModal id={id}/>)
+    setModalContent(<UpdateDeleteBoardModal id={id} boardPage={boardPage} username={username} />)
   };
 
   //updated data that we will send to the thunk
@@ -89,6 +101,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
       return
     }
 
+    console.log("CHECKING IS PROVATE IN SUBMIT", isPrivate)
     let changeBoard = {
       name,
       private: isPrivate,
@@ -97,7 +110,19 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
     }
 
     let updatedBoard = await dispatch(updateBoardThunk(changeBoard, board.id))
-    closeModal()
+
+    console.log("CHECKING UPDATED BOARD IN SUBMIT", updatedBoard)
+
+    if (updatedBoard) {
+      if (boardPage) {
+        // const formattedBoardName = changeBoard.name.replace(/\s+/g, "_"); // Replace spaces with underscore
+        // const encodedBoardName = encodeURI(updatedBoard.name);
+      history.push(`/${username}/${changeBoard.name}`);
+      }
+      closeModal()
+
+    }
+
   };
 
   let imageDisplay = "https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png"
@@ -124,7 +149,7 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
                 <img src={imageDisplay} className="edit-board-cover-image" />
               </div>
             </div>
-              {/* : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
+            {/* : Object.values(boardPins) ? <div className="edit-board-cover-image-container">
                 <div className="edit-board-cover-image-text">Board cover</div>
                 <div className="edit-board-cover-image" onClick={openModal}>
                   <img src='https://static-00.iconduck.com/assets.00/plus-square-icon-2048x2048-63y4iawk.png' className="edit-board-cover-image" />
@@ -139,8 +164,8 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
                 required
                 className="edit-board-modal-name-input"
               ></input>
-              <p className="edit-board-text">{100 - name.length}</p>
-              <p className="edit-board-text" style={{ color: "red" }} >{(name.length > 100) ? "Ooops, this name is too long" : null}</p>
+              <p className="edit-board-text">{100 - name?.length}</p>
+              <p className="edit-board-text" style={{ color: "red" }} >{(name?.length > 100) ? "Ooops, this name is too long" : null}</p>
               <p className="edit-board-text" style={{ color: "red" }}>{errors.name ? (errors.name) : null}</p>
             </label>
             <label className="edit-board-modal-description">
@@ -151,13 +176,13 @@ function UpdateBoardModal({ id, newCoverImage, board, current, }) {
                 placeholder="What's your board about?"
                 className="edit-board-modal-description-input"
               ></textarea>
-              <p className="edit-board-text">{225 - description.length}</p>
-              <p className="edit-board-text" style={{ color: "red" }} >{(description && description.length > 225) ? "Ooops, this description is too long" : null}</p>
+              <p className="edit-board-text">{225 - description?.length}</p>
+              <p className="edit-board-text" style={{ color: "red" }} >{(description && description?.length > 225) ? "Ooops, this description is too long" : null}</p>
             </label>
             <label>
               <p className="edit-board-settings">Settings</p>
               <div className="edit-board-modal-flex-row">
-                <input type="checkbox" checked={isPrivate} onChange={handlePrivateChange} className="edit-board-checkbox-input" />
+                <input type="checkbox" checked={isPrivate} name="isPrivate" onChange={() => setIsPrivate(!isPrivate)} className="edit-board-checkbox-input" />
                 <div>
                   <p className="edit-board-modal-private-text bold">Keep this board secret</p>
                   <p className="edit-board-modal-private-text">So only you and collaborators can see it. Learn more</p>

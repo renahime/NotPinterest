@@ -47,7 +47,6 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
         if (grabString) {
             setSearching(true)
         } else {
-            console.log('aa')
             setSearching(false)
         }
     }, [searching, grabString])
@@ -217,7 +216,7 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
     return (
         <div>
 
-            {(currentUser && (sessionUser && currentUserBoards)) ? (
+            {(currentUser && (sessionUser && userBoards.length)) ? (
                 <>
                     <div className="board-container-top-text">
                         <div>Hey {sessionUser.first_name}, you have</div>
@@ -257,17 +256,21 @@ export default function CaSandraFeed({ grabString, setGrabString, setSearching, 
                     </div>
                 </>
 
-            ) : ((currentUser && (sessionUser && userBoards.length)) ? (
+            ) : ((currentUser && (sessionUser && !userBoards.length)) ? (
                 <>
-                    <div className="board-container-top-text">
-                        <div>Oh no, you have</div>
-                        <NavLink to={`/${sessionUser.username}`}> {userBoards.length} boards.</NavLink>
-                        <div>Let's change that!</div>
-                        <OpenModalButton
-                            buttonText="Create Board"
-                            className="feed-page-create-board"
-                            modalComponent={<CreateBoardModal username={sessionUser?.username} />}
-                        />
+                    <div className="board-container-top-text-no-boards">
+                        <div>
+                            <span>Oh no, you have</span>
+                            <NavLink to={`/${sessionUser.username}`}> {userBoards.length} boards.</NavLink>
+                            <span>Let's change that!</span>
+                        </div>
+                        <div>
+                            <OpenModalButton
+                                buttonText="Create Board"
+                                className="feed-page-create-board"
+                                modalComponent={<CreateBoardModal username={sessionUser.username} />}
+                            />
+                        </div>
                     </div>
                 </>
             ) : (null)

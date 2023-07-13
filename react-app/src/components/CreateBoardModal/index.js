@@ -81,19 +81,11 @@ function CreateBoardModal({ username }) {
     }
   }, []);
 
+  // const date = new Date();
 
-
-
-  const date = new Date();
-
-
-
-  const month = date.toLocaleString('default', { month: 'long' });
-  let year = date.getFullYear();
-  let day = date.getDate();
-
-
-
+  // const month = date.toLocaleString('default', { month: 'long' });
+  // let year = date.getFullYear();
+  // let day = date.getDate();
 
   const disabledButton = name === "";
 
@@ -127,32 +119,18 @@ function CreateBoardModal({ username }) {
     }
     //log formData
 
-    await dispatch(createBoardThunk(formData)).then(() => history.push(`/${username}/${formData.name}`))
-    // await dispatch(createBoardFromPinPage(formData)).then(() => history.push(`/${username}/${formData.name}`))
-
-
-    // if (response && response.errors) {
-    //   setErrors(response.errors);
-    //   console.log("ERRORS",errors)
-    // } else {
-    //   history.push(`/${username}/${formData.name}`);
-    //   closeModal();
-    //   openModal();
-    // }
-
-    closeModal()
-
-    openModal()
-
-    // openModal(<SavePinsToBoardModal />);
-
-    // history.push('/boards/1')
+    await dispatch(createBoardThunk(formData))
+        .then((board) => {
+          history.push(`/${username}/${formData.name}`)
+          closeModal()
+          openModal(board)
+        })
   };
 
-  const openModal = () => {
+  const openModal = (board) => {
     const modalContent = (
       <div>
-        <SavePinsToBoardModal pinsArr={Object.values(allpins)} username={username} setChange={setChange} change={change} boardName={name} />
+        <SavePinsToBoardModal board={board} />
       </div>
     );
     setModalContent(modalContent);

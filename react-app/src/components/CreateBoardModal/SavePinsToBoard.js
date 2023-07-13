@@ -12,7 +12,7 @@ import './SavePinsToBoard.css'
 
 
 
-function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change }) {
+function SavePinsToBoardModal({ board }) {
   const dispatch = useDispatch()
   const [hover, setHover] = useState(false)
   const [hoverDiv, setHoverDiv] = useState("")
@@ -31,14 +31,6 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
     // .catch((error) => console.log("Error fetching pins:", error));
   }, [dispatch]);
 
-
-  const currentBoard = useSelector(state => state.boards.singleBoard)
-  const currentBoardState = useSelector(state => state.boards.singleBoard)
-  const currentState = useSelector(state => state)
-
-
-
-
   // If we hover over a pin we want to save the pin ID to the state incase a user clicks that pin
   function onHover(pin) {
     setHover(true)
@@ -50,12 +42,12 @@ function SavePinsToBoardModal({ pinsArr, username, boardName, setChange, change 
     setHoverDiv("")
   }
 
-
+  console.log("board in modal", board)
 
 
 // add pin to our state if clicked
   async function addPinToBoard() {
-    await dispatch(pinThunk(hoverDiv, currentBoard.id))
+    await dispatch(pinThunk(hoverDiv, board.id))
   }
 
 

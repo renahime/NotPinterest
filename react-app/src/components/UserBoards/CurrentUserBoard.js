@@ -81,8 +81,8 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
                                     </div>
                                 </div>
                                 {hoverDiv === boards.id ?
-                                    <div className={editBoardClassName}>
-                                        <i className="fa-solid fa-pencil" onClick={(event) => openUpdateModal(hoverDiv, username, event, boards)}></i>
+                                    <div onClick={(event) => openUpdateModal(hoverDiv, username, event, boards)} className={editBoardClassName}>
+                                        <i className="fa-solid fa-pencil"></i>
                                     </div> : null}
                             </div>
                             <div className="profile-board-info">

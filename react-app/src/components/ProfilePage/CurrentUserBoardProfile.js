@@ -14,9 +14,8 @@ import UserPins from '../UserPins'
 import OpenModalButton from "../OpenModalButton"
 import CreateBoardFromProfile from '../CreateBoardModal/CreateBoardFromProfile'
 import CreateBoardModal from "../CreateBoardModal"
-import LoginError from "../LoginError"
 
-export default function ProfilePage() {
+export default function CurrentUserBoardProfile() {
     const history = useHistory()
     const { username } = useParams()
     const dispatch = useDispatch()
@@ -32,6 +31,9 @@ export default function ProfilePage() {
     const currentUserPins = useSelector(state => state.pins.currentUserPins)
     const currentProfilePins = useSelector(state => state.pins.currentProfilePins)
     const otherUserBoards = useSelector(state => state.boards.currentProfileBoards)
+    // let [numFollowers, setNumFollowers] = useState(0);
+    // let [numFollowing, setNumFollowing] = useState(0)
+    // let [isfollowing, setIsFollowing] = useState(false);
     let [showBoards, setShowBoards] = useState(true);
     const [showPins, setShowPins] = useState(false)
     let [usingProfile, setUsingProfile] = useState(false);
@@ -111,7 +113,7 @@ export default function ProfilePage() {
     const handleShowBoards = (e) => {
         e.stopPropagation();
         setShowBoards(true);
-        setShowPins(false);
+        setShowPins(false)
         history.push(`/${username}`);
     };
 
@@ -139,30 +141,26 @@ export default function ProfilePage() {
         }
     }
 
-    // If we click off of the Create tab, the modal will dissapear
-    useEffect(() => {
+    	// If we click off of the Create tab, the modal will dissapear
+	useEffect(() => {
         const handleClick = (event) => {
-            if (openMenu === true) {
-                setOpenMenu(false)
-            }
+                if (openMenu === true) {
+                    setOpenMenu(false)
+                }
         };
         document.addEventListener('click', handleClick);
         return () => {
-            document.removeEventListener('click', handleClick);
+          document.removeEventListener('click', handleClick);
         };
-    }, [openMenu]);
+      }, [openMenu]);
 
 
     let menuClassName = openMenu ? "profile-menu" : "hidden profile-menu"
 
-    if (!loading) return <h1>Loading...</h1>
-    else if (!current.id) return <PageNotFound />
+    // if (!loading) return <h1>Loading...</h1>
+    // else if (!current.id) return <PageNotFound />
 
-    if (!currentUser) {
-        return <LoginError></LoginError>
-    }
-
-    return (!Object.values(current).length ? <h1></h1> :
+    return (!Object.values(current).length ? <h1>Loading...</h1> :
         <div>
             {current.id &&
                 <div className="profile-page-base">
@@ -200,10 +198,8 @@ export default function ProfilePage() {
                     }
                     <div>
 
-                        <button onClick={handleShowBoards} className={showPins ? "profile-button" : "profile-button underline"}>Pins</button>
-
-                        <button onClick={handleShowPins} className={showBoards ? "profile-button" : "profile-button underline"}>Boards</button>
-
+                        <button onClick={handleShowBoards} className={ "profile-button"}>Pins</button>
+                        <button onClick={handleShowPins} className={"profile-button underline"}>Boards</button>
                     </div>
                 </div>
             }
@@ -225,11 +221,11 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>}
-                    </div> {checkUser() && <><UserPins pins={currentUserPins}> </UserPins></>}
+                    </div> {checkUser() &&  <CurrentUserBoard userBoardsArr={Object.values(currentUserBoards)} current={current} username={current.username} profilePicture={current.profile_image} /> }
                 </div>
                 :
                 <div className="user-profile-bottom-wrapper">
-                    {<><UserPins pins={currentProfilePins}> </UserPins></>}
+                    {!showBoards && <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> }
                 </div>
             }
         </div>

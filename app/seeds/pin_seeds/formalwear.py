@@ -99,7 +99,7 @@ def seed_formal_pins():
     )
 
     pin11 = Pin(
-        image="https://threadterest.s3.us-east-2.amazonaws.com/men-tailored.jpeg",
+        image="https://threadterest.s3.us-east-2.amazonaws.com/902f7b4d9972d325f4fec02561029c64.jpg",
         user=user2,
         board_tagged=[board],
         categories=[formalwear],

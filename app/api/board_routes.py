@@ -75,11 +75,10 @@ def get_board_by_id(id):
 
 #Route to get a current user's boards
 @board_routes.route("/current_user")
+@login_required
 def get_current_user_boards():
-    user_boards = Board.query.filter_by(owner_id=current_user.id).all()
-
-    if not user_boards:
-        return {"errors": "No Boards were found"}
+    user = User.query.get(current_user.id)
+    user_boards = user.boards
 
     all_boards = {}
 
@@ -123,11 +122,11 @@ def create_board():
             description=form.data["description"],
             user=user
         )
-    
+
         db.session.add(new_board)
         db.session.commit()
 
-        return new_board.to_dict()
+        return new_board.detailed_to_dict()
 
     elif form.errors:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
@@ -159,7 +158,7 @@ def edit_board(id):
     if form.validate_on_submit():
         if form.data["name"]:
             board_to_edit.name = form.data["name"]
-        if form.data["private"]:
+        if "private" in form.data:
             board_to_edit.private = form.data["private"]
         if form.data["cover_image"]:
             image_found = False
@@ -193,7 +192,7 @@ def delete_board(id):
 
     db.session.delete(board)
     db.session.commit()
-    
+
     # return {"name": board.name}
     return {"message": "Board deleted"}
 

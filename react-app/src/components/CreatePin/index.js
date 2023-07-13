@@ -160,6 +160,7 @@ export default function CreatePin() {
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => setImage(e.target.files[0])}
+                                    // onClick={(e) => e.stopPropagation()}
                                     required
                                 />
                                 <div className="new-pin-image-file-styled">

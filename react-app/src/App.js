@@ -22,6 +22,7 @@ import AboutLinks from "./components/AboutLinks";
 import SignupFormModal from "./components/SignupFormModal";
 import LoginError from "./components/LoginError";
 import OpenModalButton from "./components/OpenModalButton";
+import CurrentUserBoardProfile from "./components/ProfilePage/CurrentUserBoardProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -80,12 +81,17 @@ function App() {
           <Route path="/:username/_created">
             <UserPins />
           </Route>
+          < Route path='/:username/boards'>
+            <CurrentUserBoardProfile />
+          </Route>
+
           <Route path="/:username/_saved">
             {sessionUser ? <ProfilePage session={sessionUser} /> : <LoginError></LoginError>}
           </Route>
           <Route exact path="/:username/:boardName">
             {sessionUser ? <IndividualBoardPage /> : <LoginError></LoginError>}
           </Route>
+
           <Route path="/:username">
             {sessionUser ? <ProfilePage /> : <LoginError></LoginError>}
           </Route>
