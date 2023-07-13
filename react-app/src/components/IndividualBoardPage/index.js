@@ -95,7 +95,7 @@ export default function IndividualBoardPage() {
         <div >
             {!Object.values(individualBoard).length && !ownerCheck ? <h1>Loading..</h1> :
                 <div className="individual-board-wrapper">
-                    <i onClick={handleBack} class="fa-solid fa-arrow-left cursor-pointer"></i>
+                    {/* <i onClick={handleBack} class="fa-solid fa-arrow-left cursor-pointer"></i> */}
                     <div className="individual-board-info-wrapper">
                         {ownerCheck ?
                             <div className="individual-board-info">
