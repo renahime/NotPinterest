@@ -225,7 +225,7 @@ export default function CurrentUserBoardProfile() {
                 </div>
                 :
                 <div className="user-profile-bottom-wrapper">
-                    {!showBoards && <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> }
+                    {!checkUser() && <NotUSerProfile userBoardsArr={Object.values(otherUserBoards)} username={current.username} profilePicture={current.profile_image} /> }
                 </div>
             }
         </div>
