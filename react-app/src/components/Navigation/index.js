@@ -115,7 +115,7 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString, searchI
 								</div>
 							</div>
 							<input value={searchInput} onChange={handleChanges} type="text" className="search-bar" placeholder="Search" />
-							{location.pathname.includes("/feed") ? <button onClick={handleFilter} className='search-button'>Clear</button> : <button onClick={handleFilter} className='search-button'>Search</button>}
+							{location.pathname.includes("/feed") ? <button onClick={handleFilter} className='search-button'>{searchInput ? "Clear" : "Search"}</button> : <button onClick={handleFilter} className='search-button'>Search</button>}
 						</div>
 					</>
 				)}

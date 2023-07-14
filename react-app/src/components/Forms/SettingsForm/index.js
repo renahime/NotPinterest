@@ -90,7 +90,9 @@ function Settings() {
       setErrors(data);
     });
     if (editedUser) {
-      // history.push(`/${editedUser.username}`)
+      history.push(`/${editedUser.username}`)
+    } else {
+      setErrors({username: "Username is already in use."})
     }
   }
 
