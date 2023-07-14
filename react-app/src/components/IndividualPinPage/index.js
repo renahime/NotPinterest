@@ -73,7 +73,6 @@ export default function IndividualPinPage() {
         }
     }
 
-    console.log("single pin", singlePin)
 
     // useEffect(() => {
     //     if (currentUser) {

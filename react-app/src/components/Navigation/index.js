@@ -38,7 +38,6 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString, searchI
 				state: grabString
 			})
 		} else {
-			console.log("a")
 			setSearchInput("")
 			setGrabString("")
 			setSearching(false)

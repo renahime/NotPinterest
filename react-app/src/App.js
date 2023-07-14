@@ -7,7 +7,6 @@ import { authenticate } from "./store/session";
 import { getCurrentUserBoards } from "./store/boards";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
-import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage"
 import CreatePin from "./components/CreatePin"
 import UpdateBoardModal from "./components/UpdateBoardModal";
@@ -16,13 +15,13 @@ import IndividualPinPage from "./components/IndividualPinPage";
 import SavePinsToBoardModal from "./components/CreateBoardModal/SavePinsToBoard";
 import UserPins from "./components/UserPins";
 import UserCategoriesForm from "./components/UserCategoriesForm";
-import CaSandraFeed from "./components/FeedPage/casandra-feed"
 import Settings from "./components/Forms/SettingsForm";
 import AboutLinks from "./components/AboutLinks";
 import SignupFormModal from "./components/SignupFormModal";
 import LoginError from "./components/LoginError";
 import OpenModalButton from "./components/OpenModalButton";
 import CurrentUserBoardProfile from "./components/ProfilePage/CurrentUserBoardProfile";
+import CaSandraFeed from "./components/FeedPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -66,15 +65,11 @@ function App() {
             {sessionUser ? <CreatePin /> : <LoginError></LoginError>}
           </Route>
           <Route exact path="/feed">
-            {/* <FeedPage sessionUser={sessionUser} /> */}
             <CaSandraFeed grabString={grabString} setGrabString={setGrabString} searching={searching} setSearching={setSearching} />
           </Route>
           <Route exact path="/" >
             {sessionUser ? <CaSandraFeed grabString={grabString} setGrabString={setGrabString} searching={searching} setSearching={setSearching} /> : <LandingPage />}
           </Route>
-          {/* <Route exact path="/boards/:id">
-            <UpdateBoardModal sessionUser={sessionUser} />
-          </Route> */}
           <Route exact path="/pin/:id">
             {sessionUser ? <IndividualPinPage></IndividualPinPage> : <LoginError></LoginError>}
           </Route>
@@ -84,7 +79,6 @@ function App() {
           < Route path='/:username/boards'>
             <CurrentUserBoardProfile />
           </Route>
-
           <Route path="/:username/_saved">
             {sessionUser ? <ProfilePage session={sessionUser} /> : <LoginError></LoginError>}
           </Route>
