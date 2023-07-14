@@ -27,17 +27,18 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString, searchI
 
 	useEffect(() => {
 		setSearchInput("")
-		setGrabString("")
 	}, [location])
 	const handleFilter = (e) => {
-		let grabString = searchInput
 		if (!location.pathname.includes('/feed')) {
+			let grabString = searchInput
 			setSearchInput("")
+			setSearching(true)
 			history.push({
 				pathname: '/feed',
 				state: grabString
 			})
 		} else {
+			console.log("a")
 			setSearchInput("")
 			setGrabString("")
 			setSearching(false)
@@ -49,6 +50,7 @@ function Navigation({ isLoaded, setGrabString, setSearching, grabString, searchI
 		setSearchInput(e.target.value)
 		setGrabString(e.target.value)
 	}
+
 
 	const currentUser = useSelector(state => state.session.user)
 

@@ -14,7 +14,6 @@ function CreateBoardFromProfile({ username, current }) {
   const [description, setDescription] = useState("")
   const { setModalContent, closeModal } = useModal();
   const user = useSelector(state => state.session.user)
-  console.log(current)
 
   useEffect(() => {
   }, [name, isPrivate])

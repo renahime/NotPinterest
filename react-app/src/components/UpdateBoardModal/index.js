@@ -15,9 +15,6 @@ import OpenModalButton from "../OpenModalButton";
 function UpdateBoardModal({ id, newCoverImage, board, boardPage, updatedBoard, username }) {
   const dispatch = useDispatch();
 
-  console.log("ID", id)
-  console.log(newCoverImage)
-  console.log("BOARD", board)
 
   useEffect(() => {
     dispatch(getPinsForBoard(id))
@@ -53,12 +50,9 @@ function UpdateBoardModal({ id, newCoverImage, board, boardPage, updatedBoard, u
 
   const handlePrivateChange = async (e) => {
     await setIsPrivate(e.target.checked)
-    console.log("TESTING PRIVATE", e.target.checked)
-    console.log("TESTING PRIVATE isPrivate", isPrivate)
   };
 
   useEffect(() => {
-    console.log("TESTING PRIVATE isPrivat in useffect", isPrivate);
   }, [isPrivate]);
 
   const disabledButton = name === "";
@@ -101,7 +95,6 @@ function UpdateBoardModal({ id, newCoverImage, board, boardPage, updatedBoard, u
       return
     }
 
-    console.log("CHECKING IS PROVATE IN SUBMIT", isPrivate)
     let changeBoard = {
       name,
       private: isPrivate,
@@ -111,13 +104,12 @@ function UpdateBoardModal({ id, newCoverImage, board, boardPage, updatedBoard, u
 
     let updatedBoard = await dispatch(updateBoardThunk(changeBoard, board.id))
 
-    console.log("CHECKING UPDATED BOARD IN SUBMIT", updatedBoard)
 
     if (updatedBoard) {
       if (boardPage) {
         // const formattedBoardName = changeBoard.name.replace(/\s+/g, "_"); // Replace spaces with underscore
         // const encodedBoardName = encodeURI(updatedBoard.name);
-      history.push(`/${username}/${changeBoard.name}`);
+        history.push(`/${username}/${changeBoard.name}`);
       }
       closeModal()
 

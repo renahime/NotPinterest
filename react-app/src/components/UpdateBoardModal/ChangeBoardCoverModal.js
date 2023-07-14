@@ -42,7 +42,6 @@ function ChangeBoardCoverModal({ updatedBoardData, board }) {
 
   const openUpdateModal = (event, newCoverImage) => {
     event.stopPropagation();
-    console.log("newCoverImage", newCoverImage)
     const modalContent = (
       <div>
         <UpdateBoardModal updatedBoard={updatedBoardData} newCoverImage={newCoverImage} board={board} />

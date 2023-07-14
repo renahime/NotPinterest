@@ -41,7 +41,6 @@ export default function CurrentUserBoard({ userBoardsArr, username, profileImage
         setModalContent(modalContent);
     };
 
-    console.log("boards", userBoardsArr)
 
     return (
         <div className="profile-boards-all">

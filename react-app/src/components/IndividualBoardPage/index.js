@@ -28,8 +28,6 @@ export default function IndividualBoardPage() {
     const individualBoard = useSelector(state => state.boards.singleBoard)
 
 
-    console.log("USERNAME", username)
-    console.log("CURRENT BOARRD", currentBoard)
 
     useEffect(() => {
         if (currentUser && Object.values(currentUserBoard).length) {
@@ -69,14 +67,12 @@ export default function IndividualBoardPage() {
         };
     }, [menu]);
 
-    console.log("TESTING ID", individualBoard.id)
-    console.log("INDIVUDAL BOARD", individualBoard)
 
     const openUpdateModal = (event) => {
         event.preventDefault();
         const modalContent = (
             <div>
-                <UpdateBoardModal id={currentBoard.id} username={username} board={currentBoard} boardPage={true}/>
+                <UpdateBoardModal id={currentBoard.id} username={username} board={currentBoard} boardPage={true} />
             </div>
         );
         setModalContent(modalContent);

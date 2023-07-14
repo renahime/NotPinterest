@@ -42,10 +42,9 @@ function SavePinsToBoardModal({ board }) {
     setHoverDiv("")
   }
 
-  console.log("board in modal", board)
 
 
-// add pin to our state if clicked
+  // add pin to our state if clicked
   async function addPinToBoard() {
     await dispatch(pinThunk(hoverDiv, board.id))
   }

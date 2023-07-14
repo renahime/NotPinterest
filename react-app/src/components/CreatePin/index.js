@@ -84,7 +84,6 @@ export default function CreatePin() {
             return
         } else {
             // let sendPintoProfile = await dispatch(addPin(new_pin));
-            console.log("new pin", new_pin)
             setTimeout(() => {
                 setLoadingImage(false)
                 history.push(`/pin/${new_pin.id}`)
